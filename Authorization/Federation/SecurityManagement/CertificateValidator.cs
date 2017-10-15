@@ -22,6 +22,7 @@ namespace SecurityManagement
                 throw new ArgumentNullException("configurationProvider");
 
             this._configurationProvider = configurationProvider;
+            this._logProvider = logProvider;
         }
 
         public string FederationPartyId { get; private set; }
