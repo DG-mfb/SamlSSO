@@ -17,12 +17,24 @@ namespace Federation.Protocols.Test.Mock
 
         public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat)
         {
+            var requestedAuthnContextConfiguration = this.BuildRequestedAuthnContextConfiguration();
+            var nameIdconfiguration = new DefaultNameId(new Uri(defaultNameIdFormat));
+            var scopingConfiguration = new ScopingConfiguration();
+            var federationPartyAuthnRequestConfiguration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, nameIdconfiguration, scopingConfiguration);
+
             return new FederationPartyConfiguration("local", "https://dg-mfb/idp/shibboleth")
             {
                 MetadataContext = this._inlineMetadataContextBuilder.BuildContext(new MetadataGenerateRequest(MetadataType.SP, "local")),
+                FederationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration
             };
         }
 
+        private RequestedAuthnContextConfiguration BuildRequestedAuthnContextConfiguration()
+        {
+            return new RequestedAuthnContextConfiguration("Exact")
+            {
+            };
+        }
         public void Dispose()
         {
         }

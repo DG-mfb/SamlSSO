@@ -7,6 +7,9 @@
             this.RequestedAuthnContextConfiguration = requestedAuthnContextConfiguration;
             this.DefaultNameId = defaultNameId;
             this.ScopingConfiguration = scopingConfiguration;
+            this.Version = "2.0";
+            this.IsPassive = false;
+            this.ForceAuthn = false;
         }
 
         public bool IsPassive { get; set; }
