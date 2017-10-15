@@ -31,11 +31,13 @@ namespace SecurityManagement
         {
             get
             {
-                var configuration = this._configurationProvider.GetConfiguration(this.FederationPartyId);
-                if (configuration == null)
-                    throw new ArgumentNullException("certificateValidationConfiguration");
-
-                return configuration.X509CertificateValidationMode;
+                if (this._configuration == null)
+                {
+                    this._configuration = this.GetConfiguration();
+                    if (this._configuration == null)
+                        throw new ArgumentNullException("certificateValidationConfiguration");
+                }
+                return this._configuration.X509CertificateValidationMode;
             }
         }
         

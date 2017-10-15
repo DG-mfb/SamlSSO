@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 using InlineMetadataContextProvider;
 using Kernel.Federation.FederationPartner;
@@ -96,7 +97,7 @@ namespace WsFederationMetadataProviderTests
         }
 
         [Test]
-        public void SPMetadata_serialise_deserialise_Test()
+        public async Task SPMetadata_serialise_deserialise_Test()
         {
             ////ARRANGE
             var logger = new LogProviderMock();
@@ -120,9 +121,10 @@ namespace WsFederationMetadataProviderTests
             var sPSSOMetadataProvider = new SPSSOMetadataProvider(metadataDispatcher, ssoCryptoProvider, metadataSerialiser, g => context, logger);
             
             //ACT
-            sPSSOMetadataProvider.CreateMetadata(metadataRequest);
+            await sPSSOMetadataProvider.CreateMetadata(metadataRequest);
             var xmlReader = XmlReader.Create(new StringReader(metadataXml));
-            var deserialisedMetadata = metadataSerialiser.ReadMetadata(xmlReader) as EntityDescriptor;
+            var deserialisedMetadata = metadataSerialiser.Deserialise(xmlReader) as EntityDescriptor;
+
             //ASSERT
             Assert.IsFalse(String.IsNullOrWhiteSpace(metadataXml));
             Assert.AreEqual(1, deserialisedMetadata.RoleDescriptors.Count);
