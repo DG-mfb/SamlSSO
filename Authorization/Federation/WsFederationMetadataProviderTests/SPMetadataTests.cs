@@ -40,7 +40,7 @@ namespace WsFederationMetadataProviderTests
             var context = new FederationPartyConfiguration(metadataRequest.FederationPartyId, "localhost");
             context.MetadataContext = metadataContext;
             var configurationProvider = new CertificateValidationConfigurationProvider();
-            var certificateValidator = new CertificateValidator(configurationProvider);
+            var certificateValidator = new CertificateValidator(configurationProvider, logger);
             var ssoCryptoProvider = new CertificateManager(logger);
             
             var metadataSerialiser = new FederationMetadataSerialiser(certificateValidator, logger);
@@ -81,7 +81,7 @@ namespace WsFederationMetadataProviderTests
             var metadatContext = contextBuilder.BuildContext(metadataRequest);
             var context = new FederationPartyConfiguration(metadataRequest.FederationPartyId, "localhost");
             var configurationProvider = new CertificateValidationConfigurationProvider();
-            var certificateValidator = new CertificateValidator(configurationProvider);
+            var certificateValidator = new CertificateValidator(configurationProvider, logger);
             var ssoCryptoProvider = new CertificateManager(logger);
             
             var metadataSerialiser = new FederationMetadataSerialiser(certificateValidator, logger);
@@ -110,7 +110,7 @@ namespace WsFederationMetadataProviderTests
             context.MetadataContext = metadataContext;
 
             var configurationProvider = new CertificateValidationConfigurationProvider();
-            var certificateValidator = new CertificateValidator(configurationProvider);
+            var certificateValidator = new CertificateValidator(configurationProvider, logger);
             var ssoCryptoProvider = new CertificateManager(logger);
             
             var metadataSerialiser = new FederationMetadataSerialiser(certificateValidator, logger);

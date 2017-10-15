@@ -5,6 +5,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Cryptography.Validation;
+using Kernel.Logging;
 using SecurityManagement.BackchannelCertificateValidationRules;
 
 namespace SecurityManagement
@@ -12,37 +13,43 @@ namespace SecurityManagement
     internal class BackchannelCertificateValidator : IBackchannelCertificateValidator
     {
         private CertificateValidationConfiguration _configuration;
-
+        private readonly ILogProvider _logProvider;
         private readonly ICertificateValidationConfigurationProvider _configurationProvider;
-        public BackchannelCertificateValidator(ICertificateValidationConfigurationProvider configurationProvider)
+
+        public BackchannelCertificateValidator(ICertificateValidationConfigurationProvider configurationProvider, ILogProvider logProvider)
         {
             if (configurationProvider == null)
                 throw new ArgumentNullException("configurationProvider");
-
+            this._logProvider = logProvider;
             this._configurationProvider = configurationProvider;
         }
 
-        
         public bool Validate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
+            this._logProvider.LogMessage(String.Format("Validating backhannel certificate. sslPolicyErrors was: {0}", sslPolicyErrors));
             var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(sender as HttpWebRequest);
             var configiration = this.GetConfiguration(federationPartyId);
+            
             //ToDo: complete pinning validation. Moved to back log on 27/09/2017
             if(configiration.UsePinningValidation && configiration.BackchannelValidatorResolver != null)
             {
+                _logProvider.LogMessage(String.Format("Pinning validation entered. Validator type: {0}", configiration.BackchannelValidatorResolver.Type));
                 try
                 {
                     var type = configiration.BackchannelValidatorResolver.Type;
-                    var instace = Activator.CreateInstance(type) as ICertificateValidatorResolver;
-                    if(instace != null)
+                    var instance = Activator.CreateInstance(type) as ICertificateValidatorResolver;
+                    if(instance != null)
                     {
-                        var validators = instace.Resolve();
+                        var validators = instance.Resolve();
                         
                         return true;
                     }
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
+                    Exception innerEx;
+                    this._logProvider.TryLogException(ex, out innerEx);
+                    this._logProvider.LogMessage(String.Format("Despite an error accured validation passed. Error: {0}", ex.Message));
                     return true;
                 }
             }

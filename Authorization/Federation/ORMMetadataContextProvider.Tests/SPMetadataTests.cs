@@ -64,7 +64,7 @@ namespace ORMMetadataContextProvider.Tests
             var logger = new LogProviderMock();
 
             var configurationProvider = new CertificateValidationConfigurationProvider((IDbContext)dbcontext, cacheProvider);
-            var certificateValidator = new CertificateValidator(configurationProvider);
+            var certificateValidator = new CertificateValidator(configurationProvider, logger);
             var ssoCryptoProvider = new CertificateManager(logger);
             
             var metadataSerialiser = new FederationMetadataSerialiser(certificateValidator, logger);

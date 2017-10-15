@@ -13,6 +13,7 @@ using WsFederationMetadataProvider.Metadata.DescriptorBuilders;
 namespace ORMMetadataContextProvider.Tests
 {
     [TestFixture]
+    [Ignore("Intergation tests")]
     public class CreateAndSeed
     {
         [Test]

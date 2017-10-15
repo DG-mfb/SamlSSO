@@ -38,13 +38,14 @@ namespace Federation.Metadata.Consumer.Tests
         public async Task WsFederationConfigurationRetrieverTest()
         {
             //ARRANGE
+            var logger = new LogProviderMock();
             var webRequestHandler = new WebRequestHandler();
             webRequestHandler.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((_, __, ___, ____) => true);
             var httpClient = new HttpClient(webRequestHandler);
             var documentRetrieer = new HttpDocumentRetriever(() => httpClient);
             var configurationProvider = new CertificateValidationConfigurationProvider();
-            var certValidator = new CertificateValidator(configurationProvider);
-            var logger = new LogProviderMock();
+            var certValidator = new CertificateValidator(configurationProvider, logger);
+            
             var serialiser = new FederationMetadataSerialiser(certValidator, logger);
             var configurationRetriever = new WsFederationConfigurationRetriever(documentRetrieer, serialiser);
 

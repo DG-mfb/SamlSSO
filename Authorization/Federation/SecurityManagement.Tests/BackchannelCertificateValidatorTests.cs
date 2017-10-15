@@ -20,8 +20,9 @@ namespace SecurityManagement.Tests
                 UsePinningValidation = false,
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
+            var logger = new LogProviderMock();
             var configurationProvider = new CertificateValidationConfigurationProvider(() => configuration);
-            var validator = new BackchannelCertificateValidator(configurationProvider);
+            var validator = new BackchannelCertificateValidator(configurationProvider, logger);
             //ACT
 
             //ASSERT
@@ -38,7 +39,8 @@ namespace SecurityManagement.Tests
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
             var configurationProvider = new CertificateValidationConfigurationProvider(() => configuration);
-            var validator = new BackchannelCertificateValidator(configurationProvider);
+            var logger = new LogProviderMock();
+            var validator = new BackchannelCertificateValidator(configurationProvider, logger);
 
             var certificateStore = new X509Store("TestCertStore", StoreLocation.LocalMachine);
             var validationResult = false;

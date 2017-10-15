@@ -14,6 +14,7 @@ namespace SecurityManagement.Tests
         public void MetadataSerialisationCertificateTest_success()
         {
             //ARRANGE
+            var logger = new LogProviderMock();
             var store = new X509Store("TestCertStore");
             try
             {
@@ -35,7 +36,7 @@ namespace SecurityManagement.Tests
                 configuration.ValidationRules.Add(new ValidationRuleDescriptor(rule1));
                 var configurationProvider = new CertificateValidationConfigurationProvider(() => configuration);
 
-                var validator = new CertificateValidator(configurationProvider);
+                var validator = new CertificateValidator(configurationProvider, logger);
                 //ACT
                 validator.Validate(certificate);
                 //ASSERT
@@ -52,6 +53,7 @@ namespace SecurityManagement.Tests
         public void MetadataSerialisationCertificateTest_failed()
         {
             //ARRANGE
+            var logger = new LogProviderMock();
             var store = new X509Store("TestCertStore");
             try
             {
@@ -73,7 +75,7 @@ namespace SecurityManagement.Tests
                 configuration.ValidationRules.Add(new ValidationRuleDescriptor(rule1));
                 var configurationProvider = new CertificateValidationConfigurationProvider(() => configuration);
 
-                var validator = new CertificateValidator(configurationProvider);
+                var validator = new CertificateValidator(configurationProvider, logger);
                 //ACT
 
                 //ASSERT

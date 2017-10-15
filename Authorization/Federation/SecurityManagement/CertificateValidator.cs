@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using Kernel.Cryptography.Validation;
+using Kernel.Logging;
 using SecurityManagement.CertificateValidationRules;
 
 namespace SecurityManagement
@@ -12,9 +13,10 @@ namespace SecurityManagement
     internal class CertificateValidator : X509CertificateValidator, ICertificateValidator
     {
         private CertificateValidationConfiguration _configuration;
-
+        private readonly ILogProvider _logProvider;
         private readonly ICertificateValidationConfigurationProvider _configurationProvider;
-        public CertificateValidator(ICertificateValidationConfigurationProvider configurationProvider)
+
+        public CertificateValidator(ICertificateValidationConfigurationProvider configurationProvider, ILogProvider logProvider)
         {
             if (configurationProvider == null)
                 throw new ArgumentNullException("configurationProvider");
@@ -43,6 +45,7 @@ namespace SecurityManagement
 
         public override void Validate(X509Certificate2 certificate)
         {
+            this._logProvider.LogMessage(String.Format("Validating certificate: {0}", certificate.FriendlyName));
             var configiration = this.GetConfiguration();
             var context = new CertificateValidationContext(certificate);
             Func<CertificateValidationContext, Task> seed = x => Task.CompletedTask;

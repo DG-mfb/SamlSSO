@@ -21,12 +21,13 @@ namespace WsMetadataSerialisation.Test
         public void SerialiseMetadataTest()
         {
             //ARRANGE
+            var logger = new LogProviderMock();
             var contextBuilder = new InlineMetadataContextBuilder();
             var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, "local");
             var context = contextBuilder.BuildContext(metadataRequest);
 
             var configurationProvider = new CertificateValidationConfigurationProvider();
-            var certificateValidator = new CertificateValidator(configurationProvider);
+            var certificateValidator = new CertificateValidator(configurationProvider, logger);
             var metadata = context.EntityDesriptorConfiguration;
             var spDescriptorConfigurtion = context.EntityDesriptorConfiguration.RoleDescriptors.First() as SPSSODescriptorConfiguration;
             var descriptorBuilder = new ServiceProviderSingleSignOnDescriptorBuilder();
@@ -34,7 +35,7 @@ namespace WsMetadataSerialisation.Test
             var descriptor = descriptorBuilder.BuildDescriptor(spDescriptorConfigurtion);
             var entityDescriptor = new EntityDescriptor(new EntityId("EntityIdTest"));
             entityDescriptor.RoleDescriptors.Add(descriptor);
-            var logger = new LogProviderMock();
+            
             var metadataSerialiser = new FederationMetadataSerialiser(certificateValidator, logger);
             //ACT
             var sb = new StringBuilder();
