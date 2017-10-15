@@ -1,14 +1,13 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
-using System.IO;
 using Kernel.Serialisation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serialisation.JSON.SettingsProviders;
-using Newtonsoft.Json.Linq;
 
 namespace Serialisation.JSON.Test
 {
     [TestClass]
+    [Ignore()]
     public class UnitTest1
     {
         internal class Test
