@@ -20,6 +20,11 @@ namespace Federation.Protocols.Test.Mock
             return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, scopingConfiguration);
         }
 
+        public FederationPartyConfiguration BuildContext(string federationPartyId, RequestedAuthnContextConfiguration requestedAuthnContextConfiguration)
+        {
+            return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, new ScopingConfiguration(), requestedAuthnContextConfiguration);
+        }
+
         public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat)
         {
             return this.BuildContext(federationPartyId, defaultNameIdFormat, new ScopingConfiguration());
@@ -28,6 +33,11 @@ namespace Federation.Protocols.Test.Mock
         public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat, ScopingConfiguration scopingConfiguration)
         {
             var requestedAuthnContextConfiguration = this.BuildRequestedAuthnContextConfiguration();
+            return this.BuildContext(federationPartyId, defaultNameIdFormat, scopingConfiguration, requestedAuthnContextConfiguration);
+        }
+
+        public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat, ScopingConfiguration scopingConfiguration, RequestedAuthnContextConfiguration requestedAuthnContextConfiguration)
+        {
             var nameIdconfiguration = new DefaultNameId(new Uri(defaultNameIdFormat));
             var federationPartyAuthnRequestConfiguration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, nameIdconfiguration, scopingConfiguration);
 

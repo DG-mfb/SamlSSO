@@ -19,7 +19,7 @@ namespace Federation.Protocols.Test.Request
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
-            var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Transient);
+            var federationContex = federationPartyContextBuilder.BuildContext("local", (RequestedAuthnContextConfiguration)null);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, federationContex, supportedNameIdentifierFormats);
             
@@ -35,18 +35,15 @@ namespace Federation.Protocols.Test.Request
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
-            var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Transient);
-            
-            var requestedAuthnContextConfiguration = new Kernel.Federation.FederationPartner.RequestedAuthnContextConfiguration(AuthnContextComparisonType.Minimum.ToString());
+            var requestedAuthnContextConfiguration = new RequestedAuthnContextConfiguration(AuthnContextComparisonType.Minimum.ToString());
             requestedAuthnContextConfiguration.RequestedAuthnContexts.Add((new Kernel.Federation.Protocols.AuthnContext(AuthnContextType.AuthnContextClassRef.ToString(), new Uri(AuthnticationContexts.Password))));
-            var scopingConfiguration = new ScopingConfiguration();
-            var federationPartyAuthnRequestConfiguration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, new DefaultNameId(new Uri(NameIdentifierFormats.Transient)), scopingConfiguration);
-            federationContex.FederationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration;
 
+            var federationContex = federationPartyContextBuilder.BuildContext("local", requestedAuthnContextConfiguration);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, federationContex, supportedNameIdentifierFormats);
             var requestConfiguration = federationContex.GetRequestConfigurationFromContext();
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            
             //ACT
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
 
@@ -66,13 +63,10 @@ namespace Federation.Protocols.Test.Request
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
-            var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Transient);
-            var requestedAuthnContextConfiguration = new Kernel.Federation.FederationPartner.RequestedAuthnContextConfiguration(AuthnContextComparisonType.Minimum.ToString());
+            var requestedAuthnContextConfiguration = new RequestedAuthnContextConfiguration(AuthnContextComparisonType.Minimum.ToString());
             requestedAuthnContextConfiguration.RequestedAuthnContexts.Add((new Kernel.Federation.Protocols.AuthnContext(AuthnContextType.AuthnContextClassRef.ToString(), new Uri(AuthnticationContexts.Password))));
             requestedAuthnContextConfiguration.RequestedAuthnContexts.Add((new Kernel.Federation.Protocols.AuthnContext(AuthnContextType.AuthnContextClassRef.ToString(), new Uri(AuthnticationContexts.PasswordProtectedTransport))));
-            var scopingConfiguration = new ScopingConfiguration();
-            var federationPartyAuthnRequestConfiguration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, new DefaultNameId(new Uri(NameIdentifierFormats.Transient)), scopingConfiguration);
-            federationContex.FederationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration;
+            var federationContex = federationPartyContextBuilder.BuildContext("local", requestedAuthnContextConfiguration);
             
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, federationContex, supportedNameIdentifierFormats);

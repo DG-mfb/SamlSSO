@@ -18,7 +18,7 @@ namespace Federation.Protocols.Test.Request
     public class AuthnRequestNameIdTests
     {
         [Test]
-        public void BuildAuthnRequest_test_nameid_fortmat_match()
+        public void BuildAuthnRequest_test_nameid_format_match()
         {
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
