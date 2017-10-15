@@ -10,7 +10,7 @@ namespace ORMMetadataContextProvider.Tests.Mock
             return new SqlConnectionStringBuilder
             {
                 DataSource = "DG-MFB\\SQLEXPRESS_2016",
-                InitialCatalog = "SSOConfiguration",
+                InitialCatalog = "SSOConfiguration_Test",
                 IntegratedSecurity = true
             };
         }

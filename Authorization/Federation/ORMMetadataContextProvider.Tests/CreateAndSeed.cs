@@ -16,12 +16,16 @@ namespace ORMMetadataContextProvider.Tests
     public class CreateAndSeed
     {
         [Test]
-        public void Test1()
+        public void CreateAndSeed__test_db()
         {
             //ARRANGE
             var cacheProvider = new CacheProviderMock();
             var customConfiguration = new DbCustomConfiguration();
             var connectionStringProvider = new MetadataConnectionStringProviderMock();
+            var connectingString = connectionStringProvider.GetConnectionString();
+            if (!connectingString.InitialCatalog.EndsWith("_Test"))
+                throw new InvalidOperationException("Database name needs to end with _Test");
+
             var models = ReflectionHelper.GetAllTypes(new[] {typeof(MetadataContextBuilder).Assembly })
                 .Where(t => !t.IsAbstract && !t.IsInterface && typeof(BaseModel).IsAssignableFrom(t));
             customConfiguration.ModelsFactory = () => models;
@@ -40,6 +44,7 @@ namespace ORMMetadataContextProvider.Tests
             //ACT
             var metadata = metadataContextBuilder.BuildContext(metadataRequest);
             //ASSERT
+            Assert.IsNotNull(metadata);
         }
 
         [Test]
@@ -49,6 +54,10 @@ namespace ORMMetadataContextProvider.Tests
             var cacheProvider = new CacheProviderMock();
             var customConfiguration = new DbCustomConfiguration();
             var connectionStringProvider = new MetadataConnectionStringProviderMock();
+            var connectingString = connectionStringProvider.GetConnectionString();
+            if (!connectingString.InitialCatalog.EndsWith("_Test"))
+                throw new InvalidOperationException("Database name needs to end with _Test");
+
             var models = ReflectionHelper.GetAllTypes(new[] { typeof(MetadataContextBuilder).Assembly })
                 .Where(t => !t.IsAbstract && !t.IsInterface && typeof(BaseModel).IsAssignableFrom(t));
             customConfiguration.ModelsFactory = () => models;
@@ -121,37 +130,40 @@ namespace ORMMetadataContextProvider.Tests
             }
 
             //organisation
-            Assert.AreEqual(spDescriptorConfigurtion.Organisation.Names.Count, organisation.Names.Count);
-            foreach (var n in spDescriptorConfigurtion.Organisation.Names)
+            if (organisation != null)
             {
-                var targetName = organisation.Names[n.Language];
-                Assert.AreEqual(n.Name, targetName.Name);
-            }
-            Assert.AreEqual(spDescriptorConfigurtion.Organisation.Names.Count, organisation.DisplayNames.Count);
-            foreach (var n in spDescriptorConfigurtion.Organisation.Names)
-            {
-                var targetName = organisation.DisplayNames[n.Language];
-                Assert.AreEqual(n.DisplayName, targetName.Name);
-            }
-            Assert.AreEqual(spDescriptorConfigurtion.Organisation.Urls.Count, organisation.Urls.Count);
-            foreach (var n in spDescriptorConfigurtion.Organisation.Urls)
-            {
-                var targetName = organisation.Urls[n.Language];
-                Assert.AreEqual(n.Url, targetName.Uri);
-            }
+                Assert.AreEqual(spDescriptorConfigurtion.Organisation.Names.Count, organisation.Names.Count);
+                foreach (var n in spDescriptorConfigurtion.Organisation.Names)
+                {
+                    var targetName = organisation.Names[n.Language];
+                    Assert.AreEqual(n.Name, targetName.Name);
+                }
+                Assert.AreEqual(spDescriptorConfigurtion.Organisation.Names.Count, organisation.DisplayNames.Count);
+                foreach (var n in spDescriptorConfigurtion.Organisation.Names)
+                {
+                    var targetName = organisation.DisplayNames[n.Language];
+                    Assert.AreEqual(n.DisplayName, targetName.Name);
+                }
+                Assert.AreEqual(spDescriptorConfigurtion.Organisation.Urls.Count, organisation.Urls.Count);
+                foreach (var n in spDescriptorConfigurtion.Organisation.Urls)
+                {
+                    var targetName = organisation.Urls[n.Language];
+                    Assert.AreEqual(n.Url, targetName.Uri);
+                }
 
-            //contacts
-            var configContacts = spDescriptorConfigurtion.Organisation.OrganisationContacts;
-            Assert.AreEqual(configContacts.PersonContact.Count, descriptor.Contacts.Count);
-            for (var i = 0; i < configContacts.PersonContact.Count; i++)
-            {
-                var source = configContacts.PersonContact.ElementAt(i);
-                var targer = descriptor.Contacts.ElementAt(i);
-                Assert.AreEqual(source.ContactType.ToString(), targer.Type.ToString());
-                Assert.AreEqual(source.ForeName, targer.GivenName);
-                Assert.AreEqual(source.SurName, targer.Surname);
-                Assert.IsTrue(Enumerable.SequenceEqual(source.Emails, targer.EmailAddresses));
-                Assert.IsTrue(Enumerable.SequenceEqual(source.PhoneNumbers, targer.TelephoneNumbers));
+                //contacts
+                var configContacts = spDescriptorConfigurtion.Organisation.OrganisationContacts;
+                Assert.AreEqual(configContacts.PersonContact.Count, descriptor.Contacts.Count);
+                for (var i = 0; i < configContacts.PersonContact.Count; i++)
+                {
+                    var source = configContacts.PersonContact.ElementAt(i);
+                    var targer = descriptor.Contacts.ElementAt(i);
+                    Assert.AreEqual(source.ContactType.ToString(), targer.Type.ToString());
+                    Assert.AreEqual(source.ForeName, targer.GivenName);
+                    Assert.AreEqual(source.SurName, targer.Surname);
+                    Assert.IsTrue(Enumerable.SequenceEqual(source.Emails, targer.EmailAddresses));
+                    Assert.IsTrue(Enumerable.SequenceEqual(source.PhoneNumbers, targer.TelephoneNumbers));
+                }
             }
         }
     }
