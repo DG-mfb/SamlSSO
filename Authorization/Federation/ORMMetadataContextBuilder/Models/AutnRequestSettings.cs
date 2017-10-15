@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Kernel.Data;
+﻿using Kernel.Data;
 
 namespace ORMMetadataContextProvider.Models
 {
@@ -13,5 +12,6 @@ namespace ORMMetadataContextProvider.Models
         public string Version { get; set; }
         public virtual NameIdConfiguration NameIdConfiguration { get; set; }
         public virtual RequitedAutnContext RequitedAutnContext { get; set; }
+        public virtual ScopingSettings Scoping { get; set; }
     }
 }

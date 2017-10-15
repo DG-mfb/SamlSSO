@@ -12,7 +12,7 @@ namespace Kernel.Federation.FederationPartner
             if (entityIds != null)
                 entityIds.Aggregate(this.RequesterIds, (t, next) => { t.Add(next); return t; });
         }
-        public uint PoxyCount { get; set; }
+        public byte PoxyCount { get; set; }
         public ICollection<string> RequesterIds { get; }
     }
 }

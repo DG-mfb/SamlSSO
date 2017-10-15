@@ -27,7 +27,7 @@ namespace ORMMetadataContextProvider.FederationParty
                 .FirstOrDefault(x => x.FederationPartyId == federationPartyId);
 
             var context = new FederationPartyConfiguration(federationPartyId, federationPartyContext.MetadataPath);
-            var federationPartyAuthnRequestConfiguration = this.BuildFederationPartyAuthnRequestConfiguration(federationPartyContext.AutnRequestSettings);
+            var federationPartyAuthnRequestConfiguration = this.BuildFederationPartyAuthnRequestConfiguration(federationPartyContext.AutnRequestSettings, federationPartyContext.MetadataSettings.SPDescriptorSettings.EntityId);
             context.FederationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration;
             
             context.RefreshInterval = TimeSpan.FromSeconds(federationPartyContext.RefreshInterval);
@@ -46,7 +46,7 @@ namespace ORMMetadataContextProvider.FederationParty
             federationPartyContext.MetadataContext = metadata;
         }
 
-        private FederationPartyAuthnRequestConfiguration BuildFederationPartyAuthnRequestConfiguration(AutnRequestSettings autnRequestSettings)
+        private FederationPartyAuthnRequestConfiguration BuildFederationPartyAuthnRequestConfiguration(AutnRequestSettings autnRequestSettings, string entityId)
         {
             if (autnRequestSettings == null)
                 throw new ArgumentNullException("autnRequestSettings");
@@ -67,7 +67,9 @@ namespace ORMMetadataContextProvider.FederationParty
                 AllowCreate = autnRequestSettings.NameIdConfiguration.AllowCreate,
                 EncryptNameId = autnRequestSettings.NameIdConfiguration.EncryptNameId
             };
-            var scopingConfiguration = new ScopingConfiguration();
+            var scopingConfiguration = autnRequestSettings.Scoping == null ? new ScopingConfiguration()
+                    : new ScopingConfiguration(entityId) { PoxyCount = autnRequestSettings.Scoping.MaxProxyCount };
+
             var configuration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, defaultNameId, scopingConfiguration)
             {
                 ForceAuthn = autnRequestSettings.ForceAuthn,

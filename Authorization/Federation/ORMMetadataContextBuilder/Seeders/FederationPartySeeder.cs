@@ -100,7 +100,8 @@ namespace ORMMetadataContextProvider.Seeders
                     AllowCreate = false,
                     EncryptNameId = false,
                     DefaultNameIdFormat = transientNameId
-                }
+                },
+                Scoping = new ScopingSettings { MaxProxyCount = 0 }
             };
 
             authnContexts.Aggregate(settings.RequitedAutnContext.RequitedAuthnContexts, (t, next) => 

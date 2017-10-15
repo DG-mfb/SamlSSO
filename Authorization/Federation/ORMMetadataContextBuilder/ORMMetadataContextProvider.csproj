@@ -68,6 +68,7 @@
     <Compile Include="Models\LocalisedName.cs" />
     <Compile Include="Models\OrganisationSettings.cs" />
     <Compile Include="Models\RequitedAutnContext.cs" />
+    <Compile Include="Models\ScopingSettings.cs" />
     <Compile Include="Models\SPDescriptorSettings.cs" />
     <Compile Include="Models\SSODescriptorSettings.cs" />
     <Compile Include="Models\RoleDescriptorSettings.cs" />
