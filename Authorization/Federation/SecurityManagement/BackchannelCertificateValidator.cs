@@ -49,7 +49,7 @@ namespace SecurityManagement
                 {
                     Exception innerEx;
                     this._logProvider.TryLogException(ex, out innerEx);
-                    this._logProvider.LogMessage(String.Format("Despite an error accured validation passed. Error: {0}", ex.Message));
+                    this._logProvider.LogMessage(String.Format("Despite an error occurred validation passed. Error: {0}", ex.Message));
                     return true;
                 }
             }
