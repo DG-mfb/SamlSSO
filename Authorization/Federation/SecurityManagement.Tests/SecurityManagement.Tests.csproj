@@ -59,6 +59,7 @@
     <Compile Include="Mock\CertificateValidationRuleMock1.cs" />
     <Compile Include="Mock\CertificateValidationRuleMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
+    <Compile Include="Mock\ValidationRuleInstanceCreatorMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

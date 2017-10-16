@@ -18,7 +18,7 @@ namespace SecurityManagement.Tests
                 UsePinningValidation = false,
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
-
+            CertificateValidationRulesFactory.InstanceCreator = ValidationRuleInstanceCreatorMock.CreateInstance;
             //ACT
             var rules = CertificateValidationRulesFactory.GetRules(configuration)
                 .ToList();
@@ -32,6 +32,7 @@ namespace SecurityManagement.Tests
         public void GetRules_default_ones_and_injected()
         {
             //ARRANGE
+            CertificateValidationRulesFactory.InstanceCreator = ValidationRuleInstanceCreatorMock.CreateInstance;
             var configuration = new CertificateValidationConfiguration
             {
                 UsePinningValidation = false,

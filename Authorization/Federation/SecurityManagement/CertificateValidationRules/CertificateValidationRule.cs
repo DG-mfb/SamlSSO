@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Kernel.Cryptography.Validation;
+using Kernel.Logging;
 
 namespace SecurityManagement.CertificateValidationRules
 {
     internal abstract class CertificateValidationRule : ICertificateValidationRule
     {
+        protected readonly ILogProvider _logProvider;
+        public CertificateValidationRule(ILogProvider logProvider)
+        {
+            this._logProvider = logProvider;
+        }
         public Task Validate(CertificateValidationContext context, Func<CertificateValidationContext, Task> next)
         {
             if (context == null)
