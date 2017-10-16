@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kernel.Cryptography.CertificateManagement
+namespace Kernel.Security.CertificateManagement
 {
     public class CertificateContext
     {

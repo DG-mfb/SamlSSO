@@ -43,13 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CertificateManagement\CertificateSearchCriteria.cs" />
-    <Compile Include="CertificateManagement\CertificateContext.cs" />
-    <Compile Include="CertificateManagement\FileCertificateContext.cs" />
-    <Compile Include="CertificateManagement\ICertificateStore.cs" />
-    <Compile Include="CertificateManagement\CertificateStore%271.cs" />
-    <Compile Include="CertificateManagement\ICertificateManager.cs" />
-    <Compile Include="CertificateManagement\X509CertificateContext.cs" />
     <Compile Include="DataProtection\DataProtector.cs" />
     <Compile Include="DataProtection\IDataProtector.cs" />
     <Compile Include="DataProtection\RSADataProtection.cs" />
@@ -57,17 +50,6 @@
     <Compile Include="HashBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Signing.Xml\IXmlSignatureManager.cs" />
-    <Compile Include="Validation\CertificateValidationConfiguration.cs" />
-    <Compile Include="Validation\CertificateValidationContext .cs" />
-    <Compile Include="Validation\BackchannelCertificateValidationContext.cs" />
-    <Compile Include="Validation\ICertificateValidationConfigurationProvider.cs" />
-    <Compile Include="Validation\ICertificateValidationRule.cs" />
-    <Compile Include="Validation\IBackchannelCertificateValidator.cs" />
-    <Compile Include="Validation\ICertificateValidator.cs" />
-    <Compile Include="Validation\IBackchannelCertificateValidationRule.cs" />
-    <Compile Include="Validation\ICertificateValidatorResolver.cs" />
-    <Compile Include="Validation\ValidationRuleDescriptor.cs" />
-    <Compile Include="Validation\ValidationScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kernel.Data\Kernel.Data.csproj">

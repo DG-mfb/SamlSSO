@@ -4,8 +4,8 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Kernel.Cryptography.Validation;
 using Kernel.Logging;
+using Kernel.Security.Validation;
 using SecurityManagement.BackchannelCertificateValidationRules;
 
 namespace SecurityManagement

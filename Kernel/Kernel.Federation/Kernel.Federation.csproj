@@ -135,6 +135,10 @@
       <Project>{58F76882-5E21-452F-A070-76D468D6E27C}</Project>
       <Name>Kernel.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kernel.Security\Kernel.Security.csproj">
+      <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
+      <Name>Kernel.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kernel\Kernel.csproj">
       <Project>{E198C691-91A6-4082-9976-F5F006F24960}</Project>
       <Name>Kernel</Name>

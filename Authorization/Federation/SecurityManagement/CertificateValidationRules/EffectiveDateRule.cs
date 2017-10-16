@@ -1,6 +1,6 @@
 ﻿using System;
-using Kernel.Cryptography.Validation;
 using Kernel.Logging;
+using Kernel.Security.Validation;
 
 namespace SecurityManagement.CertificateValidationRules
 {

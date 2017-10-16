@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using Kernel.Cryptography.CertificateManagement;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
+using Kernel.Security.CertificateManagement;
 using NUnit.Framework;
 
 namespace SecurityManagement.Tests

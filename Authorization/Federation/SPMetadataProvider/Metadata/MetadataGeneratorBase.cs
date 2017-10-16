@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using Kernel.Cryptography.CertificateManagement;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
 using Kernel.Federation.MetaData.Configuration.EntityDescriptors;
 using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 using Kernel.Logging;
+using Kernel.Security.CertificateManagement;
 using WsFederationMetadataProvider.Metadata.DescriptorBuilders;
 
 namespace WsFederationMetadataProvider.Metadata

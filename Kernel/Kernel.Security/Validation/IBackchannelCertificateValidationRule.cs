@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Kernel.Cryptography.Validation
+namespace Kernel.Security.Validation
 {
     public interface IBackchannelCertificateValidationRule
     {

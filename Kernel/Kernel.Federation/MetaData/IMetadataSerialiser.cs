@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Xml;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 
 namespace Kernel.Federation.MetaData
 {

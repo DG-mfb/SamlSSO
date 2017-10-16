@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace Kernel.Cryptography.Validation
+namespace Kernel.Security.Validation
 {
     public class CertificateValidationContext
     {

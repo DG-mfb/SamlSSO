@@ -2,7 +2,7 @@
 using System.Text;
 using System.Linq;
 
-namespace Kernel.Cryptography.CertificateManagement
+namespace Kernel.Security.CertificateManagement
 {
     public class X509CertificateContext : CertificateContext
     {

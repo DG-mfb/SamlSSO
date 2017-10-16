@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
-using Kernel.Cryptography.Validation;
 using Kernel.Logging;
+using Kernel.Security.Validation;
 using SecurityManagement.CertificateValidationRules;
 
 namespace SecurityManagement

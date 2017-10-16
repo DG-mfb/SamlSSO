@@ -2,10 +2,10 @@
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using Kernel.Cryptography.CertificateManagement;
-using Kernel.Cryptography.Validation;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Tokens;
+using Kernel.Security.CertificateManagement;
+using Kernel.Security.Validation;
 
 namespace Federation.Protocols.Tokens
 {

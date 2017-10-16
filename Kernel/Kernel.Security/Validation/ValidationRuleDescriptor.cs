@@ -1,6 +1,6 @@
 ﻿using Kernel.Data;
 
-namespace Kernel.Cryptography.Validation
+namespace Kernel.Security.Validation
 {
     public class ValidationRuleDescriptor : TypeDescriptor
     {

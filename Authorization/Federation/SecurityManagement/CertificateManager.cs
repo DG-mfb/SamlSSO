@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Kernel.Cryptography.CertificateManagement;
 using Kernel.Cryptography.DataProtection;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Logging;
+using Kernel.Security.CertificateManagement;
 
 namespace SecurityManagement
 {

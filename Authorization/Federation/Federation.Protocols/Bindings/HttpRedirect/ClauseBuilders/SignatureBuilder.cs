@@ -3,9 +3,9 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
-using Kernel.Cryptography.CertificateManagement;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
+using Kernel.Security.CertificateManagement;
 using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders

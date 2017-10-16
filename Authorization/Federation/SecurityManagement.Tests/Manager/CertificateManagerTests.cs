@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using Kernel.Cryptography.CertificateManagement;
+using Kernel.Security.CertificateManagement;
 using NUnit.Framework;
 using SecurityManagement.Tests.Mock;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
-using Kernel.Cryptography.CertificateManagement;
+using Kernel.Security.CertificateManagement;
 
 namespace Kernel.Federation.MetaData.Configuration.Cryptography
 {

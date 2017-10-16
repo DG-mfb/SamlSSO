@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace Kernel.Cryptography.CertificateManagement
+namespace Kernel.Security.CertificateManagement
 {
     public abstract class CertificateStore<TStore> : ICertificateStore
     {

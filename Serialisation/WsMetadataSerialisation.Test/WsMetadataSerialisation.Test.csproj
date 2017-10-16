@@ -81,6 +81,10 @@
       <Project>{7DA939D6-5443-498F-AAA1-3CE3134BC3EB}</Project>
       <Name>Kernel.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Kernel.Security\Kernel.Security.csproj">
+      <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
+      <Name>Kernel.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WsMetadataSerialisation\WsMetadataSerialisation.csproj">
       <Project>{D63B92B8-863B-493D-8117-0960DB06B554}</Project>
       <Name>WsMetadataSerialisation</Name>

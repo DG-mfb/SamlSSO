@@ -2,6 +2,7 @@
 using System.IdentityModel.Metadata;
 using System.Net.Http;
 using Kernel.Federation.FederationPartner;
+using Kernel.Security.Validation;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 
@@ -9,7 +10,7 @@ namespace SSOOwinMiddleware
 {
     public class SSOAuthenticationOptions : AuthenticationOptions
     {
-        public Kernel.Cryptography.Validation.IBackchannelCertificateValidator BackchannelCertificateValidator { get; set; }
+        public IBackchannelCertificateValidator BackchannelCertificateValidator { get; set; }
 
        
         private Microsoft.IdentityModel.Tokens.TokenValidationParameters _tokenValidationParameters;

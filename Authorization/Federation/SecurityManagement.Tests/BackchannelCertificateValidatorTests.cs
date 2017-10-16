@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 using NUnit.Framework;
 using SecurityManagement.Tests.Mock;
 

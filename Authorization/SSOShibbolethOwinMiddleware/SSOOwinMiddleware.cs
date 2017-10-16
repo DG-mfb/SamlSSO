@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Security;
 using Kernel.DependancyResolver;
 using Kernel.Federation.FederationPartner;
+using Kernel.Security.Validation;
 using Microsoft.Owin;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
@@ -26,7 +27,7 @@ namespace SSOOwinMiddleware
             this._logger = app.CreateLogger<SSOOwinMiddleware>();
             if (base.Options.BackchannelCertificateValidator == null)
             {
-                base.Options.BackchannelCertificateValidator = this._resolver.Resolve<Kernel.Cryptography.Validation.IBackchannelCertificateValidator>();
+                base.Options.BackchannelCertificateValidator = this._resolver.Resolve<IBackchannelCertificateValidator>();
             }
 
             if (string.IsNullOrWhiteSpace(this.Options.TokenValidationParameters.AuthenticationType))

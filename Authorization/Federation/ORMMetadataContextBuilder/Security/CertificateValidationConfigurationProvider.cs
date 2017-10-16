@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Kernel.Cache;
-using Kernel.Cryptography.Validation;
 using Kernel.Data.ORM;
+using Kernel.Security.Validation;
 using ORMMetadataContextProvider.Models;
 
 namespace ORMMetadataContextProvider.Security

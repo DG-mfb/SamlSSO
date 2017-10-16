@@ -1,6 +1,6 @@
 ﻿using System.Security;
 
-namespace Kernel.Cryptography.CertificateManagement
+namespace Kernel.Security.CertificateManagement
 {
     public class FileCertificateContext : CertificateContext
     {

@@ -2,9 +2,9 @@
 using System.IdentityModel.Selectors;
 using System.IO;
 using System.Xml;
-using Kernel.Cryptography.Validation;
 using Kernel.Federation.MetaData;
 using Kernel.Logging;
+using Kernel.Security.Validation;
 
 namespace WsMetadataSerialisation.Serialisation
 {

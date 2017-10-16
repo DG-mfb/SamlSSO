@@ -2,13 +2,13 @@
 using System.Globalization;
 using System.IdentityModel.Metadata;
 using System.Linq;
-using Kernel.Cryptography.CertificateManagement;
 using Kernel.Federation.MetaData.Configuration;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.MetaData.Configuration.EndPoint;
 using Kernel.Federation.MetaData.Configuration.EntityDescriptors;
 using Kernel.Federation.MetaData.Configuration.Organisation;
 using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
+using Kernel.Security.CertificateManagement;
 using ORMMetadataContextProvider.Models;
 
 namespace ORMMetadataContextProvider

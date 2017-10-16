@@ -119,6 +119,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSecurity", "WebSecurity"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Owin.CertificateValidators", "Security\WebSecurity\Microsoft.Owin.CertificateValidators\Microsoft.Owin.CertificateValidators.csproj", "{854EDCFA-6E4B-4EFE-9691-A51E43B32A06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kernel.Security", "Kernel\Kernel.Security\Kernel.Security.csproj", "{7C4225E8-700D-4FEE-9BBB-28A935364F05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -301,6 +303,10 @@ Global
 		{854EDCFA-6E4B-4EFE-9691-A51E43B32A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{854EDCFA-6E4B-4EFE-9691-A51E43B32A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{854EDCFA-6E4B-4EFE-9691-A51E43B32A06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4225E8-700D-4FEE-9BBB-28A935364F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4225E8-700D-4FEE-9BBB-28A935364F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4225E8-700D-4FEE-9BBB-28A935364F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4225E8-700D-4FEE-9BBB-28A935364F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -353,6 +359,7 @@ Global
 		{FABF809F-F00C-430C-AF7A-5639240A641F} = {59620518-6260-4F87-87AF-3142CEE75C35}
 		{FDBEE45B-1577-42E8-807A-48A574D239BF} = {11F56A63-7A92-4841-8C2A-0F24F93C5A74}
 		{854EDCFA-6E4B-4EFE-9691-A51E43B32A06} = {FDBEE45B-1577-42E8-807A-48A574D239BF}
+		{7C4225E8-700D-4FEE-9BBB-28A935364F05} = {B659F5BF-19B6-48C7-885A-1CA767049A8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4F5021-8BA2-4CB0-959B-4E49D190605D}

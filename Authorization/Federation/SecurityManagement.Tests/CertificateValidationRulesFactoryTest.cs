@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 using NUnit.Framework;
 using SecurityManagement.CertificateValidationRules;
 using SecurityManagement.Tests.Mock;

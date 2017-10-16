@@ -2,7 +2,7 @@
 using System.IdentityModel.Selectors;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 
 namespace Federation.Protocols.Test.Mock
 {

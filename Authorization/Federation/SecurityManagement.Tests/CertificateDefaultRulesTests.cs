@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 using NUnit.Framework;
 using SecurityManagement.CertificateValidationRules;
 using SecurityManagement.Tests.Mock;

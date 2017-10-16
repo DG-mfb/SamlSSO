@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ServiceModel.Security;
 using Kernel.Data;
 
-namespace Kernel.Cryptography.Validation
+namespace Kernel.Security.Validation
 {
     public class CertificateValidationConfiguration
     {

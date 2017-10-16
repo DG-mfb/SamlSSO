@@ -4,7 +4,7 @@ using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using Federation.Metadata.HttpRetriever.Test.Mock;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 using NUnit.Framework;
 
 namespace Federation.Metadata.HttpRetriever.Test

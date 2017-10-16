@@ -2,7 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 
-namespace Kernel.Cryptography.Validation
+namespace Kernel.Security.Validation
 {
     //
     // Summary:

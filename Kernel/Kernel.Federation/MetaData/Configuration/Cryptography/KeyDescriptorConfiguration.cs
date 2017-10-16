@@ -1,4 +1,4 @@
-﻿using Kernel.Cryptography.CertificateManagement;
+﻿using Kernel.Security.CertificateManagement;
 
 namespace Kernel.Federation.MetaData.Configuration.Cryptography
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 
 namespace SecurityManagement.Tests.Mock
 {

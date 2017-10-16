@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Kernel.Cryptography.CertificateManagement;
+using Kernel.Security.CertificateManagement;
 
 namespace Kernel.Federation.MetaData.Configuration.Cryptography
 {

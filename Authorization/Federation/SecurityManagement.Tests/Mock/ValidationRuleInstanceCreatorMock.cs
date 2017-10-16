@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Kernel.Cryptography.Validation;
 using Kernel.Logging;
+using Kernel.Security.Validation;
 
 namespace SecurityManagement.Tests.Mock
 {

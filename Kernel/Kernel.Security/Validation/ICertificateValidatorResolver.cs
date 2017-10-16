@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kernel.Cryptography.Validation
+namespace Kernel.Security.Validation
 {
     public interface ICertificateValidatorResolver
     {

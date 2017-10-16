@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 using Microsoft.Owin.Security;
 
 namespace Microsoft.Owin.CertificateValidators

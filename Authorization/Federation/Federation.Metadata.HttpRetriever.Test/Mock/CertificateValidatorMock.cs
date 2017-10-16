@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using Kernel.Cryptography.Validation;
+using Kernel.Security.Validation;
 
 namespace Federation.Metadata.HttpRetriever.Test.Mock
 {

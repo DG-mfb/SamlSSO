@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
-using Kernel.Cryptography.CertificateManagement;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Logging;
+using Kernel.Security.CertificateManagement;
 
 namespace WsFederationMetadataProvider.Metadata
 {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Kernel.Cryptography.Validation;
 using Kernel.DependancyResolver;
+using Kernel.Security.Validation;
 using SecurityManagement.CertificateValidationRules;
 using Shared.Initialisation;
 

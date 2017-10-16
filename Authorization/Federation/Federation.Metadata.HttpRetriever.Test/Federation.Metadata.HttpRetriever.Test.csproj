@@ -61,6 +61,10 @@
       <Project>{857217F2-B265-4154-883F-568285643238}</Project>
       <Name>Kernel.Cryptography</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Kernel\Kernel.Security\Kernel.Security.csproj">
+      <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
+      <Name>Kernel.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Federation.Metadata.HttpRetriever\Federation.Metadata.HttpRetriever.csproj">
       <Project>{99b877e4-7b04-4490-9163-c7a41fee0097}</Project>
       <Name>Federation.Metadata.HttpRetriever</Name>
