@@ -54,6 +54,7 @@
     <Compile Include="Mock\FederationMetadataDispatcherMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
     <Compile Include="Mock\TestMetadatWriter.cs" />
+    <Compile Include="Mock\ValidationRuleInstanceCreatorMock.cs" />
     <Compile Include="SPMetadataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
