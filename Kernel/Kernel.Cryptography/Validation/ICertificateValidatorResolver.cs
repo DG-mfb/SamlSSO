@@ -4,6 +4,6 @@ namespace Kernel.Cryptography.Validation
 {
     public interface ICertificateValidatorResolver
     {
-        IEnumerable<ICertificateValidator> Resolve();
+        IEnumerable<TValidator> Resolve<TValidator>();
     }
 }

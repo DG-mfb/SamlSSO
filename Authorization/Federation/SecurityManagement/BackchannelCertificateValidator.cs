@@ -40,7 +40,7 @@ namespace SecurityManagement
                     var instance = Activator.CreateInstance(type) as ICertificateValidatorResolver;
                     if(instance != null)
                     {
-                        var validators = instance.Resolve();
+                        var validators = instance.Resolve<IBackchannelCertificateValidator>();
                         
                         return true;
                     }
