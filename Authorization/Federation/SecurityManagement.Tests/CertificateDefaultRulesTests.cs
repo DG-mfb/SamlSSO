@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Kernel.Cryptography.Validation;
 using NUnit.Framework;
 using SecurityManagement.CertificateValidationRules;
+using SecurityManagement.Tests.Mock;
 
 namespace SecurityManagement.Tests
 {
@@ -20,10 +21,11 @@ namespace SecurityManagement.Tests
             var store = new X509Store("TestCertStore");
             try
             {
+                var logger = new LogProviderMock();
                 store.Open(OpenFlags.ReadOnly);
                 var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
                 var context = new CertificateValidationContext(certificate);
-                var rule = new EffectiveDateRule();
+                var rule = new EffectiveDateRule(logger);
                 //ACT
                 await rule.Validate(context, c => Task.CompletedTask);
                 //ASSERT
@@ -43,10 +45,11 @@ namespace SecurityManagement.Tests
             var store = new X509Store("TestCertStore");
             try
             {
+                var logger = new LogProviderMock();
                 store.Open(OpenFlags.ReadOnly);
                 var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
                 var context = new CertificateValidationContext(certificate);
-                var rule = new ExpirationDateRule();
+                var rule = new ExpirationDateRule(logger);
                 //ACT
                 await rule.Validate(context, c => Task.CompletedTask);
                 //ASSERT

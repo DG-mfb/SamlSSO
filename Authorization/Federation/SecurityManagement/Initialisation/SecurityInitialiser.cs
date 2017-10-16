@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Kernel.Cryptography.Validation;
 using Kernel.DependancyResolver;
+using SecurityManagement.CertificateValidationRules;
 using Shared.Initialisation;
 
 namespace SecurityManagement.Initialisation
@@ -17,6 +19,7 @@ namespace SecurityManagement.Initialisation
             dependencyResolver.RegisterType<XmlSignatureManager>(Lifetime.Transient);
             dependencyResolver.RegisterType<CertificateValidator>(Lifetime.Transient);
             dependencyResolver.RegisterType<BackchannelCertificateValidator>(Lifetime.Transient);
+            CertificateValidationRulesFactory.InstanceCreator = t => (ICertificateValidationRule)dependencyResolver.Resolve(t);
             return Task.CompletedTask;
         }
     }
