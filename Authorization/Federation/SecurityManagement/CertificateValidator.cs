@@ -48,7 +48,7 @@ namespace SecurityManagement
 
         public override void Validate(X509Certificate2 certificate)
         {
-            this._logProvider.LogMessage(String.Format("Validating certificate: {0}", certificate.FriendlyName));
+            this._logProvider.LogMessage(String.Format("Validating certificate: {0}", certificate.Subject));
             var configiration = this.GetConfiguration();
             var context = new CertificateValidationContext(certificate);
             Func<CertificateValidationContext, Task> seed = x => Task.CompletedTask;
