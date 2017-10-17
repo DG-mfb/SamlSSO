@@ -71,6 +71,8 @@
     <Compile Include="Extensions\SSOAuthenticationExtensions.cs" />
     <Compile Include="Handlers\SSOAuthenticationHandler.cs" />
     <Compile Include="FederationPartyIdentifierHelper.cs" />
+    <Compile Include="Logging\CustomLogger.cs" />
+    <Compile Include="Logging\CustomLoggerFactory.cs" />
     <Compile Include="SSOOwinMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SSOAuthenticationOptions.cs" />
@@ -95,6 +97,10 @@
     <ProjectReference Include="..\..\Kernel\Kernel.Federation\Kernel.Federation.csproj">
       <Project>{47FE8E9F-CCF6-46B7-BA75-CBA1D1F56D7A}</Project>
       <Name>Kernel.Federation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Kernel.Logging\Kernel.Logging.csproj">
+      <Project>{7DA939D6-5443-498F-AAA1-3CE3134BC3EB}</Project>
+      <Name>Kernel.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Kernel.Security\Kernel.Security.csproj">
       <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
@@ -125,8 +131,6 @@
       <Name>WsFederationMetadataProvider</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logging\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

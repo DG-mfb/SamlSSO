@@ -16,9 +16,9 @@ namespace SecurityManagement.CertificateValidationRules
             var certificate = context.Certificate;
             var expirationDateString = certificate.GetExpirationDateString();
             
-            DateTime date;
-            DateTime.TryParse(expirationDateString, out date);
-            if (date < DateTime.Now)
+            DateTimeOffset date;
+            DateTimeOffset.TryParse(expirationDateString, out date);
+            if (date < DateTimeOffset.Now)
             {
                 base._logProvider.LogMessage(String.Format("Certificate has expired on: {0}", date));
                 throw new InvalidOperationException("Certificate has expired");

@@ -15,9 +15,9 @@ namespace SecurityManagement.CertificateValidationRules
             var certificate = context.Certificate;
             var effectiveDateString = certificate.GetEffectiveDateString();
 
-            DateTime date;
-            DateTime.TryParse(effectiveDateString, out date);
-            if (date > DateTime.Now)
+            DateTimeOffset date;
+            DateTimeOffset.TryParse(effectiveDateString, out date);
+            if (date > DateTimeOffset.Now)
             {
                 base._logProvider.LogMessage(String.Format("Certificate has effective date in the future: {0}", date));
                 throw new InvalidOperationException("Certificate effective date.");
