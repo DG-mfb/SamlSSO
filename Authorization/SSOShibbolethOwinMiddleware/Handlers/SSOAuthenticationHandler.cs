@@ -91,47 +91,54 @@ namespace SSOOwinMiddleware.Handlers
 
             if (!this.Options.SSOPath.HasValue || base.Request.Path != this.Options.SSOPath)
                 return;
-
-            var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(Request.Context);
-            if (this._configuration == null)
+            try
             {
-                var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
-                this._configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new System.Threading.CancellationToken());
-            }
-            
-            Uri signInUrl = null;
-            var metadataType = this._configuration.GetType();
-            var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
-            var handler = this._resolver.Resolve(handlerType);
-
-            //ToDo: sort this one in phase3 when implementing owin middleware. 
-            //no need to have two methods in the handler. use GetDelegateForIdpDescriptors
-            var locationDel = IdpMetadataHandlerFactory.GetDelegateForIdpLocation(metadataType);
-            signInUrl = locationDel(handler, this._configuration, new Uri(Bindings.Http_Redirect));
-            
-            //the lines below are likely to do all what we need. 
-            var idpDel = IdpMetadataHandlerFactory.GetDelegateForIdpDescriptors(this._configuration.GetType(), typeof(IdentityProviderSingleSignOnDescriptor));
-            var idp = idpDel(handler, this._configuration).Cast<IdentityProviderSingleSignOnDescriptor>().First();
-
-            var federationPartyContextBuilder = this._resolver.Resolve<IFederationPartyContextBuilder>();
-            var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
-
-            var requestContext = new AuthnRequestContext(signInUrl, federationContext, idp.NameIdentifierFormats);
-            var protocolContext = new SamlProtocolContext
-            {
-                RequestContext = new HttpRedirectRequestContext
+                this._logger.WriteInformation(String.Format("Applying chanllenge for authenticationType: {0}, authenticationMode: {1}. Path: {2}", this.Options.AuthenticationType, this.Options.AuthenticationMode, this.Request.Path));
+                var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(Request.Context);
+                if (this._configuration == null)
                 {
-                    BindingContext = new HttpRedirectContext(requestContext),
-                    RequestHanlerAction = redirectUri =>
-                    {
-                        this.Response.Redirect(redirectUri.AbsoluteUri);
-                        return Task.CompletedTask;
-                    }
+                    var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
+                    this._configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new System.Threading.CancellationToken());
                 }
-            };
-            var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
-            var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
-            await protocolHanlder.HandleRequest(protocolContext);
+
+                Uri signInUrl = null;
+                var metadataType = this._configuration.GetType();
+                var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
+                var handler = this._resolver.Resolve(handlerType);
+
+                //ToDo: sort this one in phase3 when implementing owin middleware. 
+                //no need to have two methods in the handler. use GetDelegateForIdpDescriptors
+                var locationDel = IdpMetadataHandlerFactory.GetDelegateForIdpLocation(metadataType);
+                signInUrl = locationDel(handler, this._configuration, new Uri(Bindings.Http_Redirect));
+
+                //the lines below are likely to do all what we need. 
+                var idpDel = IdpMetadataHandlerFactory.GetDelegateForIdpDescriptors(this._configuration.GetType(), typeof(IdentityProviderSingleSignOnDescriptor));
+                var idp = idpDel(handler, this._configuration).Cast<IdentityProviderSingleSignOnDescriptor>().First();
+
+                var federationPartyContextBuilder = this._resolver.Resolve<IFederationPartyContextBuilder>();
+                var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
+
+                var requestContext = new AuthnRequestContext(signInUrl, federationContext, idp.NameIdentifierFormats);
+                var protocolContext = new SamlProtocolContext
+                {
+                    RequestContext = new HttpRedirectRequestContext
+                    {
+                        BindingContext = new HttpRedirectContext(requestContext),
+                        RequestHanlerAction = redirectUri =>
+                        {
+                            this.Response.Redirect(redirectUri.AbsoluteUri);
+                            return Task.CompletedTask;
+                        }
+                    }
+                };
+                var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
+                var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
+                await protocolHanlder.HandleRequest(protocolContext);
+            }
+            catch(Exception ex)
+            {
+                this._logger.WriteError("An exception has been thrown when applying challenge", ex);
+            }
         }
     }
 }
