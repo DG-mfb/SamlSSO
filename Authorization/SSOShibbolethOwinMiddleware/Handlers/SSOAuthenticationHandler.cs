@@ -43,42 +43,56 @@ namespace SSOOwinMiddleware.Handlers
         }
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            if (Request.Path == new PathString("/api/Account/SSOLogon"))
+            try
             {
-                if (string.Equals(this.Request.Method, "POST", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(this.Request.ContentType) && (this.Request.ContentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase) && this.Request.Body.CanRead))
+                //ToDo: clean up
+                if (Request.Path == new PathString("/api/Account/SSOLogon"))
                 {
-                    if (!this.Request.Body.CanSeek)
+                    this._logger.WriteInformation(String.Format("Authenticated response received to: {0}", "/api/Account/SSOLogon"));
+                    if (string.Equals(this.Request.Method, "POST", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(this.Request.ContentType) && (this.Request.ContentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase) && this.Request.Body.CanRead))
                     {
-                        this._logger.WriteVerbose("Buffering request body");
-                        MemoryStream memoryStream = new MemoryStream();
-                        await this.Request.Body.CopyToAsync((Stream)memoryStream);
-                        memoryStream.Seek(0L, SeekOrigin.Begin);
-                        this.Request.Body = (Stream)memoryStream;
-                    }
-
-                    IFormCollection form = await this.Request.ReadFormAsync();
-
-                    //ToDo: clean up get the associated request
-                    var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
-                    var protocolHanlder = protocolFactory(Bindings.Http_Post);
-
-                    var protocolContext = new SamlProtocolContext
-                    {
-                        ResponseContext = new HttpPostResponseContext
+                        if (!this.Request.Body.CanSeek)
                         {
-                            AuthenticationMethod = base.Options.AuthenticationType,
-                            Form = form.ToDictionary(x => x.Key, v => form.Get(v.Key)) as IDictionary<string, string>
+                            this._logger.WriteVerbose("Buffering request body");
+                            MemoryStream memoryStream = new MemoryStream();
+                            await this.Request.Body.CopyToAsync((Stream)memoryStream);
+                            memoryStream.Seek(0L, SeekOrigin.Begin);
+                            this.Request.Body = (Stream)memoryStream;
                         }
-                        
-                    };
-                    await protocolHanlder.HandleResponse(protocolContext);
-                    var responseContext = protocolContext.ResponseContext as HttpPostResponseContext;
-                    var identity = responseContext.Result;
-                    if (identity != null)
-                        return new AuthenticationTicket(identity, new AuthenticationProperties());
+
+                        IFormCollection form = await this.Request.ReadFormAsync();
+
+                        //ToDo: clean up get the associated request
+                        var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
+                        var protocolHanlder = protocolFactory(Bindings.Http_Post);
+
+                        var protocolContext = new SamlProtocolContext
+                        {
+                            ResponseContext = new HttpPostResponseContext
+                            {
+                                AuthenticationMethod = base.Options.AuthenticationType,
+                                Form = form.ToDictionary(x => x.Key, v => form.Get(v.Key)) as IDictionary<string, string>
+                            }
+
+                        };
+                        this._logger.WriteInformation(String.Format("Handle response entering."));
+                        await protocolHanlder.HandleResponse(protocolContext);
+                        var responseContext = protocolContext.ResponseContext as HttpPostResponseContext;
+                        var identity = responseContext.Result;
+                        if (identity != null)
+                        {
+                            this._logger.WriteInformation(String.Format("Authenticated. authentication ticket issued."));
+                            return new AuthenticationTicket(identity, new AuthenticationProperties());
+                        }
+                    }
                 }
+                return null;
             }
-            return null;
+            catch(Exception ex)
+            {
+                this._logger.WriteError(String.Format("An exceprion has been thrown when processing the response.", ex));
+                return null;
+            }
         }
         protected override async Task ApplyResponseChallengeAsync()
         {
