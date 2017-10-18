@@ -15,24 +15,24 @@
 
         static LogEventSourceProvider()
         {
-            _sources = new Dictionary<string, string>();
+            LogEventSourceProvider._sources = new Dictionary<string, string>();
 
-            _sources[_defaultSource] = "Flowz Application";
+            LogEventSourceProvider._sources[_defaultSource] = "Flowz Application";
         }
 
         public static string GetSourceName(string applicationName)
         {
-            if(_sources.ContainsKey(applicationName))
-                return _sources[applicationName];
+            if(LogEventSourceProvider._sources.ContainsKey(applicationName))
+                return LogEventSourceProvider._sources[applicationName];
 
-            if (IsRegistered(applicationName))
+            if (LogEventSourceProvider.IsRegistered(applicationName))
             {
-                _sources[applicationName] = applicationName;
+                LogEventSourceProvider._sources[applicationName] = applicationName;
 
                 return applicationName;
             }
 
-            return _sources[_defaultSource];
+            return LogEventSourceProvider._sources[_defaultSource];
         }
 
         private static bool IsRegistered(string sourceName)
@@ -41,7 +41,7 @@
 
             if (!isExists)
             {
-                if(IsUserAdministrator())
+                if(LogEventSourceProvider.IsUserAdministrator())
                 {
                     var source = new EventSourceCreationData(sourceName, EventLogName);
 
