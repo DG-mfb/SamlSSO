@@ -11,7 +11,7 @@ namespace SSOOwinMiddleware.Extensions
 {
     public static class SSOAuthenticationExtensions
     {
-        public static IAppBuilder UseShibbolethAuthentication(this IAppBuilder app, SSOAuthenticationOptions options)
+        public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app, SSOAuthenticationOptions options)
         {
             if (app == null)
                 throw new ArgumentNullException("app");
@@ -34,19 +34,10 @@ namespace SSOOwinMiddleware.Extensions
             });
             return app;
         }
-
-        //public static IAppBuilder UseSSOAuthentication(this IAppBuilder app, string wtrealm)
-        //{
-        //    return app.UseShibbolethAuthentication(new SSOAuthenticationOptions()
-        //    {
-        //        //ToDo
-        //        //Wtrealm = wtrealm
-        //    });
-        //}
-
-        public static IAppBuilder UseSSOAuthentication(this IAppBuilder app)
+        
+        public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app)
         {
-            return app.UseShibbolethAuthentication(new SSOAuthenticationOptions()
+            return app.UseSaml2SSOAuthentication(new SSOAuthenticationOptions()
             {
             });
         }

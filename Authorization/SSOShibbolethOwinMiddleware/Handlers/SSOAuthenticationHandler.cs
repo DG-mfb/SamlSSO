@@ -37,7 +37,7 @@ namespace SSOOwinMiddleware.Handlers
         {
             if (!this.Options.SSOPath.HasValue || base.Request.Path != this.Options.SSOPath)
                 return base.InvokeAsync();
-            Context.Authentication.Challenge("Shibboleth");
+            Context.Authentication.Challenge("Saml2SSO");
             return Task.FromResult(true);
             
         }

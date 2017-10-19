@@ -1,15 +1,10 @@
 ﻿using System;
-using System.IdentityModel.Metadata;
 using System.Net.Http;
 using System.Net.Security;
 using Kernel.DependancyResolver;
-using Kernel.Federation.FederationPartner;
 using Kernel.Security.Validation;
 using Microsoft.Owin;
 using Microsoft.Owin.Logging;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataHandler;
-using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Infrastructure;
 using Owin;
 using SSOOwinMiddleware.Handlers;
@@ -29,38 +24,19 @@ namespace SSOOwinMiddleware
             {
                 base.Options.BackchannelCertificateValidator = this._resolver.Resolve<IBackchannelCertificateValidator>();
             }
-
-            if (string.IsNullOrWhiteSpace(this.Options.TokenValidationParameters.AuthenticationType))
-                this.Options.TokenValidationParameters.AuthenticationType = app.GetDefaultSignInAsAuthenticationType();
-            if (this.Options.StateDataFormat == null)
-                this.Options.StateDataFormat = (ISecureDataFormat<AuthenticationProperties>)new PropertiesDataFormat(app.CreateDataProtector(typeof(SSOOwinMiddleware).FullName, this.Options.AuthenticationType, "v1"));
-            //if (this.Options.Notifications == null)
-            //    this.Options.Notifications = new WsFederationAuthenticationNotifications();
-            Uri result;
-            if (!this.Options.CallbackPath.HasValue && !string.IsNullOrEmpty(this.Options.Wreply) && Uri.TryCreate(this.Options.Wreply, UriKind.Absolute, out result))
-                this.Options.CallbackPath = PathString.FromUriComponent(result);
-            if (this.Options.ConfigurationManager != null)
-                return;
-            if (this.Options.Configuration != null)
-            { }//this.Options.ConfigurationManager = (IConfigurationManager<object>)new StaticConfigurationManager<object>(this.Options.Configuration);
-            else
+ 
+            var httpClient = new HttpClient(SSOOwinMiddleware.ResolveHttpMessageHandler(this.Options))
             {
-                var httpClient = new HttpClient(SSOOwinMiddleware.ResolveHttpMessageHandler(this.Options))
-                {
-                    Timeout = this.Options.BackchannelTimeout,
-                    MaxResponseContentBufferSize = 10485760L
-                };
+                Timeout = this.Options.BackchannelTimeout,
+                MaxResponseContentBufferSize = 10485760L
+            };
 
-                this._resolver.RegisterFactory<Func<HttpClient>>(() =>
-                {
-                    return () => httpClient;
-                }, Lifetime.Transient);
-
-                //ToDo remove configuration manager from options
-                //var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
-                //this.Options.ConfigurationManager = configurationManager;
-            }
+            this._resolver.RegisterFactory<Func<HttpClient>>(() =>
+            {
+                return () => httpClient;
+            }, Lifetime.Transient);
         }
+        
         
         protected override AuthenticationHandler<SSOAuthenticationOptions> CreateHandler()
         {
