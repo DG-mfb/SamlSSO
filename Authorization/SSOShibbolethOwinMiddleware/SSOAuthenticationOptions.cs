@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using System.Collections.Generic;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 
 namespace SSOOwinMiddleware
@@ -21,13 +22,15 @@ namespace SSOOwinMiddleware
 
         public PathString SSOPath { get; set; }
 
+        public ICollection<PathString> AssertionEndPoinds { get; }
         public SSOAuthenticationOptions()
-      : base("Saml2SSO")
-    {
+            : base("Saml2SSO")
+        {
             this.Caption = "Saml2SSO";
-            this.AuthenticationMode = AuthenticationMode.Active;
+            base.AuthenticationMode = AuthenticationMode.Active;
             this.SPMetadataPath = new PathString("/sp/metadata");
             this.SSOPath = new PathString("/account/sso");
+            this.AssertionEndPoinds = new List<PathString>();
         }
     }
 }

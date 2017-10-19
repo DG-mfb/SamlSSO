@@ -45,8 +45,7 @@ namespace SSOOwinMiddleware.Handlers
         {
             try
             {
-                //ToDo: clean up
-                if (Request.Path == new PathString("/api/Account/SSOLogon"))
+                if (base.Options.AssertionEndPoinds.Contains(Request.Path))
                 {
                     this._logger.WriteInformation(String.Format("Authenticated response received to: {0}", "/api/Account/SSOLogon"));
                     if (string.Equals(this.Request.Method, "POST", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(this.Request.ContentType) && (this.Request.ContentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase) && this.Request.Body.CanRead))

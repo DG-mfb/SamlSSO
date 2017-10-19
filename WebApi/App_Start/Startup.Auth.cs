@@ -34,7 +34,7 @@ namespace WebApi
 
             //local
             //SSOAuthenticationExtensions.UseSSOAuthentication(app, "local");
-            SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app);
+            SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon" );
 
             //Shibboleth middleware, localhost metadata metadata
             //SSOAuthenticationExtensions.UseShibbolethAuthentication(app, "imperial.ac.uk");
