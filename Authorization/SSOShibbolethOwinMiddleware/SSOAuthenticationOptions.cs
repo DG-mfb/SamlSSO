@@ -1,20 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using Kernel.Security.Validation;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Microsoft.Owin.Security;
 
 namespace SSOOwinMiddleware
 {
     public class SSOAuthenticationOptions : AuthenticationOptions
     {
-        public IBackchannelCertificateValidator BackchannelCertificateValidator { get; set; }
-        
-
-        public HttpMessageHandler BackchannelHttpHandler { get; set; }
-
-        public TimeSpan BackchannelTimeout { get; set; }
-
         public string Caption
         {
             get
@@ -27,8 +17,6 @@ namespace SSOOwinMiddleware
             }
         }
         
-        public PathString CallbackPath { get; set; }
-
         public PathString SPMetadataPath { get; set; }
 
         public PathString SSOPath { get; set; }
@@ -38,7 +26,6 @@ namespace SSOOwinMiddleware
     {
             this.Caption = "Saml2SSO";
             this.AuthenticationMode = AuthenticationMode.Active;
-            this.BackchannelTimeout = TimeSpan.FromMinutes(1.0);
             this.SPMetadataPath = new PathString("/sp/metadata");
             this.SSOPath = new PathString("/account/sso");
         }

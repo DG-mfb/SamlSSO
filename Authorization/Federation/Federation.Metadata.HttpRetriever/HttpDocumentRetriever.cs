@@ -2,9 +2,11 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using Kernel.Federation.FederationPartner;
+using Kernel.Security.Validation;
 
 namespace Federation.Metadata.HttpRetriever
 {
@@ -15,45 +17,53 @@ namespace Federation.Metadata.HttpRetriever
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-        private Func<HttpClient> _httpClientFactory;
+        private readonly IBackchannelCertificateValidator _backchannelCertificateValidator;
         
-        public bool RequireHttps { get; set; } = true;
+        public bool RequireHttps { get; set; }
         
-        public HttpDocumentRetriever(Func<HttpClient> httpClientFactory)
+        public HttpDocumentRetriever(IBackchannelCertificateValidator backchannelCertificateValidator)
         {
-            if (httpClientFactory == null)
-                throw new ArgumentNullException("httpClientFactory");
+            if (backchannelCertificateValidator == null)
+                throw new ArgumentNullException("backchannelCertificateValidator");
 
-            this._httpClientFactory = httpClientFactory;
+            this._backchannelCertificateValidator = backchannelCertificateValidator;
         }
 
         public async Task<string> GetDocumentAsync(string address, CancellationToken cancel)
         {
-            int num = 0;
-            if ((uint)num > 1U)
-            {
-                if (string.IsNullOrWhiteSpace(address))
-                    throw new ArgumentNullException("address");
+            if (string.IsNullOrWhiteSpace(address))
+                throw new ArgumentNullException("address");
 
-                if (!Utility.IsHttps(address) && this.RequireHttps)
-                    throw new ArgumentException(string.Format("IDX10108: The address specified '{0}' is not valid as per HTTPS scheme. Please specify an https address for security reasons. If you want to test with http address, set the RequireHttps property  on IDocumentRetriever to false.", (object)address), "address");
-            }
+            if (this.RequireHttps && !Utility.IsHttps(address))
+                throw new ArgumentException(string.Format("IDX10108: The address specified '{0}' is not valid as per HTTPS scheme. Please specify an https address for security reasons. If you want to test with http address, set the RequireHttps property  on IDocumentRetriever to false.", (object)address), "address");
+            
             string str1;
             try
             {
-                var httpClient = this._httpClientFactory();
-                if (httpClient == null)
-                    throw new ArgumentNullException("httpClient");
+                var messageHandler = new WebRequestHandler
+                {
+                    ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(this._backchannelCertificateValidator.Validate)
+                };
+                using (messageHandler)
+                {
+                    var httpClient = new HttpClient(messageHandler)
+                    {
+                        Timeout = TimeSpan.FromSeconds(30),
+                        MaxResponseContentBufferSize = 10485760L
+                    };
+                    using (httpClient)
+                    {
+                        var httpResponseMessage = await httpClient.GetAsync(address, cancel)
+                            .ConfigureAwait(true);
 
-                var httpResponseMessage = await httpClient.GetAsync(address, cancel)
-                    .ConfigureAwait(true);
-
-                var response = httpResponseMessage;
-                httpResponseMessage = null;
-                response.EnsureSuccessStatusCode();
-                var str = await response.Content.ReadAsStringAsync()
-                    .ConfigureAwait(true);
-                str1 = str;
+                        var response = httpResponseMessage;
+                        httpResponseMessage = null;
+                        response.EnsureSuccessStatusCode();
+                        var str = await response.Content.ReadAsStringAsync()
+                            .ConfigureAwait(true);
+                        str1 = str;
+                    }
+                }
             }
             catch (Exception ex)
             {

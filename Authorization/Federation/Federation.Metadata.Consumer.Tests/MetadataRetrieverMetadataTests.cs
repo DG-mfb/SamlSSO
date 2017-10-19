@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
-using System.Net.Http;
-using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using Federation.Metadata.Consumer.Tests.Mock;
@@ -21,15 +19,14 @@ namespace Federation.Metadata.Consumer.Tests
         public async Task HttpDocumentRetrieverTest()
         {
             //ARRANGE
-            var webRequestHandler = new WebRequestHandler();
-            webRequestHandler.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((_, __, ___, ____) => true);
-            var httpClient = new HttpClient(webRequestHandler);
-            var documentRetrieer = new HttpDocumentRetriever(() => httpClient);
+            var certValidator = new CertificateValidatorMock();
+            var documentRetrieer = new HttpDocumentRetriever(certValidator);
 
             //ACT
             
             //var document = await documentRetrieer.GetDocumentAsync("https://dg-mfb/idp/shibboleth", new CancellationToken());
             var document = await documentRetrieer.GetDocumentAsync("https://www.testshib.org/metadata/testshib-providers.xml", new CancellationToken());
+            
             //ASSERT
             Assert.IsFalse(String.IsNullOrWhiteSpace(document));
         }
@@ -39,18 +36,15 @@ namespace Federation.Metadata.Consumer.Tests
         {
             //ARRANGE
             var logger = new LogProviderMock();
-            var webRequestHandler = new WebRequestHandler();
-            webRequestHandler.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((_, __, ___, ____) => true);
-            var httpClient = new HttpClient(webRequestHandler);
-            var documentRetrieer = new HttpDocumentRetriever(() => httpClient);
+            var bckChannelcertValidator = new CertificateValidatorMock();
+           
+            var documentRetrieer = new HttpDocumentRetriever(bckChannelcertValidator);
             var configurationProvider = new CertificateValidationConfigurationProvider();
             var certValidator = new CertificateValidator(configurationProvider, logger);
             
             var serialiser = new FederationMetadataSerialiser(certValidator, logger);
             var configurationRetriever = new WsFederationConfigurationRetriever(documentRetrieer, serialiser);
-
-
-
+            
             //ACT
             //var baseMetadata = await WsFederationConfigurationRetriever.GetAsync("https://dg-mfb/idp/shibboleth", documentRetrieer, new CancellationToken());
             var context = new FederationPartyConfiguration("local", "https://www.testshib.org/metadata/testshib-providers.xml");
