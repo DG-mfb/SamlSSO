@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using Kernel.Configuration;
 using Kernel.Federation.FederationPartner;
 using Kernel.Security.Validation;
 
@@ -20,13 +21,19 @@ namespace Federation.Metadata.HttpRetriever
         private readonly IBackchannelCertificateValidator _backchannelCertificateValidator;
         
         public bool RequireHttps { get; set; }
-        
+        public TimeSpan Timeout { get; set; }
+        public long MaxResponseContentBufferSize { get; set; }
+        public ICustomConfigurator<HttpDocumentRetriever> HttpDocumentRetrieverConfigurator { private get; set; }
+
         public HttpDocumentRetriever(IBackchannelCertificateValidator backchannelCertificateValidator)
         {
             if (backchannelCertificateValidator == null)
                 throw new ArgumentNullException("backchannelCertificateValidator");
 
             this._backchannelCertificateValidator = backchannelCertificateValidator;
+            this.Timeout = TimeSpan.FromSeconds(30);
+            this.MaxResponseContentBufferSize = 10485760L;
+            this.RequireHttps = true;
         }
 
         public async Task<string> GetDocumentAsync(string address, CancellationToken cancel)
@@ -40,6 +47,11 @@ namespace Federation.Metadata.HttpRetriever
             string str1;
             try
             {
+                if(this.HttpDocumentRetrieverConfigurator != null)
+                {
+                    this.HttpDocumentRetrieverConfigurator.Configure(this);
+                }
+
                 var messageHandler = new WebRequestHandler
                 {
                     ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(this._backchannelCertificateValidator.Validate)
@@ -48,9 +60,10 @@ namespace Federation.Metadata.HttpRetriever
                 {
                     var httpClient = new HttpClient(messageHandler)
                     {
-                        Timeout = TimeSpan.FromSeconds(30),
-                        MaxResponseContentBufferSize = 10485760L
+                        Timeout = this.Timeout,
+                        MaxResponseContentBufferSize = this.MaxResponseContentBufferSize
                     };
+
                     using (httpClient)
                     {
                         var httpResponseMessage = await httpClient.GetAsync(address, cancel)

@@ -14,6 +14,7 @@ namespace Federation.Metadata.HttpRetriever.Initialisation
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {
             dependencyResolver.RegisterType<HttpDocumentRetriever>(Lifetime.Transient);
+            dependencyResolver.RegisterType<CustomConfigurator>(Lifetime.Transient);
             return Task.CompletedTask;
         }
     }

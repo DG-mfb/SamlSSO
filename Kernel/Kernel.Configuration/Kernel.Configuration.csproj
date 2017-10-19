@@ -51,6 +51,7 @@
     <Compile Include="Configuration\ConfigurationEntityNotFoundException.cs" />
     <Compile Include="Configuration\ConfigurationSectionBase.cs" />
     <Compile Include="Configuration\ConfigurationSectionNotFoundException.cs" />
+    <Compile Include="ICustomConfigurator.cs" />
     <Compile Include="Notification\ExceptionNotificationSettingsCollection.cs" />
     <Compile Include="Notification\ExceptionNotificationSettingsConfigurationElement.cs" />
     <Compile Include="Notification\ExceptionNotificationSettingsSection.cs" />
