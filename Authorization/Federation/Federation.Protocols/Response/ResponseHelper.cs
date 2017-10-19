@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Xml;
+using Kernel.DependancyResolver;
+using Kernel.Federation.FederationPartner;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
 using Shared.Federtion.Response;
+using System.Collections.Generic;
+using Federation.Protocols.RelayState;
 
 namespace Federation.Protocols.Response
 {
@@ -66,6 +71,17 @@ namespace Federation.Protocols.Response
                 return;
             var msg = status.AggregatedMessage;
             throw new Exception(msg);
+        }
+
+        internal static void EnsureRequestPathMatch(object state, Uri path, IFederationPartyContextBuilder federationPartyContextBuilder)
+        {
+            var relayState = state as IDictionary<string, object>;
+            var partnerId = relayState[RelayStateContstants.FederationPartyId].ToString();
+            var federationPartner = federationPartyContextBuilder.BuildContext(partnerId);
+            var sPSSODescriptors = federationPartner.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors;
+            var assertionServices = sPSSODescriptors.SelectMany(x => x.AssertionConsumerServices, (p, r) => new { r.Location });
+            if (!assertionServices.Any(x => x.Location == path))
+                throw new Exception(String.Format("Requested path{0} is not in feretion party: {1} assertion configuration.", path.AbsoluteUri, partnerId));
         }
     }
 }

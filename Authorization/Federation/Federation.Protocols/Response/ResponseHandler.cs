@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Extensions;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Response;
@@ -20,11 +21,13 @@ namespace Federation.Protocols.Response
         private readonly IRelayStateHandler _relayStateHandler;
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
+        private readonly IFederationPartyContextBuilder _federationPartyContextBuilder;
 
-        public ResponseHandler(IRelayStateHandler relayStateHandler, ITokenHandler tokenHandler, ILogProvider logProvider)
+        public ResponseHandler(IRelayStateHandler relayStateHandler, ITokenHandler tokenHandler, IFederationPartyContextBuilder federationPartyContextBuilder, ILogProvider logProvider)
         {
             this._relayStateHandler = relayStateHandler;
             this._tokenHandler = tokenHandler;
+            this._federationPartyContextBuilder = federationPartyContextBuilder;
             this._logProvider = logProvider;
         }
         public async Task<ClaimsIdentity> Handle(HttpPostResponseContext context)
@@ -41,7 +44,7 @@ namespace Federation.Protocols.Response
                 this._logProvider.LogMessage(String.Format("Response recieved:\r\n {0}", responseText));
                 var responseStatus = ResponseHelper.ParseResponseStatus(responseText, this._logProvider);
                 ResponseHelper.EnsureSuccessAndThrow(responseStatus);
-
+                ResponseHelper.EnsureRequestPathMatch(relayState, context.RequestUri, this._federationPartyContextBuilder);
                 using (var reader = new StringReader(responseText))
                 {
                     using (var xmlReader = XmlReader.Create(reader))

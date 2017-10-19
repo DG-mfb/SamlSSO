@@ -37,7 +37,6 @@ namespace SSOOwinMiddleware
             }, Lifetime.Transient);
         }
         
-        
         protected override AuthenticationHandler<SSOAuthenticationOptions> CreateHandler()
         {
             return new SSOAuthenticationHandler(this._logger, this._resolver);

@@ -57,6 +57,7 @@
     <Compile Include="Initialisation\ProtocolInitialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolHandler.cs" />
+    <Compile Include="RelayState\RelayStateContstants.cs" />
     <Compile Include="RelayState\RelayStateHandler.cs" />
     <Compile Include="RelayState\RelaystateSerialiser.cs" />
     <Compile Include="Request\AuthnRequestHelper.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="ClaimsProvider.cs" />
     <Compile Include="Tokens\TokenSerialiser.cs" />
     <Compile Include="Tokens\Validation\SecurityTokenValidator.cs" />
+    <Compile Include="Tokens\Validation\ConditionsValidator.cs" />
     <Compile Include="Tokens\Validation\SubjectConfirmationDataValidator.cs" />
     <Compile Include="Tokens\Validation\ValidatorInvoker.cs" />
   </ItemGroup>

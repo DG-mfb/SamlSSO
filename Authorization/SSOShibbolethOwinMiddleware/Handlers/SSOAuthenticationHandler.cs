@@ -39,8 +39,8 @@ namespace SSOOwinMiddleware.Handlers
                 return base.InvokeAsync();
             Context.Authentication.Challenge("Saml2SSO");
             return Task.FromResult(true);
-            
         }
+
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
             try
@@ -70,6 +70,7 @@ namespace SSOOwinMiddleware.Handlers
                         {
                             ResponseContext = new HttpPostResponseContext
                             {
+                                RequestUri = Request.Uri,
                                 AuthenticationMethod = base.Options.AuthenticationType,
                                 Form = form.ToDictionary(x => x.Key, v => form.Get(v.Key)) as IDictionary<string, string>
                             }

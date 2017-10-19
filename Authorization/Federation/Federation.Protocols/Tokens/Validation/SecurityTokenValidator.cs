@@ -41,5 +41,11 @@ namespace Federation.Protocols.Tokens.Validation
         {
             this._validatorInvoker.Validate(confirmationData);
         }
+
+        protected override void ValidateConditions(Saml2Conditions conditions, bool enforceAudienceRestriction)
+        {
+            this._validatorInvoker.Validate(conditions);
+            base.ValidateConditions(conditions, enforceAudienceRestriction);
+        }
     }
 }
