@@ -31,7 +31,6 @@ namespace Federation.Protocols.Response
         {
             try
             {
-                //ToDo handle this properly, response handling, token validation, claims generation etc
                 var elements = context.Form;
                 var responseBase64 = elements[HttpRedirectBindingConstants.SamlResponse];
                 var responseBytes = Convert.FromBase64String(responseBase64);

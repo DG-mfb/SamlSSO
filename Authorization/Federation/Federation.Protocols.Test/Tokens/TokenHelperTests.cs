@@ -8,6 +8,7 @@ using Shared.Federtion.Constants;
 namespace Federation.Protocols.Test.Tokens
 {
     [TestFixture]
+    [Ignore("Local file")]
     internal class TokenHelperTests
     {
         [Test]

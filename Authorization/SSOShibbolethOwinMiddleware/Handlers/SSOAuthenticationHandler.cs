@@ -94,6 +94,7 @@ namespace SSOOwinMiddleware.Handlers
                 return null;
             }
         }
+
         protected override async Task ApplyResponseChallengeAsync()
         {
             if (this.Response.StatusCode != 401)
