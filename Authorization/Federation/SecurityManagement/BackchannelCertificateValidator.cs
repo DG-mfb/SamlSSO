@@ -26,12 +26,18 @@ namespace SecurityManagement
 
         public bool Validate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
+            var httpMessage = sender as HttpWebRequest;
+#if(DEBUG)
+            if (httpMessage != null && httpMessage.Address.AbsoluteUri.Contains("dg-mfb"))
+                return true;
+#endif
             this._logProvider.LogMessage(String.Format("Validating backhannel certificate. sslPolicyErrors was: {0}", sslPolicyErrors));
-            var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(sender as HttpWebRequest);
+            var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(httpMessage);
             var configiration = this.GetConfiguration(federationPartyId);
-            
+            var context = new BackchannelCertificateValidationContext(certificate, chain, sslPolicyErrors);
+
             //ToDo: complete pinning validation. Moved to back log on 27/09/2017
-            if(configiration.UsePinningValidation && configiration.BackchannelValidatorResolver != null)
+            if (configiration.UsePinningValidation && configiration.BackchannelValidatorResolver != null)
             {
                 _logProvider.LogMessage(String.Format("Pinning validation entered. Validator type: {0}", configiration.BackchannelValidatorResolver.Type));
                 try
@@ -40,7 +46,7 @@ namespace SecurityManagement
                     var instance = Activator.CreateInstance(type) as ICertificateValidatorResolver;
                     if(instance != null)
                     {
-                        var validators = instance.Resolve<IBackchannelCertificateValidator>();
+                        var validators = instance.Resolve<IPinningSertificateValidator>();
                         
                         return true;
                     }
@@ -53,13 +59,12 @@ namespace SecurityManagement
                     return true;
                 }
             }
-
-            var context = new BackchannelCertificateValidationContext(certificate, chain, sslPolicyErrors);
-
+            
             //default rule. No validation
             Func<BackchannelCertificateValidationContext, Task> seed = x =>
             {
-                x.Validated();
+                if(x.SslPolicyErrors == SslPolicyErrors.None)
+                    x.Validated();
                 return Task.CompletedTask;
             };
 

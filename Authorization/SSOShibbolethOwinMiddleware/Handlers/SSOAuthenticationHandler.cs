@@ -154,6 +154,7 @@ namespace SSOOwinMiddleware.Handlers
             catch(Exception ex)
             {
                 this._logger.WriteError("An exception has been thrown when applying challenge", ex);
+                throw;
             }
         }
     }
