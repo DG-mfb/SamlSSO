@@ -1,6 +1,4 @@
-﻿using Kernel.Authorisation;
-using Kernel.Initialisation;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
@@ -17,12 +15,13 @@ namespace WebApi
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             
-            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
-            var optionProvider = resolver.Resolve<IAuthorizationServerOptionsProvider<OAuthAuthorizationServerOptions>>();
-            OAuthOptions = optionProvider.GetOptions();
+            //OAuth2 bearer token middleware
+            //var resolver = ApplicationConfiguration.Instance.DependencyResolver;
+            //var optionProvider = resolver.Resolve<IAuthorizationServerOptionsProvider<OAuthAuthorizationServerOptions>>();
+            //OAuthOptions = optionProvider.GetOptions();
    
-            // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+            //// Enable the application to use bearer tokens to authenticate users
+            //app.UseOAuthBearerTokens(OAuthOptions);
             
             SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon" );
         }

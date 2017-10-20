@@ -54,7 +54,7 @@ namespace SSOOwinMiddleware.Extensions
             };
             foreach (var s in assertionEndpoints)
             {
-                options.AssertionEndPoinds.Add(new PathString(s));
+                options.AssertionEndpoinds.Add(new PathString(s));
             }
             return app.UseSaml2SSOAuthentication(options);
         }
