@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using NUnit.Framework;
 
 namespace Microsoft.Owin.CertificateValidators.Tests
@@ -27,13 +28,28 @@ namespace Microsoft.Owin.CertificateValidators.Tests
         public void CertificateSubjectPublicKeyInfoValidatorTest()
         {
             //ARRANGE
+            X509Certificate2 rootCert;
+            var data = Helper.GetValidBase64EncodedSubjectPublicKeyInfoHashes(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindBySubjectName, "georgiev.danail", out rootCert);
+
+            var chain = new X509Chain
+            {
+                ChainPolicy = new X509ChainPolicy
+                {
+                    RevocationFlag = X509RevocationFlag.ExcludeRoot,
+                    RevocationMode = X509RevocationMode.NoCheck,
+                    VerificationFlags = X509VerificationFlags.AllFlags,
+                }
+            };
+
             X509Certificate2 cert;
-            var data = Helper.GetValidBase64EncodedSubjectPublicKeyInfoHashes(StoreName.Root, StoreLocation.LocalMachine, X509FindType.FindBySubjectName, "Certum CA", out cert);
-            var validator = new SubjectPublicKeyInfoValidator(data, Security.SubjectPublicKeyInfoAlgorithm.Sha256);
-            var chain = new X509Chain(true) { ChainPolicy = new X509ChainPolicy() };
+            var data1 = Helper.GetValidBase64EncodedSubjectPublicKeyInfoHashes(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindBySubjectName, "DG-MFB", out cert);
+            chain.ChainPolicy.ExtraStore.Add(rootCert);
             chain.Build(cert);
+            data = data.Union(data1);
+
+            var validator = new SubjectPublicKeyInfoValidator(data, Security.SubjectPublicKeyInfoAlgorithm.Sha256);
             //ACT
-            var result = validator.Validate(this, cert, chain, System.Net.Security.SslPolicyErrors.None);
+            var result = validator.Validate(this, rootCert, chain, System.Net.Security.SslPolicyErrors.None);
             //ASSERT
             Assert.IsTrue(result);
         }
