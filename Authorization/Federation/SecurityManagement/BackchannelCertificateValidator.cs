@@ -59,11 +59,11 @@ namespace SecurityManagement
                     return true;
                 }
             }
-            
-            //default rule. No validation
+
+            //default rule. SslPolicyErrors no error vaidation. To ve reviewed
             Func<BackchannelCertificateValidationContext, Task> seed = x =>
             {
-                if(x.SslPolicyErrors == SslPolicyErrors.None)
+                if(!x.IsValid && x.SslPolicyErrors == SslPolicyErrors.None)
                     x.Validated();
                 return Task.CompletedTask;
             };
