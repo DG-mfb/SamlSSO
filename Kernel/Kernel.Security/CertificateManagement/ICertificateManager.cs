@@ -7,7 +7,7 @@ namespace Kernel.Security.CertificateManagement
     {
         X509Certificate2 GetCertificate(string path, SecureString password);
         X509Certificate2 GetCertificate(ICertificateStore store);
-
+        bool TryExtractSpkiBlob(X509Certificate2 certificate, out string spkiEncoded);
         ICertificateStore GetStoreFromContext(CertificateContext certContext);
         X509Certificate2 GetCertificateFromContext(CertificateContext certContext);
         string SignToBase64(string dataToSign, CertificateContext certContext);

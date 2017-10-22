@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="BackchannelCertificateValidationRules\BackchannelValidationRule.cs" />
     <Compile Include="BackchannelCertificateValidationRules\BackchannelCertificateValidationRulesFactory.cs" />
+    <Compile Include="CerificateContext\NativeMethods.cs" />
+    <Compile Include="CerificateContext\Utility.cs" />
     <Compile Include="CertificateManager.cs" />
     <Compile Include="CertificateValidationRules\CertificateValidationRulesFactory.cs" />
     <Compile Include="CertificateValidationRules\EffectiveDateRule.cs" />

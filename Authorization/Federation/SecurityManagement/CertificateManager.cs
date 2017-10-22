@@ -7,6 +7,7 @@ using Kernel.Cryptography.DataProtection;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
+using SecurityManagement.CerificateContext;
 
 namespace SecurityManagement
 {
@@ -91,6 +92,23 @@ namespace SecurityManagement
             var cert = this.GetCertificateFromContext(certContext);
             var verified = RSADataProtection.VerifyDataSHA1Signed((RSA)cert.PrivateKey, dataBytes, signedBytes);
             return verified;
+        }
+
+        public bool TryExtractSpkiBlob(X509Certificate2 certificate, out string spkiEncoded)
+        {
+            try
+            {
+                var spki = Utility.ExtractSpkiBlob(certificate);
+                spkiEncoded = Utility.HashSpki(spki);
+                return !String.IsNullOrWhiteSpace(spkiEncoded);
+            }
+            catch(Exception ex)
+            {
+                Exception innerEx;
+                this._logProvider.TryLogException(ex, out innerEx);
+                spkiEncoded = null;
+                return false;
+            }
         }
     }
 }

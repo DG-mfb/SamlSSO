@@ -27,7 +27,12 @@ namespace SecurityManagement
         public bool Validate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             var httpMessage = sender as HttpWebRequest;
-#if(DEBUG)
+            //todo: clean this up
+            //var manager = new CertificateManager(this._logProvider);
+            //string pski;
+            //manager.TryExtractSpkiBlob(new X509Certificate2(certificate), out pski);
+            //
+#if (DEBUG)
             if (httpMessage != null && httpMessage.Address.AbsoluteUri.Contains("dg-mfb"))
                 return true;
 #endif
