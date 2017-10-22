@@ -49,7 +49,7 @@ namespace Microsoft.Owin.CertificateValidators.Tests
             chain.ChainPolicy.ExtraStore.Add(rootCert);
             chain.Build(cert);
             data = data.Union(data1);
-
+            
             var validator = new SubjectPublicKeyInfoValidator(data, Security.SubjectPublicKeyInfoAlgorithm.Sha256);
             //ACT
             var result = validator.Validate(this, rootCert, chain, System.Net.Security.SslPolicyErrors.None);
@@ -58,7 +58,7 @@ namespace Microsoft.Owin.CertificateValidators.Tests
         }
 
         [Test]
-        public void Read()
+        public void ReadCertificateAsn1Format()
         {
             byte[] buffer = null;
             using (var fs = new FileStream(@"D:\Dan\Software\Apira\Temp\ApiraEncr.cer", FileMode.Open))
@@ -70,6 +70,7 @@ namespace Microsoft.Owin.CertificateValidators.Tests
             }
             
             var cert = new X509Certificate2(@"D:\Dan\Software\Apira\Temp\ApiraEncr.cer");
+            var foo = Utility.ExtractSpkiBlob(cert);
             var buffer1 = cert.Export(X509ContentType.Pkcs12);
 
             var pkinfo = Utility.GetSubjectPublicKeyInfo(cert);
@@ -80,6 +81,7 @@ namespace Microsoft.Owin.CertificateValidators.Tests
             var asText = asn.Format(true);
             var equal = Enumerable.SequenceEqual(buffer, buffer1);
             Assert.IsTrue(seq.Any(x => x.SequenceEqual(pkinfo)));
+            Assert.IsTrue(seq.Any(x => x.SequenceEqual(foo)));
         }
     }
 }
