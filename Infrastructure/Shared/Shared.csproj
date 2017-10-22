@@ -46,8 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Federtion\Constants\AuthnticationContexts.cs" />
-    <Compile Include="Federtion\Factories\IdpMetadataHandlerFactoryPartial.cs" />
-    <Compile Include="Federtion\Factories\IdpMetadataHandlerFactory.cs" />
     <Compile Include="Federtion\Factories\IMetadataHandler.cs" />
     <Compile Include="Federtion\Models\AudienceRestriction.cs" />
     <Compile Include="Federtion\Constants\NameIdentifierFormats.cs" />
