@@ -21,10 +21,11 @@ namespace Federation.Metadata.FederationPartner.Configuration
             
             string entityId = "RegisteredIssuer";
             var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadata.GetType());
-            var handler = dependencyResolver.Resolve(handlerType);
-
-            var del = IdpMetadataHandlerFactory.GetDelegateForIdpDescriptors(metadata.GetType(), typeof(IdentityProviderSingleSignOnDescriptor));
-            var idps = del(handler, metadata).Cast<IdentityProviderSingleSignOnDescriptor>();
+            var handler = dependencyResolver.Resolve(handlerType) as IMetadataHandler;
+            if (handler == null)
+                throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+            
+            var idps = handler.GetIdentityProviderSingleSignOnDescriptor(metadata);
 
             var identityRegister = SecurityTokenHandlerConfiguration.DefaultIssuerNameRegistry as ConfigurationBasedIssuerNameRegistry;
             if (identityRegister == null)
