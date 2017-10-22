@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.DependancyResolver;
@@ -113,25 +114,17 @@ namespace SSOOwinMiddleware.Handlers
                 if (this._configuration == null)
                 {
                     var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
-                    this._configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new System.Threading.CancellationToken());
+                    this._configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new CancellationToken());
                 }
-
-                Uri signInUrl = null;
+                
                 var metadataType = this._configuration.GetType();
                 var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
-                var handler = this._resolver.Resolve(handlerType);
+                var handler = this._resolver.Resolve(handlerType) as IMetadataHandler;
+                if (handler == null)
+                    throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+                var idp = handler.GetIdentityProviderSingleSignOnDescriptor(this._configuration);
+                var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
                 
-                var idpDel = IdpMetadataHandlerFactory.GetDelegateForIdpDescriptors(metadataType, typeof(IdentityProviderSingleSignOnDescriptor));
-                var idp = idpDel(handler, this._configuration).Cast<IdentityProviderSingleSignOnDescriptor>()
-                    .SingleOrDefault();
-                if (idp == null)
-                    throw new InvalidOperationException("Identity provider descriptor not found.");
-
-                var endPoint = idp.SingleSignOnServices.FirstOrDefault(x => x.Binding == new Uri(Bindings.Http_Redirect));
-                if (endPoint == null)
-                    throw new InvalidOperationException(String.Format("No endpoint found for binding: {0}.", Bindings.Http_Redirect));
-                signInUrl = endPoint.Location;
-
                 var federationPartyContextBuilder = this._resolver.Resolve<IFederationPartyContextBuilder>();
                
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
