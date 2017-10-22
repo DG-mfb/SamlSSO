@@ -8,12 +8,11 @@ namespace Federation.Metadata.FederationPartner.Handlers
 {
     internal abstract class MetadataHandler : IMetadataHandler
     {
-        public IdentityProviderSingleSignOnDescriptor GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata)
+        public IEnumerable<IdentityProviderSingleSignOnDescriptor> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata)
         {
-            var descriptor = this.GetRoleDescriptors<IdentityProviderSingleSignOnDescriptor>(metadata).FirstOrDefault();
-            if (descriptor == null)
-                throw new InvalidOperationException("Identity provider descriptor not found.");
-            return descriptor;
+            var descriptors = this.GetRoleDescriptors<IdentityProviderSingleSignOnDescriptor>(metadata);
+
+            return descriptors;
         }
 
         public Uri GetIdentityProviderSingleSignOnServices(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding)

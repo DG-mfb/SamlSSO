@@ -122,7 +122,9 @@ namespace SSOOwinMiddleware.Handlers
                 var handler = this._resolver.Resolve(handlerType) as IMetadataHandler;
                 if (handler == null)
                     throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
-                var idp = handler.GetIdentityProviderSingleSignOnDescriptor(this._configuration);
+                var idp = handler.GetIdentityProviderSingleSignOnDescriptor(this._configuration)
+                    .Single();
+
                 var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
                 
                 var federationPartyContextBuilder = this._resolver.Resolve<IFederationPartyContextBuilder>();
