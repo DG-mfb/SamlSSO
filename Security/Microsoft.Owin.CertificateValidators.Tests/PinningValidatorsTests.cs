@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using NUnit.Framework;
 
@@ -30,7 +33,7 @@ namespace Microsoft.Owin.CertificateValidators.Tests
             //ARRANGE
             X509Certificate2 rootCert;
             var data = Helper.GetValidBase64EncodedSubjectPublicKeyInfoHashes(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindBySubjectName, "georgiev.danail", out rootCert);
-
+            var r = rootCert.Export(X509ContentType.Pkcs12);
             var chain = new X509Chain
             {
                 ChainPolicy = new X509ChainPolicy
@@ -52,6 +55,31 @@ namespace Microsoft.Owin.CertificateValidators.Tests
             var result = validator.Validate(this, rootCert, chain, System.Net.Security.SslPolicyErrors.None);
             //ASSERT
             Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void Read()
+        {
+            byte[] buffer = null;
+            using (var fs = new FileStream(@"D:\Dan\Software\Apira\Temp\ApiraEncr.cer", FileMode.Open))
+            {
+                using (var br = new BinaryReader(fs))
+                {
+                    buffer = br.ReadBytes((int)fs.Length);
+                }
+            }
+            
+            var cert = new X509Certificate2(@"D:\Dan\Software\Apira\Temp\ApiraEncr.cer");
+            var buffer1 = cert.Export(X509ContentType.Pkcs12);
+
+            var pkinfo = Utility.GetSubjectPublicKeyInfo(cert);
+            var seq = new List<byte[]>();
+
+            Utility.GetNextSequence(buffer1, seq);
+            var asn = new AsnEncodedData(buffer1);
+            var asText = asn.Format(true);
+            var equal = Enumerable.SequenceEqual(buffer, buffer1);
+            Assert.IsTrue(seq.Any(x => x.SequenceEqual(pkinfo)));
         }
     }
 }
