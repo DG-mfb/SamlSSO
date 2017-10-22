@@ -120,17 +120,20 @@ namespace SSOOwinMiddleware.Handlers
                 var metadataType = this._configuration.GetType();
                 var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
                 var handler = this._resolver.Resolve(handlerType);
+                
+                var idpDel = IdpMetadataHandlerFactory.GetDelegateForIdpDescriptors(metadataType, typeof(IdentityProviderSingleSignOnDescriptor));
+                var idp = idpDel(handler, this._configuration).Cast<IdentityProviderSingleSignOnDescriptor>()
+                    .SingleOrDefault();
+                if (idp == null)
+                    throw new InvalidOperationException("Identity provider descriptor not found.");
 
-                //ToDo: sort this one in phase3 when implementing owin middleware. 
-                //no need to have two methods in the handler. use GetDelegateForIdpDescriptors
-                var locationDel = IdpMetadataHandlerFactory.GetDelegateForIdpLocation(metadataType);
-                signInUrl = locationDel(handler, this._configuration, new Uri(Bindings.Http_Redirect));
-
-                //the lines below are likely to do all what we need. 
-                var idpDel = IdpMetadataHandlerFactory.GetDelegateForIdpDescriptors(this._configuration.GetType(), typeof(IdentityProviderSingleSignOnDescriptor));
-                var idp = idpDel(handler, this._configuration).Cast<IdentityProviderSingleSignOnDescriptor>().First();
+                var endPoint = idp.SingleSignOnServices.FirstOrDefault(x => x.Binding == new Uri(Bindings.Http_Redirect));
+                if (endPoint == null)
+                    throw new InvalidOperationException(String.Format("No endpoint found for binding: {0}.", Bindings.Http_Redirect));
+                signInUrl = endPoint.Location;
 
                 var federationPartyContextBuilder = this._resolver.Resolve<IFederationPartyContextBuilder>();
+               
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 
                 var requestContext = new AuthnRequestContext(signInUrl, federationContext, idp.NameIdentifierFormats);
