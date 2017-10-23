@@ -22,7 +22,7 @@ namespace ORMMetadataContextProvider.Security
         {
             var settings = this._dbContext.Set<FederationPartySettings>()
                 .Where(x => x.FederationPartyId == federationPartyId)
-                .Select(r => r.SecuritySettings)
+                .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
                 .FirstOrDefault();
 
             if (settings is null)
@@ -30,11 +30,15 @@ namespace ORMMetadataContextProvider.Security
 
             var configuration = new CertificateValidationConfiguration
             {
-                X509CertificateValidationMode = settings.X509CertificateValidationMode,
-                UsePinningValidation = settings.PinnedValidation,
-                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor(settings.PinnedTypeValidator)
+                X509CertificateValidationMode = settings.SecuritySettings.X509CertificateValidationMode,
+                UsePinningValidation = settings.SecuritySettings.PinnedValidation,
+                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor(settings.SecuritySettings.PinnedTypeValidator)
             };
-            var rules = settings.CertificateValidationRules.Where(x => x.Type != null)
+
+            configuration.Pins = settings.Pins.GroupBy(k => k.PinType, v => v.Value)
+                .ToDictionary(k => k.Key.ToString(), v => v.Select(r => r));
+
+            var rules = settings.SecuritySettings.CertificateValidationRules.Where(x => x.Type != null)
                 .ToList();
             rules.Aggregate(configuration.ValidationRules, (t, next) =>
             {

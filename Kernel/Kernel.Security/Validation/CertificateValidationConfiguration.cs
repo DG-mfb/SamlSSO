@@ -14,5 +14,6 @@ namespace Kernel.Security.Validation
         public TypeDescriptor BackchannelValidatorResolver { get; set; }
         public bool UsePinningValidation { get; set; }
         public ICollection<ValidationRuleDescriptor> ValidationRules { get; }
+        public IDictionary<string, IEnumerable<string>> Pins { get; set; }
     }
 }
