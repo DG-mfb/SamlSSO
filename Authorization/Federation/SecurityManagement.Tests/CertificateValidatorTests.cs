@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using Kernel.Security.Configuration;
 using Kernel.Security.Validation;
 using NUnit.Framework;
 using SecurityManagement.Tests.Mock;
@@ -22,7 +23,6 @@ namespace SecurityManagement.Tests
                 var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
                 var configuration = new CertificateValidationConfiguration
                 {
-                    UsePinningValidation = false,
                     X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
                 };
 
@@ -61,7 +61,6 @@ namespace SecurityManagement.Tests
                 var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
                 var configuration = new CertificateValidationConfiguration
                 {
-                    UsePinningValidation = false,
                     X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
                 };
 

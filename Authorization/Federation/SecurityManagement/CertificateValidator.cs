@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using Kernel.Logging;
+using Kernel.Security.Configuration;
 using Kernel.Security.Validation;
 using SecurityManagement.CertificateValidationRules;
 

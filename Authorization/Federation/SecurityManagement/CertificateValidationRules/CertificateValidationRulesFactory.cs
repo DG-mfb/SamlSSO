@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kernel.Reflection;
+using Kernel.Security.Configuration;
 using Kernel.Security.Validation;
 
 namespace SecurityManagement.CertificateValidationRules

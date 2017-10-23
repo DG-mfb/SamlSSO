@@ -1,4 +1,6 @@
-﻿using Kernel.Security.Validation;
+﻿using System;
+using Kernel.Security.Configuration;
+using Kernel.Security.Validation;
 
 namespace Federation.Metadata.Consumer.Tests.Mock
 {
@@ -8,10 +10,15 @@ namespace Federation.Metadata.Consumer.Tests.Mock
         {
             return new CertificateValidationConfiguration
             {
-                UsePinningValidation = false,
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
         }
+
+        public BackchannelConfiguration GeBackchannelConfiguration(string federationPartyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
         }

@@ -5,6 +5,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Logging;
+using Kernel.Security.Configuration;
 using Kernel.Security.Validation;
 using SecurityManagement.BackchannelCertificateValidationRules;
 
@@ -12,7 +13,7 @@ namespace SecurityManagement
 {
     internal class BackchannelCertificateValidator : IBackchannelCertificateValidator
     {
-        private CertificateValidationConfiguration _configuration;
+        private BackchannelConfiguration _configuration;
         private readonly ILogProvider _logProvider;
         private readonly ICertificateValidationConfigurationProvider _configurationProvider;
 
@@ -80,11 +81,11 @@ namespace SecurityManagement
             return context.IsValid;
         }
         
-        private CertificateValidationConfiguration GetConfiguration(string federationPartyId)
+        private BackchannelConfiguration GetConfiguration(string federationPartyId)
         {
             if (this._configuration == null)
             {
-                this._configuration = this._configurationProvider.GetConfiguration(federationPartyId);
+                this._configuration = this._configurationProvider.GeBackchannelConfiguration(federationPartyId);
             }
             if (this._configuration == null)
                 throw new InvalidOperationException("CertificateValidationConfiguration is null!");

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kernel.Security.Validation
+namespace Kernel.Security.Configuration
 {
     [Flags]
     public enum ValidationScope

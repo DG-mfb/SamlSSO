@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Kernel.Security.Validation;
+using Kernel.Security.Configuration;
 using NUnit.Framework;
 using SecurityManagement.CertificateValidationRules;
 using SecurityManagement.Tests.Mock;
@@ -15,7 +15,6 @@ namespace SecurityManagement.Tests
             //ARRANGE
             var configuration = new CertificateValidationConfiguration
             {
-                UsePinningValidation = false,
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
             CertificateValidationRulesFactory.InstanceCreator = ValidationRuleInstanceCreatorMock.CreateInstance;
@@ -35,7 +34,6 @@ namespace SecurityManagement.Tests
             CertificateValidationRulesFactory.InstanceCreator = ValidationRuleInstanceCreatorMock.CreateInstance;
             var configuration = new CertificateValidationConfiguration
             {
-                UsePinningValidation = false,
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
             var rule1 = typeof(CertificateValidationRuleMock1).AssemblyQualifiedName;
