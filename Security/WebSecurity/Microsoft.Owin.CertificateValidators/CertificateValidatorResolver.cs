@@ -26,7 +26,7 @@ namespace Microsoft.Owin.CertificateValidators
                 return Enumerable.Empty<TValidator>();
 
             var validThumbprints = pins.ContainsKey(PinType.Thumbprint) ? pins[PinType.Thumbprint] : Enumerable.Empty<string>();
-            var thumbprintValidator = new ThumbprintValidator(validThumbprints)as TValidator;
+            var thumbprintValidator = new ThumbprintValidator(validThumbprints) as TValidator;
 
             var validSubjectKeyIdentifiers = pins.ContainsKey(PinType.SubjectKeyIdentifier) ? pins[PinType.SubjectKeyIdentifier] : Enumerable.Empty<string>();
             var subjectKeyIdentifierValidator = validSubjectKeyIdentifiers.Count() == 0 ? default(TValidator) : new SubjectKeyIdentifierValidator(validSubjectKeyIdentifiers) as TValidator;

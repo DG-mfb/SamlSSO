@@ -5,7 +5,6 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Logging;
-using Kernel.Security.Configuration;
 using Kernel.Security.Validation;
 using SecurityManagement.BackchannelCertificateValidationRules;
 
@@ -13,7 +12,6 @@ namespace SecurityManagement
 {
     internal class BackchannelCertificateValidator : IBackchannelCertificateValidator
     {
-        private BackchannelConfiguration _configuration;
         private readonly ILogProvider _logProvider;
         private readonly ICertificateValidationConfigurationProvider _configurationProvider;
 
@@ -36,15 +34,16 @@ namespace SecurityManagement
 #endif
             this._logProvider.LogMessage(String.Format("Validating backhannel certificate. sslPolicyErrors was: {0}", sslPolicyErrors));
             var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(httpMessage);
-            var configiration = this.GetConfiguration(federationPartyId);
+            var configiration = this._configurationProvider.GeBackchannelConfiguration(federationPartyId);
             var context = new BackchannelCertificateValidationContext(certificate, chain, sslPolicyErrors);
+            
             //if pinning validation is enabled it take precedence
             if (configiration.UsePinningValidation && configiration.BackchannelValidatorResolver != null)
             {
                 _logProvider.LogMessage(String.Format("Pinning validation entered. Validator type: {0}", configiration.BackchannelValidatorResolver.Type));
-                
-                    var type = configiration.BackchannelValidatorResolver.Type;
-                    var instance = BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory(type);
+
+                var type = configiration.BackchannelValidatorResolver.Type;
+                var instance = BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory(type);
                 if (instance != null)
                 {
                     var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId)
@@ -73,18 +72,6 @@ namespace SecurityManagement
             var task = validationDelegate(context);
             task.Wait();
             return context.IsValid;
-        }
-        
-        private BackchannelConfiguration GetConfiguration(string federationPartyId)
-        {
-            if (this._configuration == null)
-            {
-                this._configuration = this._configurationProvider.GeBackchannelConfiguration(federationPartyId);
-            }
-            if (this._configuration == null)
-                throw new InvalidOperationException("CertificateValidationConfiguration is null!");
-
-            return this._configuration;
         }
     }
 }
