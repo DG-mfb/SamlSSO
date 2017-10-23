@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Kernel.Cache;
 using Kernel.Data.ORM;
 using Kernel.Security.Configuration;
@@ -10,7 +11,7 @@ namespace ORMMetadataContextProvider.Security
 {
     internal class CertificateValidationConfigurationProvider : ICertificateValidationConfigurationProvider
     {
-        private const string PinsKey = "{0}_backchannel";
+        private const string PinsKey = "{0}_backchannel_key";
         private readonly IDbContext _dbContext;
         private readonly ICacheProvider _cacheProvider;
 
@@ -22,40 +23,26 @@ namespace ORMMetadataContextProvider.Security
 
         public BackchannelConfiguration GeBackchannelConfiguration(string federationPartyId)
         {
-            var key = String.Format(CertificateValidationConfigurationProvider.PinsKey, federationPartyId.ToLower());
-            if (this._cacheProvider.Contains(key))
-                return this._cacheProvider.Get<BackchannelConfiguration>(key);
-
-            var settings = this._dbContext.Set<FederationPartySettings>()
-                .Where(x => x.FederationPartyId == federationPartyId)
-                .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
-                .FirstOrDefault();
-            if (settings is null)
-                throw new InvalidOperationException(String.Format("No federationParty configuration found for federationPartyId: {0}", federationPartyId));
-
-            var configuration = new BackchannelConfiguration
-            {
-                UsePinningValidation = settings.SecuritySettings.PinnedValidation,
-                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor(settings.SecuritySettings.PinnedTypeValidator)
-            };
-
-            configuration.Pins = settings.Pins.GroupBy(k => k.PinType, v => v.Value)
-                .ToDictionary(k => k.Key, v => v.Select(r => r));
-            this._cacheProvider.Put(key, configuration);
-            return configuration;
+            return this.GeBackchannelConfiguration(x => x.FederationPartyId == federationPartyId, federationPartyId);
         }
+
         public BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri)
         {
-            var key = String.Format(CertificateValidationConfigurationProvider.PinsKey, partyUri.AbsoluteUri);
+            return this.GeBackchannelConfiguration(x => x.MetadataPath == partyUri.AbsoluteUri, partyUri.AbsoluteUri);
+        }
+
+        public BackchannelConfiguration GeBackchannelConfiguration(Expression<Func<FederationPartySettings, bool>> predicate, string keyPrefex)
+        {
+            var key = String.Format(CertificateValidationConfigurationProvider.PinsKey, keyPrefex);
             if (this._cacheProvider.Contains(key))
                 return this._cacheProvider.Get<BackchannelConfiguration>(key);
 
             var settings = this._dbContext.Set<FederationPartySettings>()
-                .Where(x => x.MetadataPath == partyUri.AbsoluteUri)
+                .Where(predicate)
                 .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
                 .FirstOrDefault();
             if (settings is null)
-                throw new InvalidOperationException(String.Format("No federationParty configuration found for federationPartyId: {0}", partyUri.AbsoluteUri));
+                throw new InvalidOperationException("No federationParty configuration found for");
 
             var configuration = new BackchannelConfiguration
             {
@@ -93,6 +80,7 @@ namespace ORMMetadataContextProvider.Security
             });
             return configuration;
         }
+
         public void Dispose()
         {
             this.Dispose(true);
@@ -106,5 +94,6 @@ namespace ORMMetadataContextProvider.Security
             if (this._dbContext != null)
                 this._dbContext.Dispose();
         }
+        
     }
 }
