@@ -13,9 +13,13 @@ namespace Microsoft.Owin.CertificateValidators
         {
         }
 
-        public Task Validate(object sender, BackchannelCertificateValidationContext context, Func<object, BackchannelCertificateValidationContext, Task> next)
+        public async Task Validate(object sender, BackchannelCertificateValidationContext context, Func<object, BackchannelCertificateValidationContext, Task> next)
         {
-            throw new NotImplementedException();
+            var isValid = base.Validate(sender, context.Certificate, context.Chain, context.SslPolicyErrors);
+            if (isValid)
+                context.Validated();
+            else
+                await next(sender, context);
         }
     }
 }
