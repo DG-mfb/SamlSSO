@@ -49,7 +49,9 @@ namespace SecurityManagement
                     var instance = BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory(type);
                     if(instance != null)
                     {
-                        var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId);
+                        var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId)
+                            .Where(x => x != null)
+                            .ToList();
                         
                         return true;
                     }

@@ -29,10 +29,10 @@ namespace Microsoft.Owin.CertificateValidators
             var thumbprintValidator = new ThumbprintValidator(validThumbprints)as TValidator;
 
             var validSubjectKeyIdentifiers = pins.ContainsKey(PinType.SubjectKeyIdentifier) ? pins[PinType.SubjectKeyIdentifier] : Enumerable.Empty<string>();
-            var subjectKeyIdentifierValidator = new SubjectKeyIdentifierValidator(validSubjectKeyIdentifiers) as TValidator;
+            var subjectKeyIdentifierValidator = validSubjectKeyIdentifiers.Count() == 0 ? default(TValidator) : new SubjectKeyIdentifierValidator(validSubjectKeyIdentifiers) as TValidator;
 
             var validBase64EncodedSubjectPublicKeyInfoHashes = pins.ContainsKey(PinType.SubjectPublicKeyInfo) ? pins[PinType.SubjectPublicKeyInfo] : Enumerable.Empty<string>();
-            var subjectPublicKeyInfoValidator = new SubjectPublicKeyInfoValidator(validSubjectKeyIdentifiers, Security.SubjectPublicKeyInfoAlgorithm.Sha256) as TValidator;
+            var subjectPublicKeyInfoValidator = validBase64EncodedSubjectPublicKeyInfoHashes.Count() == 0 ? default(TValidator) : new SubjectPublicKeyInfoValidator(validSubjectKeyIdentifiers, Security.SubjectPublicKeyInfoAlgorithm.Sha256) as TValidator;
 
             return new [] { thumbprintValidator, subjectKeyIdentifierValidator, subjectPublicKeyInfoValidator };
         }
