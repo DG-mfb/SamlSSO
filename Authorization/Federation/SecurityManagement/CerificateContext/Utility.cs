@@ -29,5 +29,13 @@ namespace SecurityManagement.CerificateContext
           
             return pbEncoded;
         }
+
+        internal static string GetSubjectKeyIdentifier(X509Certificate2 certificate)
+        {
+            var extension = certificate.Extensions["2.5.29.14"] as X509SubjectKeyIdentifierExtension;
+            if (extension != null)
+                return extension.SubjectKeyIdentifier;
+            return null;
+        }
     }
 }

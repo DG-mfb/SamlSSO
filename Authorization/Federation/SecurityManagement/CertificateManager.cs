@@ -117,5 +117,12 @@ namespace SecurityManagement
                 return false;
             }
         }
+
+        public string GetSubjectKeyIdentifier(X509Certificate2 certificate)
+        {
+            if (certificate == null)
+                throw new ArgumentNullException("certificate");
+            return Utility.GetSubjectKeyIdentifier(certificate);
+        }
     }
 }
