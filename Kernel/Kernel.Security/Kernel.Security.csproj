@@ -50,6 +50,7 @@
     <Compile Include="CertificateManagement\ICertificateStore.cs" />
     <Compile Include="CertificateManagement\X509CertificateContext.cs" />
     <Compile Include="Configuration\BackchannelConfiguration.cs" />
+    <Compile Include="Configuration\PinType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\BackchannelCertificateValidationContext.cs" />
     <Compile Include="Configuration\CertificateValidationConfiguration.cs" />

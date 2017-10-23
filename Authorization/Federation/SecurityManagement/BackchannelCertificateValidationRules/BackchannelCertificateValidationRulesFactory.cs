@@ -10,12 +10,21 @@ namespace SecurityManagement.BackchannelCertificateValidationRules
 {
     internal class BackchannelCertificateValidationRulesFactory
     {
+        static BackchannelCertificateValidationRulesFactory()
+        {
+            BackchannelCertificateValidationRulesFactory.InstanceCreator = t => (IBackchannelCertificateValidationRule)Activator.CreateInstance(t);
+            BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory = t => (ICertificateValidatorResolver)Activator.CreateInstance(t);
+        }
         public static IEnumerable<IBackchannelCertificateValidationRule> GetRules(BackchannelConfiguration configuration)
         {
             var rules = ReflectionHelper.GetAllTypes(new[] { typeof(BackchannelValidationRule).Assembly }, t =>
             !t.IsAbstract && !t.IsInterface && typeof(IBackchannelCertificateValidationRule).IsAssignableFrom(t))
-            .Select(t => (IBackchannelCertificateValidationRule)Activator.CreateInstance(t));
+            .Select(t => BackchannelCertificateValidationRulesFactory.InstanceCreator(t));
             return rules;
         }
+
+        public static Func<Type, IBackchannelCertificateValidationRule> InstanceCreator { get; set; }
+
+        public static Func<Type, ICertificateValidatorResolver> CertificateValidatorResolverFactory { get; set; }
     }
 }

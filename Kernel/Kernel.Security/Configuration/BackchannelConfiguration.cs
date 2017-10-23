@@ -7,6 +7,6 @@ namespace Kernel.Security.Configuration
     {
         public TypeDescriptor BackchannelValidatorResolver { get; set; }
         public bool UsePinningValidation { get; set; }
-        public IDictionary<string, IEnumerable<string>> Pins { get; set; }
+        public IDictionary<PinType, IEnumerable<string>> Pins { get; set; }
     }
 }

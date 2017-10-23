@@ -1,4 +1,4 @@
-﻿namespace ORMMetadataContextProvider.Models.GlobalConfiguration
+﻿namespace Kernel.Security.Configuration
 {
     public enum PinType
     {

@@ -15,6 +15,7 @@ using Kernel.Initialisation;
 using Kernel.Logging;
 using Kernel.Reflection;
 using MemoryCacheProvider.Initialisation;
+using Microsoft.Owin.CertificateValidators.Initialisation;
 using OAuthAuthorisationService.Initialisation;
 using ORMMetadataContextProvider.Initialisation;
 using Provider.EntityFramework.Initialisation;
@@ -53,6 +54,7 @@ namespace ServerInitialisation
                 yield return typeof(ProtocolInitialiser).Assembly;
                 yield return typeof(JsonSerializerInitialiser).Assembly;
                 yield return typeof(WindowsEventLogLoggerInitialiser).Assembly;
+                yield return typeof(BackchannelValidatorsInitialiser).Assembly;
             }
         }
 

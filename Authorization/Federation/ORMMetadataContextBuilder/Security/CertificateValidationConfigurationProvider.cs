@@ -40,7 +40,7 @@ namespace ORMMetadataContextProvider.Security
             };
 
             configuration.Pins = settings.Pins.GroupBy(k => k.PinType, v => v.Value)
-                .ToDictionary(k => k.Key.ToString(), v => v.Select(r => r));
+                .ToDictionary(k => k.Key, v => v.Select(r => r));
             this._cacheProvider.Put(key, configuration);
             return configuration;
         }

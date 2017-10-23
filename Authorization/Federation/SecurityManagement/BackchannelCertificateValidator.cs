@@ -28,10 +28,7 @@ namespace SecurityManagement
         public bool Validate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             var httpMessage = sender as HttpWebRequest;
-            //todo: clean this up
-            //var manager = new CertificateManager(this._logProvider);
-            //string pski;
-            //manager.TryExtractSpkiBlob(new X509Certificate2(certificate), out pski);
+            
             //
 #if (DEBUG)
             if (httpMessage != null && httpMessage.Address.AbsoluteUri.Contains("dg-mfb"))
@@ -49,10 +46,10 @@ namespace SecurityManagement
                 try
                 {
                     var type = configiration.BackchannelValidatorResolver.Type;
-                    var instance = Activator.CreateInstance(type) as ICertificateValidatorResolver;
+                    var instance = BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory(type);
                     if(instance != null)
                     {
-                        var validators = instance.Resolve<IPinningSertificateValidator>();
+                        var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId);
                         
                         return true;
                     }

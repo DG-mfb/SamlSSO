@@ -13,6 +13,7 @@ namespace Microsoft.Owin.CertificateValidators.Initialisation
 
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {
+            dependencyResolver.RegisterType<CertificateValidatorResolver>(Lifetime.Transient);
             return Task.CompletedTask;
         }
     }

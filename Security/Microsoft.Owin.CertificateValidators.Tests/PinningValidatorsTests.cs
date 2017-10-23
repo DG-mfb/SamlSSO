@@ -8,13 +8,14 @@ using NUnit.Framework;
 namespace Microsoft.Owin.CertificateValidators.Tests
 {
     [TestFixture]
-    [Ignore("Infrastructure tests")]
+    //[Ignore("Infrastructure tests")]
     internal class PinningValidatorsTests
     {
         [Test]
         public void GetCertificateSubjectPublicKeyInfo()
         {
             //ARRANGE
+            var tt = typeof(CertificateValidatorResolver).AssemblyQualifiedName;
             using (var store = new X509Store("TestCertStore", StoreLocation.LocalMachine))
             {
                 store.Open(OpenFlags.OpenExistingOnly);

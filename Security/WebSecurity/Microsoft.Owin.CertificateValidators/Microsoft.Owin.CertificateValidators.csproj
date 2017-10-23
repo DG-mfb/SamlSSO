@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CertificateValidatorResolver.cs" />
     <Compile Include="Initialisation\BackchannelValidatorsInitialiser.cs" />
     <Compile Include="PinningSertificateValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

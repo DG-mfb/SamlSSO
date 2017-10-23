@@ -116,6 +116,10 @@
       <Project>{8CE800B3-084A-4900-BEC3-27B81707ADC9}</Project>
       <Name>Provider.EntityFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Security\WebSecurity\Microsoft.Owin.CertificateValidators\Microsoft.Owin.CertificateValidators.csproj">
+      <Project>{854EDCFA-6E4B-4EFE-9691-A51E43B32A06}</Project>
+      <Name>Microsoft.Owin.CertificateValidators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Serialisation\Serialisation.JSON\Serialisation.JSON.csproj">
       <Project>{4EB8AB3B-2E70-410F-AA9B-8F1C9490FA3A}</Project>
       <Name>Serialisation.JSON</Name>

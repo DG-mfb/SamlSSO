@@ -4,6 +4,6 @@ namespace Kernel.Security.Validation
 {
     public interface ICertificateValidatorResolver
     {
-        IEnumerable<TValidator> Resolve<TValidator>();
+        IEnumerable<TValidator> Resolve<TValidator>(string partnerId) where TValidator : class;
     }
 }

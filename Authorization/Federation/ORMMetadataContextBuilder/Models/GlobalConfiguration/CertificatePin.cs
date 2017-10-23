@@ -1,4 +1,5 @@
 ﻿using Kernel.Data;
+using Kernel.Security.Configuration;
 
 namespace ORMMetadataContextProvider.Models.GlobalConfiguration
 {
