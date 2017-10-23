@@ -13,28 +13,33 @@ namespace Microsoft.Owin.CertificateValidators
         {
             this._configurationProvider = configurationProvider;
         }
-        public IEnumerable<TValidator> Resolve<TValidator>(string partnerId) where TValidator : class
+        public IEnumerable<TValidator> Resolve<TValidator>(Uri partnerId) where TValidator : class
         {
             if (!typeof(IPinningSertificateValidator).IsAssignableFrom(typeof(TValidator)))
                 return Enumerable.Empty<TValidator>();
 
-            if (String.IsNullOrWhiteSpace(partnerId))
+            if (partnerId == null)
                 throw new ArgumentNullException("partnerId");
             var configuration = this._configurationProvider.GeBackchannelConfiguration(partnerId);
+            return this.Resolve(configuration).Cast<TValidator>();
+        }
+
+        public IEnumerable<IPinningSertificateValidator> Resolve(BackchannelConfiguration configuration)
+        {
             var pins = configuration.Pins;
-            if(pins == null || pins.Count == 0)
-                return Enumerable.Empty<TValidator>();
+            if (pins == null || pins.Count == 0)
+                return Enumerable.Empty<IPinningSertificateValidator>();
 
             var validThumbprints = pins.ContainsKey(PinType.Thumbprint) ? pins[PinType.Thumbprint] : Enumerable.Empty<string>();
-            var thumbprintValidator = new ThumbprintValidator(validThumbprints) as TValidator;
+            var thumbprintValidator = new ThumbprintValidator(validThumbprints);
 
             var validSubjectKeyIdentifiers = pins.ContainsKey(PinType.SubjectKeyIdentifier) ? pins[PinType.SubjectKeyIdentifier] : Enumerable.Empty<string>();
-            var subjectKeyIdentifierValidator = validSubjectKeyIdentifiers.Count() == 0 ? default(TValidator) : new SubjectKeyIdentifierValidator(validSubjectKeyIdentifiers) as TValidator;
+            var subjectKeyIdentifierValidator = validSubjectKeyIdentifiers.Count() == 0 ? (IPinningSertificateValidator)null : new SubjectKeyIdentifierValidator(validSubjectKeyIdentifiers);
 
             var validBase64EncodedSubjectPublicKeyInfoHashes = pins.ContainsKey(PinType.SubjectPublicKeyInfo) ? pins[PinType.SubjectPublicKeyInfo] : Enumerable.Empty<string>();
-            var subjectPublicKeyInfoValidator = validBase64EncodedSubjectPublicKeyInfoHashes.Count() == 0 ? default(TValidator) : new SubjectPublicKeyInfoValidator(validSubjectKeyIdentifiers, Security.SubjectPublicKeyInfoAlgorithm.Sha256) as TValidator;
+            var subjectPublicKeyInfoValidator = validBase64EncodedSubjectPublicKeyInfoHashes.Count() == 0 ? (IPinningSertificateValidator)null : new SubjectPublicKeyInfoValidator(validSubjectKeyIdentifiers, Security.SubjectPublicKeyInfoAlgorithm.Sha256);
 
-            return new [] { thumbprintValidator, subjectKeyIdentifierValidator, subjectPublicKeyInfoValidator };
+            return new[] { thumbprintValidator, subjectKeyIdentifierValidator, subjectPublicKeyInfoValidator };
         }
     }
 }

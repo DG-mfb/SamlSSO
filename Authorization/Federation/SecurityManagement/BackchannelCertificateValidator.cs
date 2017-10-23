@@ -33,8 +33,8 @@ namespace SecurityManagement
                 return true;
 #endif
             this._logProvider.LogMessage(String.Format("Validating backhannel certificate. sslPolicyErrors was: {0}", sslPolicyErrors));
-            var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(httpMessage);
-            var configiration = this._configurationProvider.GeBackchannelConfiguration(federationPartyId);
+            
+            var configiration = this._configurationProvider.GeBackchannelConfiguration(httpMessage.RequestUri);
             var context = new BackchannelCertificateValidationContext(certificate, chain, sslPolicyErrors);
             
             //if pinning validation is enabled it take precedence
@@ -46,7 +46,7 @@ namespace SecurityManagement
                 var instance = BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory(type);
                 if (instance != null)
                 {
-                    var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId)
+                    var validators = instance.Resolve(configiration)
                         .Where(x => x != null)
                         .ToList();
 

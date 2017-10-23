@@ -44,6 +44,30 @@ namespace ORMMetadataContextProvider.Security
             this._cacheProvider.Put(key, configuration);
             return configuration;
         }
+        public BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri)
+        {
+            var key = String.Format(CertificateValidationConfigurationProvider.PinsKey, partyUri.AbsoluteUri);
+            if (this._cacheProvider.Contains(key))
+                return this._cacheProvider.Get<BackchannelConfiguration>(key);
+
+            var settings = this._dbContext.Set<FederationPartySettings>()
+                .Where(x => x.MetadataPath == partyUri.AbsoluteUri)
+                .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
+                .FirstOrDefault();
+            if (settings is null)
+                throw new InvalidOperationException(String.Format("No federationParty configuration found for federationPartyId: {0}", partyUri.AbsoluteUri));
+
+            var configuration = new BackchannelConfiguration
+            {
+                UsePinningValidation = settings.SecuritySettings.PinnedValidation,
+                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor(settings.SecuritySettings.PinnedTypeValidator)
+            };
+
+            configuration.Pins = settings.Pins.GroupBy(k => k.PinType, v => v.Value)
+                .ToDictionary(k => k.Key, v => v.Select(r => r));
+            this._cacheProvider.Put(key, configuration);
+            return configuration;
+        }
 
         public CertificateValidationConfiguration GetConfiguration(string federationPartyId)
         {

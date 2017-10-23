@@ -21,6 +21,12 @@ namespace SecurityManagement.Tests.Mock
         {
             return this._func();
         }
+
+        public BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri)
+        {
+            throw new NotImplementedException();
+        }
+
         public BackchannelConfiguration GeBackchannelConfiguration(string federationPartyId)
         {
             return this._backChannelfunc();

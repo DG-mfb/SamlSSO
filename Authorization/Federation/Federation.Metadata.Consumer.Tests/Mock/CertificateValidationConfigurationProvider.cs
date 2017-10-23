@@ -22,5 +22,10 @@ namespace Federation.Metadata.Consumer.Tests.Mock
         public void Dispose()
         {
         }
+
+        public BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -56,6 +56,13 @@ namespace SecurityManagement
             return this.GetCertificate(store);
         }
 
+        public string GetCertificateThumbprint(X509Certificate2 certificate)
+        {
+            if (certificate == null)
+                throw new ArgumentNullException("certificate");
+            return certificate.Thumbprint;
+        }
+
         public ICertificateStore GetStoreFromContext(CertificateContext certContext)
         {
             var sb = new StringBuilder();

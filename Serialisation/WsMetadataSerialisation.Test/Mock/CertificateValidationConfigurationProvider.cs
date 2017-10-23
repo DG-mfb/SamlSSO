@@ -17,6 +17,11 @@ namespace WsMetadataSerialisation.Test.Mock
         {
             throw new NotImplementedException();
         }
+        public BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
         }

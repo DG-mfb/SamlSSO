@@ -7,5 +7,6 @@ namespace Kernel.Security.Validation
     {
         CertificateValidationConfiguration GetConfiguration(string federationPartyId);
         BackchannelConfiguration GeBackchannelConfiguration(string federationPartyId);
+        BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri);
     }
 }
