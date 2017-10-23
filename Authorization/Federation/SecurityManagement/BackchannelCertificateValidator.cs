@@ -38,33 +38,28 @@ namespace SecurityManagement
             var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(httpMessage);
             var configiration = this.GetConfiguration(federationPartyId);
             var context = new BackchannelCertificateValidationContext(certificate, chain, sslPolicyErrors);
-
-            //ToDo: complete pinning validation. Moved to back log on 27/09/2017
+            //if pinning validation is enabled it take precedence
             if (configiration.UsePinningValidation && configiration.BackchannelValidatorResolver != null)
             {
                 _logProvider.LogMessage(String.Format("Pinning validation entered. Validator type: {0}", configiration.BackchannelValidatorResolver.Type));
-                try
-                {
+                
                     var type = configiration.BackchannelValidatorResolver.Type;
                     var instance = BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory(type);
-                    if(instance != null)
-                    {
-                        var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId)
-                            .Where(x => x != null)
-                            .ToList();
-                        
-                        return true;
-                    }
-                }
-                catch(Exception ex)
+                if (instance != null)
                 {
-                    Exception innerEx;
-                    this._logProvider.TryLogException(ex, out innerEx);
-                    this._logProvider.LogMessage(String.Format("Despite an error occurred validation passed. Error: {0}", ex.Message));
-                    return true;
+                    var validators = instance.Resolve<IPinningSertificateValidator>(federationPartyId)
+                        .Where(x => x != null)
+                        .ToList();
+
+                    Func<object, BackchannelCertificateValidationContext, Task> seed1 = (o, c) => Task.CompletedTask;
+                    var del = validators.Aggregate(seed1, (next, validator) => new Func<object, BackchannelCertificateValidationContext, Task>((o, c) => validator.Validate(o, c, next)));
+                    var backChannelValidationTask = del(sender, context);
+                    backChannelValidationTask.Wait();
+                    return context.IsValid;
                 }
             }
 
+            //if pinning validation is desabled run validation rules if any
             //default rule. SslPolicyErrors no error vaidation. To ve reviewed
             Func<BackchannelCertificateValidationContext, Task> seed = x =>
             {
