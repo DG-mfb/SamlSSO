@@ -11,6 +11,9 @@ using Kernel.Security.Validation;
 
 namespace Federation.Metadata.HttpRetriever
 {
+    /// <summary>
+    /// Retrieve metadata document from given Url
+    /// </summary>
     public class HttpDocumentRetriever : IDocumentRetriever
     {
         static HttpDocumentRetriever()
@@ -25,6 +28,10 @@ namespace Federation.Metadata.HttpRetriever
         public long MaxResponseContentBufferSize { get; set; }
         public ICustomConfigurator<HttpDocumentRetriever> HttpDocumentRetrieverConfigurator { private get; set; }
 
+        /// <summary>
+        /// Initialise an instance of Http document retriever
+        /// </summary>
+        /// <param name="backchannelCertificateValidator"></param>
         public HttpDocumentRetriever(IBackchannelCertificateValidator backchannelCertificateValidator)
         {
             if (backchannelCertificateValidator == null)
@@ -36,6 +43,12 @@ namespace Federation.Metadata.HttpRetriever
             this.RequireHttps = true;
         }
 
+        /// <summary>
+        /// Retrieve a detadata document from the web
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="cancel"></param>
+        /// <returns></returns>
         public async Task<string> GetDocumentAsync(string address, CancellationToken cancel)
         {
             if (string.IsNullOrWhiteSpace(address))

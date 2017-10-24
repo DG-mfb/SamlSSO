@@ -18,6 +18,15 @@ namespace SecurityManagement
         {
             this._logProvider = logProvider;
         }
+
+        /// <summary>
+        /// Try to add a certifictae to a store in given location. Optionally it creates the store if it doesn't exist
+        /// </summary>
+        /// <param name="storeName"></param>
+        /// <param name="location"></param>
+        /// <param name="certificate"></param>
+        /// <param name="createIfNotExist"></param>
+        /// <returns></returns>
         public bool TryAddCertificateToStore(string storeName, StoreLocation location, X509Certificate2 certificate, bool createIfNotExist)
         {
             try
@@ -38,11 +47,22 @@ namespace SecurityManagement
             }
         }
 
+        /// <summary>
+        /// Instantiate X509Certificate2 from a certifictae file and password
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public X509Certificate2 GetCertificate(string path, SecureString password)
         {
             return new X509Certificate2(path, password);
         }
 
+        /// <summary>
+        /// Instantiate X509Certificate2 from a given certificate store
+        /// </summary>
+        /// <param name="store"></param>
+        /// <returns></returns>
         public X509Certificate2 GetCertificate(ICertificateStore store)
         {
             if (store == null)
@@ -50,12 +70,22 @@ namespace SecurityManagement
             return store.GetX509Certificate2();
         }
 
+        /// <summary>
+        /// Instantiate X509Certificate2 from certificate context. 
+        /// </summary>
+        /// <param name="certContext"></param>
+        /// <returns></returns>
         public X509Certificate2 GetCertificateFromContext(CertificateContext certContext)
         { 
             var store = this.GetStoreFromContext(certContext);
             return this.GetCertificate(store);
         }
 
+        /// <summary>
+        /// Get certificate thumbprint
+        /// </summary>
+        /// <param name="certificate"></param>
+        /// <returns></returns>
         public string GetCertificateThumbprint(X509Certificate2 certificate)
         {
             if (certificate == null)
@@ -63,6 +93,11 @@ namespace SecurityManagement
             return certificate.Thumbprint;
         }
 
+        /// <summary>
+        /// Get x509 store from certificate context. Only x509 store supported.
+        /// </summary>
+        /// <param name="certContext"></param>
+        /// <returns></returns>
         public ICertificateStore GetStoreFromContext(CertificateContext certContext)
         {
             var sb = new StringBuilder();
@@ -80,6 +115,12 @@ namespace SecurityManagement
             return new X509StoreCertificateConfiguration(x509Context);
         }
 
+        /// <summary>
+        /// Sign data and encode it as base64
+        /// </summary>
+        /// <param name="dataToSign"></param>
+        /// <param name="certContext"></param>
+        /// <returns></returns>
         public string SignToBase64(string dataToSign, CertificateContext certContext)
         {
             this._logProvider.LogMessage(String.Format("Signing data with certificate from context: {0}", certContext.ToString()));
@@ -91,6 +132,13 @@ namespace SecurityManagement
             return base64;
         }
 
+        /// <summary>
+        /// Varify signature
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="signed"></param>
+        /// <param name="certContext"></param>
+        /// <returns></returns>
         public bool VerifySignatureFromBase64(string data, string signed, CertificateContext certContext)
         {
             var dataBytes = Encoding.UTF8.GetBytes(data);
@@ -101,6 +149,12 @@ namespace SecurityManagement
             return verified;
         }
 
+        /// <summary>
+        /// Try to extract subject public key information from certificate
+        /// </summary>
+        /// <param name="certificate"></param>
+        /// <param name="spkiEncoded"></param>
+        /// <returns></returns>
         public bool TryExtractSpkiBlob(X509Certificate2 certificate, out string spkiEncoded)
         {
             try
@@ -118,6 +172,11 @@ namespace SecurityManagement
             }
         }
 
+        /// <summary>
+        /// Get subject identifier from the certificate
+        /// </summary>
+        /// <param name="certificate"></param>
+        /// <returns></returns>
         public string GetSubjectKeyIdentifier(X509Certificate2 certificate)
         {
             if (certificate == null)

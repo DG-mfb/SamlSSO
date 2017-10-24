@@ -7,6 +7,9 @@ using Kernel.Federation.MetaData;
 
 namespace Shared.Federtion
 {
+    /// <summary>
+    /// Writes metadata xml to a stream
+    /// </summary>
     public abstract class MetadataWriter : IFederationMetadataWriter
     {
         public Task Write(XmlElement xml, MetadataPublishContext target)

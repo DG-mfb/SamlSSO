@@ -10,6 +10,11 @@ using SecurityManagement.BackchannelCertificateValidationRules;
 
 namespace SecurityManagement
 {
+    /// <summary>
+    /// Backchannel certificate validator. Validates remote certificate for https.
+    /// Perform validation as follows: Locates pinning validators if enabled and invoke all in chain.
+    /// if validated no more validation is perfrmed, run custom validation rules otherwise
+    /// </summary>
     internal class BackchannelCertificateValidator : IBackchannelCertificateValidator
     {
         private readonly ILogProvider _logProvider;

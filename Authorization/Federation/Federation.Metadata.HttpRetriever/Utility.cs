@@ -4,6 +4,11 @@ namespace Federation.Metadata.HttpRetriever
 {
     internal static class Utility
     {
+        /// <summary>
+        /// Checks if the url address is https
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public static bool IsHttps(string address)
         {
             if (string.IsNullOrEmpty(address))
@@ -19,6 +24,11 @@ namespace Federation.Metadata.HttpRetriever
             }
         }
 
+        /// <summary>
+        /// Checks if the url address is https
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public static bool IsHttps(Uri uri)
         {
             if (uri == (Uri)null)

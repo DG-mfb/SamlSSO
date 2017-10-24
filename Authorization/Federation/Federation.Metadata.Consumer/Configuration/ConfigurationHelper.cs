@@ -5,12 +5,18 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Kernel.DependancyResolver;
 using Kernel.Federation.MetaData;
+using Kernel.Security.CertificateManagement;
 using Shared.Federtion.Factories;
 
 namespace Federation.Metadata.FederationPartner.Configuration
 {
     internal class ConfigurationHelper
     {
+        /// <summary>
+        /// Invoke after metadata is retrieved and parsed
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <param name="dependencyResolver"></param>
         public static void OnReceived(MetadataBase metadata, IDependencyResolver dependencyResolver)
         {
             if (metadata == null)
@@ -24,9 +30,10 @@ namespace Federation.Metadata.FederationPartner.Configuration
             var handler = dependencyResolver.Resolve(handlerType) as IMetadataHandler;
             if (handler == null)
                 throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
-            
             var idps = handler.GetIdentityProviderSingleSignOnDescriptor(metadata);
 
+            var certManager = dependencyResolver.Resolve<ICertificateManager>();
+            //Default WIF implementation change if another policy is in place. Used to validate the issuer when building the claims
             var identityRegister = SecurityTokenHandlerConfiguration.DefaultIssuerNameRegistry as ConfigurationBasedIssuerNameRegistry;
             if (identityRegister == null)
                 return;
@@ -43,7 +50,7 @@ namespace Federation.Metadata.FederationPartner.Configuration
             }))).Aggregate(identityRegister, (t, next) => 
             {
                 if (!identityRegister.ConfiguredTrustedIssuers.Keys.Contains(next.Thumbprint))
-                    identityRegister.AddTrustedIssuer(next.Thumbprint, entityId);
+                    identityRegister.AddTrustedIssuer(certManager.GetCertificateThumbprint(next), entityId);
                 return t;
             });
         }

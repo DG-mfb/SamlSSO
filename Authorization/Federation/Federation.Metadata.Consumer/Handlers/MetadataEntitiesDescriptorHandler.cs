@@ -5,6 +5,9 @@ using Kernel.Federation.MetaData;
 
 namespace Federation.Metadata.FederationPartner.Handlers
 {
+    /// <summary>
+    /// Handles multi entities metadata format
+    /// </summary>
     internal class MetadataEntitiesDescriptorHandler : MetadataHandler, IMetadataHandler<EntitiesDescriptor>
     {
         public IEnumerable<TRole> GetRoleDescriptors<TRole>(EntitiesDescriptor metadata)
