@@ -68,11 +68,11 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AuthenticationProviders\Microsoft.AspNet.Identity.Providers\AspNet.EntityFramework.IdentityProvider\AspNet.EntityFramework.IdentityProvider.csproj">
+    <ProjectReference Include="..\AspNet.EntityFramework.IdentityProvider\AspNet.EntityFramework.IdentityProvider.csproj">
       <Project>{b7bb0207-1471-4a4f-a939-9addb99f8249}</Project>
       <Name>AspNet.EntityFramework.IdentityProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kernel\Kernel.Data\Kernel.Data.csproj">
+    <ProjectReference Include="..\..\..\Kernel\Kernel.Data\Kernel.Data.csproj">
       <Project>{58F76882-5E21-452F-A070-76D468D6E27C}</Project>
       <Name>Kernel.Data</Name>
     </ProjectReference>

@@ -123,6 +123,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kernel.Security", "Kernel\K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Owin.CertificateValidators.Tests", "Security\Microsoft.Owin.CertificateValidators.Tests\Microsoft.Owin.CertificateValidators.Tests.csproj", "{0F2C1E30-2D35-4B24-8C7B-752407A5037B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthenticationProviders", "AuthenticationProviders", "{6D1DC5B4-6414-4F38-B95B-A4BFA9C4BB48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNet.Identity.Owin.Provider", "AuthenticationProviders\Microsoft.AspNet.Identity.Owin.Provider\Microsoft.AspNet.Identity.Owin.Provider.csproj", "{2D6AD899-DDCF-4457-97B4-27ACC61929AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNet.Identity.Owin.Provider.Tests", "AuthenticationProviders\Microsoft.AspNet.Identity.Owin.Provider.Tests\Microsoft.AspNet.Identity.Owin.Provider.Tests.csproj", "{B52944DB-9943-407D-9656-B488370BD204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.EntityFramework.IdentityProvider", "AuthenticationProviders\Microsoft.AspNet.Identity.Providers\AspNet.EntityFramework.IdentityProvider\AspNet.EntityFramework.IdentityProvider.csproj", "{B7BB0207-1471-4A4F-A939-9ADDB99F8249}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.AspNet.Identity.Providers", "Microsoft.AspNet.Identity.Providers", "{0E1C09AD-279E-4373-8044-A4BEC52356A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.EntityFramework.IdentityProvider.Tests", "AuthenticationProviders\Microsoft.AspNet.Identity.Providers\AspNet.EntityFramework.IdentityProvider.Tests\AspNet.EntityFramework.IdentityProvider.Tests.csproj", "{F246D541-91B2-4BF2-9F4F-9BD2944F5926}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -313,6 +325,22 @@ Global
 		{0F2C1E30-2D35-4B24-8C7B-752407A5037B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F2C1E30-2D35-4B24-8C7B-752407A5037B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F2C1E30-2D35-4B24-8C7B-752407A5037B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D6AD899-DDCF-4457-97B4-27ACC61929AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6AD899-DDCF-4457-97B4-27ACC61929AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6AD899-DDCF-4457-97B4-27ACC61929AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6AD899-DDCF-4457-97B4-27ACC61929AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B52944DB-9943-407D-9656-B488370BD204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B52944DB-9943-407D-9656-B488370BD204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B52944DB-9943-407D-9656-B488370BD204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B52944DB-9943-407D-9656-B488370BD204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7BB0207-1471-4A4F-A939-9ADDB99F8249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7BB0207-1471-4A4F-A939-9ADDB99F8249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7BB0207-1471-4A4F-A939-9ADDB99F8249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7BB0207-1471-4A4F-A939-9ADDB99F8249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F246D541-91B2-4BF2-9F4F-9BD2944F5926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F246D541-91B2-4BF2-9F4F-9BD2944F5926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F246D541-91B2-4BF2-9F4F-9BD2944F5926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F246D541-91B2-4BF2-9F4F-9BD2944F5926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -367,6 +395,11 @@ Global
 		{854EDCFA-6E4B-4EFE-9691-A51E43B32A06} = {FDBEE45B-1577-42E8-807A-48A574D239BF}
 		{7C4225E8-700D-4FEE-9BBB-28A935364F05} = {B659F5BF-19B6-48C7-885A-1CA767049A8C}
 		{0F2C1E30-2D35-4B24-8C7B-752407A5037B} = {FDBEE45B-1577-42E8-807A-48A574D239BF}
+		{2D6AD899-DDCF-4457-97B4-27ACC61929AF} = {6D1DC5B4-6414-4F38-B95B-A4BFA9C4BB48}
+		{B52944DB-9943-407D-9656-B488370BD204} = {6D1DC5B4-6414-4F38-B95B-A4BFA9C4BB48}
+		{B7BB0207-1471-4A4F-A939-9ADDB99F8249} = {0E1C09AD-279E-4373-8044-A4BEC52356A7}
+		{0E1C09AD-279E-4373-8044-A4BEC52356A7} = {6D1DC5B4-6414-4F38-B95B-A4BFA9C4BB48}
+		{F246D541-91B2-4BF2-9F4F-9BD2944F5926} = {0E1C09AD-279E-4373-8044-A4BEC52356A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4F5021-8BA2-4CB0-959B-4E49D190605D}
