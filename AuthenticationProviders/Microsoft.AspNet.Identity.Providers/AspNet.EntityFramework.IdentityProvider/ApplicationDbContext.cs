@@ -1,8 +1,11 @@
-﻿using AspNet.EntityFramework.IdentityProvider.Models;
+﻿using System.Data.Entity;
+using AspNet.EntityFramework.IdentityProvider.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Provider.EntityFramework.Configurtion;
 
 namespace AspNet.EntityFramework.IdentityProvider
 {
+    [DbConfigurationType(typeof(CustomDbConfiguration))]
     internal class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()

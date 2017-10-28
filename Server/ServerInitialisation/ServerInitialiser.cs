@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AspNet.EntityFramework.IdentityProvider.Initialisation;
 using DeflateCompression.Initialisation;
 using Federation.Logging.Initialisation;
 using Federation.Metadata.FederationPartner.Initialisation;
@@ -15,6 +16,7 @@ using Kernel.Initialisation;
 using Kernel.Logging;
 using Kernel.Reflection;
 using MemoryCacheProvider.Initialisation;
+using Microsoft.AspNet.Identity.Owin.Provider.Initialisation;
 using Microsoft.Owin.CertificateValidators.Initialisation;
 using OAuthAuthorisationService.Initialisation;
 using ORMMetadataContextProvider.Initialisation;
@@ -41,7 +43,7 @@ namespace ServerInitialisation
                 yield return typeof(WebClientMetadataWriterInitialiser).Assembly;
                 yield return typeof(MetadataSerialisationInitialiser).Assembly;
                 yield return typeof(XmlSerializerInitialiser).Assembly;
-                //yield return typeof(InlineMetadaContextProviderInitialiser).Assembly;
+                yield return typeof(IdentityInitialiser).Assembly;
                 yield return typeof(HttpDocumentRetrieverInitialiser).Assembly;
                 yield return typeof(MetadataFederationPartnerInitialiser).Assembly;
                 yield return typeof(ORMMetadataContextProviderInitialiser).Assembly;
@@ -55,6 +57,7 @@ namespace ServerInitialisation
                 yield return typeof(JsonSerializerInitialiser).Assembly;
                 yield return typeof(WindowsEventLogLoggerInitialiser).Assembly;
                 yield return typeof(BackchannelValidatorsInitialiser).Assembly;
+                yield return typeof(OwinIdentityInitialiser).Assembly;
             }
         }
 

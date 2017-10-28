@@ -5,7 +5,7 @@ using Provider.EntityFramework.Interseptors;
 
 namespace Provider.EntityFramework.Configurtion
 {
-    internal class CustomDbConfiguration : DbConfiguration
+    public class CustomDbConfiguration : DbConfiguration
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomDbConfiguration" /> class, providing custom cache key for the

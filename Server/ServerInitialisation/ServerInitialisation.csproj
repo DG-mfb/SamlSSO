@@ -44,6 +44,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AuthenticationProviders\Microsoft.AspNet.Identity.Owin.Provider\Microsoft.AspNet.Identity.Owin.Provider.csproj">
+      <Project>{2D6AD899-DDCF-4457-97B4-27ACC61929AF}</Project>
+      <Name>Microsoft.AspNet.Identity.Owin.Provider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AuthenticationProviders\Microsoft.AspNet.Identity.Providers\AspNet.EntityFramework.IdentityProvider\AspNet.EntityFramework.IdentityProvider.csproj">
+      <Project>{B7BB0207-1471-4A4F-A939-9ADDB99F8249}</Project>
+      <Name>AspNet.EntityFramework.IdentityProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Authorization\Federation\Federation.Logging\Federation.Logging.csproj">
       <Project>{FABF809F-F00C-430C-AF7A-5639240A641F}</Project>
       <Name>Federation.Logging</Name>
@@ -132,6 +140,9 @@
       <Project>{D63B92B8-863B-493D-8117-0960DB06B554}</Project>
       <Name>WsMetadataSerialisation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
