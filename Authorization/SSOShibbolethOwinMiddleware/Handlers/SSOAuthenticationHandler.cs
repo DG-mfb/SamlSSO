@@ -23,9 +23,7 @@ namespace SSOOwinMiddleware.Handlers
 {
     internal class SSOAuthenticationHandler : AuthenticationHandler<SSOAuthenticationOptions>
     {
-        private const string HandledResponse = "HandledResponse";
         private readonly ILogger _logger;
-        private MetadataBase _configuration;
         private readonly IDependencyResolver _resolver;
 
         public SSOAuthenticationHandler(ILogger logger, IDependencyResolver resolver)
@@ -61,8 +59,7 @@ namespace SSOOwinMiddleware.Handlers
                         }
 
                         IFormCollection form = await this.Request.ReadFormAsync();
-
-                        //ToDo: clean up get the associated request
+                        
                         var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
                         var protocolHanlder = protocolFactory(Bindings.Http_Post);
 
@@ -111,18 +108,18 @@ namespace SSOOwinMiddleware.Handlers
             {
                 this._logger.WriteInformation(String.Format("Applying chanllenge for authenticationType: {0}, authenticationMode: {1}. Path: {2}", this.Options.AuthenticationType, this.Options.AuthenticationMode, this.Request.Path));
                 var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(Request.Context);
-                if (this._configuration == null)
-                {
-                    var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
-                    this._configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new CancellationToken());
-                }
                 
-                var metadataType = this._configuration.GetType();
+                var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
+                var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new CancellationToken());
+                
+                if (configuration == null)
+                    throw new InvalidOperationException("Cannot obtain metadata.");
+                var metadataType = configuration.GetType();
                 var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
                 var handler = this._resolver.Resolve(handlerType) as IMetadataHandler;
                 if (handler == null)
                     throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
-                var idp = handler.GetIdentityProviderSingleSignOnDescriptor(this._configuration)
+                var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
                     .Single();
 
                 var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
