@@ -32,11 +32,6 @@ namespace SecurityManagement
         {
             var httpMessage = sender as HttpWebRequest;
             
-            //
-#if (DEBUG)
-            if (httpMessage != null && httpMessage.Address.AbsoluteUri.Contains("dg-mfb"))
-                return true;
-#endif
             this._logProvider.LogMessage(String.Format("Validating backhannel certificate. sslPolicyErrors was: {0}", sslPolicyErrors));
             
             var configiration = this._configurationProvider.GeBackchannelConfiguration(httpMessage.RequestUri);

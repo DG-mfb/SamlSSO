@@ -32,14 +32,14 @@ namespace Microsoft.Owin.CertificateValidators
 
             var validThumbprints = pins.ContainsKey(PinType.Thumbprint) ? pins[PinType.Thumbprint] : Enumerable.Empty<string>();
             var thumbprintValidator = new ThumbprintValidator(validThumbprints);
-
+            var local = new LocalThumbprintValidator(validThumbprints);
             var validSubjectKeyIdentifiers = pins.ContainsKey(PinType.SubjectKeyIdentifier) ? pins[PinType.SubjectKeyIdentifier] : Enumerable.Empty<string>();
             var subjectKeyIdentifierValidator = validSubjectKeyIdentifiers.Count() == 0 ? (IPinningSertificateValidator)null : new SubjectKeyIdentifierValidator(validSubjectKeyIdentifiers);
 
             var validBase64EncodedSubjectPublicKeyInfoHashes = pins.ContainsKey(PinType.SubjectPublicKeyInfo) ? pins[PinType.SubjectPublicKeyInfo] : Enumerable.Empty<string>();
             var subjectPublicKeyInfoValidator = validBase64EncodedSubjectPublicKeyInfoHashes.Count() == 0 ? (IPinningSertificateValidator)null : new SubjectPublicKeyInfoValidator(validSubjectKeyIdentifiers, Security.SubjectPublicKeyInfoAlgorithm.Sha256);
 
-            return new[] { thumbprintValidator, subjectKeyIdentifierValidator, subjectPublicKeyInfoValidator };
+            return new[] {local, thumbprintValidator, subjectKeyIdentifierValidator, subjectPublicKeyInfoValidator };
         }
     }
 }
