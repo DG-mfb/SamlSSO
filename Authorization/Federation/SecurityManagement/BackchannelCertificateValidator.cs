@@ -58,7 +58,7 @@ namespace SecurityManagement
                 }
             }
 
-            //if pinning validation is desabled run validation rules if any
+            //if pinning validation is disabled run validation rules if any
             //default rule. SslPolicyErrors no error vaidation. To ve reviewed
             Func<BackchannelCertificateValidationContext, Task> seed = x =>
             {

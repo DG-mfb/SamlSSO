@@ -30,8 +30,8 @@ namespace ORMMetadataContextProvider.FederationParty
             var federationPartyAuthnRequestConfiguration = this.BuildFederationPartyAuthnRequestConfiguration(federationPartyContext.AutnRequestSettings, federationPartyContext.MetadataSettings.SPDescriptorSettings.EntityId);
             context.FederationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration;
             
-            context.RefreshInterval = TimeSpan.FromSeconds(federationPartyContext.RefreshInterval);
-            context.AutomaticRefreshInterval = TimeSpan.FromDays(federationPartyContext.AutoRefreshInterval);
+            context.RefreshInterval = MetadataHelper.TimeSpanFromDatapartEntry(federationPartyContext.RefreshInterval);
+            context.AutomaticRefreshInterval = MetadataHelper.TimeSpanFromDatapartEntry(federationPartyContext.AutoRefreshInterval);
             this.BuildMetadataContext(context, federationPartyContext.MetadataSettings);
             object policy = new MemoryCacheItemPolicy();
             ((ICacheItemPolicy)policy).SlidingExpiration = TimeSpan.FromDays(1);

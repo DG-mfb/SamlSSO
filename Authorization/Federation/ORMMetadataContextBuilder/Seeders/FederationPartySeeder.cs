@@ -27,8 +27,8 @@ namespace ORMMetadataContextProvider.Seeders
 
             var imperialFederationParty = new FederationPartySettings
             {
-                RefreshInterval = 30,
-                AutoRefreshInterval = 1000,
+                RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
+                AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
                 MetadataPath = "https://shibboleth.imperial.ac.uk/idp/shibboleth",
                 MetadataLocation = "HTTP",
                 FederationPartyId = "imperial.ac.uk"
@@ -40,8 +40,8 @@ namespace ORMMetadataContextProvider.Seeders
             //shibboleth test metadata settings
             var testFederationParty = new FederationPartySettings
             {
-                RefreshInterval = 30,
-                AutoRefreshInterval = 1000,
+                RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
+                AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
                 MetadataPath = "https://www.testshib.org/metadata/testshib-providers.xml",
                 MetadataLocation = "HTTP",
                 FederationPartyId = "testShib"
@@ -53,8 +53,8 @@ namespace ORMMetadataContextProvider.Seeders
             //local
             var localFederationParty = new FederationPartySettings
             {
-                RefreshInterval = 30,
-                AutoRefreshInterval = 1000,
+                RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
+                AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
                 MetadataPath = "https://dg-mfb/idp/shibboleth",
                 MetadataLocation = "HTTP",
                 FederationPartyId = "local"

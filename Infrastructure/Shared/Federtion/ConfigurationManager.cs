@@ -81,6 +81,7 @@ namespace Shared.Federtion
 
                         context.LastRefresh = now;
                         context.SyncAfter = DataTimeExtensions.Add(now.UtcDateTime, context.AutomaticRefreshInterval);
+                        ConfigurationManager<T>._congigurationCache.TryAdd(context.FederationPartyId, currentConfiguration);
                     }
                     catch (Exception ex)
                     {
@@ -89,7 +90,6 @@ namespace Shared.Federtion
                     }
                 }
 
-                ConfigurationManager<T>._congigurationCache.TryAdd(context.FederationPartyId, currentConfiguration);
                 return currentConfiguration;
             }
             finally

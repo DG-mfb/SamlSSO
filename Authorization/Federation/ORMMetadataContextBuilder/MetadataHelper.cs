@@ -56,6 +56,26 @@ namespace ORMMetadataContextProvider
             return keyDescriptorConfiguration;
         }
 
+        internal static TimeSpan TimeSpanFromDatapartEntry(DatepartValue datepart)
+        {
+            if (datepart == null)
+                throw new ArgumentNullException("datepart");
+
+            switch (datepart.Datepart)
+            {
+                case Datapart.Second:
+                    return TimeSpan.FromSeconds(datepart.Value);
+                case Datapart.Minute:
+                    return TimeSpan.FromMinutes(datepart.Value);
+                case Datapart.Hour:
+                    return TimeSpan.FromHours(datepart.Value);
+                case Datapart.Day:
+                    return TimeSpan.FromDays(datepart.Value);
+                default:
+                    throw new NotSupportedException(String.Format("data part not supported: {0}", datepart));
+            }
+        }
+
         private static OrganisationConfiguration BuidOrganisationConfiguration(OrganisationSettings organisationSettings)
         {
             var orgConfiguration = new OrganisationConfiguration
@@ -169,23 +189,6 @@ namespace ORMMetadataContextProvider
             });
 
             return sPSSODescriptorConfiguration;
-        }
-        
-        private static TimeSpan TimeSpanFromDatapartEntry(DatepartValue datepart)
-        {
-            switch(datepart.Datepart)
-            {
-                case Datapart.Second:
-                    return TimeSpan.FromSeconds(datepart.Value);
-                case Datapart.Minute:
-                    return TimeSpan.FromMinutes(datepart.Value);
-                case Datapart.Hour:
-                    return TimeSpan.FromHours(datepart.Value);
-                case Datapart.Day:
-                    return TimeSpan.FromDays(datepart.Value);
-                default:
-                    throw new NotSupportedException(String.Format("data part not supported: {0}", datepart));
-            }
         }
     }
 }

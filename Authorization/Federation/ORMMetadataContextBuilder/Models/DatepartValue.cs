@@ -5,6 +5,6 @@ namespace ORMMetadataContextProvider.Models
     public class DatepartValue : BaseModel
     {
         public Datapart Datepart { get; set; }
-        public uint Value { get; set; }
+        public short Value { get; set; }
     }
 }
