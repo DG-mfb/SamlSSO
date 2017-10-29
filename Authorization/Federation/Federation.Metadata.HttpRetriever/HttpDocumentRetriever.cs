@@ -6,8 +6,8 @@ using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using Kernel.Configuration;
-using Kernel.Federation.FederationPartner;
 using Kernel.Security.Validation;
+using Kernel.Web;
 
 namespace Federation.Metadata.HttpRetriever
 {

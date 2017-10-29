@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
+using Kernel.Web;
 
 namespace Federation.Metadata.FederationPartner.Configuration
 {
