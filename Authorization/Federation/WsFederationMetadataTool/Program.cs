@@ -16,7 +16,18 @@ namespace WsFederationMetadataTool
     {
         static void Main(string[] args)
         {
-            var path = @"D:\Dan\Software\Apira\SPMetadata\SPMetadataTest0123.xml";
+            var options = new Options();
+            if (CommandLine.Parser.Default.ParseArguments(args, options))
+            {
+                if (options.Verbose) Console.WriteLine("Filename: {0}", options.MetadataFilePath);
+            }
+            else
+            {
+                var usage = options.GetUsage();
+                Console.WriteLine(usage);
+                return;
+            }
+
             using (new InformationLogEventWriter())
             {
                 ApplicationConfiguration.RegisterDependencyResolver(() => new UnityDependencyResolver());
@@ -25,20 +36,33 @@ namespace WsFederationMetadataTool
                 task.Wait();
             }
 
-            var metadataTask = Program.CreateMetadata(path);
+            var metadataTask = Program.CreateMetadata(options);
             metadataTask.Wait();
+            Console.WriteLine("Press enter to exit.");
             Console.ReadLine();
         }
 
-        static async Task CreateMetadata(string path)
+        static async Task CreateMetadata(Options options)
         {
-            using (var fs = new FileStream(path, FileMode.OpenOrCreate))
+            if (File.Exists(options.MetadataFilePath))
             {
-                var federationParty = "local";//FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(c);
+                if (options.ReplaceFile)
+                    File.Delete(options.MetadataFilePath);
+                else
+                {
+                    Console.WriteLine(String.Format("File with the name: {0} exists in path specified:\r\n {1}. To replace the file use options -r.\r\nCreating metadata result: FAILED.", Path.GetFileName(options.MetadataFilePath), Path.GetDirectoryName(options.MetadataFilePath)));
+                    return;
+                }
+            }
+
+            using (var fs = new FileStream(options.MetadataFilePath, FileMode.OpenOrCreate))
+            {
+                var federationParty = options.FederationPartyId;
                 var metadataGenerator = Program.ResolveMetadataGenerator<ISPMetadataGenerator>();
 
                 var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, federationParty, new MetadataPublishContext(fs, MetadataPublishProtocol.FileSystem));
                 await metadataGenerator.CreateMetadata(metadataRequest);
+                Console.WriteLine("Create metadata file result: SUCCESS.");
             }
         }
 
