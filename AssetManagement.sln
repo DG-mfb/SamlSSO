@@ -137,6 +137,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.EntityFramework.Iden
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kernel.Web", "Kernel\Kernel.Web\Kernel.Web.csproj", "{9653C064-54C1-41B6-B34C-8AF2DC747C65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsFederationMetadataTool", "Authorization\Federation\WsFederationMetadataTool\WsFederationMetadataTool.csproj", "{253BB354-E7ED-4A25-A848-E2E95F1D92FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -347,6 +349,10 @@ Global
 		{9653C064-54C1-41B6-B34C-8AF2DC747C65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9653C064-54C1-41B6-B34C-8AF2DC747C65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9653C064-54C1-41B6-B34C-8AF2DC747C65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253BB354-E7ED-4A25-A848-E2E95F1D92FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253BB354-E7ED-4A25-A848-E2E95F1D92FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253BB354-E7ED-4A25-A848-E2E95F1D92FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253BB354-E7ED-4A25-A848-E2E95F1D92FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -407,6 +413,7 @@ Global
 		{0E1C09AD-279E-4373-8044-A4BEC52356A7} = {6D1DC5B4-6414-4F38-B95B-A4BFA9C4BB48}
 		{F246D541-91B2-4BF2-9F4F-9BD2944F5926} = {0E1C09AD-279E-4373-8044-A4BEC52356A7}
 		{9653C064-54C1-41B6-B34C-8AF2DC747C65} = {B659F5BF-19B6-48C7-885A-1CA767049A8C}
+		{253BB354-E7ED-4A25-A848-E2E95F1D92FE} = {59620518-6260-4F87-87AF-3142CEE75C35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4F5021-8BA2-4CB0-959B-4E49D190605D}

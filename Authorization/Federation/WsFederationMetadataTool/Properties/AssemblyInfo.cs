@@ -5,16 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AspNet.EntityFramework.IdentityProvider")]
+[assembly: AssemblyTitle("WsFederationMetadataTool")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AspNet.EntityFramework.IdentityProvider")]
+[assembly: AssemblyProduct("WsFederationMetadataTool")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("AspNet.EntityFramework.IdentityProvider.Tests")]
-[assembly: InternalsVisibleTo("Microsoft.AspNet.Identity.Owin.Provider.Tests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -22,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b7bb0207-1471-4a4f-a939-9addb99f8249")]
+[assembly: Guid("253bb354-e7ed-4a25-a848-e2e95f1d92fe")]
 
 // Version information for an assembly consists of the following four values:
 //
