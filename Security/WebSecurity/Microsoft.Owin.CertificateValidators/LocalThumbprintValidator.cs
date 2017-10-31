@@ -25,9 +25,12 @@ namespace Microsoft.Owin.CertificateValidators
             if (!backchannelLocalValidatorEnabled)
                 return;
 #if(DEBUG)
-            var httpMessage = sender as HttpWebRequest;
-            var isLocal = Utility.IsLocalIpAddress(httpMessage.Host);
-            if (httpMessage != null && isLocal)
+            var webRequest = sender as HttpWebRequest;
+            if (webRequest == null)
+                return;
+
+            var isLocal = Utility.IsLocalIpAddress(webRequest.Host);
+            if (webRequest != null && isLocal)
             {
                 foreach (X509ChainElement chainElement in context.Chain.ChainElements)
                 {
