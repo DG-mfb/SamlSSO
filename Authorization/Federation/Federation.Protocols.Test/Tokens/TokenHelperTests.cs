@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using Federation.Protocols.Test.Mock;
 using Federation.Protocols.Tokens;
 using NUnit.Framework;
 using Shared.Federtion.Constants;
@@ -8,7 +9,6 @@ using Shared.Federtion.Constants;
 namespace Federation.Protocols.Test.Tokens
 {
     [TestFixture]
-    [Ignore("Local file")]
     internal class TokenHelperTests
     {
         [Test]
@@ -16,7 +16,8 @@ namespace Federation.Protocols.Test.Tokens
         {
             //ARRANGE
             var doc = new XmlDocument();
-            doc.Load(@"D:\Dan\Software\Apira\a.xml");
+            var path = FileHelper.GetEncryptedAssertionFilePath();
+            doc.Load(path);
             var el = doc.DocumentElement;
             var inner = new X509CertificateStoreTokenResolver("TestCertStore", StoreLocation.LocalMachine);
             

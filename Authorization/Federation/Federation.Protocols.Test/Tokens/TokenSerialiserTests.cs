@@ -6,7 +6,6 @@ using Federation.Protocols.Test.Mock.Tokens;
 using Federation.Protocols.Tokens;
 using NUnit.Framework;
 using Shared.Federtion.Constants;
-using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Test.Tokens
 {
@@ -103,7 +102,6 @@ namespace Federation.Protocols.Test.Tokens
         }
 
         [Test]
-        //[Ignore("Access local file. To be used only as a cross reference.")]
         public void DeserialiseTokenTest_signed_only_assertion_manual_signature_verification()
         {
             //ARRANGE
