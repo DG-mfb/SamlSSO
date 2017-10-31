@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?><saml2p:Response Destination="http://localhost:60879/api/Account/SSOLogon" ID="_d062752f69da5542c9a19df3f2af384b" InResponseTo="flowz_94ec4f6a-c541-411a-8966-de2f1e7a90a9_e43f6d63-e11b-4475-90d6-d6415f93b077" IssueInstant="2017-10-06T07:18:48.309Z" Version="2.0" xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"><saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://dg-mfb/idp/shibboleth</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+<ds:Reference URI="#_d062752f69da5542c9a19df3f2af384b">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+<ds:DigestValue>/1bLhRQoc41R5DGaM2BmCe/Zbb8=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+ad23ozu+6nJX42hIhGMRGYBS+SGdMk/x9X1bxvbg7lbb1Px3h5v/XULUrozcb/06m13/CIPsbgfU
+1HMgUGewVl1DoTX39NsEjfm4rcl6IaHAawfT6CbpiYQALmfG47KKQUNUy+xc7LVOLjwwGD7Rcate
+whZZtSJfCw00Lk4eE2u+DL9gm8CfgXF6P0L1oBvXI7EW5zZ4ghD7eD8FGd5TDpmyx+oqYWebRDZ7
+XdkdNMvpTyBZk4uHpPoargyaG3SeC6W8SyIzNABwEQmMKxUjTKCB2LhBSuE6Rx6rx7Fqo5GoPpXL
+J/E9DS0O125lgRv1AJXGoGTv/ljqUIB6NA7zdQ==
+</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIDAzCCAeugAwIBAgIUcxxE5ethGq4ciZoSA5lI+OaQtQcwDQYJKoZIhvcNAQELBQAwETEPMA0G
+A1UEAwwGZGctbWZiMB4XDTE3MDkwMjEyMDQyN1oXDTM3MDkwMjEyMDQyN1owETEPMA0GA1UEAwwG
+ZGctbWZiMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqVxKRLnGVq9MnzuGVXVO3Kdl
+F87+zDfTWo9a6g+V4GGY9pgMche2MMbHASCkmXOO9KSO35MENVHLEzEO2EeMYUeNoeLqmo9SSU5S
+ja3/YAegfQDzoUZtr2WYUrfSeaA5AK94yxtyTOjKIInYHM6TMr5aMfLn51XKOw210dIH1ApDD/R1
+BCxwQRyTtWpN5i2Kz22cJvMFr5pTeVWvGo7r/tvkY2vNZxqiy1w/YMvaEv4br0aySDpBhquD6gxv
+zU8KHlT1ivGO+WRlzFJ9IEbpvaMRX9PFck/eGig/0mtyXYqZ8brVMUqgpCJcGWrN43pPUbRx58L/
+toPFV66FzR/okwIDAQABo1MwUTAdBgNVHQ4EFgQU6nIP/ObPBX18NJlu8ZnI5Sym0TkwMAYDVR0R
+BCkwJ4IGZGctbWZihh1odHRwczovL2RnLW1mYi9pZHAvc2hpYmJvbGV0aDANBgkqhkiG9w0BAQsF
+AAOCAQEAnw7oD24QNvIggkCOdbJTA9/uudEQER0dcYWo3cp5cDEv1iZTaAc57/ctmuIVHFDrxcp1
+ydIcQwuKOV83AKlbYUyVhncqKjz4v9CKNqS68vOHGG1otNVQy25F9XWMBS4uKGOKAgD/FvfZ+AzT
+jLCeoJkLpg3dbiS8YL/Wl2ee5K9OBSKDtcgrxvV8k1Y0wcH2CKczdw3wyjJnYpmMPZP+rRsB/gIF
+5VAK0ysDomeIpb9GDc1LX5svbWISQtlEI+yDh3lDR5RV9vhzWZgW2/ca4/uRWwzIjUItHsrgC18O
+Xsjex8T7ypucw1b4IChjY82DiJ/TiRuAcHr8qbBrUjwBkA==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2p:Status><saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" /></saml2p:Status><saml2:Assertion ID="_abf716605bd4fc6e3ed8941461a17c01" IssueInstant="2017-10-06T07:18:48.309Z" Version="2.0" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"><saml2:Issuer>https://dg-mfb/idp/shibboleth</saml2:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+<ds:Reference URI="#_abf716605bd4fc6e3ed8941461a17c01">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+<ds:DigestValue>Leo4Yp4oaeyNuqViiVVnACArgR0=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+AbnlQkfbzmt3CgiIy3hdcOD2MA8OfrfGXWJ0oi2aKdBL56tpeD1pOACQMRSAsZkNP3Iuhx3kfNQT
+COt6Q1cJZLcKGgHmhezfVdHu2U+i7ZnUNOzBzeW88rx4RpBxtDAKE9K2PEh0i2y2GkaTmN1mz/4d
+LiOYqrLknc3Y/sqJl8JTqcRc/c2M93ttjKSy+SLJdnnQ8YJ1G6zUNkwP20vasETudVYKZGHRosCC
+I4DZvOcRioMscxdEgkG4SdIZ4TO5//bX0KZWBQfB3Sqg7TmIaF73gzTk6any96DO9fnXwMzGVyLk
+vlAUHmlTkLSunnx8y9raeXVQs0RShJdaq39xsA==
+</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIDAzCCAeugAwIBAgIUcxxE5ethGq4ciZoSA5lI+OaQtQcwDQYJKoZIhvcNAQELBQAwETEPMA0G
+A1UEAwwGZGctbWZiMB4XDTE3MDkwMjEyMDQyN1oXDTM3MDkwMjEyMDQyN1owETEPMA0GA1UEAwwG
+ZGctbWZiMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqVxKRLnGVq9MnzuGVXVO3Kdl
+F87+zDfTWo9a6g+V4GGY9pgMche2MMbHASCkmXOO9KSO35MENVHLEzEO2EeMYUeNoeLqmo9SSU5S
+ja3/YAegfQDzoUZtr2WYUrfSeaA5AK94yxtyTOjKIInYHM6TMr5aMfLn51XKOw210dIH1ApDD/R1
+BCxwQRyTtWpN5i2Kz22cJvMFr5pTeVWvGo7r/tvkY2vNZxqiy1w/YMvaEv4br0aySDpBhquD6gxv
+zU8KHlT1ivGO+WRlzFJ9IEbpvaMRX9PFck/eGig/0mtyXYqZ8brVMUqgpCJcGWrN43pPUbRx58L/
+toPFV66FzR/okwIDAQABo1MwUTAdBgNVHQ4EFgQU6nIP/ObPBX18NJlu8ZnI5Sym0TkwMAYDVR0R
+BCkwJ4IGZGctbWZihh1odHRwczovL2RnLW1mYi9pZHAvc2hpYmJvbGV0aDANBgkqhkiG9w0BAQsF
+AAOCAQEAnw7oD24QNvIggkCOdbJTA9/uudEQER0dcYWo3cp5cDEv1iZTaAc57/ctmuIVHFDrxcp1
+ydIcQwuKOV83AKlbYUyVhncqKjz4v9CKNqS68vOHGG1otNVQy25F9XWMBS4uKGOKAgD/FvfZ+AzT
+jLCeoJkLpg3dbiS8YL/Wl2ee5K9OBSKDtcgrxvV8k1Y0wcH2CKczdw3wyjJnYpmMPZP+rRsB/gIF
+5VAK0ysDomeIpb9GDc1LX5svbWISQtlEI+yDh3lDR5RV9vhzWZgW2/ca4/uRWwzIjUItHsrgC18O
+Xsjex8T7ypucw1b4IChjY82DiJ/TiRuAcHr8qbBrUjwBkA==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature><saml2:Subject><saml2:NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" NameQualifier="https://dg-mfb/idp/shibboleth" SPNameQualifier="https://imperial.flowz.co.uk/">AAdzZWNyZXQxxSAlTCobHK7WcUgTNglnLOIxb9dnHV/tl21PaBfDrUhjGU1JmXLaoFzuXAnUUTfoAAzUgadDUm19qs/fwxjsiK/39j8EBZLBGDOH+C0raQ6y9KNrCz3tlkNcNniuPQ==</saml2:NameID><saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"><saml2:SubjectConfirmationData Address="fe80:0:0:0:99a:75db:df15:a1a%8" InResponseTo="flowz_94ec4f6a-c541-411a-8966-de2f1e7a90a9_e43f6d63-e11b-4475-90d6-d6415f93b077" NotOnOrAfter="2017-10-06T07:23:48.318Z" Recipient="http://localhost:60879/api/Account/SSOLogon" /></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore="2017-10-06T07:18:48.309Z" NotOnOrAfter="2017-10-06T07:23:48.309Z"><saml2:AudienceRestriction><saml2:Audience>https://imperial.flowz.co.uk/</saml2:Audience></saml2:AudienceRestriction></saml2:Conditions><saml2:AuthnStatement AuthnInstant="2017-10-06T07:18:48.238Z" SessionIndex="_02b264fd231a475af1b75736835b511f"><saml2:SubjectLocality Address="fe80:0:0:0:99a:75db:df15:a1a%8" /><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></saml2p:Response>

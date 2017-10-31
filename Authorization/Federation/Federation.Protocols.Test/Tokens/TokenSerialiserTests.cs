@@ -17,8 +17,7 @@ namespace Federation.Protocols.Test.Tokens
         public void DeserialiseTokenTest_Encrypted_assertion()
         {
             //ARRANGE
-            var dirPath = @"D:\Dan\Software\Apira\Assertions\";
-            var path = FileHelper.GetLastesFile(dirPath);
+            var path = FileHelper.GetEncryptedAssertionFilePath();
             var certValidator = new CertificateValidatorMock();
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var xmlReader = XmlReader.Create(path);
@@ -39,8 +38,7 @@ namespace Federation.Protocols.Test.Tokens
         {
             //ARRANGE
             
-            var dirPath = @"D:\Dan\Software\Apira\Assertions\Local\";
-            var path = FileHelper.GetLastesFile(dirPath);
+            var path = FileHelper.GetSignedAssertion();
             var certValidator = new CertificateValidatorMock();
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var xmlReader = XmlReader.Create(path);
@@ -61,8 +59,7 @@ namespace Federation.Protocols.Test.Tokens
         {
             //ARRANGE
             
-            var dirPath = @"D:\Dan\Software\Apira\Assertions\Local\";
-            var path = FileHelper.GetLastesFile(dirPath);
+            var path = FileHelper.GetSignedAssertion();
             var certValidator = new CertificateValidatorMock();
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var xmlReader = XmlReader.Create(path);
@@ -84,8 +81,7 @@ namespace Federation.Protocols.Test.Tokens
         {
             //ARRANGE
             
-            var dirPath = @"D:\Dan\Software\Apira\Assertions\";
-            var path = FileHelper.GetLastesFile(dirPath);
+            var path = FileHelper.GetEncryptedAssertionFilePath();
             var doc = new XmlDocument();
             doc.Load(path);
             var el = doc.DocumentElement;
@@ -107,13 +103,12 @@ namespace Federation.Protocols.Test.Tokens
         }
 
         [Test]
-        [Ignore("Access local file. To be used only as a cross reference.")]
+        //[Ignore("Access local file. To be used only as a cross reference.")]
         public void DeserialiseTokenTest_signed_only_assertion_manual_signature_verification()
         {
             //ARRANGE
-            
-            var dirPath = @"D:\Dan\Software\Apira\Assertions\Local\";
-            var path = FileHelper.GetLastesFile(dirPath);
+
+            var path = FileHelper.GetSignedAssertion();
             var xmlDoc = new XmlDocument();
             xmlDoc.PreserveWhitespace = true;
             xmlDoc.Load(path);
