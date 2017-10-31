@@ -19,9 +19,11 @@ namespace Microsoft.Owin.CertificateValidators
 
         public async Task Validate(object sender, BackchannelCertificateValidationContext context, Func<object, BackchannelCertificateValidationContext, Task> next)
         {
-#if(DEBUG)
             bool backchannelLocalValidatorEnabled;
             var found = AppSettingsConfigurationManager.TryGetSettingAndParse<bool>("backchannelLocalValidatorEnabled", false, out backchannelLocalValidatorEnabled);
+            if (!backchannelLocalValidatorEnabled)
+                return;
+#if(DEBUG)
             var httpMessage = sender as HttpWebRequest;
             if (httpMessage != null && backchannelLocalValidatorEnabled)
             {
