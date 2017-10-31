@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Xml;
 using Kernel.Data;
 using Kernel.Data.ORM;
 using Kernel.Federation.FederationPartner;
@@ -21,23 +19,14 @@ namespace ORMMetadataContextProvider.Tests
     public class SPMetadataTests
     {
         [Test]
-        [Ignore("Create file")]
-        public void SPMetadataGenerationTest_write_to_file()
+        [Ignore("ORM infrastructure test")]
+        public void SPMetadataGenerationTest_sql_source()
         {
             ////ARRANGE
 
             var result = false;
-            var path = @"D:\Dan\Software\Apira\SPMetadata\SPMetadataTest.xml";
             var metadataWriter = new TestMetadatWriter(el =>
             {
-                if (File.Exists(path))
-                    File.Delete(path);
-
-                using (var writer = XmlWriter.Create(path))
-                {
-                    el.WriteTo(writer);
-                    writer.Flush();
-                }
                 result = true;
             });
 
