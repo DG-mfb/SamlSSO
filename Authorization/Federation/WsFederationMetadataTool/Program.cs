@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
 using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
@@ -55,7 +53,9 @@ namespace WsFederationMetadataTool
                 }
             }
 
-            using (var fs = new FileStream(options.MetadataFilePath, FileMode.OpenOrCreate))
+            var request = WebRequest.Create(String.Format("file://{0}", options.MetadataFilePath));
+            request.Method = "POST";
+            using (var fs = request.GetRequestStream())
             {
                 var federationParty = options.FederationPartyId;
                 var metadataGenerator = Program.ResolveMetadataGenerator<ISPMetadataGenerator>();
