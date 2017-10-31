@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Kernel.Configuration;
 using Kernel.Security.Validation;
 
 namespace Microsoft.Owin.CertificateValidators
@@ -19,8 +20,10 @@ namespace Microsoft.Owin.CertificateValidators
         public async Task Validate(object sender, BackchannelCertificateValidationContext context, Func<object, BackchannelCertificateValidationContext, Task> next)
         {
 #if(DEBUG)
+            bool backchannelLocalValidatorEnabled;
+            var found = AppSettingsConfigurationManager.TryGetSettingAndParse<bool>("backchannelLocalValidatorEnabled", false, out backchannelLocalValidatorEnabled);
             var httpMessage = sender as HttpWebRequest;
-            if (httpMessage != null && httpMessage.Host == "dg-mfb")
+            if (httpMessage != null && backchannelLocalValidatorEnabled)
             {
                 foreach (X509ChainElement chainElement in context.Chain.ChainElements)
                 {
