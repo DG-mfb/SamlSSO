@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Configuration;
 using Kernel.Security.Validation;
+using Kernel.Web;
 
 namespace Microsoft.Owin.CertificateValidators
 {
@@ -25,7 +26,8 @@ namespace Microsoft.Owin.CertificateValidators
                 return;
 #if(DEBUG)
             var httpMessage = sender as HttpWebRequest;
-            if (httpMessage != null && backchannelLocalValidatorEnabled)
+            var isLocal = Utility.IsLocalIpAddress(httpMessage.Host);
+            if (httpMessage != null && isLocal)
             {
                 foreach (X509ChainElement chainElement in context.Chain.ChainElements)
                 {
