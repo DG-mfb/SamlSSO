@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Microsoft.Owin.CertificateValidators.Tests
 {
     [TestFixture]
-    //[Ignore("Infrastructure tests")]
+    [Ignore("Infrastructure tests")]
     internal class PinningValidatorsTests
     {
         [Test]
