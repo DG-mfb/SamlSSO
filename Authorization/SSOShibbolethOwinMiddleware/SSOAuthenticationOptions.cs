@@ -10,11 +10,11 @@ namespace SSOOwinMiddleware
         {
             get
             {
-                return this.Description.Caption;
+                return base.Description.Caption;
             }
             set
             {
-                this.Description.Caption = value;
+                base.Description.Caption = value;
             }
         }
         

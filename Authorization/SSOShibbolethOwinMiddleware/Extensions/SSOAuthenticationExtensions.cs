@@ -19,8 +19,10 @@ namespace SSOOwinMiddleware.Extensions
                 throw new ArgumentNullException("options");
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
             SSOAuthenticationExtensions.RegisterLoggerFactory(app, resolver);
-            app.Use((object)typeof(SSOOwinMiddleware), (object)app, (object)options, resolver);
-
+            resolver.RegisterFactory<ILogger>(() => app.CreateLogger<SSOOwinMiddleware>(), Lifetime.Transient);
+            app.Use((object)typeof(SSOOwinMiddleware), (object)options, resolver);
+            
+            //sp metadata route
             app.Map(options.SPMetadataPath, a =>
             {
                 a.Run(c =>
