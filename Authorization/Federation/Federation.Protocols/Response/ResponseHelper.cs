@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using Federation.Protocols.RelayState;
 using Kernel.Federation.FederationPartner;
+using Kernel.Federation.MetaData.Configuration.EndPoint;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
 using Shared.Federtion.Response;
@@ -72,15 +73,14 @@ namespace Federation.Protocols.Response
             throw new Exception(msg);
         }
 
-        internal static void EnsureRequestPathMatch(object state, Uri path, IFederationPartyContextBuilder federationPartyContextBuilder)
+        internal static void EnsureRequestPathMatch(object state, Uri path)
         {
             var relayState = state as IDictionary<string, object>;
-            var partnerId = relayState[RelayStateContstants.FederationPartyId].ToString();
-            var federationPartner = federationPartyContextBuilder.BuildContext(partnerId);
-            var sPSSODescriptors = federationPartner.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors;
-            var assertionServices = sPSSODescriptors.SelectMany(x => x.AssertionConsumerServices, (p, r) => new { r.Location });
-            if (!assertionServices.Any(x => x.Location == path))
-                throw new Exception(String.Format("Requested path{0} is not in federation party: {1} assertion configuration.", path.AbsoluteUri, partnerId));
+            var cosr = (ICollection<IndexedEndPointConfiguration>)relayState[RelayStateContstants.AssertionConsumerServices];
+            
+            var assertionServices = cosr.Select(x => x.Location);
+            if (!assertionServices.Any(x => x == path))
+                throw new Exception(String.Format("Requested path{0} is not in federation party assertion configuration.", path.AbsoluteUri));
         }
     }
 }

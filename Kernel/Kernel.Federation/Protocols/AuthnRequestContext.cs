@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Kernel.Federation.FederationPartner;
 
@@ -18,7 +19,11 @@ namespace Kernel.Federation.Protocols
             this.SupportedNameIdentifierFormats = supportedNameIdentifierFormats;
             this.FederationPartyContext = federationPartyContext;
             this.Destination = destination;
-            this.RelyingState = new Dictionary<string, object> { {"federationPartyId", federationPartyContext.FederationPartyId } };
+            this.RelyingState = new Dictionary<string, object>
+            {
+                { "federationPartyId", federationPartyContext.FederationPartyId },
+                { "assertionConsumerServices", federationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First().AssertionConsumerServices}
+            };
         }
         
         public IDictionary<string, object> RelyingState { get; }
