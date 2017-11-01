@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 
 namespace Kernel.Web
@@ -42,22 +43,14 @@ namespace Kernel.Web
             try
             { // get host IP addresses
                 var hostIPs = Dns.GetHostAddresses(host);
+                
                 // get local IP addresses
                 var localIPs = Dns.GetHostAddresses(Dns.GetHostName());
-
-                // test if any host IP equals to any local IP or to localhost
+                
                 foreach (var hostIP in hostIPs)
                 {
-                    // is localhost
-                    if (IPAddress.IsLoopback(hostIP))
+                    if (IPAddress.IsLoopback(hostIP) || localIPs.Any(x => x.Equals(hostIP)))
                         return true;
-
-                    // is local address
-                    foreach (IPAddress localIP in localIPs)
-                    {
-                        if (hostIP.Equals(localIP))
-                            return true;
-                    }
                 }
             }
             catch
