@@ -72,7 +72,6 @@ namespace SSOOwinMiddleware.Handlers
                             AuthenticationMethod = base.Options.AuthenticationType,
                             Form = form.ToDictionary(x => x.Key, v => form.Get(v.Key)) as IDictionary<string, string>
                         }
-
                     };
                     this._logger.WriteInformation(String.Format("Handle response entering."));
                     await protocolHanlder.HandleResponse(protocolContext);
@@ -80,11 +79,11 @@ namespace SSOOwinMiddleware.Handlers
                     var identity = responseContext.Result;
                     if (identity != null)
                     {
-                        this._logger.WriteInformation(String.Format("Authenticated. authentication ticket issued."));
+                        this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
                         return new AuthenticationTicket(identity, new AuthenticationProperties());
                     }
                 }
-
+                this._logger.WriteInformation(String.Format("Authentication failed. No authentication ticket issued."));
                 return null;
             }
             catch (Exception ex)
