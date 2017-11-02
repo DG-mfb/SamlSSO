@@ -8,8 +8,8 @@
     <ProjectGuid>{313DD6A3-C3A2-4425-A722-FE1CA0225D0F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kernel.Web.Utility.Test</RootNamespace>
-    <AssemblyName>Kernel.Web.Utility.Test</AssemblyName>
+    <RootNamespace>Kernel.Web.Test</RootNamespace>
+    <AssemblyName>Kernel.Web.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -55,6 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kernel.Web\Kernel.Web.csproj">
+      <Project>{9653c064-54c1-41b6-b34c-8af2dc747c65}</Project>
+      <Name>Kernel.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
