@@ -1,29 +1,28 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
-using Kernel.Federation.MetaData;
+using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
+using Shared.Federtion.Constants;
 
 namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
 {
+    /// <summary>
+    /// For testing perspose only
+    /// </summary>
     internal class IdentityProviderSingleSignOnDescriptorBuilder : DescriptorBuilderBase<IdentityProviderSingleSignOnDescriptor>
     {
-        protected override IdentityProviderSingleSignOnDescriptor BuildDescriptorInternal(IMetadataConfiguration configuration)
+        protected override IdentityProviderSingleSignOnDescriptor BuildDescriptorInternal(RoleDescriptorConfiguration configuration)
         {
-            var idpConfiguration = configuration as IIdpSSOMetadataConfiguration;
+            var spConfiguration = configuration as SPSSODescriptorConfiguration;
 
-            if (idpConfiguration == null)
-                throw new InvalidCastException(string.Format("Expected type: {0} but was: {1}", typeof(IdpSSOMetadataConfiguration).Name, configuration.GetType().Name));
+            if (spConfiguration == null)
+                throw new InvalidCastException(string.Format("Expected type: {0} but was: {1}", typeof(SPSSODescriptorConfiguration).Name, configuration.GetType().Name));
 
-            var descriptor = new IdentityProviderSingleSignOnDescriptor();
-
-            descriptor.ProtocolsSupported.Add(new Uri("http://docs.oasis-open.org/wsfed/federation/200706"));
-
-            foreach (var sso in idpConfiguration.SingleSignOnServices)
+            var descriptor = new IdentityProviderSingleSignOnDescriptor
             {
-                var singleSignOnService = new ProtocolEndpoint(new Uri(sso.Binding), new Uri(sso.Location));
+                WantAuthenticationRequestsSigned = true
+            };
 
-                descriptor.SingleSignOnServices.Add(singleSignOnService);
-            }
-
+            descriptor.SingleSignOnServices.Add(new ProtocolEndpoint(new Uri(ProtocolBindings.HttpRedirect), new Uri("http://localhost:63337/sso/login.aspx")));
             return descriptor;
         }
     }

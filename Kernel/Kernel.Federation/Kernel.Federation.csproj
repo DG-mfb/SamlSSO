@@ -56,6 +56,7 @@
     <Compile Include="MetaData\DispatcherContext.cs" />
     <Compile Include="MetaData\IFederationMetadataDispatcher.cs" />
     <Compile Include="MetaData\IMetadataHandler.cs" />
+    <Compile Include="MetaData\IIdPMetadataGenerator.cs" />
     <Compile Include="MetaData\MetadataGenerateRequest.cs" />
     <Compile Include="MetaData\MetadataPublishContext.cs" />
     <Compile Include="MetaData\MetadataPublishProtocol.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="MetaData\Configuration\RoleDescriptors\SSODescriptorConfiguration.cs" />
     <Compile Include="MetaData\IDescriptorBuilder.cs" />
     <Compile Include="MetaData\IMetadataGenerator.cs" />
-    <Compile Include="MetaData\IIdMetadataGenerator.cs" />
     <Compile Include="MetaData\ISPMetadataGenerator.cs" />
     <Compile Include="MetaData\IMetadataSerialiser.cs" />
     <Compile Include="MetaData\IFederationMetadataWriter.cs" />

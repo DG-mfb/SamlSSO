@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Initialisation\WsFederationMetadataProviderInitialiser.cs" />
     <Compile Include="Metadata\DescriptorBuilders\DescriptorBuildersHelper.cs" />
+    <Compile Include="Metadata\DescriptorBuilders\IdentityProviderSingleSignOnDescriptorBuilder.cs" />
     <Compile Include="Metadata\DescriptorBuilders\ServiceProviderSingleSignOnDescriptorBuilder.cs" />
     <Compile Include="Metadata\DescriptorBuilders\DescriptorBuilderBase.cs" />
     <Compile Include="Metadata\DescriptorBuilders\SSODescriptorMemberBulders\MiscellaneousRoleDescriptorMemberBuilder.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Metadata\DescriptorBuilders\SSODescriptorMemberBulders\ArtifactResolutionServicesBuilder.cs" />
     <Compile Include="Metadata\DescriptorBuilders\SSODescriptorMemberBulders\RoleDescriptorMemberBuilder.cs" />
     <Compile Include="Metadata\DescriptorBuilders\SSODescriptorBuilderHelper.cs" />
+    <Compile Include="Metadata\IdpSSOMetadataProvider.cs" />
     <Compile Include="Metadata\MetadataGeneratorBase.cs" />
     <Compile Include="Metadata\SPSSOMetadataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

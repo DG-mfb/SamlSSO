@@ -1,17 +1,16 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
-using Kernel.Cryptography.CertificateManagement;
-using Kernel.Cryptography.Signing.Xml;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
+using Kernel.Logging;
+using Kernel.Security.CertificateManagement;
 
 namespace WsFederationMetadataProvider.Metadata
 {
-    public class IdpSSOMetadataProvider : MetadataGeneratorBase, IIdMetadataGenerator
+    public class IdpSSOMetadataProvider : MetadataGeneratorBase, IIdPMetadataGenerator
     {
-        public IdpSSOMetadataProvider(IFederationMetadataWriter metadataWriter, ICertificateManager certificateManager, IXmlSignatureManager xmlSignatureManager, IMetadataSerialiser<MetadataBase> serialiser, Func<IMetadataGenerator, IMetadataConfiguration> configuration)
-            : base(metadataWriter, certificateManager, xmlSignatureManager, serialiser, configuration)
-        {
-           
-        }
+        public IdpSSOMetadataProvider(IFederationMetadataDispatcher metadataDispatcher, ICertificateManager certificateManager, IMetadataSerialiser<MetadataBase> serialiser, Func<MetadataGenerateRequest, FederationPartyConfiguration> configuration, ILogProvider logProvider)
+            :base(metadataDispatcher, certificateManager, serialiser, configuration, logProvider)
+        { }
     }
 }
