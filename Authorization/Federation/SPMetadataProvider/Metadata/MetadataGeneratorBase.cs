@@ -63,7 +63,7 @@ namespace WsFederationMetadataProvider.Metadata
 
                 var configuration = federationPartyContext.MetadataContext.EntityDesriptorConfiguration;
 
-                var descriptors = this.GetDescriptors(configuration.SPSSODescriptors);
+                var descriptors = this.GetDescriptors(configuration.RoleDescriptors);
                 
                 var entityDescriptor = BuildEntityDesciptor(configuration, descriptors);
                 this.SignMetadata(federationPartyContext.MetadataContext, entityDescriptor);

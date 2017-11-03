@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.IdentityModel.Metadata;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using InlineMetadataContextProvider;
@@ -17,10 +17,10 @@ using WsMetadataSerialisation.Serialisation;
 namespace WsFederationMetadataProviderTests
 {
     [TestFixture]
-    public class SPMetadataTests
+    public class IdPMetadataTests
     {
         [Test]
-        public async Task SPMetadataGenerationTest()
+        public async Task IdPMetadataGenerationTest()
         {
             ////ARRANGE
            
@@ -28,8 +28,8 @@ namespace WsFederationMetadataProviderTests
             var metadataWriter = new TestMetadatWriter(el => result = el.OuterXml);
 
             var logger = new LogProviderMock();
-            var contextBuilder = new InlineMetadataContextBuilder();
-            var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, "local");
+            var contextBuilder = new InlineIdPMetadataContextBuilder();
+            var metadataRequest = new MetadataGenerateRequest(MetadataType.Idp, "local");
             var metadataContext = contextBuilder.BuildContext(metadataRequest);
             var context = new FederationPartyConfiguration(metadataRequest.FederationPartyId, "localhost");
             context.MetadataContext = metadataContext;
@@ -40,7 +40,7 @@ namespace WsFederationMetadataProviderTests
             var metadataSerialiser = new FederationMetadataSerialiser(certificateValidator, logger);
             var metadataDispatcher = new FederationMetadataDispatcherMock(() => new[] { metadataWriter });
             
-            var sPSSOMetadataProvider = new SPSSOMetadataProvider(metadataDispatcher, ssoCryptoProvider, metadataSerialiser, g => context, logger);
+            var sPSSOMetadataProvider = new IdpSSOMetadataProvider(metadataDispatcher, ssoCryptoProvider, metadataSerialiser, g => context, logger);
             
             //ACT
             await sPSSOMetadataProvider.CreateMetadata(metadataRequest);
@@ -49,15 +49,15 @@ namespace WsFederationMetadataProviderTests
         }
         
         [Test]
-        public async Task SPMetadata_serialise_deserialise_Test()
+        public async Task IdPMetadata_serialise_deserialise_Test()
         {
             ////ARRANGE
             var logger = new LogProviderMock();
             string metadataXml = String.Empty;
             var metadataWriter = new TestMetadatWriter(el => metadataXml = el.OuterXml);
             CertificateValidationRulesFactory.InstanceCreator = ValidationRuleInstanceCreatorMock.CreateInstance;
-            var contextBuilder = new InlineMetadataContextBuilder();
-            var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, "local");
+            var contextBuilder = new InlineIdPMetadataContextBuilder();
+            var metadataRequest = new MetadataGenerateRequest(MetadataType.Idp, "local");
             var metadataContext = contextBuilder.BuildContext(metadataRequest);
             var context = new FederationPartyConfiguration(metadataRequest.FederationPartyId, "localhost");
             context.MetadataContext = metadataContext;
@@ -70,17 +70,17 @@ namespace WsFederationMetadataProviderTests
 
             var metadataDispatcher = new FederationMetadataDispatcherMock(() => new[] { metadataWriter });
             
-            var sPSSOMetadataProvider = new SPSSOMetadataProvider(metadataDispatcher, ssoCryptoProvider, metadataSerialiser, g => context, logger);
+            var idPSSOMetadataProvider = new IdpSSOMetadataProvider(metadataDispatcher, ssoCryptoProvider, metadataSerialiser, g => context, logger);
             
             //ACT
-            await sPSSOMetadataProvider.CreateMetadata(metadataRequest);
+            await idPSSOMetadataProvider.CreateMetadata(metadataRequest);
             var xmlReader = XmlReader.Create(new StringReader(metadataXml));
             var deserialisedMetadata = metadataSerialiser.Deserialise(xmlReader) as EntityDescriptor;
 
             //ASSERT
             Assert.IsFalse(String.IsNullOrWhiteSpace(metadataXml));
             Assert.AreEqual(1, deserialisedMetadata.RoleDescriptors.Count);
-            Assert.IsInstanceOf<ServiceProviderSingleSignOnDescriptor>(deserialisedMetadata.RoleDescriptors.Single());
+            Assert.IsInstanceOf<IdentityProviderSingleSignOnDescriptor>(deserialisedMetadata.RoleDescriptors.Single());
         }
     }
 }

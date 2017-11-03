@@ -55,6 +55,7 @@
     <Compile Include="Mock\LogProviderMock.cs" />
     <Compile Include="Mock\TestMetadatWriter.cs" />
     <Compile Include="Mock\ValidationRuleInstanceCreatorMock.cs" />
+    <Compile Include="IdPMetadataTests.cs" />
     <Compile Include="SPMetadataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

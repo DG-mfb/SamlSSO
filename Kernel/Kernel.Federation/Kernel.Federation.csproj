@@ -53,6 +53,7 @@
     <Compile Include="FederationPartner\ScopingConfiguration.cs" />
     <Compile Include="FederationPartner\RequestedAuthnContextConfiguration.cs" />
     <Compile Include="MetaData\Configuration\Bindings.cs" />
+    <Compile Include="MetaData\Configuration\RoleDescriptors\IdPSSODescriptorConfiguration.cs" />
     <Compile Include="MetaData\DispatcherContext.cs" />
     <Compile Include="MetaData\IFederationMetadataDispatcher.cs" />
     <Compile Include="MetaData\IMetadataHandler.cs" />

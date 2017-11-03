@@ -12,7 +12,7 @@ namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
     {
         protected override IdentityProviderSingleSignOnDescriptor BuildDescriptorInternal(RoleDescriptorConfiguration configuration)
         {
-            var spConfiguration = configuration as SPSSODescriptorConfiguration;
+            var spConfiguration = configuration as IdPSSODescriptorConfiguration;
 
             if (spConfiguration == null)
                 throw new InvalidCastException(string.Format("Expected type: {0} but was: {1}", typeof(SPSSODescriptorConfiguration).Name, configuration.GetType().Name));

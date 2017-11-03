@@ -9,6 +9,7 @@ using Kernel.Federation.MetaData.Configuration.EntityDescriptors;
 using Kernel.Federation.MetaData.Configuration.Organisation;
 using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 using Kernel.Security.CertificateManagement;
+using Shared.Federtion.Constants;
 
 namespace InlineMetadataContextProvider
 {
@@ -23,12 +24,12 @@ namespace InlineMetadataContextProvider
                 EntityId = "https://imperial.flowz.co.uk/",
                 Id = federationId,
                 ValidUntil = new DateTimeOffset(DateTime.Now.AddDays(30)),
-                Organisation = MetadataHelper.BuikdOrganisationConfiguration(),
+                Organisation = MetadataHelper.BuildOrganisationConfiguration(),
             };
             return entityDescriptorConfiguration;
         }
 
-        public static OrganisationConfiguration BuikdOrganisationConfiguration()
+        public static OrganisationConfiguration BuildOrganisationConfiguration()
         {
             var orgConfiguration = new OrganisationConfiguration
             {
@@ -93,7 +94,7 @@ namespace InlineMetadataContextProvider
             {
                 WantAssertionsSigned = true,
                 ValidUntil = new DateTimeOffset(DateTime.Now.AddDays(100)),
-                Organisation = MetadataHelper.BuikdOrganisationConfiguration(),
+                Organisation = MetadataHelper.BuildOrganisationConfiguration(),
                 AuthenticationRequestsSigned = true,
                 CacheDuration = TimeSpan.FromDays(100),
                 RoleDescriptorType = typeof(ServiceProviderSingleSignOnDescriptor),
@@ -126,6 +127,44 @@ namespace InlineMetadataContextProvider
             sPSSODescriptorConfiguration.AssertionConsumerServices.Add(indexedEndPointConfiguration);
 
             return sPSSODescriptorConfiguration;
+        }
+
+        public static IdPSSODescriptorConfiguration BuildIdPSSODescriptorConfiguration()
+        {
+            var idPSSODescriptorConfiguration = new IdPSSODescriptorConfiguration
+            {
+                ValidUntil = new DateTimeOffset(DateTime.Now.AddDays(100)),
+                Organisation = MetadataHelper.BuildOrganisationConfiguration(),
+                WantAuthenticationRequestsSigned = true,
+                CacheDuration = TimeSpan.FromDays(100),
+                RoleDescriptorType = typeof(IdentityProviderSingleSignOnDescriptor),
+                ErrorUrl = new Uri("http://localhost:60879/api/Account/Error")
+            };
+            idPSSODescriptorConfiguration.NameIdentifierFormats.Add(new Uri("urn:oasis:names:tc:SAML:2.0:nameid-format:transient"));
+            idPSSODescriptorConfiguration.NameIdentifierFormats.Add(new Uri("urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"));
+            idPSSODescriptorConfiguration.SingleLogoutServices.Add(new EndPointConfiguration
+            {
+                Binding = new Uri("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"),
+                Location = new Uri("http://localhost:60879/api/Account/SSOLogout")
+            });
+            //supported protocols
+            idPSSODescriptorConfiguration.ProtocolSupported.Add(new Uri("urn:oasis:names:tc:SAML:2.0:protocol"));
+            //key descriptors
+            var keyDescriptorConfiguration = MetadataHelper.BuildKeyDescriptorConfiguration();
+            foreach (var k in keyDescriptorConfiguration)
+            {
+                idPSSODescriptorConfiguration.KeyDescriptors.Add(k);
+            }
+
+            //assertinon service
+            var indexedEndPointConfiguration = new EndPointConfiguration
+            {
+                Binding = new Uri(ProtocolBindings.HttpRedirect),
+                Location = new Uri("http://localhost:63337/sso/login.aspx")
+            };
+            idPSSODescriptorConfiguration.SignOnServices.Add(indexedEndPointConfiguration);
+
+            return idPSSODescriptorConfiguration;
         }
     }
 }
