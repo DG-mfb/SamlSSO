@@ -18,6 +18,8 @@ namespace WsFederationMetadataProvider.Initialisation
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {
             dependencyResolver.RegisterType<SPSSOMetadataProvider>(Lifetime.Transient);
+            dependencyResolver.RegisterType<IdpSSOMetadataProvider>(Lifetime.Transient);
+            
             dependencyResolver.RegisterFactory<Func<MetadataGenerateRequest, FederationPartyConfiguration>>(() => c =>
             {
                 var builder = dependencyResolver.Resolve<IFederationPartyContextBuilder>();

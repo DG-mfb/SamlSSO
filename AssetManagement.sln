@@ -141,6 +141,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WsFederationMetadataTool", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kernel.Web.Utility.Test", "Kernel\Kernel.Web.Utility.Test\Kernel.Web.Utility.Test.csproj", "{313DD6A3-C3A2-4425-A722-FE1CA0225D0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FederationIdentityProvider", "Web\FederationIdentityProvider\FederationIdentityProvider.csproj", "{DC499FB3-C948-4AD7-94BF-7CC62FE076BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -359,6 +361,10 @@ Global
 		{313DD6A3-C3A2-4425-A722-FE1CA0225D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{313DD6A3-C3A2-4425-A722-FE1CA0225D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{313DD6A3-C3A2-4425-A722-FE1CA0225D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC499FB3-C948-4AD7-94BF-7CC62FE076BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC499FB3-C948-4AD7-94BF-7CC62FE076BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC499FB3-C948-4AD7-94BF-7CC62FE076BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC499FB3-C948-4AD7-94BF-7CC62FE076BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -421,6 +427,7 @@ Global
 		{9653C064-54C1-41B6-B34C-8AF2DC747C65} = {B659F5BF-19B6-48C7-885A-1CA767049A8C}
 		{253BB354-E7ED-4A25-A848-E2E95F1D92FE} = {59620518-6260-4F87-87AF-3142CEE75C35}
 		{313DD6A3-C3A2-4425-A722-FE1CA0225D0F} = {B659F5BF-19B6-48C7-885A-1CA767049A8C}
+		{DC499FB3-C948-4AD7-94BF-7CC62FE076BB} = {5D045FCD-BBE8-4543-B16B-00C8579E6861}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E4F5021-8BA2-4CB0-959B-4E49D190605D}
