@@ -68,7 +68,7 @@ namespace ORMMetadataContextProvider.Seeders
             {
                 RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
                 AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
-                MetadataPath = "http://localhost:57601/idp/metadata",
+                MetadataPath = "https://localhost:44342/idp/metadata",
                 MetadataLocation = "HTTP",
                 FederationPartyId = "localIdp"
             };

@@ -160,7 +160,7 @@ namespace InlineMetadataContextProvider
             var endPointConfiguration = new EndPointConfiguration
             {
                 Binding = new Uri(ProtocolBindings.HttpRedirect),
-                Location = new Uri("http://localhost:57601/sso/login")
+                Location = new Uri("https://localhost:44342/client/src")
             };
             idPSSODescriptorConfiguration.SignOnServices.Add(endPointConfiguration);
 

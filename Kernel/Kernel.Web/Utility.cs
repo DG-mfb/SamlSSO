@@ -40,8 +40,13 @@ namespace Kernel.Web
 
         public static bool IsLocalIpAddress(string host)
         {
+            if (String.IsNullOrWhiteSpace(host))
+                throw new ArgumentNullException("host");
             try
-            { // get host IP addresses
+            {
+                if (host.ToLower().StartsWith("localhost"))
+                    return true;
+                // get host IP addresses
                 var hostIPs = Dns.GetHostAddresses(host);
                 
                 // get local IP addresses
