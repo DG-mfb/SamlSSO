@@ -3,6 +3,7 @@ using System.Linq;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
+using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 
 namespace InlineMetadataContextProvider
 {
@@ -13,9 +14,21 @@ namespace InlineMetadataContextProvider
             var entityDescriptorConfiguration = MetadataHelper.BuildEntityDesriptorConfiguration();
 
             var keyDescriptorConfiguration = MetadataHelper.BuildKeyDescriptorConfiguration();
+
+            RoleDescriptorConfiguration descriptorConfigurtion;
+            switch(metadataGenerateContext.MetadataType)
+            {
+                case MetadataType.SP:
+                    descriptorConfigurtion = MetadataHelper.BuildSPSSODescriptorConfiguration();
+                    break;
+                case MetadataType.Idp:
+                    descriptorConfigurtion = MetadataHelper.BuildIdPSSODescriptorConfiguration();
+                    break;
+                default:
+                    throw new System.Exception(string.Format("Unkown metadata type: {0}.", metadataGenerateContext.MetadataType));
+            }
             
-            var spDescriptorConfigurtion = MetadataHelper.BuildSPSSODescriptorConfiguration();
-            entityDescriptorConfiguration.RoleDescriptors.Add(spDescriptorConfigurtion);
+            entityDescriptorConfiguration.RoleDescriptors.Add(descriptorConfigurtion);
             
             var context = new MetadataContext
             {

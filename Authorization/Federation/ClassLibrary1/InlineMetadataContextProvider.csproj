@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Initialisation\InlineMetadaContextProviderInitialiser.cs" />
-    <Compile Include="InlineIdPMetadataContextBuilder.cs" />
     <Compile Include="InlineMetadataContextBuilder.cs" />
     <Compile Include="MetadataHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

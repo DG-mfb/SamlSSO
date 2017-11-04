@@ -28,7 +28,7 @@ namespace WsFederationMetadataProviderTests
             var metadataWriter = new TestMetadatWriter(el => result = el.OuterXml);
 
             var logger = new LogProviderMock();
-            var contextBuilder = new InlineIdPMetadataContextBuilder();
+            var contextBuilder = new InlineMetadataContextBuilder();
             var metadataRequest = new MetadataGenerateRequest(MetadataType.Idp, "local");
             var metadataContext = contextBuilder.BuildContext(metadataRequest);
             var context = new FederationPartyConfiguration(metadataRequest.FederationPartyId, "localhost");
@@ -56,7 +56,7 @@ namespace WsFederationMetadataProviderTests
             string metadataXml = String.Empty;
             var metadataWriter = new TestMetadatWriter(el => metadataXml = el.OuterXml);
             CertificateValidationRulesFactory.InstanceCreator = ValidationRuleInstanceCreatorMock.CreateInstance;
-            var contextBuilder = new InlineIdPMetadataContextBuilder();
+            var contextBuilder = new InlineMetadataContextBuilder();
             var metadataRequest = new MetadataGenerateRequest(MetadataType.Idp, "local");
             var metadataContext = contextBuilder.BuildContext(metadataRequest);
             var context = new FederationPartyConfiguration(metadataRequest.FederationPartyId, "localhost");
