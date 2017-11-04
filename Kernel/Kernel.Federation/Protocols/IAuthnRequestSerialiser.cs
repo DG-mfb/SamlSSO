@@ -6,5 +6,6 @@ namespace Kernel.Federation.Protocols
     public interface IAuthnRequestSerialiser : ISerializer
     {
         new Task<string> Serialize(object o);
+        new Task<T> Deserialize<T>(string data);
     }
 }

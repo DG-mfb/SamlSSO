@@ -67,6 +67,7 @@
     <Compile Include="RelayState\RelayStateSerialiserTest.cs" />
     <Compile Include="Request\AuthnRequestRequestedContextTests.cs" />
     <Compile Include="Request\AuthnRequestScopingTests.cs" />
+    <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Response\ResponseStatusTests.cs" />
     <Compile Include="Mock\Tokens\SubjectConfirmationDataValidatorMock.cs" />
     <Compile Include="Tokens\TokenHelperTests.cs" />

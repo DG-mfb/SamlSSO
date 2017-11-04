@@ -22,7 +22,8 @@ namespace Serialisation.Xml
 
         public T Deserialise<T>(XmlReader reader)
         {
-            throw new NotImplementedException();
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            return (T)xmlSerializer.Deserialize(reader);
         }
 
         public object[] Deserialize(Stream stream, IList<Type> messageTypes)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Serialisation;
@@ -53,6 +54,20 @@ namespace Federation.Protocols.Request
                 var compressed = await this._messageEncoding.EncodeMessage<string>(xmlString);
                 var encodedEscaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(compressed));
                 return encodedEscaped;
+            }
+        }
+
+        async Task<T> IAuthnRequestSerialiser.Deserialize<T>(string data)
+        {
+            var unescaped = Uri.UnescapeDataString(data);
+            var decompressed = await this._messageEncoding.DecodeMessage(unescaped);
+            using (var sr = new StringReader(decompressed))
+            {
+                using (var reader = XmlReader.Create(sr))
+                {
+                    var result = this._serialiser.Deserialise<T>(reader);
+                    return result;
+                }
             }
         }
 
