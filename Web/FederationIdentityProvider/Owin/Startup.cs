@@ -16,7 +16,7 @@ namespace FederationIdentityProvider.Owin
                 {
                     var metadataGenerator = Startup.ResolveMetadataGenerator<IIdPMetadataGenerator>();
                     c.Response.ContentType = "text/xml";
-                    var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, "localIdp", new MetadataPublishContext(c.Response.Body, MetadataPublishProtocol.Http));
+                    var metadataRequest = new MetadataGenerateRequest(MetadataType.Idp, "localIdp", new MetadataPublishContext(c.Response.Body, MetadataPublishProtocol.Http));
                     return metadataGenerator.CreateMetadata(metadataRequest);
                 });
 

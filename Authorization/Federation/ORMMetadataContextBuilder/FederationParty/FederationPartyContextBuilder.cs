@@ -25,6 +25,8 @@ namespace ORMMetadataContextProvider.FederationParty
 
             var federationPartyContext = this._dbContext.Set<FederationPartySettings>()
                 .FirstOrDefault(x => x.FederationPartyId == federationPartyId);
+            if (federationPartyContext == null)
+                throw new InvalidOperationException(String.Format("No federation patty settings found for id: {0}", federationPartyId));
 
             var context = new FederationPartyConfiguration(federationPartyId, federationPartyContext.MetadataPath);
             var federationPartyAuthnRequestConfiguration = this.BuildFederationPartyAuthnRequestConfiguration(federationPartyContext.AutnRequestSettings, federationPartyContext.MetadataSettings.SPDescriptorSettings.EntityId);
