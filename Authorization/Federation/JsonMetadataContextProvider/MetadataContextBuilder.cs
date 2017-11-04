@@ -5,7 +5,7 @@ using Kernel.Serialisation;
 
 namespace JsonMetadataContextProvider
 {
-    internal class MetadataContextBuilder : IMetadataContextBuilder
+    internal class MetadataContextBuilder : IDbMetadataContextBuilder
     {
         private readonly ISerializer serialiser;
 

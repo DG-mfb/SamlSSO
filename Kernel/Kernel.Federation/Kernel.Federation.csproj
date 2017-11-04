@@ -50,9 +50,13 @@
     <Compile Include="FederationPartner\AuthnRequestConfiguration.cs" />
     <Compile Include="FederationPartner\DefaultNameId.cs" />
     <Compile Include="FederationPartner\FederationPartyAuthnRequestConfiguration.cs" />
+    <Compile Include="FederationPartner\IFederationPartyContextBuilder.cs" />
+    <Compile Include="FederationPartner\IRelyingPartyContextBuilder.cs" />
     <Compile Include="FederationPartner\ScopingConfiguration.cs" />
     <Compile Include="FederationPartner\RequestedAuthnContextConfiguration.cs" />
     <Compile Include="MetaData\Configuration\Bindings.cs" />
+    <Compile Include="MetaData\Configuration\IInlineMetadataContextBuilder.cs" />
+    <Compile Include="MetaData\Configuration\IMetadataContextBuilder.cs" />
     <Compile Include="MetaData\Configuration\RoleDescriptors\IdPSSODescriptorConfiguration.cs" />
     <Compile Include="MetaData\DispatcherContext.cs" />
     <Compile Include="MetaData\IFederationMetadataDispatcher.cs" />
@@ -79,7 +83,7 @@
     <Compile Include="MetaData\Configuration\EndPoint\IndexedEndPointConfiguration.cs" />
     <Compile Include="MetaData\Configuration\IMetadataContextProvider.cs" />
     <Compile Include="MetaData\Configuration\MetadataContext.cs" />
-    <Compile Include="MetaData\Configuration\IMetadataContextBuilder.cs" />
+    <Compile Include="MetaData\Configuration\IDbMetadataContextBuilder.cs" />
     <Compile Include="MetaData\Configuration\Organisation\ContactConfiguration.cs" />
     <Compile Include="MetaData\Configuration\Organisation\ContactType.cs" />
     <Compile Include="MetaData\Configuration\EntityDescriptors\EntityDesriptorConfiguration.cs" />

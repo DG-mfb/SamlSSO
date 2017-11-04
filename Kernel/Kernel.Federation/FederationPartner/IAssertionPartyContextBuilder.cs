@@ -1,9 +1,6 @@
-﻿using System;
-
-namespace Kernel.Federation.FederationPartner
+﻿namespace Kernel.Federation.FederationPartner
 {
-    public interface IAssertionPartyContextBuilder : IDisposable
+    public interface IAssertionPartyContextBuilder : IFederationPartyContextBuilder
     {
-        FederationPartyConfiguration BuildContext(string federationPartyId);
     }
 }

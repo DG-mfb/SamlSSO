@@ -30,7 +30,7 @@ namespace ORMMetadataContextProvider.Initialisation
             dependencyResolver.RegisterType<CertificateValidationConfigurationProvider>(Lifetime.Transient);
             dependencyResolver.RegisterFactory<Func<NameValueCollection>>(() => () => ConfigurationManager.AppSettings, Lifetime.Transient);
             dependencyResolver.RegisterFactory<IDbCustomConfiguration>(() => this.BuildDbCustomConfiguration(), Lifetime.Transient);
-            dependencyResolver.RegisterFactory<IMetadataContextBuilder>(() =>
+            dependencyResolver.RegisterFactory<IDbMetadataContextBuilder>(() =>
             {
                 var cacheProvider = dependencyResolver.Resolve<ICacheProvider>();
                

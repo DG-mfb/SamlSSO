@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
+using System.Linq;
 using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
-using Shared.Federtion.Constants;
 
 namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
 {
@@ -12,17 +12,21 @@ namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
     {
         protected override IdentityProviderSingleSignOnDescriptor BuildDescriptorInternal(RoleDescriptorConfiguration configuration)
         {
-            var spConfiguration = configuration as IdPSSODescriptorConfiguration;
+            var idpConfiguration = configuration as IdPSSODescriptorConfiguration;
 
-            if (spConfiguration == null)
-                throw new InvalidCastException(string.Format("Expected type: {0} but was: {1}", typeof(SPSSODescriptorConfiguration).Name, configuration.GetType().Name));
+            if (idpConfiguration == null)
+                throw new InvalidCastException(string.Format("Expected type: {0} but was: {1}", typeof(IdPSSODescriptorConfiguration).Name, configuration.GetType().Name));
 
             var descriptor = new IdentityProviderSingleSignOnDescriptor
             {
                 WantAuthenticationRequestsSigned = true
             };
 
-            descriptor.SingleSignOnServices.Add(new ProtocolEndpoint(new Uri(ProtocolBindings.HttpRedirect), new Uri("http://localhost:63337/sso/login.aspx")));
+            idpConfiguration.SignOnServices.Aggregate(descriptor, (d, next) =>
+            {
+                d.SingleSignOnServices.Add(new ProtocolEndpoint(next.Binding, next.Location));
+                return d;
+            });
             return descriptor;
         }
     }

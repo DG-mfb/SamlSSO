@@ -157,12 +157,12 @@ namespace InlineMetadataContextProvider
             }
 
             //assertinon service
-            var indexedEndPointConfiguration = new EndPointConfiguration
+            var endPointConfiguration = new EndPointConfiguration
             {
                 Binding = new Uri(ProtocolBindings.HttpRedirect),
-                Location = new Uri("http://localhost:63337/sso/login.aspx")
+                Location = new Uri("http://localhost:57601/sso/login")
             };
-            idPSSODescriptorConfiguration.SignOnServices.Add(indexedEndPointConfiguration);
+            idPSSODescriptorConfiguration.SignOnServices.Add(endPointConfiguration);
 
             return idPSSODescriptorConfiguration;
         }

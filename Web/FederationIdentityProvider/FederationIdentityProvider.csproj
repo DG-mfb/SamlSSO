@@ -94,12 +94,14 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\DIRegistration.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Owin\Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelyingPartyConfiguration\RelyingPartyContextBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -116,9 +118,17 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Authorization\Federation\ClassLibrary1\InlineMetadataContextProvider.csproj">
+      <Project>{E111A891-B47D-4BDC-8BC2-62C2605FC9B8}</Project>
+      <Name>InlineMetadataContextProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DependancyResolvers\UnityResolver\UnityResolver.csproj">
       <Project>{681BB5E0-8DB0-44FA-8950-EEF3ADC42745}</Project>
       <Name>UnityResolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\Shared\Shared.csproj">
+      <Project>{FA2CD1BF-A890-4306-9EDB-A1B10042E57E}</Project>
+      <Name>Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Kernel.Federation\Kernel.Federation.csproj">
       <Project>{47FE8E9F-CCF6-46B7-BA75-CBA1D1F56D7A}</Project>

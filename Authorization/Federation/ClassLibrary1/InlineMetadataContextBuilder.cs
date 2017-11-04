@@ -7,7 +7,7 @@ using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 
 namespace InlineMetadataContextProvider
 {
-    internal class InlineMetadataContextBuilder : IMetadataContextBuilder
+    internal class InlineMetadataContextBuilder : IInlineMetadataContextBuilder
     {
         public MetadataContext BuildContext(MetadataGenerateRequest metadataGenerateContext)
         {

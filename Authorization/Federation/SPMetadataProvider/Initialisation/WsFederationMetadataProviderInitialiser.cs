@@ -22,7 +22,19 @@ namespace WsFederationMetadataProvider.Initialisation
             
             dependencyResolver.RegisterFactory<Func<MetadataGenerateRequest, FederationPartyConfiguration>>(() => c =>
             {
-                var builder = dependencyResolver.Resolve<IAssertionPartyContextBuilder>();
+                IFederationPartyContextBuilder builder;
+                switch(c.MetadataType)
+                {
+                    case MetadataType.SP:
+                        builder = dependencyResolver.Resolve<IAssertionPartyContextBuilder>();
+                        break;
+                    case MetadataType.Idp:
+                        builder = dependencyResolver.Resolve<IRelyingPartyContextBuilder>();
+                        break;
+                    default:
+                        throw new NotSupportedException(String.Format("Metadata type is not suported: {0}", c.MetadataType));
+                }
+                
                 using (builder)
                 {
                     return builder.BuildContext(c.FederationPartyId);

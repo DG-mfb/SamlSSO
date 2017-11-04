@@ -11,7 +11,7 @@ using ORMMetadataContextProvider.FederationParty;
 
 namespace ORMMetadataContextProvider
 {
-    public class MetadataContextBuilder : IMetadataContextBuilder
+    public class MetadataContextBuilder : IDbMetadataContextBuilder
     {
         private readonly IDbContext _dbContext;
         private readonly ICacheProvider _cacheProvider;
