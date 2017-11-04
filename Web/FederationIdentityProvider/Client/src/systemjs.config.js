@@ -38,7 +38,7 @@
   //      }
 		//},
 		app: {
-			main: '/Client/src/main.js',
+			main: 'client/src/main.js',
 			defaultExtension: 'js'
 		},
       rxjs: {

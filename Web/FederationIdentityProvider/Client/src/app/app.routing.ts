@@ -2,9 +2,9 @@
 export const AppRoutes = [
 	{
 		path: '',
-		redirectTo: '/login',
+		redirectTo: '/sso/login',
 		pathMatch: 'full'
 	},
-	{ path: 'login', component: LoginComponent, data: { title: 'Login' } },
+	{ path: 'sso/login', component: LoginComponent, data: { title: 'Login' } },
 	{ path: '**', component: LoginComponent, data: { title: 'Login' } },
 ];

@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
     moduleId: module.id,
     selector: 'login',
     templateUrl: 'login.component.html',
-    styleUrls: ['login.component.scss']
+    //styleUrls: ['login.component.scss']
 })
 export class LoginComponent {
 
