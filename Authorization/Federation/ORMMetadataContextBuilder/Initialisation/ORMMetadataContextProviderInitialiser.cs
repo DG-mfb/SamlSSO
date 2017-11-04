@@ -39,7 +39,7 @@ namespace ORMMetadataContextProvider.Initialisation
                 return new MetadataContextBuilder(context, cacheProvider);
             }, Lifetime.Transient);
 
-            dependencyResolver.RegisterFactory<IFederationPartyContextBuilder>(() =>
+            dependencyResolver.RegisterFactory<IAssertionPartyContextBuilder>(() =>
             {
                 var cacheProvider = dependencyResolver.Resolve<ICacheProvider>();
                 

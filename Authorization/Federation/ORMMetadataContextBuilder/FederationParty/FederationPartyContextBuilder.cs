@@ -8,7 +8,7 @@ using ORMMetadataContextProvider.Models;
 
 namespace ORMMetadataContextProvider.FederationParty
 {
-    internal class FederationPartyContextBuilder : IFederationPartyContextBuilder
+    internal class FederationPartyContextBuilder : IAssertionPartyContextBuilder
     {
         private readonly IDbContext _dbContext;
         private readonly ICacheProvider _cacheProvider;

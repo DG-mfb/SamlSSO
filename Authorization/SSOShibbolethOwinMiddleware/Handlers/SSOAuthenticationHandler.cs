@@ -124,7 +124,7 @@ namespace SSOOwinMiddleware.Handlers
 
                 var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
                 
-                var federationPartyContextBuilder = this._resolver.Resolve<IFederationPartyContextBuilder>();
+                var federationPartyContextBuilder = this._resolver.Resolve<IAssertionPartyContextBuilder>();
                
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 

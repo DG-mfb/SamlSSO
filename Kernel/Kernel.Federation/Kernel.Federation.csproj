@@ -66,7 +66,7 @@
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectRequestContext.cs" />
     <Compile Include="Protocols\IAuthnRequestClauseBuilder.cs" />
-    <Compile Include="FederationPartner\IFederationPartyContextBuilder.cs" />
+    <Compile Include="FederationPartner\IAssertionPartyContextBuilder.cs" />
     <Compile Include="FederationPartner\FederationPartyConfiguration.cs" />
     <Compile Include="MetaData\Configuration\Cryptography\FileSystemStore.cs" />
     <Compile Include="MetaData\Configuration\Cryptography\KeyDescriptorConfiguration.cs" />

@@ -3,7 +3,7 @@ using Kernel.Federation.FederationPartner;
 
 namespace Federation.Metadata.Consumer.Tests.Mock
 {
-    internal class FederationPartyContextBuilderMock : IFederationPartyContextBuilder
+    internal class FederationPartyContextBuilderMock : IAssertionPartyContextBuilder
     {
         public FederationPartyConfiguration BuildContext(string federationPartyId)
         {

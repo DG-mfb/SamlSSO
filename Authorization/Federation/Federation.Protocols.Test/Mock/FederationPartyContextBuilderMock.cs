@@ -6,7 +6,7 @@ using System;
 
 namespace Federation.Protocols.Test.Mock
 {
-    internal class FederationPartyContextBuilderMock : IFederationPartyContextBuilder
+    internal class FederationPartyContextBuilderMock : IAssertionPartyContextBuilder
     {
         private InlineMetadataContextBuilder _inlineMetadataContextBuilder = new InlineMetadataContextBuilder();
 

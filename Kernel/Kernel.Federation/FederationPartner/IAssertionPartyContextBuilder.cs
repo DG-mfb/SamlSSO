@@ -2,7 +2,7 @@
 
 namespace Kernel.Federation.FederationPartner
 {
-    public interface IFederationPartyContextBuilder : IDisposable
+    public interface IAssertionPartyContextBuilder : IDisposable
     {
         FederationPartyConfiguration BuildContext(string federationPartyId);
     }

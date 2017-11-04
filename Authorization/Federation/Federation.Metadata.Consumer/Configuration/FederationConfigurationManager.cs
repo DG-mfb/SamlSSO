@@ -6,7 +6,7 @@ namespace Federation.Metadata.FederationPartner.Configuration
 {
     internal class FederationConfigurationManager : ConfigurationManager<MetadataBase>
     {
-        public FederationConfigurationManager(IFederationPartyContextBuilder federationPartyContextBuilder, IConfigurationRetriever<MetadataBase> configRetriever) 
+        public FederationConfigurationManager(IAssertionPartyContextBuilder federationPartyContextBuilder, IConfigurationRetriever<MetadataBase> configRetriever) 
             : base(federationPartyContextBuilder, configRetriever)
         {
         }

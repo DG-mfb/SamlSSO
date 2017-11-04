@@ -22,7 +22,7 @@ namespace WsFederationMetadataProvider.Initialisation
             
             dependencyResolver.RegisterFactory<Func<MetadataGenerateRequest, FederationPartyConfiguration>>(() => c =>
             {
-                var builder = dependencyResolver.Resolve<IFederationPartyContextBuilder>();
+                var builder = dependencyResolver.Resolve<IAssertionPartyContextBuilder>();
                 using (builder)
                 {
                     return builder.BuildContext(c.FederationPartyId);

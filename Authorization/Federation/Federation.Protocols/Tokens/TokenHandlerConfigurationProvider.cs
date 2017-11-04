@@ -11,9 +11,9 @@ namespace Federation.Protocols.Tokens
 {
     internal class TokenHandlerConfigurationProvider : ITokenConfigurationProvider<SecurityTokenHandlerConfiguration>
     {
-        private readonly IFederationPartyContextBuilder _federationPartyContextBuilder;
+        private readonly IAssertionPartyContextBuilder _federationPartyContextBuilder;
         private readonly ICertificateValidator _certificateValidator;
-        public TokenHandlerConfigurationProvider(IFederationPartyContextBuilder federationPartyContextBuilder, ICertificateValidator certificateValidator)
+        public TokenHandlerConfigurationProvider(IAssertionPartyContextBuilder federationPartyContextBuilder, ICertificateValidator certificateValidator)
         {
             this._federationPartyContextBuilder = federationPartyContextBuilder;
             this._certificateValidator = certificateValidator;

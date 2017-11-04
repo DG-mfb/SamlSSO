@@ -12,9 +12,9 @@ namespace Shared.Federtion
         private static ConcurrentDictionary<string, T> _congigurationCache = new ConcurrentDictionary<string, T>();
         private readonly SemaphoreSlim _refreshLock;
         private readonly IConfigurationRetriever<T> _configRetriever;
-        private readonly IFederationPartyContextBuilder _federationPartyContextBuilder;
+        private readonly IAssertionPartyContextBuilder _federationPartyContextBuilder;
         
-        public ConfigurationManager(IFederationPartyContextBuilder federationPartyContextBuilder, IConfigurationRetriever<T> configRetriever)
+        public ConfigurationManager(IAssertionPartyContextBuilder federationPartyContextBuilder, IConfigurationRetriever<T> configRetriever)
         {
             if (federationPartyContextBuilder == null)
                 throw new ArgumentNullException("context");
