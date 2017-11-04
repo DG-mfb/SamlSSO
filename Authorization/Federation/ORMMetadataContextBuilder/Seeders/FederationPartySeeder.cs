@@ -63,6 +63,19 @@ namespace ORMMetadataContextProvider.Seeders
             localFederationParty.SecuritySettings = security;
             localFederationParty.AutnRequestSettings = authnRequestSettings;
 
+            //local identity provider
+            var localIdp = new FederationPartySettings
+            {
+                RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
+                AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
+                MetadataPath = "http://localhost:57601/idp/metadata",
+                MetadataLocation = "HTTP",
+                FederationPartyId = "localIdp"
+            };
+            localIdp.MetadataSettings = metadata;
+            localIdp.SecuritySettings = security;
+            localIdp.AutnRequestSettings = authnRequestSettings;
+
             context.Add<FederationPartySettings>(imperialFederationParty);
             context.Add<FederationPartySettings>(testFederationParty);
             context.Add<FederationPartySettings>(localFederationParty);
@@ -70,10 +83,12 @@ namespace ORMMetadataContextProvider.Seeders
             metadata.RelyingParties.Add(imperialFederationParty);
             metadata.RelyingParties.Add(localFederationParty);
             metadata.RelyingParties.Add(testFederationParty);
+            metadata.RelyingParties.Add(localIdp);
 
             security.RelyingParties.Add(imperialFederationParty);
             security.RelyingParties.Add(localFederationParty);
             security.RelyingParties.Add(testFederationParty);
+            security.RelyingParties.Add(localIdp);
         }
 
         private AutnRequestSettings GetAutnRequestSettings()
