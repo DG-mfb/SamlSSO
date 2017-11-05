@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { AuthenticationService } from '../services/AuthenticationService';
@@ -11,27 +11,37 @@ import { AuthenticationService } from '../services/AuthenticationService';
 	providers: [AuthenticationService],
     //styleUrls: ['login.component.scss']
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnInit
+{
     public showWarningMessage = false;
     public showErrorMessage = false;
-
-    email:string;
-    password: string;
-
-    constructor(
+	loading = false;
+	model: any = {};
+	returnUrl: string;
+	constructor(
+		private route: ActivatedRoute,
         private router: Router,
 		private authenticationService: AuthenticationService)
 	{
     }
+	ngOnInit(): void {
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+	}
 
-
-    onSubmit(): void {
+    login(): void {
 
         this.clearMessages();
 
-		this.authenticationService.login(this.email, this.password);
-
+		var req = this.authenticationService.login(this.model.username, this.model.password);
+		req.subscribe(
+			data =>
+			{
+				this.router.navigate([this.returnUrl]);
+			},
+			error => {
+				//this.alertService.error(error);
+				this.loading = false;
+			});
         //this.userService.currentUser$
         //    .subscribe(user => {
         //        if (user != null) {

@@ -17,20 +17,18 @@ var AuthenticationService = (function () {
         this.http = http;
     }
     AuthenticationService.prototype.login = function (username, password) {
-        var body = JSON.stringify({ username: username, password: password });
+        var body = { "username": username, "password": password }; //JSON.stringify({ username: username, password: password });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var req = this.http.get('http://localhost:60879/sp/metadata')
-            .subscribe();
-        //var req = this.http.get('https://localhost:44342/account/sso/login')
-        //.map((response: Response) => {
-        //	// login successful if there's a jwt token in the response
-        //	let user = response.json();
-        //	if (user && user.token) {
-        //		// store user details and jwt token in local storage to keep user logged in between page refreshes
-        //		localStorage.setItem('currentUser', JSON.stringify(user));
-        //	}
-        //});
+        return this.http.post('https://localhost:44342/api/account/authenticate', body, options)
+            .map(function (response) {
+            // login successful if there's a jwt token in the response
+            var user = response.json();
+            if (user && user.token) {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+        });
     };
     AuthenticationService.prototype.logout = function () {
         // remove user from local storage to log user out

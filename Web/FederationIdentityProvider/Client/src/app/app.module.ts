@@ -7,6 +7,8 @@ import { AppRoutes } from './app.routing';
 import { RouterModule, Router } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { AuthenticationService } from "./Services/AuthenticationService";
+import { HomeComponent } from "./Home/HomeComponent";
+import { AuthGuard } from "./Guards/AuthGuard";
 
 @NgModule({
 	imports:
@@ -16,8 +18,8 @@ import { AuthenticationService } from "./Services/AuthenticationService";
 		FormsModule,
 		RouterModule.forRoot(AppRoutes),
 	],
-	declarations: [AppComponent, LoginComponent],
-	providers: [AuthenticationService],
+	declarations: [AppComponent, LoginComponent, HomeComponent],
+	providers: [AuthenticationService, AuthGuard],
 	bootstrap: [AppComponent ]
 })
 export class AppModule { }

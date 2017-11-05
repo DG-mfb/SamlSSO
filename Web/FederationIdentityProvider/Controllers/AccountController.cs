@@ -19,7 +19,7 @@ namespace FederationIdentityProvider.Controllers
         [HttpPost]
         public IHttpActionResult Login([FromBody]LoginModel loginModel)
         {
-            return Ok();
+            return Ok("Authenticated");
         }
     }
 }

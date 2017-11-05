@@ -15,6 +15,8 @@ var app_routing_1 = require("./app.routing");
 var router_1 = require("@angular/router");
 var http_1 = require("@angular/http");
 var AuthenticationService_1 = require("./Services/AuthenticationService");
+var HomeComponent_1 = require("./Home/HomeComponent");
+var AuthGuard_1 = require("./Guards/AuthGuard");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -28,8 +30,8 @@ AppModule = __decorate([
             forms_1.FormsModule,
             router_1.RouterModule.forRoot(app_routing_1.AppRoutes),
         ],
-        declarations: [app_component_1.AppComponent, login_component_1.LoginComponent],
-        providers: [AuthenticationService_1.AuthenticationService],
+        declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, HomeComponent_1.HomeComponent],
+        providers: [AuthenticationService_1.AuthenticationService, AuthGuard_1.AuthGuard],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);

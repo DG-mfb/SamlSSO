@@ -129,6 +129,7 @@
     <Content Include="Client\src\main.js.map" />
     <Content Include="Client\src\tsconfig.json" />
     <Content Include="package.json" />
+    <Content Include="Client\src\app\Home\home.component.html" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -180,6 +181,8 @@
     <TypeScriptCompile Include="Client\src\app\app.component.ts" />
     <TypeScriptCompile Include="Client\src\app\app.module.ts" />
     <TypeScriptCompile Include="Client\src\app\app.routing.ts" />
+    <TypeScriptCompile Include="Client\src\app\Guards\AuthGuard.ts" />
+    <TypeScriptCompile Include="Client\src\app\Home\HomeComponent.ts" />
     <TypeScriptCompile Include="Client\src\app\login\login.component.ts" />
     <TypeScriptCompile Include="Client\src\app\Services\AuthenticationService.ts" />
     <TypeScriptCompile Include="Client\src\main.ts" />
