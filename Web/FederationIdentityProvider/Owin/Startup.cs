@@ -37,6 +37,7 @@ namespace FederationIdentityProvider.Owin
                     var requestEncoded = elements["SAMLRequest"];
                     var relayState = await relayStateHandler.GetRelayStateFromFormData(elements.ToDictionary(k => k.Key, v => v.Value.First()));
                     var request = await authnRequestSerialiser.Deserialize<AuthnRequest>(requestEncoded);
+                    c.Response.Redirect("https://localhost:44342/client/src");
                 });
 
             });
