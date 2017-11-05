@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
+using Kernel.Security.CertificateManagement;
 using Microsoft.Owin;
 using Owin;
 using Shared.Federtion.Models;
@@ -31,9 +33,30 @@ namespace FederationIdentityProvider.Owin
                 a.Run(async c =>
                 {
                     var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
+                    var certificateManager = resolver.Resolve<ICertificateManager>();
                     var relayStateHandler = resolver.Resolve<IRelayStateHandler>();
                     var authnRequestSerialiser = resolver.Resolve<IAuthnRequestSerialiser>();
                     var elements = c.Request.Query;
+                    var qs = c.Request.QueryString.Value;
+                    var i = qs.IndexOf("Signature");
+                    var data = qs.Substring(0, i - 1);
+                    var sgn = Uri.UnescapeDataString(qs.Substring(i + 10));
+                    var certContext = new X509CertificateContext
+                    {
+                        StoreLocation = StoreLocation.LocalMachine,
+                        ValidOnly = false,
+                        StoreName = "TestCertStore"
+                    };
+                    certContext.SearchCriteria.Add(new CertificateSearchCriteria
+                    {
+                        SearchCriteriaType = X509FindType.FindBySubjectName,
+                        SearchValue = "ApiraTestCertificate"
+                    });
+                    
+                    var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certContext);
+                    if (!validated)
+                        throw new InvalidOperationException("Invalid signature.");
+
                     var requestEncoded = elements["SAMLRequest"];
                     var relayState = await relayStateHandler.GetRelayStateFromFormData(elements.ToDictionary(k => k.Key, v => v.Value.First()));
                     var request = await authnRequestSerialiser.Deserialize<AuthnRequest>(requestEncoded);

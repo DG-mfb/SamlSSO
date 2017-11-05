@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-//import { UserService } from '../../services/user.service';
+import { AuthenticationService } from '../services/AuthenticationService';
 
 @Component({
     moduleId: module.id,
     selector: 'login',
-    templateUrl: 'login.component.html',
+	templateUrl: 'login.component.html',
+	providers: [AuthenticationService],
     //styleUrls: ['login.component.scss']
 })
 export class LoginComponent {
@@ -19,11 +20,9 @@ export class LoginComponent {
     password: string;
 
     constructor(
-        private router: Router
-		//private userService: UserService
-	)
+        private router: Router,
+		private authenticationService: AuthenticationService)
 	{
-
     }
 
 
@@ -31,7 +30,7 @@ export class LoginComponent {
 
         this.clearMessages();
 
-        //this.userService.logIn(this.email, this.password);
+		this.authenticationService.login(this.email, this.password);
 
         //this.userService.currentUser$
         //    .subscribe(user => {

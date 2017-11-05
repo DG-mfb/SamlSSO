@@ -11,18 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-//import { UserService } from '../../services/user.service';
+var AuthenticationService_1 = require("../services/AuthenticationService");
 var LoginComponent = (function () {
-    function LoginComponent(router
-        //private userService: UserService
-    ) {
+    function LoginComponent(router, authenticationService) {
         this.router = router;
+        this.authenticationService = authenticationService;
         this.showWarningMessage = false;
         this.showErrorMessage = false;
     }
     LoginComponent.prototype.onSubmit = function () {
         this.clearMessages();
-        //this.userService.logIn(this.email, this.password);
+        this.authenticationService.login(this.email, this.password);
         //this.userService.currentUser$
         //    .subscribe(user => {
         //        if (user != null) {
@@ -50,10 +49,10 @@ LoginComponent = __decorate([
         moduleId: module.id,
         selector: 'login',
         templateUrl: 'login.component.html',
+        providers: [AuthenticationService_1.AuthenticationService],
     }),
-    __metadata("design:paramtypes", [router_1.Router
-        //private userService: UserService
-    ])
+    __metadata("design:paramtypes", [router_1.Router,
+        AuthenticationService_1.AuthenticationService])
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;
 //# sourceMappingURL=login.component.js.map

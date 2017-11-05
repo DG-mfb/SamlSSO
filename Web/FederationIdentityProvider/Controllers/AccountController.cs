@@ -11,8 +11,8 @@ namespace FederationIdentityProvider.Controllers
     public class AccountController : ApiController
     {
         [Route("sso/login")]
-        [HttpGet]
-        public IHttpActionResult Login()
+        [HttpPost]
+        public IHttpActionResult Login(string username, string password)
         {
             return Ok();
         }
