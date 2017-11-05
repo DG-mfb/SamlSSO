@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Microsoft.Owin;
 using Owin;
-using System.Linq;
 using Shared.Federtion.Models;
 
 [assembly: OwinStartup(typeof(FederationIdentityProvider.Owin.Startup))]
@@ -25,7 +25,7 @@ namespace FederationIdentityProvider.Owin
                 });
 
             });
-
+           
             app.Map(new PathString("/sso/login"), a =>
             {
                 a.Run(async c =>
@@ -37,9 +37,9 @@ namespace FederationIdentityProvider.Owin
                     var requestEncoded = elements["SAMLRequest"];
                     var relayState = await relayStateHandler.GetRelayStateFromFormData(elements.ToDictionary(k => k.Key, v => v.Value.First()));
                     var request = await authnRequestSerialiser.Deserialize<AuthnRequest>(requestEncoded);
-                    c.Response.Redirect("https://localhost:44342/client/src");
+                    var id = Guid.NewGuid();
+                    c.Response.Redirect(String.Format("https://localhost:44342/client/src?id={0}", id));
                 });
-
             });
         }
 
