@@ -1,10 +1,12 @@
 ﻿import { LoginComponent } from './login/login.component';
+import { AppComponent } from "./app.component";
 export const AppRoutes = [
 	{
 		path: '',
-		redirectTo: '/sso/login',
-		pathMatch: 'full'
+		component: LoginComponent
+		//redirectTo: 'auth/sso/login',
+		//pathMatch: 'full'
 	},
-	{ path: 'sso/login', component: LoginComponent, data: { title: 'Login' } },
-	{ path: '**', component: LoginComponent, data: { title: 'Login' } },
+	{ path: 'auth/sso/login', component: LoginComponent, data: { title: 'Login' } },
+	{ path: '**', redirectTo: '' },
 ];

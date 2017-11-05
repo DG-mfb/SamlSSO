@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Kernel.Security.CertificateManagement;
@@ -27,7 +28,14 @@ namespace FederationIdentityProvider.Owin
                 });
 
             });
-           
+            app.Map(new PathString("/account/sso/login"), a =>
+            {
+                a.Run(c =>
+                {
+                    return Task.CompletedTask;
+                });
+
+            });
             app.Map(new PathString("/sso/login"), a =>
             {
                 a.Run(async c =>

@@ -7,12 +7,17 @@ using System.Web.Http;
 
 namespace FederationIdentityProvider.Controllers
 {
-    [RoutePrefix("account")]
+    public class LoginModel
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+    }
+    [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
-        [Route("sso/login")]
+        [Route("authenticate")]
         [HttpPost]
-        public IHttpActionResult Login(string username, string password)
+        public IHttpActionResult Login([FromBody]LoginModel loginModel)
         {
             return Ok();
         }
