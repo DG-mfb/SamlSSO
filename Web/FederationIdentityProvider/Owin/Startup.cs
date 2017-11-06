@@ -40,7 +40,7 @@ namespace FederationIdentityProvider.Owin
                 });
 
             });
-            app.Map(new PathString("/account/sso/login"), a =>
+            app.Map(new PathString("/api/sso/signon"), a =>
             {
                 a.Run(c =>
                 {
@@ -82,7 +82,7 @@ namespace FederationIdentityProvider.Owin
                     if (!validated)
                         throw new InvalidOperationException("Invalid signature.");
                     var id = Guid.NewGuid();
-                    c.Response.Redirect(String.Format("https://localhost:44342/client?{0}{1}", "https://localhost:44342/account/sso/login/", id));
+                    c.Response.Redirect(String.Format("https://localhost:44342/client?{0}{1}", "sso/login?", id));
                 });
             });
         }

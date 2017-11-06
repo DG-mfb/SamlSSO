@@ -21,6 +21,13 @@ export class AuthenticationService {
             });
     }
 
+	ssologin(username: string) {
+		return this.http.post('https://localhost:44342/api/sso/signon', {})//JSON.stringify({ username: username }))
+			.map((response: Response) => {
+
+			});
+	}
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
