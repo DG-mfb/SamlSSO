@@ -9,7 +9,7 @@ import { AuthenticationService } from '../services/AuthenticationService';
     selector: 'login',
 	templateUrl: 'login.component.html',
 	providers: [AuthenticationService],
-    //styleUrls: ['login.component.scss']
+    styleUrls: ['login.component.css']
 })
 export class LoginComponent implements OnInit
 {

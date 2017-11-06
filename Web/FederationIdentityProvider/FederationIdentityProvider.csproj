@@ -127,7 +127,7 @@
     <Content Include="Client\src\app\app.module.js.map" />
     <Content Include="Client\src\app\app.routing.js.map" />
     <Content Include="Client\src\app\login\login.component.js.map" />
-    <Content Include="Client\src\app\login\login.component.scss" />
+    <Content Include="Client\src\app\login\login.component.css" />
     <Content Include="Client\src\main.js.map" />
     <Content Include="Client\src\tsconfig.json" />
     <Content Include="package.json" />
