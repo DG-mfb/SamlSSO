@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IdentityModel.Metadata;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using Kernel.DependancyResolver;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
@@ -20,8 +22,13 @@ namespace FederationIdentityProvider.Owin
 {
     public class Startup
     {
+        private static ConcurrentDictionary<string, Uri> _relyingParties = new ConcurrentDictionary<string, Uri>
+        {
+        };
         public void Configuration(IAppBuilder app)
         {
+            _relyingParties.TryAdd("https://imperial.flowz_test.co.uk/", new Uri("http://localhost:60879/sp/metadata"));
+
             app.Map(new PathString("/idp/metadata"), a =>
             {
                 a.Run(c =>
@@ -41,7 +48,8 @@ namespace FederationIdentityProvider.Owin
                 });
 
             });
-
+            //owin middleware mock to parse auth request get the sp metadata and verrify the signarure
+            //to be implementaed as OWIN middleware with handler and protocol handler.
             app.Map(new PathString("/sso/login"), a =>
             {
                 a.Run(async c =>
@@ -56,16 +64,8 @@ namespace FederationIdentityProvider.Owin
                     var requestEncoded = elements["SAMLRequest"];
                     var relayState = await relayStateHandler.GetRelayStateFromFormData(elements.ToDictionary(k => k.Key, v => v.Value.First()));
                     var request = await authnRequestSerialiser.Deserialize<AuthnRequest>(requestEncoded);
-                    var configManager = resolver.Resolve<IConfigurationRetriever<MetadataBase>>();
-                    var spMetadata = await configManager.GetAsync(new FederationPartyConfiguration("local", "http://localhost:60879/sp/metadata"), CancellationToken.None);
-                    var metadataType = spMetadata.GetType();
-                    var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
-                    var handler = resolver.Resolve(handlerType) as IMetadataHandler<EntityDescriptor>;
-                    if (handler == null)
-                        throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
-                    var sp = handler.GetRoleDescriptors<ServiceProviderSingleSignOnDescriptor>((EntityDescriptor)spMetadata)
-                        .Single();
-                    var keyDescriptors = sp.Keys.Where(k => k.Use == KeyType.Signing);
+                    var spDescriptor = await this.GetSPDescriptor(request, resolver);
+                    var keyDescriptors = spDescriptor.Keys.Where(k => k.Use == KeyType.Signing);
                     var validated = false;
                     foreach (var k in keyDescriptors.SelectMany(x => x.KeyInfo))
                     {
@@ -87,6 +87,23 @@ namespace FederationIdentityProvider.Owin
             });
         }
 
+        private async Task<ServiceProviderSingleSignOnDescriptor> GetSPDescriptor(AuthnRequest request,IDependencyResolver resolver)
+        {
+            var issuer = request.Issuer.Value;
+            if (!Startup._relyingParties.ContainsKey(issuer))
+                throw new InvalidOperationException(String.Format("Unregistered relying party id: {0}", issuer));
+            var issuerMetadataLocation = Startup._relyingParties[issuer];
+            var configManager = resolver.Resolve<IConfigurationRetriever<MetadataBase>>();
+            var spMetadata = await configManager.GetAsync(new FederationPartyConfiguration("local", issuerMetadataLocation.AbsoluteUri), CancellationToken.None);
+            var metadataType = spMetadata.GetType();
+            var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
+            var handler = resolver.Resolve(handlerType) as IMetadataHandler<EntityDescriptor>;
+            if (handler == null)
+                throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+            var spDescriptor = handler.GetRoleDescriptors<ServiceProviderSingleSignOnDescriptor>((EntityDescriptor)spMetadata)
+                .Single();
+            return spDescriptor;
+        }
         private bool VerifySignature(string request, X509Certificate2 certificate, ICertificateManager certificateManager)
         {
             var i = request.IndexOf("Signature");
