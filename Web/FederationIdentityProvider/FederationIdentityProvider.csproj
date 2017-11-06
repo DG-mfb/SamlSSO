@@ -93,6 +93,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Client\app.css" />
+    <Content Include="Client\app\app.component.html" />
+    <Content Include="Client\app\home\home.component.html" />
+    <Content Include="Client\app\login\login.component.html" />
+    <Content Include="Client\app\register\register.component.html" />
+    <Content Include="Client\app\_directives\alert.component.html" />
+    <Content Include="Client\index.html" />
     <Content Include="Client\src\app\app.component.js" />
     <Content Include="Client\src\app\app.component.spec.js" />
     <Content Include="Client\src\app\app.module.js" />
@@ -106,6 +113,7 @@
     <Content Include="Client\src\systemjs-angular-loader.js" />
     <Content Include="Client\src\systemjs.config.extras.js" />
     <Content Include="Client\src\systemjs.config.js" />
+    <Content Include="Client\systemjs.config.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -132,6 +140,8 @@
     <Content Include="Client\src\tsconfig.json" />
     <Content Include="package.json" />
     <Content Include="Client\src\app\Home\home.component.html" />
+    <Content Include="Client\package.json" />
+    <Content Include="Client\tsconfig.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -187,6 +197,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\app\app.component.ts" />
+    <TypeScriptCompile Include="Client\app\app.module.ts" />
+    <TypeScriptCompile Include="Client\app\app.routing.ts" />
+    <TypeScriptCompile Include="Client\app\home\home.component.ts" />
+    <TypeScriptCompile Include="Client\app\home\index.ts" />
+    <TypeScriptCompile Include="Client\app\login\index.ts" />
+    <TypeScriptCompile Include="Client\app\login\login.component.ts" />
+    <TypeScriptCompile Include="Client\app\main.ts" />
+    <TypeScriptCompile Include="Client\app\register\index.ts" />
+    <TypeScriptCompile Include="Client\app\register\register.component.ts" />
+    <TypeScriptCompile Include="Client\app\_directives\alert.component.ts" />
+    <TypeScriptCompile Include="Client\app\_directives\index.ts" />
+    <TypeScriptCompile Include="Client\app\_guards\auth.guard.ts" />
+    <TypeScriptCompile Include="Client\app\_guards\index.ts" />
+    <TypeScriptCompile Include="Client\app\_helpers\fake-backend.ts" />
+    <TypeScriptCompile Include="Client\app\_helpers\index.ts" />
+    <TypeScriptCompile Include="Client\app\_models\index.ts" />
+    <TypeScriptCompile Include="Client\app\_models\user.ts" />
+    <TypeScriptCompile Include="Client\app\_services\alert.service.ts" />
+    <TypeScriptCompile Include="Client\app\_services\authentication.service.ts" />
+    <TypeScriptCompile Include="Client\app\_services\index.ts" />
+    <TypeScriptCompile Include="Client\app\_services\user.service.ts" />
     <TypeScriptCompile Include="Client\src\app\app.component.spec.ts" />
     <TypeScriptCompile Include="Client\src\app\app.component.ts" />
     <TypeScriptCompile Include="Client\src\app\app.module.ts" />
