@@ -140,12 +140,16 @@ namespace SecurityManagement
         /// <param name="certContext"></param>
         /// <returns></returns>
         public bool VerifySignatureFromBase64(string data, string signed, CertificateContext certContext)
+        { 
+            var cert = this.GetCertificateFromContext(certContext);
+            return this.VerifySignatureFromBase64(data, signed, cert);
+        }
+
+        public bool VerifySignatureFromBase64(string data, string signed, X509Certificate2 certificate)
         {
             var dataBytes = Encoding.UTF8.GetBytes(data);
             var signedBytes = Convert.FromBase64String(signed);
-            
-            var cert = this.GetCertificateFromContext(certContext);
-            var verified = RSADataProtection.VerifyDataSHA1Signed((RSA)cert.PrivateKey, dataBytes, signedBytes);
+            var verified = RSADataProtection.VerifyDataSHA1Signed((RSA)certificate.PublicKey.Key, dataBytes, signedBytes);
             return verified;
         }
 
