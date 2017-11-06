@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomConfigurator.cs" />
     <Compile Include="HttpDocumentRetriever.cs" />
     <Compile Include="Initialisation\HttpDocumentRetrieverInitialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

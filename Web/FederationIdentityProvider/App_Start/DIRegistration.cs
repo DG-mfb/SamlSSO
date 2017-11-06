@@ -1,4 +1,5 @@
-﻿using FederationIdentityProvider.RelyingPartyConfiguration;
+﻿using FederationIdentityProvider.Federation;
+using FederationIdentityProvider.RelyingPartyConfiguration;
 using Kernel.DependancyResolver;
 
 namespace FederationIdentityProvider.App_Start
@@ -8,6 +9,7 @@ namespace FederationIdentityProvider.App_Start
         public static void Register(IDependencyResolver resolver)
         {
             resolver.RegisterType<RelyingPartyContextBuilder>(Lifetime.Transient);
+            resolver.RegisterType<CustomConfigurator>(Lifetime.Transient);
         }
     }
 }

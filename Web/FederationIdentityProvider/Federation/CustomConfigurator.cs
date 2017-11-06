@@ -1,13 +1,13 @@
 ﻿using Kernel.Configuration;
 using Kernel.Web;
 
-namespace Federation.Metadata.HttpRetriever
+namespace FederationIdentityProvider.Federation
 {
     internal class CustomConfigurator : ICustomConfigurator<IDocumentRetriever>
     {
         public void Configure(IDocumentRetriever configurable)
         {
-            //Customise document http rertiever here
+            configurable.RequireHttps = false;
         }
     }
 }

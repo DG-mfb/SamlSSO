@@ -113,6 +113,7 @@
     <Compile Include="App_Start\DIRegistration.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Federation\CustomConfigurator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -156,6 +157,10 @@
       <Project>{FA2CD1BF-A890-4306-9EDB-A1B10042E57E}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Kernel.Configuration\Kernel.Configuration.csproj">
+      <Project>{B78BEABA-813A-4C65-BA17-2207E5F37B66}</Project>
+      <Name>Kernel.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Kernel.Federation\Kernel.Federation.csproj">
       <Project>{47FE8E9F-CCF6-46B7-BA75-CBA1D1F56D7A}</Project>
       <Name>Kernel.Federation</Name>
@@ -167,6 +172,10 @@
     <ProjectReference Include="..\..\Kernel\Kernel.Security\Kernel.Security.csproj">
       <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
       <Name>Kernel.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Kernel.Web\Kernel.Web.csproj">
+      <Project>{9653C064-54C1-41B6-B34C-8AF2DC747C65}</Project>
+      <Name>Kernel.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Kernel\Kernel.csproj">
       <Project>{E198C691-91A6-4082-9976-F5F006F24960}</Project>
