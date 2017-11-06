@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IdentityModel.Metadata;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Kernel.Security.CertificateManagement;
@@ -36,6 +39,7 @@ namespace FederationIdentityProvider.Owin
                 });
 
             });
+
             app.Map(new PathString("/sso/login"), a =>
             {
                 a.Run(async c =>
@@ -68,6 +72,8 @@ namespace FederationIdentityProvider.Owin
                     var requestEncoded = elements["SAMLRequest"];
                     var relayState = await relayStateHandler.GetRelayStateFromFormData(elements.ToDictionary(k => k.Key, v => v.Value.First()));
                     var request = await authnRequestSerialiser.Deserialize<AuthnRequest>(requestEncoded);
+                    var configManager = resolver.Resolve<IConfigurationRetriever<MetadataBase>>();
+                    //var spMetadata = await configManager.GetAsync(new FederationPartyConfiguration("local", "http://localhost:60879/sp/metadata"), CancellationToken.None);
                     var id = Guid.NewGuid();
                     c.Response.Redirect(String.Format("https://localhost:44342/client/src?{0}{1}", "https://localhost:44342/account/sso/login/", id));
                 });

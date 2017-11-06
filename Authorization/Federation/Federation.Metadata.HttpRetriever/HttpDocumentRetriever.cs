@@ -26,7 +26,7 @@ namespace Federation.Metadata.HttpRetriever
         public bool RequireHttps { get; set; }
         public TimeSpan Timeout { get; set; }
         public long MaxResponseContentBufferSize { get; set; }
-        public ICustomConfigurator<HttpDocumentRetriever> HttpDocumentRetrieverConfigurator { private get; set; }
+        public ICustomConfigurator<IDocumentRetriever> HttpDocumentRetrieverConfigurator { private get; set; }
 
         /// <summary>
         /// Initialise an instance of Http document retriever
@@ -54,17 +54,17 @@ namespace Federation.Metadata.HttpRetriever
             if (string.IsNullOrWhiteSpace(address))
                 throw new ArgumentNullException("address");
 
+            if (this.HttpDocumentRetrieverConfigurator != null)
+            {
+                this.HttpDocumentRetrieverConfigurator.Configure(this);
+            }
+
             if (this.RequireHttps && !Utility.IsHttps(address))
                 throw new ArgumentException(string.Format("IDX10108: The address specified '{0}' is not valid as per HTTPS scheme. Please specify an https address for security reasons. If you want to test with http address, set the RequireHttps property  on IDocumentRetriever to false.", (object)address), "address");
             
             string str1;
             try
             {
-                if(this.HttpDocumentRetrieverConfigurator != null)
-                {
-                    this.HttpDocumentRetrieverConfigurator.Configure(this);
-                }
-
                 var messageHandler = new WebRequestHandler
                 {
                     ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(this._backchannelCertificateValidator.Validate)
