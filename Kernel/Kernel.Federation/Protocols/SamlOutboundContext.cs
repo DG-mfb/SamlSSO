@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kernel.Federation.Protocols
 {
-    public class SamlRequestContext
+    public class SamlOutboundContext
     {
         public BindingContext BindingContext { get; set; }
     }

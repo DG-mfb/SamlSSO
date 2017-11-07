@@ -4,7 +4,7 @@ namespace Kernel.Federation.Protocols
 {
     public interface IBindingHandler
     {
-        Task HandleRequest(SamlRequestContext context);
-        Task HandleResponse(SamlResponseContext context);
+        Task HandleOutbound(SamlOutboundContext context);
+        Task HandleInbound(SamlInboundContext context);
     }
 }

@@ -16,12 +16,12 @@ namespace Federation.Protocols.Bindings.HttpPost
             this._responseHandler = responseHandler;
         }
         
-        public Task HandleRequest(SamlRequestContext context)
+        public Task HandleOutbound(SamlOutboundContext context)
         {
             throw new NotImplementedException();
         }
         
-        public async Task HandleResponse(SamlResponseContext context)
+        public async Task HandleInbound(SamlInboundContext context)
         {
             var httpPostContext = context as HttpPostResponseContext;
             var result = await this._responseHandler.Handle(httpPostContext);

@@ -2,7 +2,7 @@
 {
     public class SamlProtocolContext
     {
-        public SamlRequestContext RequestContext { get; set; }
-        public SamlResponseContext ResponseContext { get; set; }
+        public SamlOutboundContext RequestContext { get; set; }
+        public SamlInboundContext ResponseContext { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
             }
         }
 
-        public async Task HandleRequest(SamlRequestContext context)
+        public async Task HandleOutbound(SamlOutboundContext context)
         {
             var builders = this.GetBuilders();
             foreach (var b in builders.OrderBy(x => x.Order))
@@ -35,7 +35,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
             await httpRedirectContext.RequestHanlerAction(context.BindingContext.GetDestinationUrl());
         }
 
-        public Task HandleResponse(SamlResponseContext context)
+        public Task HandleInbound(SamlInboundContext context)
         {
             throw new NotImplementedException();
         }

@@ -120,8 +120,8 @@
     <Compile Include="Tokens\ITokenSerialiser.cs" />
     <Compile Include="Tokens\ITokenValidator.cs" />
     <Compile Include="Protocols\SamlProtocolContext.cs" />
-    <Compile Include="Protocols\SamlRequestContext.cs" />
-    <Compile Include="Protocols\SamlResponseContext.cs" />
+    <Compile Include="Protocols\SamlOutboundContext.cs" />
+    <Compile Include="Protocols\SamlInboundContext.cs" />
     <Compile Include="Tokens\TokenHandlingResponse.cs" />
   </ItemGroup>
   <ItemGroup>
