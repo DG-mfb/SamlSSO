@@ -18,6 +18,10 @@ namespace Federation.Protocols.Request.Handlers
     internal class AuthnRequestHandler
     {
         private static ConcurrentDictionary<string, Uri> _relyingParties = new ConcurrentDictionary<string, Uri>();
+        static AuthnRequestHandler()
+        {
+            AuthnRequestHandler._relyingParties.TryAdd("https://imperial.flowz_test.co.uk/", new Uri("http://localhost:60879/sp/metadata"));
+        }
 
         private readonly  IRelayStateHandler _relayStateHandler;
         private readonly ICertificateManager _certificateManager;
@@ -35,7 +39,6 @@ namespace Federation.Protocols.Request.Handlers
             this._authnRequestSerialiser = authnRequestSerialiser;
             this._relayStateHandler = relayStateHandler;
             this._certificateManager = certificateManager;
-            AuthnRequestHandler._relyingParties.TryAdd("https://imperial.flowz_test.co.uk/", new Uri("http://localhost:60879/sp/metadata"));
         }
         public async Task HandleRequest(HttpRedirectInboundContext context)
         {
