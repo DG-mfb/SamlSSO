@@ -13,12 +13,12 @@ namespace Federation.Protocols
             this._bindingHandler = binding;
         }
         
-        public async Task HandleRequest(SamlProtocolContext context)
+        public async Task HandleOutbound(SamlProtocolContext context)
         {
             await this._bindingHandler.HandleOutbound(context.RequestContext);
         }
 
-        public async Task HandleResponse(SamlProtocolContext context)
+        public async Task HandleInbound(SamlProtocolContext context)
         {
             await this._bindingHandler.HandleInbound(context.ResponseContext);
         }

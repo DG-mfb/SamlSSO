@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Federation.Protocols.Request.Handlers;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
@@ -32,12 +33,13 @@ namespace Federation.Protocols.Bindings.HttpRedirect
                 await b.Build(context.BindingContext);
             }
             var httpRedirectContext = context as HttpRedirectRequestContext;
-            await httpRedirectContext.RequestHanlerAction(context.BindingContext.GetDestinationUrl());
+            await httpRedirectContext.HanlerAction(context.BindingContext.GetDestinationUrl());
         }
 
-        public Task HandleInbound(SamlInboundContext context)
+        public async Task HandleInbound(SamlInboundContext context)
         {
-            throw new NotImplementedException();
+            var authnRequestHandler = this._dependencyResolver.Resolve<AuthnRequestHandler>();
+            await authnRequestHandler.HandleRequest((HttpRedirectInboundContext)context);
         }
 
         private  IEnumerable<ISamlClauseBuilder> GetBuilders()

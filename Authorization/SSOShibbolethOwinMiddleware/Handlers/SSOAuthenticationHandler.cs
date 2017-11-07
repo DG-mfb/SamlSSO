@@ -74,7 +74,7 @@ namespace SSOOwinMiddleware.Handlers
                         }
                     };
                     this._logger.WriteInformation(String.Format("Handle response entering."));
-                    await protocolHanlder.HandleResponse(protocolContext);
+                    await protocolHanlder.HandleInbound(protocolContext);
                     var responseContext = protocolContext.ResponseContext as HttpPostResponseContext;
                     var identity = responseContext.Result;
                     if (identity != null)
@@ -134,7 +134,7 @@ namespace SSOOwinMiddleware.Handlers
                     RequestContext = new HttpRedirectRequestContext
                     {
                         BindingContext = new HttpRedirectContext(requestContext),
-                        RequestHanlerAction = redirectUri =>
+                        HanlerAction = redirectUri =>
                         {
                             this.Response.Redirect(redirectUri.AbsoluteUri);
                             return Task.CompletedTask;
@@ -143,7 +143,7 @@ namespace SSOOwinMiddleware.Handlers
                 };
                 var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
                 var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
-                await protocolHanlder.HandleRequest(protocolContext);
+                await protocolHanlder.HandleOutbound(protocolContext);
             }
             catch(Exception ex)
             {

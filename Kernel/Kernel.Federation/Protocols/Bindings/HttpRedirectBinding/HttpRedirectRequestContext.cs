@@ -5,6 +5,6 @@ namespace Kernel.Federation.Protocols.Bindings.HttpRedirectBinding
 {
     public class HttpRedirectRequestContext : SamlOutboundContext
     {
-        public Func<Uri, Task> RequestHanlerAction { get; set; }
+        public Func<Uri, Task> HanlerAction { get; set; }
     }
 }
