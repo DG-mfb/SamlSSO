@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
-using Kernel.Initialisation;
 
 namespace Federation.Protocols.Bindings.HttpRedirect
 {
     internal class HttpRedirectBindingHandler : IBindingHandler
     {
-        private static Func<Type, bool> _condition = t => !t.IsAbstract && !t.IsInterface && typeof(ISamlClauseBuilder).IsAssignableFrom(t);
-        
+        private readonly IDependencyResolver _dependencyResolver;
+        public HttpRedirectBindingHandler(IDependencyResolver dependencyResolver)
+        {
+            this._dependencyResolver = dependencyResolver;
+        }
         public async Task BuildRequest(HttpRedirectContext context)
         {
             var builders = this.GetBuilders();
@@ -39,8 +42,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
 
         private  IEnumerable<ISamlClauseBuilder> GetBuilders()
         {
-            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
-            return resolver.ResolveAll<ISamlClauseBuilder>();
+            return this._dependencyResolver.ResolveAll<ISamlClauseBuilder>();
         }
     }
 }

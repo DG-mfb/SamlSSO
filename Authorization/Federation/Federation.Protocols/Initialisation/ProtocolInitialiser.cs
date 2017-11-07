@@ -56,7 +56,7 @@ namespace Federation.Protocols.Initialisation
                 {
                     if (b == Kernel.Federation.MetaData.Configuration.Bindings.Http_Redirect)
                     {
-                        return new ProtocolHandler<HttpRedirectBindingHandler>(new HttpRedirectBindingHandler());
+                        return new ProtocolHandler<HttpRedirectBindingHandler>(new HttpRedirectBindingHandler(dependencyResolver));
                     }
                     if (b == Kernel.Federation.MetaData.Configuration.Bindings.Http_Post)
                     {
