@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kernel.Federation.MetaData;
@@ -30,11 +31,14 @@ namespace FederationIdentityProvider.Owin
             });
             app.Map(new PathString("/api/sso/signon"), a =>
             {
-                a.Run(c =>
+                a.Run(async c =>
                 {
-                    return Task.CompletedTask;
+                    var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
+                    var outboudContext = new SamlOutboundContext { BindingContext = new BindingContext(new Dictionary<string, object>(), new Uri("http://localhost:60879/api/Account/SSOLogon")) };
+                    var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
+                    var protocolHanlder = protocolFactory(Bindings.Http_Post);
+                    await protocolHanlder.HandleOutbound(new SamlProtocolContext { RequestContext = outboudContext });
                 });
-
             });
 
             //owin middleware mock to parse auth request get the sp metadata and verrify the signarure
