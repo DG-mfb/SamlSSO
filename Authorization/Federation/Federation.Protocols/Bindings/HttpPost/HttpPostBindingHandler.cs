@@ -20,7 +20,7 @@ namespace Federation.Protocols.Bindings.HttpPost
         public async Task HandleOutbound(SamlOutboundContext context)
         {
             var responseDispatcher = this._dependencyResolver.Resolve<ResponseDispatcher>();
-            await responseDispatcher.SendAsync();
+            await responseDispatcher.SendAsync(context);
         }
         
         public async Task HandleInbound(SamlInboundContext context)

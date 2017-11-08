@@ -1,22 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Kernel.Federation.MetaData.Configuration.EndPoint;
+using Kernel.Federation.Protocols;
 
 namespace Federation.Protocols.Response
 {
     internal class ResponseDispatcher
     {
         private readonly ResponseBuilder _responseBuilder;
-        public ResponseDispatcher(ResponseBuilder responseBuilder)
+        private IRelayStateSerialiser _relayStateSerialiser;
+        public ResponseDispatcher(ResponseBuilder responseBuilder, IRelayStateSerialiser relayStateSerialiser)
         {
+            this._relayStateSerialiser = relayStateSerialiser;
             this._responseBuilder = responseBuilder;
         }
-        public Task SendAsync()
+        public async Task SendAsync(SamlOutboundContext context)
         {
-            throw new NotImplementedException();
+            var httpClient = new HttpClient();
+            using (var s = new StreamReader(@"D:\Dan\Software\Apira\Temp\MockResponse.xml"))
+            {
+                var response = s.ReadToEnd();
+                var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(response));
+                var relayState = new Dictionary<string, object>
+                {
+                    { "federationPartyId", "local" },
+                    {"assertionConsumerServices", new List<IndexedEndPointConfiguration>{ new IndexedEndPointConfiguration { Location = new Uri("http://localhost:60879/api/Account/SSOLogon") } } }
+                };
+                var relyingStateSerialised = await this._relayStateSerialiser.Serialize(relayState);
+                var content = new FormUrlEncodedContent(new[] 
+                {
+                    new KeyValuePair<string, string>("SAMLResponse", base64Encoded),
+                    new KeyValuePair<string, string>("RelayState", relyingStateSerialised)
+                });
+                await httpClient.PostAsync("http://localhost:60879/api/Account/SSOLogon", content);
+            }
+            
+            //throw new NotImplementedException();
         }
     }
 }
