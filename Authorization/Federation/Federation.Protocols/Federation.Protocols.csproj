@@ -72,6 +72,8 @@
     <Compile Include="Request\ClauseBuilders\AudienceRestrictionClauseBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\IssuerClauseBuilder.cs" />
     <Compile Include="Request\Handlers\AuthnRequestHandler.cs" />
+    <Compile Include="Response\ResponseDispatcher.cs" />
+    <Compile Include="Response\ResponseBuilder.cs" />
     <Compile Include="Response\ResponseHelper.cs" />
     <Compile Include="Tokens\TokenHelper.cs" />
     <Compile Include="Response\ResponseHandler.cs" />
