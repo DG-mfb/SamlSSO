@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 				this.authenticationService.ssologin(this.model.username)
 					.subscribe(
 					d => {
-						this.router.navigate(['/']);
+						this.router.navigate(['this.returnUrl']);
 					})
 				//this.router.navigate([this.returnUrl]);
 			},
