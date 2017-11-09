@@ -7,7 +7,13 @@ namespace Federation.Metadata.Consumer.Tests.Mock
 {
     internal class CertificateValidatorMock : ICertificateValidator, IBackchannelCertificateValidator
     {
-        public System.ServiceModel.Security.X509CertificateValidationMode X509CertificateValidationMode => throw new NotImplementedException();
+        public System.ServiceModel.Security.X509CertificateValidationMode X509CertificateValidationMode
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public string FederationPartyId { get; }
 

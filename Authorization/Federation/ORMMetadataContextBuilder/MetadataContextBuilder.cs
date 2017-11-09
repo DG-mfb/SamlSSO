@@ -2,12 +2,12 @@
 using System.Linq;
 using Kernel.Cache;
 using Kernel.Data.ORM;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
-using Kernel.Federation.FederationPartner;
-using ORMMetadataContextProvider.Models;
 using ORMMetadataContextProvider.FederationParty;
+using ORMMetadataContextProvider.Models;
 
 namespace ORMMetadataContextProvider
 {
@@ -38,7 +38,7 @@ namespace ORMMetadataContextProvider
         
         internal MetadataContext BuildFromDbSettings(MetadataSettings metadataSettings)
         {
-            if (metadataSettings is null)
+            if (metadataSettings == null)
                 throw new ArgumentNullException("metadataSettings");
 
             var entityDescriptor = metadataSettings.SPDescriptorSettings;

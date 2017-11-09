@@ -63,7 +63,7 @@ namespace ORMMetadataContextProvider.Security
                 .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
                 .FirstOrDefault();
 
-            if (settings is null)
+            if (settings == null)
                 throw new InvalidOperationException(String.Format("No federationParty configuration found for federationPartyId: {0}", federationPartyId));
 
             var configuration = new CertificateValidationConfiguration
