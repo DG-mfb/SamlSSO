@@ -1,9 +1,10 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, AuthenticationService } from '../_services/index';
 import { UserService } from "../_services/user.service";
 import { User } from "../_models/user";
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
     moduleId: module.id,
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     returnUrl: string;
 
-    constructor(
+	constructor( @Inject(DOCUMENT) private document: any,
 		private route: ActivatedRoute,
 		private userService: UserService,
         private router: Router,
@@ -43,7 +44,8 @@ export class LoginComponent implements OnInit {
 				this.authenticationService.ssologin(this.model.username)
 					.subscribe(
 					d => {
-						this.router.navigate(['this.returnUrl']);
+						this.document.location.href = 'http://localhost:60879/api/Account/SSOLogon';
+						//this.router.navigate(['this.returnUrl']);
 					})
 				//this.router.navigate([this.returnUrl]);
 			},

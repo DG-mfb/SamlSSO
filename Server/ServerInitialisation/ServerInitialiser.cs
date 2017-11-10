@@ -66,18 +66,18 @@ namespace ServerInitialisation
 			await this.Initialise(dependencyResolver, i => true);
 		}
 
-		public async Task Initialise(IDependencyResolver dependencyResolver, Func<Initialiser, bool> condition)
+		public async Task Initialise(IDependencyResolver dependencyResolver, Func<IInitialiser, bool> condition)
 		{
 			this.DiscoverAndRegisterTypes(dependencyResolver);
 			var initialisers = this.GetInitialisers();
 			await this.InitialiseAsync(initialisers, dependencyResolver, condition);
 		}
-
-		/// <summary>
-		/// Runs all initialisers in parallel
-		/// </summary>
-		/// <param name="initialisers"></param>
-		private async Task InitialiseAsync(IEnumerable<Initialiser> initialisers, IDependencyResolver dependencyResolver, Func<Initialiser, bool> condition)
+        
+        /// <summary>
+        /// Runs all initialisers in parallel
+        /// </summary>
+        /// <param name="initialisers"></param>
+        public async Task InitialiseAsync(IEnumerable<IInitialiser> initialisers, IDependencyResolver dependencyResolver, Func<IInitialiser, bool> condition)
 		{
 			var exceptions = new ConcurrentQueue<Exception>();
 			//Aggregate all exeptions and throw 

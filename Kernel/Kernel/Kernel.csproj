@@ -58,6 +58,7 @@
     <Compile Include="Initialisation\IAutoRegister.cs" />
     <Compile Include="Initialisation\IAutoRegisterAsSingleton.cs" />
     <Compile Include="Initialisation\IAutoRegisterAsTransient.cs" />
+    <Compile Include="Initialisation\IInitialiser.cs" />
     <Compile Include="Initialisation\IServerInitialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IIdentitytProvider.cs" />
