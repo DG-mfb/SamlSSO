@@ -70,14 +70,14 @@ namespace ServerInitialisation
 		{
 			this.DiscoverAndRegisterTypes(dependencyResolver);
 			var initialisers = this.GetInitialisers();
-			await this.InitialiseAsync(initialisers, dependencyResolver, condition);
+			await this.Initialise(initialisers, dependencyResolver, condition);
 		}
         
         /// <summary>
         /// Runs all initialisers in parallel
         /// </summary>
         /// <param name="initialisers"></param>
-        public async Task InitialiseAsync(IEnumerable<IInitialiser> initialisers, IDependencyResolver dependencyResolver, Func<IInitialiser, bool> condition)
+        public async Task Initialise(IEnumerable<IInitialiser> initialisers, IDependencyResolver dependencyResolver, Func<IInitialiser, bool> condition)
 		{
 			var exceptions = new ConcurrentQueue<Exception>();
 			//Aggregate all exeptions and throw 
