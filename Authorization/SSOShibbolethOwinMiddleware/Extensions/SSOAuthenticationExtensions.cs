@@ -1,10 +1,12 @@
 ﻿using System;
 using Kernel.DependancyResolver;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
 using Microsoft.Owin;
 using Microsoft.Owin.Logging;
 using Owin;
+using SSOOwinMiddleware.Discovery;
 using SSOOwinMiddleware.Logging;
 
 namespace SSOOwinMiddleware.Extensions
@@ -18,6 +20,7 @@ namespace SSOOwinMiddleware.Extensions
             if (options == null)
                 throw new ArgumentNullException("options");
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
+            resolver.RegisterType<DiscoveryService>(Lifetime.Singleton);
             SSOAuthenticationExtensions.RegisterLoggerFactory(app, resolver);
             resolver.RegisterFactory<ILogger>(() => app.CreateLogger<SSOOwinMiddleware>(), Lifetime.Transient);
             app.Use((object)typeof(SSOOwinMiddleware), (object)options, resolver);
@@ -27,7 +30,8 @@ namespace SSOOwinMiddleware.Extensions
             {
                 a.Run(c =>
                 {
-                    var federationParty = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(c);
+                    var discoveryService = SSOAuthenticationExtensions.ResolveDiscoveryService();
+                    var federationParty = discoveryService.ResolveParnerId(c);
                     var metadataGenerator = SSOAuthenticationExtensions.ResolveMetadataGenerator<ISPMetadataGenerator>();
                     c.Response.ContentType = "text/xml";
                     var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, federationParty, new MetadataPublishContext(c.Response.Body, MetadataPublishProtocol.Http));
@@ -73,6 +77,12 @@ namespace SSOOwinMiddleware.Extensions
         {
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
             var metadataGenerator = resolver.Resolve<TMetadatGenerator>();
+            return metadataGenerator;
+        }
+        private static IDiscoveryService<IOwinContext, string> ResolveDiscoveryService()
+        {
+            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
+            var metadataGenerator = resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
             return metadataGenerator;
         }
     }

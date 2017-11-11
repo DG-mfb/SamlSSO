@@ -51,6 +51,7 @@
     <Compile Include="FederationPartner\DefaultNameId.cs" />
     <Compile Include="FederationPartner\FederationPartyAuthnRequestConfiguration.cs" />
     <Compile Include="FederationPartner\IFederationPartyContextBuilder.cs" />
+    <Compile Include="FederationPartner\IDiscoveryService.cs" />
     <Compile Include="FederationPartner\IRelyingPartyContextBuilder.cs" />
     <Compile Include="FederationPartner\ScopingConfiguration.cs" />
     <Compile Include="FederationPartner\RequestedAuthnContextConfiguration.cs" />

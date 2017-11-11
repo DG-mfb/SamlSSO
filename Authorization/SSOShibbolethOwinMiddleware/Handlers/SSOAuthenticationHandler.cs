@@ -36,7 +36,7 @@ namespace SSOOwinMiddleware.Handlers
         {
             if (!this.Options.SSOPath.HasValue || base.Request.Path != this.Options.SSOPath)
                 return base.InvokeAsync();
-            Context.Authentication.Challenge("Saml2SSO");
+            Context.Authentication.Challenge(this.Options.AuthenticationType);
             return Task.FromResult(true);
         }
 
@@ -107,7 +107,8 @@ namespace SSOOwinMiddleware.Handlers
             try
             {
                 this._logger.WriteInformation(String.Format("Applying chanllenge for authenticationType: {0}, authenticationMode: {1}. Path: {2}", this.Options.AuthenticationType, this.Options.AuthenticationMode, this.Request.Path));
-                var federationPartyId = FederationPartyIdentifierHelper.GetFederationPartyIdFromRequestOrDefault(Request.Context);
+                var discoveryService = this._resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
+                   var federationPartyId = discoveryService.ResolveParnerId(Request.Context);
                 
                 var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
                 var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new CancellationToken());
