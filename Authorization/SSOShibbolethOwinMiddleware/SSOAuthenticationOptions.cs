@@ -18,7 +18,7 @@ namespace SSOOwinMiddleware
             }
         }
         
-        public PathString SPMetadataPath { get; set; }
+       
 
         public PathString SSOPath { get; set; }
 
@@ -28,7 +28,6 @@ namespace SSOOwinMiddleware
         {
             this.Caption = "Saml2SSO";
             base.AuthenticationMode = AuthenticationMode.Active;
-            this.SPMetadataPath = new PathString("/sp/metadata");
             this.SSOPath = new PathString("/account/sso");
             this.AssertionEndpoinds = new List<PathString>();
         }

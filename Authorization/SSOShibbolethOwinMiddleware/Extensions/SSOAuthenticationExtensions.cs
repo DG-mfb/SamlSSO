@@ -23,37 +23,48 @@ namespace SSOOwinMiddleware.Extensions
             
             app.Use((object)typeof(SSOOwinMiddleware), (object)options, resolver);
             
-            //sp metadata route
-            app.Map(options.SPMetadataPath, a =>
+            return app;
+        }
+
+        public static IAppBuilder UseMetadataMiddleware(this IAppBuilder app, string metadataPath, MetadataType metadataType, IDependencyResolver resolver)
+        {
+            app.Map(new PathString(metadataPath), a =>
             {
                 a.Run(c =>
                 {
-                    var discoveryService = SSOAuthenticationExtensions.ResolveDiscoveryService();
+                    var discoveryService = resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
                     var federationParty = discoveryService.ResolveParnerId(c);
-                    var metadataGenerator = SSOAuthenticationExtensions.ResolveMetadataGenerator<ISPMetadataGenerator>();
+                    IMetadataGenerator metadataGenerator;
+                    switch(metadataType)
+                    {
+                        case MetadataType.SP:
+                            metadataGenerator = resolver.Resolve<ISPMetadataGenerator>();
+                            break;
+                        case MetadataType.Idp:
+                            metadataGenerator = resolver.Resolve<IIdPMetadataGenerator>();
+                            break;
+                        default:
+                            throw new NotSupportedException(String.Format(" Not supported metadata type: {0}", metadataType));
+                    }
+                    
                     c.Response.ContentType = "text/xml";
-                    var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, federationParty, new MetadataPublishContext(c.Response.Body, MetadataPublishProtocol.Http));
+                    var metadataRequest = new MetadataGenerateRequest(metadataType, federationParty, new MetadataPublishContext(c.Response.Body, MetadataPublishProtocol.Http));
                     return metadataGenerator.CreateMetadata(metadataRequest);
                 });
             });
             return app;
         }
 
+
         public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app, params string[] assertionEndpoints)
         {
-            return SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, "/sp/metadata", assertionEndpoints);
+            return SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, "/account/sso", assertionEndpoints);
         }
 
-        public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app, string spMetadata, params string[] assertionEndpoints)
-        {
-            return SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, spMetadata, "/account/sso", assertionEndpoints);
-        }
-
-        public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app, string spMetadata, string ssoEndpoint, params string[] assertionEndpoints)
+        public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app, string ssoEndpoint, params string[] assertionEndpoints)
         {
             var options = new SSOAuthenticationOptions
             {
-                SPMetadataPath = new PathString(spMetadata),
                 SSOPath = new PathString(ssoEndpoint)
             };
             foreach (var s in assertionEndpoints)
@@ -82,18 +93,6 @@ namespace SSOOwinMiddleware.Extensions
         {
             resolver.RegisterType<DiscoveryService>(Lifetime.Singleton);
             return app;
-        }
-        private static TMetadatGenerator ResolveMetadataGenerator<TMetadatGenerator>() where TMetadatGenerator : IMetadataGenerator
-        {
-            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
-            var metadataGenerator = resolver.Resolve<TMetadatGenerator>();
-            return metadataGenerator;
-        }
-        private static IDiscoveryService<IOwinContext, string> ResolveDiscoveryService()
-        {
-            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
-            var metadataGenerator = resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
-            return metadataGenerator;
         }
     }
 }

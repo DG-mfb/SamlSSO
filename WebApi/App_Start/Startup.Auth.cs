@@ -1,4 +1,5 @@
 ﻿using Kernel.Authorisation;
+using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Cookies;
@@ -26,6 +27,7 @@ namespace WebApi
             app.UseOAuthBearerTokens(OAuthOptions);
 
             SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon" )
+                .UseMetadataMiddleware("/sp/metadata", MetadataType.SP, resolver)
                 .RegisterDiscoveryService(resolver)
                 .RegisterLogger(resolver);
         }

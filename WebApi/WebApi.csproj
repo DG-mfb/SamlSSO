@@ -24,6 +24,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -142,6 +143,10 @@
     <ProjectReference Include="..\Kernel\Kernel.Authorisation\Kernel.Authorisation.csproj">
       <Project>{4D83CD86-3A8E-4501-B8A7-7989CD71EDF1}</Project>
       <Name>Kernel.Authorisation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kernel\Kernel.Federation\Kernel.Federation.csproj">
+      <Project>{47FE8E9F-CCF6-46B7-BA75-CBA1D1F56D7A}</Project>
+      <Name>Kernel.Federation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kernel\Kernel.Logging\Kernel.Logging.csproj">
       <Project>{7DA939D6-5443-498F-AAA1-3CE3134BC3EB}</Project>
