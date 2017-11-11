@@ -20,9 +20,7 @@ namespace SSOOwinMiddleware.Extensions
             if (options == null)
                 throw new ArgumentNullException("options");
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
-
-            SSOAuthenticationExtensions.RegisterLoggerFactory(app, resolver);
-            resolver.RegisterFactory<ILogger>(() => app.CreateLogger<SSOOwinMiddleware>(), Lifetime.Transient);
+            
             app.Use((object)typeof(SSOOwinMiddleware), (object)options, resolver);
             
             //sp metadata route
@@ -73,9 +71,15 @@ namespace SSOOwinMiddleware.Extensions
             return app;
         }
 
-        public static IAppBuilder RegisterDiscoveryService(this IAppBuilder app)
+        public static IAppBuilder RegisterLogger(this IAppBuilder app, IDependencyResolver resolver)
         {
-            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
+            SSOAuthenticationExtensions.RegisterLoggerFactory(app, resolver);
+            resolver.RegisterFactory<ILogger>(() => app.CreateLogger<SSOOwinMiddleware>(), Lifetime.Transient);
+            return app;
+        }
+
+        public static IAppBuilder RegisterDiscoveryService(this IAppBuilder app, IDependencyResolver resolver)
+        {
             resolver.RegisterType<DiscoveryService>(Lifetime.Singleton);
             return app;
         }

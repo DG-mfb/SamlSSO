@@ -26,7 +26,8 @@ namespace WebApi
             app.UseOAuthBearerTokens(OAuthOptions);
 
             SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon" )
-                .RegisterDiscoveryService();
+                .RegisterDiscoveryService(resolver)
+                .RegisterLogger(resolver);
         }
     }
 }
