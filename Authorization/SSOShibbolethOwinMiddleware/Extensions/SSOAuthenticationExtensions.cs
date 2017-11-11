@@ -48,7 +48,7 @@ namespace SSOOwinMiddleware.Extensions
                     }
                     
                     c.Response.ContentType = "text/xml";
-                    var metadataRequest = new MetadataGenerateRequest(metadataType, federationParty, new MetadataPublishContext(c.Response.Body, MetadataPublishProtocol.Http));
+                    var metadataRequest = new MetadataGenerateRequest(metadataType, federationParty, new MetadataPublicationContext(c.Response.Body, MetadataPublicationProtocol.Http));
                     return metadataGenerator.CreateMetadata(metadataRequest);
                 });
             });

@@ -12,7 +12,7 @@ namespace Shared.Federtion
     /// </summary>
     public abstract class MetadataWriter : IFederationMetadataWriter
     {
-        public Task Write(XmlElement xml, MetadataPublishContext target)
+        public Task Write(XmlElement xml, MetadataPublicationContext target)
         {
             if (xml == null)
                 throw new ArgumentNullException("xmlElement");
@@ -31,6 +31,6 @@ namespace Shared.Federtion
             return Task.CompletedTask;
         }
 
-        protected abstract bool CanWrite(MetadataPublishContext target);
+        protected abstract bool CanWrite(MetadataPublicationContext target);
     }
 }

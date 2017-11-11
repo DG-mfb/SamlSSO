@@ -8,9 +8,9 @@ namespace FileSystemMetadataWriter
     /// </summary>
     internal class MetadataFileWriter : MetadataWriter
     {
-        protected override bool CanWrite(MetadataPublishContext target)
+        protected override bool CanWrite(MetadataPublicationContext target)
         {
-            return (target.MetadataPublishProtocol & MetadataPublishProtocol.FileSystem) == MetadataPublishProtocol.FileSystem;
+            return (target.MetadataPublishProtocol & MetadataPublicationProtocol.FileSystem) == MetadataPublicationProtocol.FileSystem;
         }
     }
 }

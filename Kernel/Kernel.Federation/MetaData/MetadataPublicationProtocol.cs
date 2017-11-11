@@ -3,7 +3,7 @@
 namespace Kernel.Federation.MetaData
 {
     [Flags]
-    public enum MetadataPublishProtocol
+    public enum MetadataPublicationProtocol
     {
         Memory= 0,
         Http = 1,

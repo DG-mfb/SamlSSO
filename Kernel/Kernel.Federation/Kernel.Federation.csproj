@@ -64,8 +64,8 @@
     <Compile Include="MetaData\IMetadataHandler.cs" />
     <Compile Include="MetaData\IIdPMetadataGenerator.cs" />
     <Compile Include="MetaData\MetadataGenerateRequest.cs" />
-    <Compile Include="MetaData\MetadataPublishContext.cs" />
-    <Compile Include="MetaData\MetadataPublishProtocol.cs" />
+    <Compile Include="MetaData\MetadataPublicationContext.cs" />
+    <Compile Include="MetaData\MetadataPublicationProtocol.cs" />
     <Compile Include="Protocols\AuthnContext.cs" />
     <Compile Include="Protocols\BindingContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseContext.cs" />

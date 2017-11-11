@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Kernel.Federation.MetaData
 {
-    public class MetadataPublishContext
+    public class MetadataPublicationContext
     {
-        public MetadataPublishContext(Stream targetStream, MetadataPublishProtocol metadataPublishProtocol)
+        public MetadataPublicationContext(Stream targetStream, MetadataPublicationProtocol metadataPublishProtocol)
         {
             if (targetStream == null)
                 throw new ArgumentNullException("targetStream");
@@ -15,6 +15,6 @@ namespace Kernel.Federation.MetaData
         }
         public Stream TargetStream { get; }
 
-        public MetadataPublishProtocol MetadataPublishProtocol { get; }
+        public MetadataPublicationProtocol MetadataPublishProtocol { get; }
     }
 }

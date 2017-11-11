@@ -8,9 +8,9 @@ namespace WebClientMetadataWriter
     /// </summary>
     internal class HttpMetadataWriter : MetadataWriter
     {
-        protected override bool CanWrite(MetadataPublishContext target)
+        protected override bool CanWrite(MetadataPublicationContext target)
         {
-            return (target.MetadataPublishProtocol & MetadataPublishProtocol.Http) == MetadataPublishProtocol.Http;
+            return (target.MetadataPublishProtocol & MetadataPublicationProtocol.Http) == MetadataPublicationProtocol.Http;
         }
     }
 }

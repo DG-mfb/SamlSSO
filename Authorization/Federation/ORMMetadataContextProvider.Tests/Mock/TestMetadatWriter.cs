@@ -13,7 +13,7 @@ namespace ORMMetadataContextProvider.Tests.Mock
             this._action = action;
         }
 
-        public Task Write(XmlElement xml, MetadataPublishContext target)
+        public Task Write(XmlElement xml, MetadataPublicationContext target)
         {
               this._action(xml);
             return Task.CompletedTask;

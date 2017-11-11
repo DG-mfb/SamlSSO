@@ -5,6 +5,6 @@ namespace Kernel.Federation.MetaData
 {
     public interface IFederationMetadataWriter
     {
-        Task Write(XmlElement xml, MetadataPublishContext target);
+        Task Write(XmlElement xml, MetadataPublicationContext target);
     }
 }

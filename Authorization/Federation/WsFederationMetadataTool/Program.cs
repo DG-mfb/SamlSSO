@@ -60,7 +60,7 @@ namespace WsFederationMetadataTool
                 var federationParty = options.FederationPartyId;
                 var metadataGenerator = Program.ResolveMetadataGenerator<ISPMetadataGenerator>();
 
-                var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, federationParty, new MetadataPublishContext(fs, MetadataPublishProtocol.FileSystem));
+                var metadataRequest = new MetadataGenerateRequest(MetadataType.SP, federationParty, new MetadataPublicationContext(fs, MetadataPublicationProtocol.FileSystem));
                 await metadataGenerator.CreateMetadata(metadataRequest);
                 Console.WriteLine("Create metadata file result: SUCCESS.");
             }
