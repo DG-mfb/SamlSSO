@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace Kernel.Federation.FederationPartner
+﻿namespace Kernel.Federation.FederationPartner
 {
-    public interface IDiscoveryService<TContext, TResult>
+    public interface IDiscoveryService<TId>
     {
-        Func<TContext, TResult> Factory { set; }
-        TResult ResolveParnerId(TContext context);
+        TId ResolveParnerId(object context);
     }
 }

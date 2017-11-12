@@ -18,8 +18,6 @@ namespace SSOOwinMiddleware
             }
         }
         
-       
-
         public PathString SSOPath { get; set; }
 
         public ICollection<PathString> AssertionEndpoinds { get; }

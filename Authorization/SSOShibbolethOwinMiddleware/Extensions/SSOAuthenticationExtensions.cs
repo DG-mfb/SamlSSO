@@ -1,5 +1,6 @@
 ﻿using System;
 using Kernel.DependancyResolver;
+using Kernel.Extensions;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
@@ -91,7 +92,15 @@ namespace SSOOwinMiddleware.Extensions
 
         public static IAppBuilder RegisterDiscoveryService(this IAppBuilder app, IDependencyResolver resolver)
         {
-            resolver.RegisterType<DiscoveryService>(Lifetime.Singleton);
+            return SSOAuthenticationExtensions.RegisterDiscoveryService(app, resolver, typeof(DiscoveryService));
+        }
+
+        public static IAppBuilder RegisterDiscoveryService(this IAppBuilder app, IDependencyResolver resolver, Type discoveryService)
+        {
+            if (!TypeExtensions.IsAssignableToGenericType(discoveryService, typeof(IDiscoveryService<IOwinContext, string>)))
+                throw new InvalidOperationException(String.Format("Discovery service must impelemnt interface: IDiscoveryService<TContext, TResult>"));
+            
+            resolver.RegisterType(discoveryService, Lifetime.Singleton);
             return app;
         }
     }
