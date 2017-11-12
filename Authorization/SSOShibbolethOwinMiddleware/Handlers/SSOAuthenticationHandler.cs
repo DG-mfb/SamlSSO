@@ -59,7 +59,7 @@ namespace SSOOwinMiddleware.Handlers
                         this.Request.Body = (Stream)memoryStream;
                     }
 
-                    IFormCollection form = await this.Request.ReadFormAsync();
+                    var form = await this.Request.ReadFormAsync();
 
                     var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
                     var protocolHanlder = protocolFactory(Bindings.Http_Post);
@@ -130,6 +130,8 @@ namespace SSOOwinMiddleware.Handlers
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 
                 var requestContext = new AuthnRequestContext(signInUrl, federationContext, idp.NameIdentifierFormats);
+                var relayStateHandler = this._resolver.Resolve<IRelayStateHandler>();
+                await relayStateHandler.BuildRelayState(requestContext);
                 var protocolContext = new SamlProtocolContext
                 {
                     RequestContext = new HttpRedirectRequestContext
