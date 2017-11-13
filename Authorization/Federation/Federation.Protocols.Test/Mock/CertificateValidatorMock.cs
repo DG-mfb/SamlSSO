@@ -10,7 +10,13 @@ namespace Federation.Protocols.Test.Mock
     {
         public string FederationPartyId { get; }
 
-        public X509CertificateValidationMode X509CertificateValidationMode => throw new NotImplementedException();
+        public X509CertificateValidationMode X509CertificateValidationMode
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public void SetFederationPartyId(string federationPartyId)
         {

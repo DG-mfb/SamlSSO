@@ -41,7 +41,7 @@ namespace ORMMetadataContextProvider.Security
                 .Where(predicate)
                 .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
                 .FirstOrDefault();
-            if (settings is null)
+            if (settings == null)
                 throw new InvalidOperationException("No federationParty configuration found for");
 
             var configuration = new BackchannelConfiguration
