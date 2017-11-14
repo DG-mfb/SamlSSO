@@ -14,7 +14,7 @@ namespace Federation.Metadata.HttpRetriever
     /// <summary>
     /// Retrieve metadata document from given Url
     /// </summary>
-    public class HttpDocumentRetriever : IDocumentRetriever
+    public class HttpDocumentRetriever : IHttpDocumentRetriever
     {
         static HttpDocumentRetriever()
         {
@@ -26,7 +26,7 @@ namespace Federation.Metadata.HttpRetriever
         public bool RequireHttps { get; set; }
         public TimeSpan Timeout { get; set; }
         public long MaxResponseContentBufferSize { get; set; }
-        public ICustomConfigurator<IDocumentRetriever> HttpDocumentRetrieverConfigurator { private get; set; }
+        public ICustomConfigurator<IHttpDocumentRetriever> HttpDocumentRetrieverConfigurator { private get; set; }
 
         /// <summary>
         /// Initialise an instance of Http document retriever

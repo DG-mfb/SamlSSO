@@ -8,6 +8,7 @@ using AspNet.EntityFramework.IdentityProvider.Initialisation;
 using DeflateCompression.Initialisation;
 using Federation.Logging.Initialisation;
 using Federation.Metadata.FederationPartner.Initialisation;
+using Federation.Metadata.FileRetriever.Initialisation;
 using Federation.Metadata.HttpRetriever.Initialisation;
 using Federation.Protocols.Initialisation;
 using FileSystemMetadataWriter.Initialisation;
@@ -58,6 +59,7 @@ namespace ServerInitialisation
                 yield return typeof(WindowsEventLogLoggerInitialiser).Assembly;
                 yield return typeof(BackchannelValidatorsInitialiser).Assembly;
                 yield return typeof(OwinIdentityInitialiser).Assembly;
+                yield return typeof(FileDocumentRetrieverInitialiser).Assembly;
             }
         }
 

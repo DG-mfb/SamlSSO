@@ -43,7 +43,7 @@ namespace Federation.Metadata.Consumer.Tests
             var certValidator = new CertificateValidator(configurationProvider, logger);
             
             var serialiser = new FederationMetadataSerialiser(certValidator, logger);
-            var configurationRetriever = new WsFederationConfigurationRetriever(documentRetrieer, serialiser);
+            var configurationRetriever = new WsFederationConfigurationRetriever(_ => documentRetrieer, serialiser);
             
             //ACT
             //var baseMetadata = await WsFederationConfigurationRetriever.GetAsync("https://dg-mfb/idp/shibboleth", documentRetrieer, new CancellationToken());

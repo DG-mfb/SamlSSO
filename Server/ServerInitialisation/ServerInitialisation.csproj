@@ -60,6 +60,10 @@
       <Project>{EEC53E9A-3970-4EEC-8FFC-6B1AEA371A77}</Project>
       <Name>Federation.Metadata.FederationPartner</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Authorization\Federation\Federation.Metadata.FileRetriever\Federation.Metadata.FileRetriever.csproj">
+      <Project>{2F47900C-E9E4-4E93-9514-84798B7DA02F}</Project>
+      <Name>Federation.Metadata.FileRetriever</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Authorization\Federation\Federation.Metadata.HttpRetriever\Federation.Metadata.HttpRetriever.csproj">
       <Project>{99B877E4-7B04-4490-9163-C7A41FEE0097}</Project>
       <Name>Federation.Metadata.HttpRetriever</Name>

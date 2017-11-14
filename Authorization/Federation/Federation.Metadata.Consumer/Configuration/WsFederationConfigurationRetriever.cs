@@ -12,7 +12,7 @@ namespace Federation.Metadata.FederationPartner.Configuration
 {
     public class WsFederationConfigurationRetriever : IConfigurationRetriever<MetadataBase>
     {
-        private readonly IDocumentRetriever _retriever;
+        private readonly Func<string, IDocumentRetriever> _retriever;
         private readonly IMetadataSerialiser<MetadataBase> _metadataSerialiser;
 
         private readonly XmlReaderSettings _safeSettings = new XmlReaderSettings()
@@ -25,7 +25,7 @@ namespace Federation.Metadata.FederationPartner.Configuration
         /// </summary>
         /// <param name="retriever"></param>
         /// <param name="metadataSerialiser"></param>
-        public WsFederationConfigurationRetriever(IDocumentRetriever retriever, IMetadataSerialiser<MetadataBase> metadataSerialiser)
+        public WsFederationConfigurationRetriever(Func<string, IDocumentRetriever> retriever, IMetadataSerialiser<MetadataBase> metadataSerialiser)
         {
             this._metadataSerialiser = metadataSerialiser;
             this._retriever = retriever;
@@ -44,7 +44,7 @@ namespace Federation.Metadata.FederationPartner.Configuration
         /// <returns></returns>
         public Task<MetadataBase> GetAsync(FederationPartyConfiguration context, CancellationToken cancel)
         {
-            return this.GetAsync(context, this._retriever, cancel);
+            return this.GetAsync(context, this._retriever(context.MetadataAddress), cancel);
         }
 
         private async Task<MetadataBase> GetAsync(FederationPartyConfiguration context, IDocumentRetriever retriever, CancellationToken cancel)
