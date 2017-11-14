@@ -21,7 +21,7 @@ namespace InlineMetadataContextProvider
             var entityDescriptorConfiguration = new EntityDesriptorConfiguration
             {
                 CacheDuration = TimeSpan.FromDays(100),
-                EntityId = "https://imperial.flowz.co.uk/",
+                EntityId = "https://www.eca-international.com",
                 Id = federationId,
                 ValidUntil = new DateTimeOffset(DateTime.Now.AddDays(30)),
                 Organisation = MetadataHelper.BuildOrganisationConfiguration(),

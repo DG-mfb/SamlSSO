@@ -17,7 +17,7 @@ namespace ORMMetadataContextProvider
     {
         public static EntityDesriptorConfiguration BuildEntityDesriptorConfiguration(EntityDescriptorSettings entityDescriptorSettings)
         {
-            var federationId = String.Format("{0}_{1}", "flowz", Guid.NewGuid());
+            var federationId = String.Format("{0}_{1}", "eca", Guid.NewGuid());
             var organisation = entityDescriptorSettings.IncludeOrganisationInfo ? MetadataHelper.BuidOrganisationConfiguration(entityDescriptorSettings.Organisation) : (OrganisationConfiguration)null;
             var entityDescriptorConfiguration = new EntityDesriptorConfiguration
             {

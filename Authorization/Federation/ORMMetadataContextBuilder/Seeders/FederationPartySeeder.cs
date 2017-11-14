@@ -36,6 +36,18 @@ namespace ORMMetadataContextProvider.Seeders
             imperialFederationParty.MetadataSettings = metadata;
             imperialFederationParty.SecuritySettings = security;
             imperialFederationParty.AutnRequestSettings = authnRequestSettings;
+            //ECA-international
+            var atlasFederationParty = new FederationPartySettings
+            {
+                RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
+                AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
+                MetadataPath = "https://dg-mfb/idp/shibboleth",
+                MetadataLocation = "HTTP",
+                FederationPartyId = "atlasCopco"
+            };
+            atlasFederationParty.MetadataSettings = metadata;
+            atlasFederationParty.SecuritySettings = security;
+            atlasFederationParty.AutnRequestSettings = authnRequestSettings;
 
             //shibboleth test metadata settings
             var testFederationParty = new FederationPartySettings
@@ -79,16 +91,19 @@ namespace ORMMetadataContextProvider.Seeders
             context.Add<FederationPartySettings>(imperialFederationParty);
             context.Add<FederationPartySettings>(testFederationParty);
             context.Add<FederationPartySettings>(localFederationParty);
+            context.Add<FederationPartySettings>(atlasFederationParty);
 
             metadata.RelyingParties.Add(imperialFederationParty);
             metadata.RelyingParties.Add(localFederationParty);
             metadata.RelyingParties.Add(testFederationParty);
             metadata.RelyingParties.Add(localIdp);
+            metadata.RelyingParties.Add(atlasFederationParty);
 
             security.RelyingParties.Add(imperialFederationParty);
             security.RelyingParties.Add(localFederationParty);
             security.RelyingParties.Add(testFederationParty);
             security.RelyingParties.Add(localIdp);
+            security.RelyingParties.Add(atlasFederationParty);
         }
 
         private AutnRequestSettings GetAutnRequestSettings()
