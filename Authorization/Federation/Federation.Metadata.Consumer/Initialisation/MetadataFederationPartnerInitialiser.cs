@@ -26,11 +26,13 @@ namespace Federation.Metadata.FederationPartner.Initialisation
                 {
                     return s => 
                     {
-                        if(s.ToLower().StartsWith("file"))
+                        if (String.IsNullOrWhiteSpace(s))
+                            throw new ArgumentNullException("path");
+                        if(s.StartsWith("file", StringComparison.OrdinalIgnoreCase))
                             return dependencyResolver.Resolve<IFileDocumentRetriever>();
-                        if (s.ToLower().StartsWith("http"))
+                        if (s.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                             return dependencyResolver.Resolve<IHttpDocumentRetriever>();
-                        throw new NotSupportedException();
+                        throw new NotSupportedException(String.Format("Not supported path schema{0}. Supported schemas: http, file://", s));
                     };
                 }, Lifetime.Singleton);
             dependencyResolver.RegisterFactory<Action<MetadataBase>>(() => m => 
