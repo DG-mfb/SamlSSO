@@ -17,7 +17,6 @@ namespace SecurityManagement.Initialisation
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {
             dependencyResolver.RegisterType<CertificateManager>(Lifetime.Transient);
-            dependencyResolver.RegisterType<XmlSignatureManager>(Lifetime.Transient);
             dependencyResolver.RegisterType<CertificateValidator>(Lifetime.Transient);
             dependencyResolver.RegisterType<BackchannelCertificateValidator>(Lifetime.Transient);
             CertificateValidationRulesFactory.InstanceCreator = t => (ICertificateValidationRule)dependencyResolver.Resolve(t);

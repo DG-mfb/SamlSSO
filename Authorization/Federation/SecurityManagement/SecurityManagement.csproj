@@ -56,9 +56,7 @@
     <Compile Include="BackchannelCertificateValidator.cs" />
     <Compile Include="Exceptions\SamlSignatureException.cs" />
     <Compile Include="CertificateValidator.cs" />
-    <Compile Include="FederationPartyIdentifierHelper.cs" />
     <Compile Include="Initialisation\SecurityInitialiser.cs" />
-    <Compile Include="XmlSignatureManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

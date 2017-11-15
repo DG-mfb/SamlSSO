@@ -23,7 +23,7 @@ namespace Federation.Protocols.Request.Handlers
             AuthnRequestHandler._relyingParties.TryAdd("https://imperial.flowz_test.co.uk/", new Uri("http://localhost:60879/sp/metadata"));
         }
 
-        private readonly  IRelayStateHandler _relayStateHandler;
+        private readonly IRelayStateHandler _relayStateHandler;
         private readonly ICertificateManager _certificateManager;
         private readonly IAuthnRequestSerialiser _authnRequestSerialiser;
         private readonly IConfigurationRetriever<MetadataBase> _configurationRetriever;
