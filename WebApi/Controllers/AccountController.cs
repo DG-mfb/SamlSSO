@@ -14,9 +14,11 @@ namespace WebApi.Controllers
         {
 
             var identity = (ClaimsIdentity)base.RequestContext.Principal.Identity;
-            var emails = identity.Claims.Where(c => c.Value.Contains("@"))
-                .First(c => c.Subject.NameClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-            return Ok(emails);
+            var identityClaim = identity.Claims.Where(c => c.Value.Contains("@"))
+                .FirstOrDefault(c => c.Subject.NameClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            if(identityClaim != null)
+                return Ok(identityClaim);
+            return Ok(identity.Claims);
         }
     }
 }
