@@ -71,6 +71,7 @@
     <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Response\ResponseStatusTests.cs" />
     <Compile Include="Mock\Tokens\SubjectConfirmationDataValidatorMock.cs" />
+    <Compile Include="Tokens\MiscellaneousTests.cs" />
     <Compile Include="Tokens\TokenHelperTests.cs" />
     <Compile Include="Tokens\TokenSerialiserTests.cs" />
     <Compile Include="Tokens\ValidatorInvokerTests.cs" />
@@ -122,6 +123,10 @@
     <ProjectReference Include="..\..\..\Serialisation\Serialisation.Xml\Serialisation.Xml.csproj">
       <Project>{CAAA3B30-55E9-4F50-8F09-89CA54DF9614}</Project>
       <Name>Serialisation.Xml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Serialisation\WsMetadataSerialisation\WsMetadataSerialisation.csproj">
+      <Project>{D63B92B8-863B-493D-8117-0960DB06B554}</Project>
+      <Name>WsMetadataSerialisation</Name>
     </ProjectReference>
     <ProjectReference Include="..\ClassLibrary1\InlineMetadataContextProvider.csproj">
       <Project>{E111A891-B47D-4BDC-8BC2-62C2605FC9B8}</Project>

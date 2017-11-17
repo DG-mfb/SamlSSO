@@ -15,8 +15,6 @@ namespace Kernel.Federation.FederationPartner
            
             if (federationPartyAuthnRequestConfiguration == null)
                 throw new ArgumentNullException("federationPartyAuthnRequestConfiguration");
-            if (federationPartyAuthnRequestConfiguration.RequestedAuthnContextConfiguration == null)
-                throw new ArgumentNullException("requestedAuthnContextConfiguration");
 
             this._entityDesriptorConfiguration = entityDesriptorConfiguration;
             this.EntityId = entityDesriptorConfiguration.EntityId;

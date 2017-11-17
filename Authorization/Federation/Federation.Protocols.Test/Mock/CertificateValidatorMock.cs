@@ -14,7 +14,7 @@ namespace Federation.Protocols.Test.Mock
         {
             get
             {
-                throw new NotImplementedException();
+                return X509CertificateValidationMode.None;
             }
         }
 

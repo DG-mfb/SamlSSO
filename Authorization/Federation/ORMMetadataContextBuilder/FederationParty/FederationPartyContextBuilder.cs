@@ -52,15 +52,17 @@ namespace ORMMetadataContextProvider.FederationParty
         {
             if (autnRequestSettings == null)
                 throw new ArgumentNullException("autnRequestSettings");
-            if (autnRequestSettings.RequitedAutnContext == null)
-                throw new ArgumentNullException("requitedAutnContext");
-
-            var requestedAuthnContextConfiguration = new RequestedAuthnContextConfiguration(autnRequestSettings.RequitedAutnContext.Comparison.ToString());
-            autnRequestSettings.RequitedAutnContext.RequitedAuthnContexts.Aggregate(requestedAuthnContextConfiguration.RequestedAuthnContexts, (t, next) =>
+            
+            RequestedAuthnContextConfiguration requestedAuthnContextConfiguration = null;
+            if (autnRequestSettings.RequitedAutnContext != null)
             {
-                t.Add(new Kernel.Federation.Protocols.AuthnContext(next.RefType.ToString(), new Uri(next.Value)));
-                return t;
-            });
+                requestedAuthnContextConfiguration = new RequestedAuthnContextConfiguration(autnRequestSettings.RequitedAutnContext.Comparison.ToString());
+                autnRequestSettings.RequitedAutnContext.RequitedAuthnContexts.Aggregate(requestedAuthnContextConfiguration.RequestedAuthnContexts, (t, next) =>
+                {
+                    t.Add(new Kernel.Federation.Protocols.AuthnContext(next.RefType.ToString(), new Uri(next.Value)));
+                    return t;
+                });
+            }
             if (autnRequestSettings.NameIdConfiguration == null)
                 throw new ArgumentNullException("nameIdConfiguration");
 
