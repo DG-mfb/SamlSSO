@@ -56,6 +56,9 @@
     <Compile Include="FederationPartner\IRelyingPartyContextBuilder.cs" />
     <Compile Include="FederationPartner\ScopingConfiguration.cs" />
     <Compile Include="FederationPartner\RequestedAuthnContextConfiguration.cs" />
+    <Compile Include="Identity\Claims\FederatiionPartyClaimTypes.cs" />
+    <Compile Include="Identity\Claims\IClaimTypesProvider.cs" />
+    <Compile Include="Identity\Claims\IClaimsResolver.cs" />
     <Compile Include="MetaData\Configuration\Bindings.cs" />
     <Compile Include="MetaData\Configuration\IInlineMetadataContextBuilder.cs" />
     <Compile Include="MetaData\Configuration\IMetadataContextBuilder.cs" />
