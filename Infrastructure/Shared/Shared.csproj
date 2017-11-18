@@ -38,6 +38,7 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -84,6 +85,7 @@
     <Compile Include="Federtion\Models\RequestAbstract.cs" />
     <Compile Include="Federtion\Constants\Saml20Constants.cs" />
     <Compile Include="Federtion\Response\ResponseStatus.cs" />
+    <Compile Include="Federtion\Forms\SAMLForm.cs" />
     <Compile Include="Initialisation\Initialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

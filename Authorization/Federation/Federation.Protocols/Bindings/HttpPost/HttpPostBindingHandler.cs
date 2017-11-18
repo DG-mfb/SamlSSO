@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using Federation.Protocols.Response;
+using Federation.Protocols.Request;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
@@ -18,7 +18,7 @@ namespace Federation.Protocols.Bindings.HttpPost
         
         public async Task HandleOutbound(SamlOutboundContext context)
         {
-            var responseDispatcher = this._dependencyResolver.Resolve<ResponseDispatcher>();
+            var responseDispatcher = this._dependencyResolver.Resolve<RequestDispatcher>();
             await responseDispatcher.SendAsync(context);
         }
         

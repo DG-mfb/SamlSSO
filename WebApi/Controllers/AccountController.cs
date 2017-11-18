@@ -12,7 +12,6 @@ namespace WebApi.Controllers
         [Route("SSOLogon")]
         public async Task<IHttpActionResult> SSOLogon()
         {
-
             var identity = (ClaimsIdentity)base.RequestContext.Principal.Identity;
             var identityClaim = identity.Claims.Where(c => c.Value.Contains("@"))
                 .FirstOrDefault(c => c.Subject.NameClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
