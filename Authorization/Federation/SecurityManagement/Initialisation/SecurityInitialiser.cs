@@ -3,6 +3,7 @@ using Kernel.DependancyResolver;
 using Kernel.Security.Validation;
 using SecurityManagement.BackchannelCertificateValidationRules;
 using SecurityManagement.CertificateValidationRules;
+using SecurityManagement.Signing;
 using Shared.Initialisation;
 
 namespace SecurityManagement.Initialisation
@@ -16,6 +17,7 @@ namespace SecurityManagement.Initialisation
 
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {
+            dependencyResolver.RegisterType<XmlSignatureManager>(Lifetime.Transient);
             dependencyResolver.RegisterType<CertificateManager>(Lifetime.Transient);
             dependencyResolver.RegisterType<CertificateValidator>(Lifetime.Transient);
             dependencyResolver.RegisterType<BackchannelCertificateValidator>(Lifetime.Transient);

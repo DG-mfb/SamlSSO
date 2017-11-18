@@ -123,8 +123,8 @@ namespace SSOOwinMiddleware.Handlers
                 var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
                     .Single();
 
-                var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
-                //var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Post));
+                //var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
+                var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Post));
                 var federationPartyContextBuilder = this._resolver.Resolve<IAssertionPartyContextBuilder>();
                
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
@@ -134,28 +134,28 @@ namespace SSOOwinMiddleware.Handlers
                 await relayStateHandler.BuildRelayState(requestContext);
                 var protocolContext = new SamlProtocolContext
                 {
-                    //RequestContext = new HttpPosttRequestContext
-                    //{
-                    //    BindingContext = new HttpRedirectContext(requestContext),
-                    //    HanlerAction = (form) =>
-                    //    {
-                    //        Response.Write(form);
-                    //        return Task.CompletedTask;
-                    //    },
-                    //}
-                    RequestContext = new HttpRedirectRequestContext
+                    RequestContext = new HttpPosttRequestContext
                     {
                         BindingContext = new HttpRedirectContext(requestContext),
-                        HanlerAction = redirectUri =>
+                        HanlerAction = (form) =>
                         {
-                            this.Response.Redirect(redirectUri.AbsoluteUri);
+                            Response.Write(form);
                             return Task.CompletedTask;
-                        }
+                        },
                     }
+                    //RequestContext = new HttpRedirectRequestContext
+                    //{
+                    //    BindingContext = new HttpRedirectContext(requestContext),
+                    //    HanlerAction = redirectUri =>
+                    //    {
+                    //        this.Response.Redirect(redirectUri.AbsoluteUri);
+                    //        return Task.CompletedTask;
+                    //    }
+                    //}
                 };
                 var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
-                var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
-                //var protocolHanlder = protocolFactory(Bindings.Http_Post);
+                //var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
+                var protocolHanlder = protocolFactory(Bindings.Http_Post);
                 await protocolHanlder.HandleOutbound(protocolContext);
             }
             catch(Exception ex)
