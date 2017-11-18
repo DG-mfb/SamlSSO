@@ -12,7 +12,7 @@ using Shared.Federtion.Forms;
 
 namespace Federation.Protocols.Request
 {
-    internal class RequestDispatcher
+    internal class RequestDispatcher : ISamlMessageDespatcher<HttpPosttRequestContext>
     {
         private readonly IAuthnRequestSerialiser _serialiser;
         private readonly ILogProvider _logProvider;
@@ -55,6 +55,11 @@ namespace Federation.Protocols.Request
             form.AddHiddenControl("RelayState", relyingStateSerialised);
             var samlForm = form.ToString();
             await ((HttpPosttRequestContext)context).HanlerAction(samlForm);
+        }
+
+        public Task SendAsync(HttpPosttRequestContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }
