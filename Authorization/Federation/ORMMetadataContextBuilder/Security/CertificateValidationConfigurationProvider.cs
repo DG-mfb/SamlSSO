@@ -40,7 +40,7 @@ namespace ORMMetadataContextProvider.Security
             var settings = this._dbContext.Set<FederationPartySettings>()
                 .Where(predicate)
                 .Select(r => new { r.SecuritySettings, Pins = r.CertificatePins.Select(p => new { p.PinType, p.Value, p.Algorithm }) })
-                .FirstOrDefault();
+                .SingleOrDefault();
             if (settings == null)
                 throw new InvalidOperationException("No federationParty configuration found for");
 
