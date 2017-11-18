@@ -24,7 +24,7 @@ namespace Federation.Protocols.Bindings.HttpPost
         
         public async Task HandleInbound(SamlInboundContext context)
         {
-            var responseHandler = this._dependencyResolver.Resolve <IReponseHandler<ClaimsIdentity>>();
+            var responseHandler = this._dependencyResolver.Resolve<IReponseHandler<ClaimsIdentity>>();
             var httpPostContext = context as HttpPostResponseContext;
             var result = await responseHandler.Handle(httpPostContext);
             httpPostContext.Result = result;
