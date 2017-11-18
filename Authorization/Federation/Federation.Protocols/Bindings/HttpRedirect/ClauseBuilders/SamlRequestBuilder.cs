@@ -26,7 +26,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
                 throw new InvalidOperationException(String.Format("Binding context must be of type:{0}. It was: {1}", typeof(HttpRedirectContext).Name, context.GetType().Name));
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(httpRedirectContext.AuthnRequestContext);
 
-            var serialised = await this._authnRequestSerialiser.Serialize(authnRequest);
+            var serialised = await this._authnRequestSerialiser.SerializeAndCompress(authnRequest);
             this.AppendRequest(context.ClauseBuilder, serialised);
         }
 

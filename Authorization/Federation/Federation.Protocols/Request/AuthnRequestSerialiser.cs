@@ -23,23 +23,29 @@ namespace Federation.Protocols.Request
             this._messageEncoding = messageEncoding;
             this._logProvider = logProvider;
         }
+        
+        public async Task<string> SerializeAndCompress(object o)
+        {
+            var xmlString = ((ISerializer)this).Serialize(o);
+            var compressed = await this._messageEncoding.EncodeMessage<string>(xmlString);
+            this._logProvider.LogMessage(String.Format("AuthnRequest compressed:\r\n {0}", compressed));
+            var encodedEscaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(compressed));
+            return encodedEscaped;
+        }
 
-        public object[] Deserialize(Stream stream, IList<Type> messageTypes)
+        async Task<T> IAuthnRequestSerialiser.DecompressAndDeserialize<T>(string data)
+        {
+            var unescaped = Uri.UnescapeDataString(data);
+            var decompressed = await this._messageEncoding.DecodeMessage(unescaped);
+            return ((ISerializer)this).Deserialize<T>(decompressed);
+        }
+
+        void ISerializer.Serialize(Stream stream, object[] o)
         {
             throw new NotImplementedException();
         }
 
-        public T Deserialize<T>(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object Deserialize(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<string> Serialize(object o)
+        string ISerializer.Serialize(object o)
         {
             this._serialiser.XmlNamespaces.Add("samlp", Saml20Constants.Protocol);
             this._serialiser.XmlNamespaces.Add("saml", Saml20Constants.Assertion);
@@ -51,17 +57,14 @@ namespace Federation.Protocols.Request
                 var streamReader = new StreamReader(ms);
                 var xmlString = streamReader.ReadToEnd();
                 this._logProvider.LogMessage(String.Format("AuthnRequest serialised:\r\n {0}", xmlString));
-                var compressed = await this._messageEncoding.EncodeMessage<string>(xmlString);
-                var encodedEscaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(compressed));
-                return encodedEscaped;
+                
+                return xmlString;
             }
         }
 
-        async Task<T> IAuthnRequestSerialiser.Deserialize<T>(string data)
+        T ISerializer.Deserialize<T>(string data)
         {
-            var unescaped = Uri.UnescapeDataString(data);
-            var decompressed = await this._messageEncoding.DecodeMessage(unescaped);
-            using (var sr = new StringReader(decompressed))
+            using (var sr = new StringReader(data))
             {
                 using (var reader = XmlReader.Create(sr))
                 {
@@ -71,12 +74,12 @@ namespace Federation.Protocols.Request
             }
         }
 
-        void ISerializer.Serialize(Stream stream, object[] o)
+        object ISerializer.Deserialize(string data)
         {
             throw new NotImplementedException();
         }
 
-        string ISerializer.Serialize(object o)
+        object[] ISerializer.Deserialize(Stream stream, IList<Type> messageTypes)
         {
             throw new NotImplementedException();
         }

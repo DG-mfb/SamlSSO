@@ -44,7 +44,7 @@ namespace Federation.Protocols.Request.Handlers
         {
             var requestEncoded = context.Form["SAMLRequest"];
             var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
-            var request = await this._authnRequestSerialiser.Deserialize<AuthnRequest>(requestEncoded);
+            var request = await this._authnRequestSerialiser.DecompressAndDeserialize<AuthnRequest>(requestEncoded);
             var spDescriptor = await this.GetSPDescriptor(request);
             var keyDescriptors = spDescriptor.Keys.Where(k => k.Use == KeyType.Signing);
             var validated = false;

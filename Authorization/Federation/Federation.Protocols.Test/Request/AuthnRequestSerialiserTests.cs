@@ -37,8 +37,8 @@ namespace Federation.Protocols.Test.Request
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
 
             //ACT
-            var serialised = await serialiser.Serialize(authnRequest);
-            var deserialised = await serialiser.Deserialize<AuthnRequest>(serialised);
+            var serialised = await serialiser.SerializeAndCompress(authnRequest);
+            var deserialised = await serialiser.DecompressAndDeserialize<AuthnRequest>(serialised);
             //ASSERT
             Assert.NotNull(serialised);
             Assert.AreEqual(authnRequest.Issuer.Value, deserialised.Issuer.Value);
