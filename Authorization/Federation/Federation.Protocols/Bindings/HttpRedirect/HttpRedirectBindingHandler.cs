@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using Federation.Protocols.Request.Handlers;
 using Kernel.DependancyResolver;
@@ -15,35 +14,20 @@ namespace Federation.Protocols.Bindings.HttpRedirect
         {
             this._dependencyResolver = dependencyResolver;
         }
-        public async Task BuildRequest(HttpRedirectContext context)
-        {
-            var builders = this.GetBuilders();
-            foreach(var b in builders.OrderBy(x => x.Order))
-            {
-                await b.Build(context);
-            }
-        }
-
+        
         public async Task HandleOutbound(SamlOutboundContext context)
         {
-            var builders = this.GetBuilders();
-            foreach (var b in builders.OrderBy(x => x.Order))
-            {
-                await b.Build(context.BindingContext);
-            }
-            var httpRedirectContext = context as HttpRedirectRequestContext;
-            await httpRedirectContext.HanlerAction(context.BindingContext.GetDestinationUrl());
+            if (context == null)
+                throw new ArgumentNullException("context");
+
+            var despatcher = this._dependencyResolver.Resolve(typeof(ISamlMessageDespatcher<>).MakeGenericType(context.GetType())) as ISamlMessageDespatcher;
+            await despatcher.SendAsync(context);
         }
 
         public async Task HandleInbound(SamlInboundContext context)
         {
             var authnRequestHandler = this._dependencyResolver.Resolve<AuthnRequestHandler>();
             await authnRequestHandler.HandleRequest((HttpRedirectInboundContext)context);
-        }
-
-        private  IEnumerable<ISamlClauseBuilder> GetBuilders()
-        {
-            return this._dependencyResolver.ResolveAll<ISamlClauseBuilder>();
         }
     }
 }

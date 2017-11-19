@@ -12,7 +12,7 @@ using Shared.Federtion.Forms;
 
 namespace Federation.Protocols.Request
 {
-    internal class RequestDispatcher : ISamlMessageDespatcher<HttpPostRequestContext>
+    internal class PostRequestDispatcher : ISamlMessageDespatcher<HttpPostRequestContext>
     {
         private readonly IAuthnRequestSerialiser _serialiser;
         private readonly ILogProvider _logProvider;
@@ -20,7 +20,7 @@ namespace Federation.Protocols.Request
         private ICertificateManager _certManager;
         private IXmlSignatureManager _xmlSignatureManager;
 
-        public RequestDispatcher(IAuthnRequestSerialiser serialiser, IRelayStateSerialiser relayStateSerialiser, IXmlSignatureManager xmlSignatureManager, ICertificateManager certManager, ILogProvider logProvider)
+        public PostRequestDispatcher(IAuthnRequestSerialiser serialiser, IRelayStateSerialiser relayStateSerialiser, IXmlSignatureManager xmlSignatureManager, ICertificateManager certManager, ILogProvider logProvider)
         {
             this._xmlSignatureManager = xmlSignatureManager;
             this._certManager = certManager;

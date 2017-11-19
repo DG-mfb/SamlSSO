@@ -21,8 +21,8 @@ namespace Federation.Protocols.Bindings.HttpPost
             if (context == null)
                 throw new ArgumentNullException("context");
 
-            var responseDispatcher = this._dependencyResolver.Resolve(typeof(ISamlMessageDespatcher<>).MakeGenericType(context.GetType())) as ISamlMessageDespatcher;
-            await responseDispatcher.SendAsync(context);
+            var dispatcher = this._dependencyResolver.Resolve(typeof(ISamlMessageDespatcher<>).MakeGenericType(context.GetType())) as ISamlMessageDespatcher;
+            await dispatcher.SendAsync(context);
         }
         
         public async Task HandleInbound(SamlInboundContext context)
