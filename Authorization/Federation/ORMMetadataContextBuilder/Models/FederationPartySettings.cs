@@ -14,6 +14,8 @@ namespace ORMMetadataContextProvider.Models
         public string FederationPartyId { get; set; }
         public string MetadataPath { get; set; }
         public string MetadataLocation { get; set; }
+        public string OutboundBinding { get; set; }
+        public string InboundBinding { get; set; }
         public virtual DatepartValue AutoRefreshInterval { get; set; }
         public virtual DatepartValue RefreshInterval { get; set; }
         public virtual SecuritySettings SecuritySettings { get; set; }

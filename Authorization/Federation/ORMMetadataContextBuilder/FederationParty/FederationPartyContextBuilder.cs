@@ -3,6 +3,7 @@ using System.Linq;
 using Kernel.Cache;
 using Kernel.Data.ORM;
 using Kernel.Federation.FederationPartner;
+using Kernel.Federation.MetaData.Configuration;
 using MemoryCacheProvider;
 using ORMMetadataContextProvider.Models;
 
@@ -28,7 +29,11 @@ namespace ORMMetadataContextProvider.FederationParty
             if (federationPartyContext == null)
                 throw new InvalidOperationException(String.Format("No federation patty settings found for id: {0}", federationPartyId));
 
-            var context = new FederationPartyConfiguration(federationPartyId, federationPartyContext.MetadataPath);
+            var context = new FederationPartyConfiguration(federationPartyId, federationPartyContext.MetadataPath)
+            {
+                OutboundBinding = new Uri(federationPartyContext.OutboundBinding ?? Bindings.Http_Redirect),
+                InboundBinding = new Uri(federationPartyContext.InboundBinding ?? Bindings.Http_Post),
+            };
             var federationPartyAuthnRequestConfiguration = this.BuildFederationPartyAuthnRequestConfiguration(federationPartyContext.AutnRequestSettings, federationPartyContext.MetadataSettings.SPDescriptorSettings.EntityId);
             context.FederationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration;
             
