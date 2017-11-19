@@ -33,7 +33,7 @@ namespace Federation.Protocols.Request
                 await b.Build(context.BindingContext);
             }
            
-            await context.HanlerAction(context.BindingContext.GetDestinationUrl());
+            await context.DespatchDelegate(context.BindingContext.GetDestinationUrl());
         }
         private IEnumerable<ISamlClauseBuilder> GetBuilders()
         {

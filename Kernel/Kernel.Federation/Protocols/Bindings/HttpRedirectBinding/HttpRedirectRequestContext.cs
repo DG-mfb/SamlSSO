@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Kernel.Federation.Protocols.Bindings.HttpRedirectBinding
 {
-    public class HttpRedirectRequestContext : SamlOutboundContext
+    public class HttpRedirectRequestContext : SamlOutboundContext<Uri>
     {
-        public Func<Uri, Task> HanlerAction { get; set; }
+        public override Func<Uri, Task> DespatchDelegate { get; set; }
     }
 }

@@ -123,6 +123,7 @@
     <Compile Include="Protocols\ISamlMessageDespatcher.cs" />
     <Compile Include="Protocols\Response\IReponseHandler.cs" />
     <Compile Include="Protocols\Response\IResponseParser.cs" />
+    <Compile Include="Protocols\SamlOutboundContext%271.cs" />
     <Compile Include="Tokens\HandleTokenContext.cs" />
     <Compile Include="Tokens\ITokenClauseValidator.cs" />
     <Compile Include="Tokens\ITokenHandler.cs" />

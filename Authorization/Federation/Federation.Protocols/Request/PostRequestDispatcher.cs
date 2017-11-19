@@ -28,10 +28,18 @@ namespace Federation.Protocols.Request
             this._logProvider = logProvider;
             this._relayStateSerialiser = relayStateSerialiser;
         }
-        public async Task SendAsync(SamlOutboundContext context)
+        public Task SendAsync(SamlOutboundContext context)
         {
+            return this.SendAsync(context as HttpPostRequestContext);
+        }
+
+        public async Task SendAsync(HttpPostRequestContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+
             var request = AuthnRequestHelper.BuildAuthnRequest(context.BindingContext.AuthnRequestContext);
-            
+
             var serialised = this._serialiser.Serialize(request);
             var document = new XmlDocument();
             document.LoadXml(serialised);
@@ -45,7 +53,7 @@ namespace Federation.Protocols.Request
                 this._xmlSignatureManager.WriteSignature(document, context.BindingContext.AuthnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.Id, cert.PrivateKey, "", "");
             }
             var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(document.OuterXml));
-           
+
             var relyingStateSerialised = await this._relayStateSerialiser.Serialize(context.BindingContext.RelayState);
             var form = new SAMLForm
             {
@@ -54,12 +62,7 @@ namespace Federation.Protocols.Request
             form.AddHiddenControl("SAMLRequest", base64Encoded);
             form.AddHiddenControl("RelayState", relyingStateSerialised);
             var samlForm = form.ToString();
-            await ((HttpPostRequestContext)context).HanlerAction(samlForm);
-        }
-
-        public Task SendAsync(HttpPostRequestContext context)
-        {
-            throw new NotImplementedException();
+            await context.DespatchDelegate(samlForm);
         }
     }
 }

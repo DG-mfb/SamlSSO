@@ -1,6 +1,6 @@
 ﻿namespace Kernel.Federation.Protocols
 {
-    public class SamlOutboundContext
+    public abstract class SamlOutboundContext
     {
         public BindingContext BindingContext { get; set; }
     }

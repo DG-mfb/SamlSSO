@@ -138,7 +138,7 @@ namespace SSOOwinMiddleware.Handlers
                     outboundContext = new HttpRedirectRequestContext
                     {
                         BindingContext = new HttpRedirectContext(requestContext),
-                        HanlerAction = redirectUri =>
+                        DespatchDelegate = redirectUri =>
                         {
                             this.Response.Redirect(redirectUri.AbsoluteUri);
                             return Task.CompletedTask;
@@ -150,9 +150,9 @@ namespace SSOOwinMiddleware.Handlers
                     outboundContext = new HttpPostRequestContext
                     {
                         BindingContext = new HttpPostContext(requestContext),
-                        HanlerAction = (form) =>
+                        DespatchDelegate = (form) =>
                         {
-                            Response.Write(form);
+                            Response.Write(form.ToString());
                             return Task.CompletedTask;
                         },
                     };
