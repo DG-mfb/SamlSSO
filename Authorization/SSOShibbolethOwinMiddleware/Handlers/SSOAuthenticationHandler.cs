@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.DependancyResolver;
 using Kernel.Federation.FederationPartner;
@@ -148,7 +149,7 @@ namespace SSOOwinMiddleware.Handlers
                 {
                     outboundContext = new HttpPostRequestContext
                     {
-                        BindingContext = new HttpRedirectContext(requestContext),
+                        BindingContext = new HttpPostContext(requestContext),
                         HanlerAction = (form) =>
                         {
                             Response.Write(form);
