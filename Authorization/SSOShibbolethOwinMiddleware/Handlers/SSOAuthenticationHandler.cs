@@ -123,27 +123,18 @@ namespace SSOOwinMiddleware.Handlers
                 var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
                     .Single();
 
-                var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Redirect));
-                //var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, new Uri(Bindings.Http_Post));
                 var federationPartyContextBuilder = this._resolver.Resolve<IAssertionPartyContextBuilder>();
-               
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 
+                var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, federationContext.OutboundBinding);
+               
                 var requestContext = new AuthnRequestContext(signInUrl, federationContext, idp.NameIdentifierFormats);
                 var relayStateHandler = this._resolver.Resolve<IRelayStateHandler>();
                 await relayStateHandler.BuildRelayState(requestContext);
-                var protocolContext = new SamlProtocolContext
+                SamlOutboundContext outboundContext = null;
+                if(federationContext.OutboundBinding == new Uri(Bindings.Http_Redirect))
                 {
-                    //RequestContext = new HttpPostRequestContext
-                    //{
-                    //    BindingContext = new HttpRedirectContext(requestContext),
-                    //    HanlerAction = (form) =>
-                    //    {
-                    //        Response.Write(form);
-                    //        return Task.CompletedTask;
-                    //    },
-                    //}
-                    RequestContext = new HttpRedirectRequestContext
+                    outboundContext = new HttpRedirectRequestContext
                     {
                         BindingContext = new HttpRedirectContext(requestContext),
                         HanlerAction = redirectUri =>
@@ -151,11 +142,27 @@ namespace SSOOwinMiddleware.Handlers
                             this.Response.Redirect(redirectUri.AbsoluteUri);
                             return Task.CompletedTask;
                         }
-                    }
+                    };
+                }
+                else
+                {
+                    outboundContext = new HttpPostRequestContext
+                    {
+                        BindingContext = new HttpRedirectContext(requestContext),
+                        HanlerAction = (form) =>
+                        {
+                            Response.Write(form);
+                            return Task.CompletedTask;
+                        },
+                    };
+                }
+                var protocolContext = new SamlProtocolContext
+                {
+                    RequestContext = outboundContext
                 };
                 var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
-                var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
-                //var protocolHanlder = protocolFactory(Bindings.Http_Post);
+                var protocolHanlder = protocolFactory(federationContext.OutboundBinding.AbsoluteUri);
+                
                 await protocolHanlder.HandleOutbound(protocolContext);
             }
             catch(Exception ex)

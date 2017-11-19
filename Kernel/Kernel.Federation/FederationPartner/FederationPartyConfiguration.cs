@@ -67,7 +67,10 @@ namespace Kernel.Federation.FederationPartner
                 this._refreshInterval = value;
             }
         }
-        
+        public Uri OutboundBinding { get; set; }
+
+        public Uri InboundBinding { get; set; }
+
         public FederationPartyConfiguration(string federationPartyId, string metadataAddress)
         {
             if (String.IsNullOrWhiteSpace(federationPartyId))
@@ -79,6 +82,8 @@ namespace Kernel.Federation.FederationPartner
             this.MetadataAddress = metadataAddress;
             this.AutomaticRefreshInterval = FederationPartyConfiguration.DefaultAutomaticRefreshInterval;
             this.RefreshInterval = FederationPartyConfiguration.DefaultRefreshInterval;
+            this.OutboundBinding = new Uri(Bindings.Http_Redirect);
+            this.InboundBinding = new Uri(Bindings.Http_Post);
         }
         public AuthnRequestConfiguration GetRequestConfigurationFromContext()
         {
