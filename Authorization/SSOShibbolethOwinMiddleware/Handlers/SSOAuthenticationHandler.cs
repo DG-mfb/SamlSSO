@@ -134,7 +134,7 @@ namespace SSOOwinMiddleware.Handlers
                 await relayStateHandler.BuildRelayState(requestContext);
                 var protocolContext = new SamlProtocolContext
                 {
-                    RequestContext = new HttpPosttRequestContext
+                    RequestContext = new HttpPostRequestContext
                     {
                         BindingContext = new HttpRedirectContext(requestContext),
                         HanlerAction = (form) =>

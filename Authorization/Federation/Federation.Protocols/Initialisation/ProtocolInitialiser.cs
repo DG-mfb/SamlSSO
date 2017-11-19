@@ -46,6 +46,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<SecurityTokenValidator>(Lifetime.Transient);
             dependencyResolver.RegisterType<AuthnRequestSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RequestDispatcher>(Lifetime.Transient);
+            dependencyResolver.RegisterType<ResponseDispatcher>(Lifetime.Transient);
 
             AuthnRequestHelper.GetBuilders = () => dependencyResolver.ResolveAll<IAuthnRequestClauseBuilder<AuthnRequest>>();
             this.GetBuilders().Aggregate(dependencyResolver, (r, next) => {r.RegisterType(next, Lifetime.Transient); return r; });

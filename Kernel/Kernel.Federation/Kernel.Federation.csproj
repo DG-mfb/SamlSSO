@@ -72,8 +72,9 @@
     <Compile Include="MetaData\MetadataPublicationProtocol.cs" />
     <Compile Include="Protocols\AuthnContext.cs" />
     <Compile Include="Protocols\BindingContext.cs" />
+    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseOutboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseContext.cs" />
-    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPosttRequestContext.cs" />
+    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostRequestContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectInboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectRequestContext.cs" />
     <Compile Include="Protocols\IAuthnRequestClauseBuilder.cs" />

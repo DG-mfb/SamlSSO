@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Kernel.Federation.MetaData.Configuration.EndPoint;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseDispatcher
+    internal class ResponseDispatcher : ISamlMessageDespatcher<HttpPostResponseOutboundContext>
     {
         private readonly ResponseBuilder _responseBuilder;
         private IRelayStateSerialiser _relayStateSerialiser;
@@ -40,6 +41,11 @@ namespace Federation.Protocols.Response
             }
             
             //throw new NotImplementedException();
+        }
+
+        public Task SendAsync(HttpPostResponseOutboundContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

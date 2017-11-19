@@ -21,6 +21,7 @@ namespace Federation.Protocols.Request.Handlers
         static AuthnRequestHandler()
         {
             AuthnRequestHandler._relyingParties.TryAdd("https://imperial.flowz_test.co.uk/", new Uri("http://localhost:60879/sp/metadata"));
+            AuthnRequestHandler._relyingParties.TryAdd("https://www.eca-international-local.com", new Uri("http://localhost:60879/sp/metadata"));
         }
 
         private readonly IRelayStateHandler _relayStateHandler;
