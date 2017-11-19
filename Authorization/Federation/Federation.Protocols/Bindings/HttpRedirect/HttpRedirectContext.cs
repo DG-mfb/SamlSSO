@@ -3,11 +3,10 @@ using Kernel.Federation.Protocols;
 
 namespace Federation.Protocols.Bindings.HttpRedirect
 {
-    public class HttpRedirectContext : BindingContext
+    public class HttpRedirectContext : RequestBindingContext
     {
-        public HttpRedirectContext(AuthnRequestContext authnRequestContext) : base(authnRequestContext.RelyingState, authnRequestContext.Destination)
+        public HttpRedirectContext(AuthnRequestContext authnRequestContext) : base(authnRequestContext)
         {
-            this.AuthnRequestContext = authnRequestContext;
         }
         
         public override Uri GetDestinationUrl()
@@ -15,6 +14,5 @@ namespace Federation.Protocols.Bindings.HttpRedirect
             var url = String.Format("{0}?{1}", base.DestinationUri.AbsoluteUri, base.ClauseBuilder);
             return new Uri(url);
         }
-
     }
 }

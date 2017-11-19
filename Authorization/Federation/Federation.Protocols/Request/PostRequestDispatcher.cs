@@ -37,20 +37,20 @@ namespace Federation.Protocols.Request
         {
             if (context == null)
                 throw new ArgumentNullException("context");
-
-            var request = AuthnRequestHelper.BuildAuthnRequest(context.BindingContext.AuthnRequestContext);
+            var requestContext = ((RequestBindingContext)context.BindingContext).AuthnRequestContext;
+            var request = AuthnRequestHelper.BuildAuthnRequest(requestContext);
 
             var serialised = this._serialiser.Serialize(request);
             var document = new XmlDocument();
             document.LoadXml(serialised);
-            var descriptor = context.BindingContext.AuthnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors
+            var descriptor = requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors
                 .First();
             if (descriptor.AuthenticationRequestsSigned)
             {
                 var certContext = descriptor.KeyDescriptors
                     .First(k => k.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing).CertificateContext;
                 var cert = this._certManager.GetCertificateFromContext(certContext);
-                this._xmlSignatureManager.WriteSignature(document, context.BindingContext.AuthnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.Id, cert.PrivateKey, "", "");
+                this._xmlSignatureManager.WriteSignature(document, requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.Id, cert.PrivateKey, "", "");
             }
             var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(document.OuterXml));
 

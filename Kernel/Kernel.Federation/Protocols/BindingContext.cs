@@ -12,7 +12,6 @@ namespace Kernel.Federation.Protocols
             this.DestinationUri = destinationUri;
             this.RelayState = relayState;
         }
-        public AuthnRequestContext AuthnRequestContext { get; set; }
         public Uri DestinationUri { get; }
         public StringBuilder ClauseBuilder { get; }
         public IDictionary<string, object> RelayState { get; }

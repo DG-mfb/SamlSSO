@@ -71,6 +71,7 @@
     <Compile Include="MetaData\MetadataPublicationContext.cs" />
     <Compile Include="MetaData\MetadataPublicationProtocol.cs" />
     <Compile Include="Protocols\AuthnContext.cs" />
+    <Compile Include="Protocols\RequestBindingContext .cs" />
     <Compile Include="Protocols\BindingContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseOutboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseContext.cs" />
