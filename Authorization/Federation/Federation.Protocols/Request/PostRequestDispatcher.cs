@@ -42,19 +42,23 @@ namespace Federation.Protocols.Request
 
             var serialised = this._serialiser.Serialize(request);
             var document = new XmlDocument();
+            this._logProvider.LogMessage(String.Format("Authentication request serialised./r/n{0}", serialised));
             document.LoadXml(serialised);
             var descriptor = requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors
                 .First();
             if (descriptor.AuthenticationRequestsSigned)
             {
+                this._logProvider.LogMessage("Signing authn request.");
                 var certContext = descriptor.KeyDescriptors
                     .First(k => k.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing).CertificateContext;
                 var cert = this._certManager.GetCertificateFromContext(certContext);
                 this._xmlSignatureManager.WriteSignature(document, requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.Id, cert.PrivateKey, "", "");
+                this._logProvider.LogMessage(String.Format("Authentication request signed./r/n{0}", document.OuterXml));
             }
             var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(document.OuterXml));
 
             var relyingStateSerialised = await this._relayStateSerialiser.Serialize(context.BindingContext.RelayState);
+            this._logProvider.LogMessage(String.Format("Building SAML form. Destination url: {0}", context.BindingContext.DestinationUri.AbsoluteUri));
             var form = new SAMLForm
             {
                 ActionURL = context.BindingContext.DestinationUri.AbsoluteUri
@@ -62,6 +66,7 @@ namespace Federation.Protocols.Request
             form.AddHiddenControl("SAMLRequest", base64Encoded);
             form.AddHiddenControl("RelayState", relyingStateSerialised);
             var samlForm = form.ToString();
+            this._logProvider.LogMessage(String.Format("Despatching saml form./r/n. {0}", samlForm));
             await context.DespatchDelegate(samlForm);
         }
     }
