@@ -42,16 +42,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationResults.cs" />
+    <Compile Include="AuthenticatonManagers\ISSOAuthenticationManager.cs" />
     <Compile Include="Claims\IUserClaimsProvider.cs" />
+    <Compile Include="IClaimsIdentityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationTypesContext.cs" />
     <Compile Include="Services\AuthenticationResult.cs" />
     <Compile Include="Services\IIdentityProviderService.cs" />
     <Compile Include="Services\ITokenProviderService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AuthenticatonManagers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Kernel.Data\Kernel.Data.csproj">
       <Project>{58F76882-5E21-452F-A070-76D468D6E27C}</Project>
