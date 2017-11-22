@@ -48,11 +48,11 @@ namespace Federation.Protocols.Request
                 .First();
             if (descriptor.AuthenticationRequestsSigned)
             {
-                this._logProvider.LogMessage("Signing authn request.");
+                this._logProvider.LogMessage("Signing authentication request.");
                 var certContext = descriptor.KeyDescriptors
                     .First(k => k.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing).CertificateContext;
                 var cert = this._certManager.GetCertificateFromContext(certContext);
-                this._xmlSignatureManager.WriteSignature(document, requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.Id, cert.PrivateKey, "", "");
+                this._xmlSignatureManager.WriteSignature(document, request.Id, cert.PrivateKey, "", "");
                 this._logProvider.LogMessage(String.Format("Authentication request signed./r/n{0}", document.OuterXml));
             }
             var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(document.OuterXml));
