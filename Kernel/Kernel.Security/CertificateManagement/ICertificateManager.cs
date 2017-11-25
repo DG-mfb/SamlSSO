@@ -13,6 +13,7 @@ namespace Kernel.Security.CertificateManagement
         ICertificateStore GetStoreFromContext(CertificateContext certContext);
         X509Certificate2 GetCertificateFromContext(CertificateContext certContext);
         string SignToBase64(string dataToSign, CertificateContext certContext);
+        byte[] SignData(string dataToSign, X509Certificate2 certificate);
         bool VerifySignatureFromBase64(string data, string signed, CertificateContext certContext);
         bool VerifySignatureFromBase64(string data, string signed, X509Certificate2 certificate);
         bool TryAddCertificateToStore(string storeName, StoreLocation location, X509Certificate2 certificate, bool createIfNotExist);

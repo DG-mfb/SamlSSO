@@ -126,10 +126,16 @@ namespace SecurityManagement
             this._logProvider.LogMessage(String.Format("Signing data with certificate from context: {0}", certContext.ToString()));
             var data = Encoding.UTF8.GetBytes(dataToSign);
             var cert = this.GetCertificateFromContext(certContext);
-            var signed = RSADataProtection.SignDataSHA1((RSA)cert.PrivateKey, data);
+            var signed = this.SignData(dataToSign, cert);
 
             var base64 = Convert.ToBase64String(signed);
             return base64;
+        }
+        public byte[] SignData(string dataToSign, X509Certificate2 certificate)
+        {
+            var data = Encoding.UTF8.GetBytes(dataToSign);
+            var signed = RSADataProtection.SignDataSHA1((RSA)certificate.PrivateKey, data);
+            return signed;
         }
 
         /// <summary>
