@@ -13,6 +13,7 @@ namespace Shared.Federtion.Response
             this.StatusMessage = String.Empty;
             this.MessageDetails = String.Empty;
         }
+        public string InResponseTo { get; set; }
         public ICollection<string> StatusCodes { get; }
         public string StatusMessage { get; set; }
         public string MessageDetails  { get; set; }

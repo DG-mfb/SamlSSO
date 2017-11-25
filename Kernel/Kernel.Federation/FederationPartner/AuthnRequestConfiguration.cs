@@ -8,7 +8,7 @@ namespace Kernel.Federation.FederationPartner
     public class AuthnRequestConfiguration
     {
         private readonly EntityDesriptorConfiguration _entityDesriptorConfiguration;
-        public AuthnRequestConfiguration(EntityDesriptorConfiguration entityDesriptorConfiguration, FederationPartyAuthnRequestConfiguration federationPartyAuthnRequestConfiguration)
+        public AuthnRequestConfiguration(string requestId, EntityDesriptorConfiguration entityDesriptorConfiguration, FederationPartyAuthnRequestConfiguration federationPartyAuthnRequestConfiguration)
         {
             if (entityDesriptorConfiguration == null)
                 throw new ArgumentNullException("entityDesriptorConfiguration");
@@ -18,7 +18,7 @@ namespace Kernel.Federation.FederationPartner
 
             this._entityDesriptorConfiguration = entityDesriptorConfiguration;
             this.EntityId = entityDesriptorConfiguration.EntityId;
-            this.RequestId = String.Format("{0}_{1}", entityDesriptorConfiguration.Id, Guid.NewGuid().ToString());
+            this.RequestId = requestId;
             this.AssertionConsumerServiceIndex = (ushort)entityDesriptorConfiguration.SPSSODescriptors.SelectMany(x => x.AssertionConsumerServices)
                 .Single(x => x.IsDefault.GetValueOrDefault()).Index;
             this.AudienceRestriction = new List<string> { entityDesriptorConfiguration.EntityId };

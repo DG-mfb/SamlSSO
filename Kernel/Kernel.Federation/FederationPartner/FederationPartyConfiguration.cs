@@ -85,14 +85,14 @@ namespace Kernel.Federation.FederationPartner
             this.OutboundBinding = new Uri(Bindings.Http_Redirect);
             this.InboundBinding = new Uri(Bindings.Http_Post);
         }
-        public AuthnRequestConfiguration GetRequestConfigurationFromContext()
+        public AuthnRequestConfiguration GetRequestConfigurationFromContext(string requestId)
         {
             if (this.MetadataContext == null)
                 throw new ArgumentNullException("metadataContext");
             if (this.FederationPartyAuthnRequestConfiguration == null)
                 throw new ArgumentNullException("federationPartyAuthnRequestConfiguration");
 
-            return new AuthnRequestConfiguration(this.MetadataContext.EntityDesriptorConfiguration, this.FederationPartyAuthnRequestConfiguration);
+            return new AuthnRequestConfiguration(requestId, this.MetadataContext.EntityDesriptorConfiguration, this.FederationPartyAuthnRequestConfiguration);
         }
     }
 }

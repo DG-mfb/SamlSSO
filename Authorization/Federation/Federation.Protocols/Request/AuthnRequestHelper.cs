@@ -16,8 +16,8 @@ namespace Federation.Protocols.Request
             if (AuthnRequestHelper.GetBuilders == null)
                 throw new InvalidOperationException("GetBuilders factory not set");
 
-            var requestConfig = authnRequestContext.FederationPartyContext.GetRequestConfigurationFromContext();
-
+            var requestConfig = authnRequestContext.FederationPartyContext.GetRequestConfigurationFromContext(authnRequestContext.RequestId);
+            
             var request = new AuthnRequest
             {
                 IsPassive = requestConfig.IsPassive,

@@ -23,6 +23,7 @@ namespace Federation.Protocols.RelayState
 
             authnRequestContext.RelyingState["federationPartyId"] = authnRequestContext.FederationPartyContext.FederationPartyId;
             authnRequestContext.RelyingState["assertionConsumerServices"] = authnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First().AssertionConsumerServices;
+            authnRequestContext.RelyingState["requestId"] = authnRequestContext.RequestId;
             return Task.CompletedTask;
         }
 

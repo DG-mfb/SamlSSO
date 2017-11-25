@@ -30,7 +30,9 @@ namespace Federation.Protocols.Response
         internal static ResponseStatus ReadResponseStatus(XmlReader reader)
         {
             var responseStatus = new ResponseStatus();
-            
+            reader.MoveToContent();
+            var responseTo = reader.GetAttribute("InResponseTo");
+            responseStatus.InResponseTo = responseTo;
             while (!reader.IsStartElement("Status", Saml20Constants.Protocol))
             {
                 if (!reader.Read())
