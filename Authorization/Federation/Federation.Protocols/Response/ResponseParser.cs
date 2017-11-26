@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Federation.Protocols.RelayState;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Response;
@@ -21,7 +21,6 @@ namespace Federation.Protocols.Response
         {
             this._relayStateHandler = relayStateHandler;
             this._logProvider = logProvider;
-
         }
         public async Task<ResponseStatus> ParseResponse(HttpPostResponseContext context)
         {
@@ -32,10 +31,27 @@ namespace Federation.Protocols.Response
             this._logProvider.LogMessage(String.Format("Response recieved:\r\n {0}", responseText));
             var responseStatus = ResponseHelper.ParseResponseStatus(responseText, this._logProvider);
             ResponseHelper.EnsureSuccessAndThrow(responseStatus);
-            
-            var relayState = await this._relayStateHandler.GetRelayStateFromFormData(elements);
-            responseStatus.RelayState = relayState;
-            ResponseHelper.EnsureRequestPathMatch(relayState, context.RequestUri);
+            if (!String.IsNullOrWhiteSpace(responseStatus.InResponseTo))
+            {
+                var relayState = await this._relayStateHandler.GetRelayStateFromFormData(elements);
+                if (relayState == null)
+                    throw new InvalidOperationException("Relay state is missing in the response.");
+
+                responseStatus.RelayState = relayState;
+
+                var relayStateDictionary = relayState as IDictionary<string, object>;
+                if (relayStateDictionary == null)
+                    throw new InvalidOperationException(String.Format("Expected relay state type of: {0}, but it was: {1}", typeof(IDictionary<string, object>).Name, relayState.GetType().Name));
+                var partnerId = relayStateDictionary[RelayStateContstants.FederationPartyId];
+
+                responseStatus.FederationPartyId = partnerId.ToString();
+
+                ResponseHelper.EnsureRequestPathMatch(relayState, context.RequestUri);
+            }
+            else
+            {
+                responseStatus.FederationPartyId = "local";
+            }
             return responseStatus;
         }
     }

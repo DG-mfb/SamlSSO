@@ -37,7 +37,7 @@ namespace Federation.Protocols.Response
                 {
                     using (var xmlReader = XmlReader.Create(reader))
                     {
-                        var handlerContext = new HandleTokenContext(xmlReader, responseStatus.RelayState, context.AuthenticationMethod);
+                        var handlerContext = new HandleTokenContext(xmlReader, responseStatus.FederationPartyId, context.AuthenticationMethod);
                         var response = await this._tokenHandler.HandleToken(handlerContext);
                         if (!response.IsValid)
                             throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
