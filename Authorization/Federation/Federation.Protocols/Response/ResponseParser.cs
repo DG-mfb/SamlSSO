@@ -50,7 +50,8 @@ namespace Federation.Protocols.Response
             }
             else
             {
-                responseStatus.FederationPartyId = "local";
+                throw new NotSupportedException("Idp initiated SSO is not supported.");
+                //responseStatus.FederationPartyId = "local";
             }
             return responseStatus;
         }
