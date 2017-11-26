@@ -13,6 +13,7 @@ namespace Shared.Federtion.Response
             this.StatusMessage = String.Empty;
             this.MessageDetails = String.Empty;
         }
+        public string FederationPartyId { get; set; }
         public string Response { get; set; }
         public object RelayState { get; set; }
         public string InResponseTo { get; set; }
