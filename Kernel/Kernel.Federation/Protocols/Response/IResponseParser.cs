@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kernel.Federation.Protocols.Response
 {
-    public interface IResponseParser<TResponse>
+    public interface IResponseParser<TResponse, TResult>
     {
-        IDictionary<string, string> ParseResponse(TResponse response);
+        Task<TResult> ParseResponse(TResponse context);
     }
 }

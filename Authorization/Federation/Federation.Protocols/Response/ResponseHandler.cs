@@ -12,18 +12,19 @@ using Kernel.Federation.Protocols.Response;
 using Kernel.Federation.Tokens;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
+using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
     internal class ResponseHandler : IReponseHandler<ClaimsIdentity>
     {
-        private readonly IRelayStateHandler _relayStateHandler;
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
-        
-        public ResponseHandler(IRelayStateHandler relayStateHandler, ITokenHandler tokenHandler, ILogProvider logProvider)
+        private readonly IResponseParser<HttpPostResponseContext, ResponseStatus> _responseParser;
+
+        public ResponseHandler(IResponseParser<HttpPostResponseContext, ResponseStatus> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
         {
-            this._relayStateHandler = relayStateHandler;
+            this._responseParser = responseParser;
             this._tokenHandler = tokenHandler;
             this._logProvider = logProvider;
         }
@@ -31,22 +32,12 @@ namespace Federation.Protocols.Response
         {
             try
             {
-                var elements = context.Form;
-                var responseBase64 = elements[HttpRedirectBindingConstants.SamlResponse];
-                var responseBytes = Convert.FromBase64String(responseBase64);
-                var responseText = Encoding.UTF8.GetString(responseBytes);
-
-                var relayState = await this._relayStateHandler.GetRelayStateFromFormData(elements);
-
-                this._logProvider.LogMessage(String.Format("Response recieved:\r\n {0}", responseText));
-                var responseStatus = ResponseHelper.ParseResponseStatus(responseText, this._logProvider);
-                ResponseHelper.EnsureSuccessAndThrow(responseStatus);
-                ResponseHelper.EnsureRequestPathMatch(relayState, context.RequestUri);
-                using (var reader = new StringReader(responseText))
+                var responseStatus = await this._responseParser.ParseResponse(context);
+                using (var reader = new StringReader(responseStatus.Response))
                 {
                     using (var xmlReader = XmlReader.Create(reader))
                     {
-                        var handlerContext = new HandleTokenContext(xmlReader, relayState, context.AuthenticationMethod);
+                        var handlerContext = new HandleTokenContext(xmlReader, responseStatus.RelayState, context.AuthenticationMethod);
                         var response = await this._tokenHandler.HandleToken(handlerContext);
                         if (!response.IsValid)
                             throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));

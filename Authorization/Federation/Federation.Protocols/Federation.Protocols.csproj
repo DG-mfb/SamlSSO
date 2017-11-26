@@ -78,6 +78,7 @@
     <Compile Include="Response\ResponseDispatcher.cs" />
     <Compile Include="Response\ResponseBuilder.cs" />
     <Compile Include="Response\ResponseHelper.cs" />
+    <Compile Include="Response\ResponseParser.cs" />
     <Compile Include="Tokens\TokenHelper.cs" />
     <Compile Include="Response\ResponseHandler.cs" />
     <Compile Include="Tokens\SecurityTokenHandler.cs" />

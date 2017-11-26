@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Federation.Protocols.RelayState;
-using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData.Configuration.EndPoint;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
@@ -21,6 +20,7 @@ namespace Federation.Protocols.Response
                 using (var xmlReader = XmlReader.Create(reader))
                 {
                     var responseStatus = ResponseHelper.ReadResponseStatus(xmlReader);
+                    responseStatus.Response = response;
                     logProvider.LogMessage(responseStatus.AggregatedMessage);
                     return responseStatus;
                 }

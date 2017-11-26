@@ -48,6 +48,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<PostRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<RederectRequestDispatcher>(Lifetime.Transient);
+            dependencyResolver.RegisterType<ResponseParser>(Lifetime.Transient);
 
             AuthnRequestHelper.GetBuilders = () => dependencyResolver.ResolveAll<IAuthnRequestClauseBuilder<AuthnRequest>>();
             this.GetBuilders().Aggregate(dependencyResolver, (r, next) => {r.RegisterType(next, Lifetime.Transient); return r; });
