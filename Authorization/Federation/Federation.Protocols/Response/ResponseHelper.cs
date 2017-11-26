@@ -33,6 +33,15 @@ namespace Federation.Protocols.Response
             reader.MoveToContent();
             var responseTo = reader.GetAttribute("InResponseTo");
             responseStatus.InResponseTo = responseTo;
+
+            while (!reader.IsStartElement("Issuer", Saml20Constants.Assertion))
+            {
+                if (!reader.Read())
+                    throw new InvalidOperationException("Can't find status code element.");
+            }
+            reader.Read();
+            var issuer = reader.Value;
+            responseStatus.Issuer = issuer;
             while (!reader.IsStartElement("Status", Saml20Constants.Protocol))
             {
                 if (!reader.Read())
