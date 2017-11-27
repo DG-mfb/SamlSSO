@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Federtion\IdentityConfigurationHelper.cs" />
     <Compile Include="Federtion\Constants\AuthnticationContexts.cs" />
     <Compile Include="Federtion\Factories\IMetadataHandler.cs" />
     <Compile Include="Federtion\Models\AudienceRestriction.cs" />
@@ -106,6 +107,10 @@
     <ProjectReference Include="..\..\Kernel\Kernel.Reflection\Kernel.Reflection.csproj">
       <Project>{2a6ba5fb-dbaa-457a-9cb3-9ba74a96551b}</Project>
       <Name>Kernel.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Kernel.Security\Kernel.Security.csproj">
+      <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
+      <Name>Kernel.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Kernel\Kernel.csproj">
       <Project>{e198c691-91a6-4082-9976-f5f006f24960}</Project>

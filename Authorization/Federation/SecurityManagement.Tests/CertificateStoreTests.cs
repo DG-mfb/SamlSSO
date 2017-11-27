@@ -19,7 +19,7 @@ namespace SecurityManagement.Tests
                 ValidOnly = false,
                 StoreLocation = StoreLocation.LocalMachine
             };
-            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "ApiraTestCertificate", SearchCriteriaType = X509FindType.FindBySubjectName });
+            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "www.eca-international.com", SearchCriteriaType = X509FindType.FindBySubjectName });
             var certConfiguration = new X509StoreCertificateConfiguration(certificateContext);
             //ACT
             X509Certificate2 cert = null;
@@ -38,7 +38,7 @@ namespace SecurityManagement.Tests
                 ValidOnly = false,
                 StoreLocation = StoreLocation.CurrentUser
             };
-            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "ApiraTestCertificate", SearchCriteriaType = X509FindType.FindBySubjectName });
+            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "www.eca-international.com", SearchCriteriaType = X509FindType.FindBySubjectName });
             var certConfiguration = new X509StoreCertificateConfiguration(certificateContext);
             //ACT
             X509Certificate2 cert = null;
@@ -59,7 +59,7 @@ namespace SecurityManagement.Tests
                 
                 StoreLocation = StoreLocation.LocalMachine
             };
-            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "ApiraTestCertificate", SearchCriteriaType = X509FindType.FindBySubjectName });
+            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "www.eca-international.com", SearchCriteriaType = X509FindType.FindBySubjectName });
             var certConfiguration = new X509StoreCertificateConfiguration(certificateContext);
             //ACT
             X509Certificate2 cert = null;

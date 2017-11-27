@@ -19,7 +19,7 @@ namespace SecurityManagement.Tests
             {
                 var logger = new LogProviderMock();
                 store.Open(OpenFlags.ReadOnly);
-                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
+                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "www.eca-international.com", false)[0];
                 var context = new CertificateValidationContext(certificate);
                 var rule = new EffectiveDateRule(logger);
                 //ACT
@@ -43,7 +43,7 @@ namespace SecurityManagement.Tests
             {
                 var logger = new LogProviderMock();
                 store.Open(OpenFlags.ReadOnly);
-                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
+                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "www.eca-international.com", false)[0];
                 var context = new CertificateValidationContext(certificate);
                 var rule = new ExpirationDateRule(logger);
                 //ACT

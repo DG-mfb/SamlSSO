@@ -37,20 +37,20 @@ namespace InlineMetadataContextProvider
             };
             orgConfiguration.Names.Add(new LocalizedConfigurationEntry
             {
-                Name = "Apira LTD",
-                DisplayName = "Flowz",
+                Name = "Company name",
+                DisplayName = "Company Display name",
             });
-            orgConfiguration.Urls.Add(new LocalizedUrlEntry { Url = new Uri("https://apira.co.uk/") });
+            orgConfiguration.Urls.Add(new LocalizedUrlEntry { Url = new Uri("https://company.co.uk/") });
 
             var contact = new Kernel.Federation.MetaData.Configuration.Organisation.ContactPerson
             {
                 ContactType = Kernel.Federation.MetaData.Configuration.Organisation.ContactType.Technical,
                 ForeName = "John",
-                SurName = "Murphy",
+                SurName = "Doe",
 
             };
-            contact.Emails.Add("john.murphy@flowz.co.uk");
-            contact.PhoneNumbers.Add("020xxx");
+            contact.Emails.Add("john.doe@domain.co.uk");
+            contact.PhoneNumbers.Add("020123456");
             
             orgConfiguration.OrganisationContacts.PersonContact.Add(contact);
             return orgConfiguration;
@@ -64,7 +64,7 @@ namespace InlineMetadataContextProvider
                 ValidOnly = false,
                 StoreLocation = StoreLocation.LocalMachine
             };
-            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "ApiraTestCertificate", SearchCriteriaType = X509FindType.FindBySubjectName });
+            certificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "www.eca-international.com", SearchCriteriaType = X509FindType.FindBySubjectName });
             var keyDescriptorConfiguration = new KeyDescriptorConfiguration
             {
                 IsDefault = true,
@@ -78,7 +78,7 @@ namespace InlineMetadataContextProvider
                 ValidOnly = false,
                 StoreLocation = StoreLocation.LocalMachine
             };
-            encrCertificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "Apira_DevEnc", SearchCriteriaType = X509FindType.FindBySubjectName });
+            encrCertificateContext.SearchCriteria.Add(new CertificateSearchCriteria { SearchValue = "www.eca-international.com", SearchCriteriaType = X509FindType.FindBySubjectName });
             var encrKeyDescriptorConfiguration = new KeyDescriptorConfiguration
             {
                 IsDefault = true,

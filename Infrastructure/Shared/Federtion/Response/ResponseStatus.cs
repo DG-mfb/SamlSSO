@@ -28,6 +28,13 @@ namespace Shared.Federtion.Response
                 return this.StatusCodes != null && this.StatusCodes.Any(x => x == Shared.Federtion.Constants.StatusCodes.Success);
             }
         }
+        public bool IsIdpInitiated
+        {
+            get
+            {
+                return String.IsNullOrEmpty(this.InResponseTo);
+            }
+        }
         public string StatusCodeMain
         {
             get

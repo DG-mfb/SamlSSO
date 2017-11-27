@@ -31,7 +31,7 @@ namespace Federation.Protocols.Response
             this._logProvider.LogMessage(String.Format("Response recieved:\r\n {0}", responseText));
             var responseStatus = ResponseHelper.ParseResponseStatus(responseText, this._logProvider);
             ResponseHelper.EnsureSuccessAndThrow(responseStatus);
-            if (!String.IsNullOrWhiteSpace(responseStatus.InResponseTo))
+            if (!responseStatus.IsIdpInitiated)
             {
                 var relayState = await this._relayStateHandler.GetRelayStateFromFormData(elements);
                 if (relayState == null)
@@ -51,7 +51,7 @@ namespace Federation.Protocols.Response
             else
             {
                 throw new NotSupportedException("Idp initiated SSO is not supported.");
-                //responseStatus.FederationPartyId = "local";
+                responseStatus.FederationPartyId = "local";
             }
             return responseStatus;
         }

@@ -25,7 +25,7 @@ namespace SecurityManagement.Tests.Manager
             certContext.SearchCriteria.Add(new CertificateSearchCriteria
             {
                 SearchCriteriaType = X509FindType.FindBySubjectName,
-                SearchValue = "ApiraTestCertificate"
+                SearchValue = "www.eca-international.com"
             });
             //ACT
             var signed = manager.SignToBase64(data, certContext);
@@ -50,7 +50,7 @@ namespace SecurityManagement.Tests.Manager
             certContext.SearchCriteria.Add(new CertificateSearchCriteria
             {
                 SearchCriteriaType = X509FindType.FindBySubjectName,
-                SearchValue = "ApiraTestCertificate"
+                SearchValue = "www.eca-international.com"
             });
             //ACT
             var cert = manager.GetCertificateFromContext(certContext);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Configuration;
 using System.IdentityModel.Metadata;
 using System.IdentityModel.Tokens;
 using System.Linq;
@@ -8,10 +9,19 @@ using Kernel.Federation.MetaData;
 using Kernel.Security.CertificateManagement;
 using Shared.Federtion.Factories;
 
-namespace Federation.Metadata.FederationPartner.Configuration
+namespace Shared.Federtion
 {
-    internal class ConfigurationHelper
+    public class IdentityConfigurationHelper
     {
+        private static IdentityConfiguration _identityConfiguration = new IdentityConfiguration();
+
+        public static IssuerNameRegistry IssuerNameRegistry
+        {
+            get
+            {
+                return IdentityConfigurationHelper._identityConfiguration.IssuerNameRegistry;
+            }
+        }
         /// <summary>
         /// Invoke after metadata is retrieved and parsed
         /// </summary>
@@ -33,8 +43,9 @@ namespace Federation.Metadata.FederationPartner.Configuration
             var idps = handler.GetIdentityProviderSingleSignOnDescriptor(metadata);
 
             var certManager = dependencyResolver.Resolve<ICertificateManager>();
+           
             //Default WIF implementation change if another policy is in place. Used to validate the issuer when building the claims
-            var identityRegister = SecurityTokenHandlerConfiguration.DefaultIssuerNameRegistry as ConfigurationBasedIssuerNameRegistry;
+            var identityRegister = IdentityConfigurationHelper._identityConfiguration.IssuerNameRegistry as ConfigurationBasedIssuerNameRegistry;//SecurityTokenHandlerConfiguration.DefaultIssuerNameRegistry as ConfigurationBasedIssuerNameRegistry;
             if (identityRegister == null)
                 return;
 

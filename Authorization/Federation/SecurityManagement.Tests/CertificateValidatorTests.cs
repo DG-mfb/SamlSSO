@@ -20,7 +20,7 @@ namespace SecurityManagement.Tests
             try
             {
                 store.Open(OpenFlags.ReadOnly);
-                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
+                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "www.eca-international.com", false)[0];
                 var configuration = new CertificateValidationConfiguration
                 {
                     X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
@@ -58,7 +58,7 @@ namespace SecurityManagement.Tests
             try
             {
                 store.Open(OpenFlags.ReadOnly);
-                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "ApiraTestCertificate", false)[0];
+                var certificate = store.Certificates.Find(X509FindType.FindBySubjectName, "www.eca-international.com", false)[0];
                 var configuration = new CertificateValidationConfiguration
                 {
                     X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom

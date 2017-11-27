@@ -5,6 +5,7 @@ using Federation.Metadata.FederationPartner.Configuration;
 using Federation.Metadata.FederationPartner.Handlers;
 using Kernel.DependancyResolver;
 using Kernel.Web;
+using Shared.Federtion;
 using Shared.Initialisation;
 
 namespace Federation.Metadata.FederationPartner.Initialisation
@@ -37,7 +38,7 @@ namespace Federation.Metadata.FederationPartner.Initialisation
                 }, Lifetime.Singleton);
             dependencyResolver.RegisterFactory<Action<MetadataBase>>(() => m => 
             {
-                ConfigurationHelper.OnReceived(m, dependencyResolver);
+                IdentityConfigurationHelper.OnReceived(m, dependencyResolver);
 
             }, Lifetime.Singleton);
             return Task.CompletedTask;

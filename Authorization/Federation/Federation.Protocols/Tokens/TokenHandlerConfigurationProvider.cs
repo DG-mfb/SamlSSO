@@ -6,6 +6,7 @@ using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Tokens;
 using Kernel.Security.CertificateManagement;
 using Kernel.Security.Validation;
+using Shared.Federtion;
 
 namespace Federation.Protocols.Tokens
 {
@@ -35,9 +36,10 @@ namespace Federation.Protocols.Tokens
 
             var inner = new X509CertificateStoreTokenResolver(x509CertificateContext.StoreName, x509CertificateContext.StoreLocation);
             var tokenResolver = new IssuerTokenResolver(inner);
-
+            var issuerNameRegistry = IdentityConfigurationHelper.IssuerNameRegistry;
             var configuration = new SecurityTokenHandlerConfiguration
             {
+                IssuerNameRegistry = issuerNameRegistry,
                 IssuerTokenResolver = tokenResolver,
                 ServiceTokenResolver = inner,
                 AudienceRestriction = new AudienceRestriction(AudienceUriMode.Always),
@@ -52,7 +54,11 @@ namespace Federation.Protocols.Tokens
 
         public SecurityTokenHandlerConfiguration GetTrustedIssuersConfiguration()
         {
-            var configuration = new SecurityTokenHandlerConfiguration();
+            var issuerNameRegistry = IdentityConfigurationHelper.IssuerNameRegistry;
+            var configuration = new SecurityTokenHandlerConfiguration
+            {
+                IssuerNameRegistry = issuerNameRegistry
+            };
             return configuration;
         }
     }
