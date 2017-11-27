@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens;
+using System.Security.Claims;
 using Kernel.Federation.Tokens;
 using Kernel.Logging;
 
@@ -35,6 +36,10 @@ namespace Federation.Protocols.Tokens.Validation
                 LoggerManager.WriteExceptionToEventLog(ex);
                 return false;
             }
+        }
+        protected override ClaimsIdentity CreateClaims(Saml2SecurityToken samlToken)
+        {
+            return null;
         }
 
         protected override void ValidateConfirmationData(Saml2SubjectConfirmationData confirmationData)
