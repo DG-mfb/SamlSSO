@@ -1,5 +1,6 @@
 ﻿using System;
 using Kernel.Federation.MetaData.Configuration;
+using Kernel.Federation.Tokens;
 
 namespace Kernel.Federation.FederationPartner
 {
@@ -70,7 +71,7 @@ namespace Kernel.Federation.FederationPartner
         public Uri OutboundBinding { get; set; }
 
         public Uri InboundBinding { get; set; }
-
+        public IssuingAuthority IssuingAuthority { get; set; }
         public FederationPartyConfiguration(string federationPartyId, string metadataAddress)
         {
             if (String.IsNullOrWhiteSpace(federationPartyId))
@@ -84,6 +85,7 @@ namespace Kernel.Federation.FederationPartner
             this.RefreshInterval = FederationPartyConfiguration.DefaultRefreshInterval;
             this.OutboundBinding = new Uri(Bindings.Http_Redirect);
             this.InboundBinding = new Uri(Bindings.Http_Post);
+            this.IssuingAuthority = new IssuingAuthority(federationPartyId);
         }
         public AuthnRequestConfiguration GetRequestConfigurationFromContext(string requestId)
         {
