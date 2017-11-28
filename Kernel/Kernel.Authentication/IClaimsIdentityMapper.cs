@@ -5,6 +5,6 @@ namespace Kernel.Authentication
 {
     public interface IClaimsIdentityMapper<TResult>
     {
-        Task<TResult> MapIClaimsIdentity(ClaimsIdentity identity);
+        Task<TResult> MapClaimsIdentity(ClaimsIdentity identity);
     }
 }
