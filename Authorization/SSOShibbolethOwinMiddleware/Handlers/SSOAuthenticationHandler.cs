@@ -129,7 +129,7 @@ namespace SSOOwinMiddleware.Handlers
 
                 var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, federationContext.OutboundBinding);
                
-                var requestContext = new AuthnRequestContext(signInUrl, federationContext, idp.NameIdentifierFormats);
+                var requestContext = new AuthnRequestContext(signInUrl, base.Request.Uri, federationContext, idp.NameIdentifierFormats);
                 var relayStateHandler = this._resolver.Resolve<IRelayStateHandler>();
                 await relayStateHandler.BuildRelayState(requestContext);
                 SamlOutboundContext outboundContext = null;

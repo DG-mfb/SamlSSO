@@ -13,6 +13,7 @@ namespace WebApi.Controllers
         public async Task<IHttpActionResult> SSOLogon()
         {
             var identity = (ClaimsIdentity)base.RequestContext.Principal.Identity;
+            var origin = identity.FindFirst(ClaimTypes.Uri).Value;
             var identityClaim = identity.Claims.Where(c => c.Value.Contains("@"))
                 .FirstOrDefault(c => c.Subject.NameClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             if(identityClaim != null)

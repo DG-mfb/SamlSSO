@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -12,9 +13,9 @@ namespace Federation.Protocols.Tokens
     {
         private readonly ITokenSerialiser _tokenSerialiser;
         private readonly ITokenValidator _tokenValidator;
-        private readonly IUserClaimsProvider<Saml2SecurityToken> _identityProvider;
+        private readonly IUserClaimsProvider<Tuple<Saml2SecurityToken, HandleTokenContext>> _identityProvider;
 
-        public SecurityTokenHandler(ITokenSerialiser tokenSerialiser, ITokenValidator tokenValidator, IUserClaimsProvider<Saml2SecurityToken> identityProvider)
+        public SecurityTokenHandler(ITokenSerialiser tokenSerialiser, ITokenValidator tokenValidator, IUserClaimsProvider<Tuple<Saml2SecurityToken, HandleTokenContext>> identityProvider)
         {
             this._tokenSerialiser = tokenSerialiser;
             this._tokenValidator = tokenValidator;
@@ -31,7 +32,7 @@ namespace Federation.Protocols.Tokens
 
             if (isValid)
             {
-                var identities = await this._identityProvider.GenerateUserIdentitiesAsync((Saml2SecurityToken)token, new[] { context.AuthenticationMethod });
+                var identities = await this._identityProvider.GenerateUserIdentitiesAsync(new Tuple<Saml2SecurityToken, HandleTokenContext>((Saml2SecurityToken)token, context), new[] { context.AuthenticationMethod });
                 identity = identities[context.AuthenticationMethod];
             }
 

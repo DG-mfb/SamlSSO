@@ -20,7 +20,7 @@ namespace Federation.Protocols.Test.Request
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new AuthnRequestContext(requestUri, federationContex, supportedNameIdentifierFormats);
+            var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
             var requestConfiguration = federationContex.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             
@@ -44,7 +44,7 @@ namespace Federation.Protocols.Test.Request
             var scopingConfiguration = new ScopingConfiguration("http://localhost:59611/") { PoxyCount = 10 };
             var federationContext = federationPartyContextBuilder.BuildContext("local", scopingConfiguration);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new AuthnRequestContext(requestUri, federationContext, supportedNameIdentifierFormats);
+            var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContext, supportedNameIdentifierFormats);
             var requestConfiguration = federationContext.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             
@@ -68,7 +68,7 @@ namespace Federation.Protocols.Test.Request
             var scopingConfiguration = new ScopingConfiguration("http://localhost:59611/", "http://localhost:59612/") { PoxyCount = 10 };
             var federationContext = federationPartyContextBuilder.BuildContext("local", scopingConfiguration);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new AuthnRequestContext(requestUri, federationContext, supportedNameIdentifierFormats);
+            var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContext, supportedNameIdentifierFormats);
             var requestConfiguration = federationContext.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
 
