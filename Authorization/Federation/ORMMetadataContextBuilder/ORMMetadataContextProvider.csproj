@@ -106,6 +106,10 @@
       <Project>{5A1D47F4-B15F-4F42-8EAF-24F1474FE503}</Project>
       <Name>Kernel.Cache</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Kernel\Kernel.Configuration\Kernel.Configuration.csproj">
+      <Project>{B78BEABA-813A-4C65-BA17-2207E5F37B66}</Project>
+      <Name>Kernel.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Kernel\Kernel.Cryptography\Kernel.Cryptography.csproj">
       <Project>{857217F2-B265-4154-883F-568285643238}</Project>
       <Name>Kernel.Cryptography</Name>

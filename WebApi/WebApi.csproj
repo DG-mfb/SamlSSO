@@ -109,9 +109,11 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\DIRegistration.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="CustomCofiguration\RelayStateCustomConfigurator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -143,6 +145,10 @@
     <ProjectReference Include="..\Kernel\Kernel.Authorisation\Kernel.Authorisation.csproj">
       <Project>{4D83CD86-3A8E-4501-B8A7-7989CD71EDF1}</Project>
       <Name>Kernel.Authorisation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kernel\Kernel.Configuration\Kernel.Configuration.csproj">
+      <Project>{B78BEABA-813A-4C65-BA17-2207E5F37B66}</Project>
+      <Name>Kernel.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kernel\Kernel.Federation\Kernel.Federation.csproj">
       <Project>{47FE8E9F-CCF6-46B7-BA75-CBA1D1F56D7A}</Project>

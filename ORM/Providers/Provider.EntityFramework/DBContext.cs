@@ -44,6 +44,7 @@ namespace Provider.EntityFramework
 		/// </remarks>
 		protected override sealed void OnModelCreating(DbModelBuilder modelBuilder)
 		{
+            modelBuilder.HasDefaultSchema(this.CustomConfiguration.Schema ?? "dbo");
 			this.CreateModel(modelBuilder);
 		}
 

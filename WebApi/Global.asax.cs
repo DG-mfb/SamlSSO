@@ -8,6 +8,7 @@ using Kernel.Initialisation;
 using Kernel.Logging;
 using ServerInitialisation;
 using UnityResolver;
+using WebApi.App_Start;
 
 namespace WebApi
 {
@@ -31,6 +32,7 @@ namespace WebApi
             using (new InformationLogEventWriter())
             {
                 var container = ApplicationConfiguration.Instance.DependencyResolver;
+                DIRegistration.Register(container);
                 var initialiser = ApplicationConfiguration.Instance.ServerInitialiserFactory();
                 var task = initialiser.Initialise(container);
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kernel.Configuration;
 using Kernel.Federation.Protocols;
 
 namespace Federation.Protocols.RelayState
@@ -9,6 +10,7 @@ namespace Federation.Protocols.RelayState
     internal class RelayStateHandler : IRelayStateHandler
     {
         private readonly IRelayStateSerialiser _relayStateSerialiser;
+        public ICustomConfigurator<IDictionary<string, object>> RelayStateCustomConfuguration { private get; set; }
         public RelayStateHandler(IRelayStateSerialiser relayStateSerialiser)
         {
             this._relayStateSerialiser = relayStateSerialiser;
@@ -25,6 +27,8 @@ namespace Federation.Protocols.RelayState
             authnRequestContext.RelyingState["assertionConsumerServices"] = authnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First().AssertionConsumerServices;
             authnRequestContext.RelyingState["requestId"] = authnRequestContext.RequestId;
             authnRequestContext.RelyingState["origin"] = authnRequestContext.Origin;
+            if (this.RelayStateCustomConfuguration != null)
+                this.RelayStateCustomConfuguration.Configure(authnRequestContext.RelyingState);
             return Task.CompletedTask;
         }
 
