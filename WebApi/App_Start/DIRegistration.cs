@@ -1,4 +1,5 @@
 ﻿using Kernel.DependancyResolver;
+using WebApi.Claims;
 using WebApi.CustomCofiguration;
 
 namespace WebApi.App_Start
@@ -8,6 +9,7 @@ namespace WebApi.App_Start
         public static void Register(IDependencyResolver resolver)
         {
             resolver.RegisterType<RelayStateCustomConfigurator>(Lifetime.Transient);
+            resolver.RegisterType<CustomUserClaimsProvider>(Lifetime.Transient);
         }
     }
 }

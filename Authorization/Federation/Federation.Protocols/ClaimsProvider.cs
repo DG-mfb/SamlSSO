@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kernel.Authentication.Claims;
+using Kernel.Configuration;
 using Kernel.Federation.Tokens;
 
 namespace Federation.Protocols
@@ -12,7 +13,7 @@ namespace Federation.Protocols
     internal class ClaimsProvider : Saml2SecurityTokenHandler, IUserClaimsProvider<Tuple<Saml2SecurityToken, HandleTokenContext>>
     {
         private readonly ITokenConfigurationProvider<SecurityTokenHandlerConfiguration> _tokenHandlerConfigurationProvider;
-        
+        public IUserClaimsProvider<Tuple<ClaimsIdentity, object>> CustomClaimsProvider { private get;  set; }
         public ClaimsProvider(ITokenConfigurationProvider<SecurityTokenHandlerConfiguration> tokenHandlerConfigurationProvider)
         {
             this._tokenHandlerConfigurationProvider = tokenHandlerConfigurationProvider;
@@ -24,6 +25,8 @@ namespace Federation.Protocols
             base.Configuration = configuration;
             var claims = base.CreateClaims(user.Item1);
             claims.AddClaim(new Claim(ClaimTypes.Uri, user.Item2.Origin));
+            if (this.CustomClaimsProvider != null)
+                this.CustomClaimsProvider.GenerateUserIdentitiesAsync(new Tuple<ClaimsIdentity, object>(claims, user.Item2.RelayState), authenticationTypes);
             var identity = new Dictionary<string, ClaimsIdentity> { { authenticationTypes.First(), claims } };
             return Task.FromResult<IDictionary<string, ClaimsIdentity>>(identity);
         }
