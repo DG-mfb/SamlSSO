@@ -27,7 +27,7 @@ namespace Federation.Protocols.Test.RelayState
             var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
             var logger = new LogProviderMock();
             var serialiser = new RelaystateSerialiser(jsonSerialiser, messageEncoder, logger) as IRelayStateSerialiser;
-            var handler = new RelayStateHandler(serialiser);
+            var handler = new RelayStateHandler(serialiser, logger);
             //ACT
             var serialised = await serialiser.Serialize(relayState);
             form.Add("RelayState", serialised);
@@ -41,8 +41,9 @@ namespace Federation.Protocols.Test.RelayState
         public async Task BuildRelayStateTest()
         {
             //ARRANGE
+            var logger = new LogProviderMock();
             var serialiser = new RelayStateSerialiserMock() as IRelayStateSerialiser;
-            var handler = new RelayStateHandler(serialiser);
+            var handler = new RelayStateHandler(serialiser, logger);
             //ACT
             var federationPartyContextBuilderMock = new FederationPartyContextBuilderMock();
             var configuration = federationPartyContextBuilderMock.BuildContext("local");

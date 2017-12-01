@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AuthenticationResults.cs" />
     <Compile Include="AuthenticatonManagers\ISSOAuthenticationManager.cs" />
+    <Compile Include="Claims\ClaimsIdentityContext.cs" />
     <Compile Include="Claims\IUserClaimsProvider.cs" />
     <Compile Include="IClaimsIdentityMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
