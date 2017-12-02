@@ -33,6 +33,7 @@ namespace Federation.Protocols.Response
             try
             {
                 var responseStatus = await this._responseParser.ParseResponse(context);
+                context.RelayState = responseStatus.RelayState;
                 using (var reader = new StringReader(responseStatus.Response))
                 {
                     using (var xmlReader = XmlReader.Create(reader))

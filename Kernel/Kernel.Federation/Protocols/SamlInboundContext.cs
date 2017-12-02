@@ -2,5 +2,6 @@
 {
     public class SamlInboundContext
     {
+        public object RelayState { get; set; }
     }
 }
