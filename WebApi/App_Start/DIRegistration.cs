@@ -8,7 +8,7 @@ namespace WebApi.App_Start
     {
         public static void Register(IDependencyResolver resolver)
         {
-            resolver.RegisterType<RelayStateCustomConfigurator>(Lifetime.Transient);
+            resolver.RegisterType<RelayStateCustomAppender>(Lifetime.Transient);
             resolver.RegisterType<CustomUserClaimsProvider>(Lifetime.Transient);
         }
     }

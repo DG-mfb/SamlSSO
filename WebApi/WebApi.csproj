@@ -114,7 +114,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Claims\CustomUserClaimsProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="CustomCofiguration\RelayStateCustomConfigurator.cs" />
+    <Compile Include="CustomCofiguration\RelayStateCustomAppender.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -36,7 +36,7 @@ namespace Federation.Protocols.Tokens
                 identity = identities[context.AuthenticationMethod];
             }
 
-            return new TokenHandlingResponse(token, identity, validationResult);
+            return new TokenHandlingResponse(token, identity, context.RelayState, validationResult);
         }
     }
 }

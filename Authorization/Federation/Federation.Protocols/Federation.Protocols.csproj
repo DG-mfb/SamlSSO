@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="RelayState\RelayStateContstants.cs" />
+    <Compile Include="RelayState\RelayStateAppender.cs" />
     <Compile Include="RelayState\RelayStateHandler.cs" />
     <Compile Include="RelayState\RelaystateSerialiser.cs" />
     <Compile Include="Request\AuthnRequestHelper.cs" />

@@ -129,9 +129,12 @@ namespace SSOOwinMiddleware.Handlers
 
                 var signInUrl = handler.GetIdentityProviderSingleSignOnServices(idp, federationContext.OutboundBinding);
                
-                var requestContext = new AuthnRequestContext(signInUrl, base.Request.Uri, federationContext, idp.NameIdentifierFormats);
-                var relayStateHandler = this._resolver.Resolve<IRelayStateHandler>();
-                await relayStateHandler.BuildRelayState(requestContext);
+                var requestContext = new OwinAuthnRequestContext(Context, signInUrl, base.Request.Uri, federationContext, idp.NameIdentifierFormats);
+                var relayStateAppenders = this._resolver.ResolveAll<IRelayStateAppender>();
+                foreach (var appender in relayStateAppenders)
+                {
+                    await appender.BuildRelayState(requestContext);
+                }
                 SamlOutboundContext outboundContext = null;
                 if(federationContext.OutboundBinding == new Uri(Bindings.Http_Redirect))
                 {

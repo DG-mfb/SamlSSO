@@ -42,8 +42,7 @@ namespace Federation.Protocols.Test.RelayState
         {
             //ARRANGE
             var logger = new LogProviderMock();
-            var serialiser = new RelayStateSerialiserMock() as IRelayStateSerialiser;
-            var handler = new RelayStateHandler(serialiser, logger);
+            var handler = new RelayStateAppender(logger);
             //ACT
             var federationPartyContextBuilderMock = new FederationPartyContextBuilderMock();
             var configuration = federationPartyContextBuilderMock.BuildContext("local");

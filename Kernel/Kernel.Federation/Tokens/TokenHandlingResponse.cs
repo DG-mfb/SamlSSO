@@ -7,10 +7,11 @@ namespace Kernel.Federation.Tokens
 {
     public class TokenHandlingResponse
     {
-        public TokenHandlingResponse(SecurityToken token, ClaimsIdentity identity, ICollection<ValidationResult> validationResults)
+        public TokenHandlingResponse(SecurityToken token, ClaimsIdentity identity, object relayState, ICollection<ValidationResult> validationResults)
         {
             this.Token = token;
             this.Identity = identity;
+            this.RelayState = relayState;
             this.ValidationResults = validationResults;
         }
         public ICollection<ValidationResult> ValidationResults { get; }
@@ -23,5 +24,6 @@ namespace Kernel.Federation.Tokens
         }
         public ClaimsIdentity Identity { get; }
         public SecurityToken Token { get; }
+        public object RelayState { get; }
     }
 }

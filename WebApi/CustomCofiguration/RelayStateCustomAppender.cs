@@ -1,0 +1,23 @@
+﻿using System;
+using System.Threading.Tasks;
+using Kernel.Federation.Protocols;
+using SSOOwinMiddleware;
+
+namespace WebApi.CustomCofiguration
+{
+    public class RelayStateCustomAppender : IRelayStateAppender
+    {
+        public Task BuildRelayState(AuthnRequestContext authnRequestContext)
+        {
+            var owinRequest = authnRequestContext as OwinAuthnRequestContext;
+            if (owinRequest != null)
+            {
+                var query = owinRequest.Context.Request.Query;
+                var returnUri = query.Get("returnUri");
+                if (!String.IsNullOrWhiteSpace(returnUri))
+                    owinRequest.RelyingState.Add("returnUri", returnUri);
+            }
+            return Task.CompletedTask;
+        }
+    }
+}
