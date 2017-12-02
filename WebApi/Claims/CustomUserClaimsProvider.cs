@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kernel.Authentication.Claims;
@@ -16,7 +18,13 @@ namespace WebApi.Claims
 
         public Task<IDictionary<string, ClaimsIdentity>> GenerateUserIdentitiesAsync(ClaimsIdentityContext user, IEnumerable<string> authenticationTypes)
         {
-            return Task.FromResult<IDictionary<string, ClaimsIdentity>>(new Dictionary<string, ClaimsIdentity>());
+            if (user == null)
+                throw new ArgumentNullException("context");
+
+            if (authenticationTypes == null)
+                throw new ArgumentNullException("authenticationTypes");
+
+            return Task.FromResult<IDictionary<string, ClaimsIdentity>>(authenticationTypes.ToDictionary(k => k, v => user.ClaimsIdentity));
         }
     }
 }

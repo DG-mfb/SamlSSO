@@ -21,20 +21,33 @@ namespace Federation.Protocols
             this._tokenHandlerConfigurationProvider = tokenHandlerConfigurationProvider;
         }
 
-        public Task<IDictionary<string, ClaimsIdentity>> GenerateUserIdentitiesAsync(Tuple<Saml2SecurityToken, HandleTokenContext> user, IEnumerable<string> authenticationTypes)
+        public async Task<IDictionary<string, ClaimsIdentity>> GenerateUserIdentitiesAsync(Tuple<Saml2SecurityToken, HandleTokenContext> user, IEnumerable<string> authenticationTypes)
         {
+            if (user == null)
+                throw new ArgumentNullException("token/context");
+
+            if (authenticationTypes == null)
+                throw new ArgumentNullException("authenticationTypes");
+
+            if (user.Item1 == null)
+                throw new ArgumentNullException("saml2SecurityToken");
+
+            if (user.Item2 == null)
+                throw new ArgumentNullException("handleTokenContext");
+
             var configuration = this._tokenHandlerConfigurationProvider.GetTrustedIssuersConfiguration();
             base.Configuration = configuration;
             var claims = base.CreateClaims(user.Item1);
             this._logProvider.LogMessage(String.Format("Identity claims built."));
-            
+
+            IDictionary<string, ClaimsIdentity> identity = authenticationTypes.ToDictionary(k => k, v => claims);
             if (this.CustomClaimsProvider != null)
             {
                 this._logProvider.LogMessage(String.Format("Customising Identity claims."));
-                this.CustomClaimsProvider.GenerateUserIdentitiesAsync(new ClaimsIdentityContext(claims, user.Item2.RelayState), authenticationTypes);
+                identity = await this.CustomClaimsProvider.GenerateUserIdentitiesAsync(new ClaimsIdentityContext(claims, user.Item2.RelayState), authenticationTypes);
             }
-            var identity = new Dictionary<string, ClaimsIdentity> { { authenticationTypes.First(), claims } };
-            return Task.FromResult<IDictionary<string, ClaimsIdentity>>(identity);
+            
+            return identity;
         }
     }
 }
