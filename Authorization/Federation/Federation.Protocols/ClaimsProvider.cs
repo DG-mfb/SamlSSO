@@ -27,7 +27,7 @@ namespace Federation.Protocols
             base.Configuration = configuration;
             var claims = base.CreateClaims(user.Item1);
             this._logProvider.LogMessage(String.Format("Identity claims built."));
-            claims.AddClaim(new Claim(ClaimTypes.Uri, user.Item2.Origin));
+            
             if (this.CustomClaimsProvider != null)
             {
                 this._logProvider.LogMessage(String.Format("Customising Identity claims."));
