@@ -13,9 +13,9 @@ namespace WebApi.CustomCofiguration
             if (owinRequest != null)
             {
                 var query = owinRequest.Context.Request.Query;
-                var returnUri = query.Get("returnUri");
+                var returnUri = query.Get("returnUrl");
                 if (!String.IsNullOrWhiteSpace(returnUri))
-                    owinRequest.RelyingState.Add("returnUri", returnUri);
+                    owinRequest.RelyingState.Add("returnUrl", returnUri);
             }
             return Task.CompletedTask;
         }
