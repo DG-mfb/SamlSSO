@@ -120,6 +120,8 @@
     </Compile>
     <Compile Include="Owin\Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Token\SSOAuthenticationTokenProvider.cs" />
+    <Compile Include="Token\SSOAuthorizationServerProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

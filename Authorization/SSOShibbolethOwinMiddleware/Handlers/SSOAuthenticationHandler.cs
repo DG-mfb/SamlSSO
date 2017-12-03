@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
+using Kernel.Authorisation;
 using Kernel.DependancyResolver;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
@@ -19,6 +20,7 @@ using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using Shared.Federtion.Factories;
+using SSOOwinMiddleware.Contexts;
 
 namespace SSOOwinMiddleware.Handlers
 {
@@ -81,7 +83,16 @@ namespace SSOOwinMiddleware.Handlers
                     if (identity != null)
                     {
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
-                        return new AuthenticationTicket(identity, new AuthenticationProperties());
+                        var ticket = new AuthenticationTicket(identity, new AuthenticationProperties());
+                        AuthenticationTokenCreateContext context;
+                        var tokenCreated = this.TryCreateToken(ticket, out context);
+                        if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
+                        {
+                            var complete = await this.TryTokenEndpointResponse(context, responseContext.RelayState as IDictionary<string, object>);
+                            if (complete)
+                                return null;
+                        }
+                        return ticket;
                     }
                 }
                 this._logger.WriteInformation(String.Format("Authentication failed. No authentication ticket issued."));
@@ -92,6 +103,30 @@ namespace SSOOwinMiddleware.Handlers
                 this._logger.WriteError(String.Format("An exceprion has been thrown when processing the response.", ex));
                 return null;
             }
+        }
+
+        private async Task<bool> TryTokenEndpointResponse(AuthenticationTokenCreateContext context, IDictionary<string, object> relayState)
+        {
+            IAuthorizationServerProvider authorizationServerProvider;
+            if (!this._resolver.TryResolve<IAuthorizationServerProvider>(out authorizationServerProvider))
+                return false;
+            var sSOTokenEndpointResponseContext = new SSOTokenEndpointResponseContext(base.Context, base.Options, context.Token, relayState);
+            await authorizationServerProvider.TokenEndpointResponse(sSOTokenEndpointResponseContext);
+            return sSOTokenEndpointResponseContext.IsRequestCompleted;
+        }
+
+        private bool TryCreateToken(AuthenticationTicket ticket, out AuthenticationTokenCreateContext context)
+        {
+            context = null;
+            ISecureDataFormat<AuthenticationTicket> dataFormat;
+            if (!this._resolver.TryResolve<ISecureDataFormat<AuthenticationTicket>>(out dataFormat))
+                return false;
+            context = new AuthenticationTokenCreateContext(base.Context, dataFormat, ticket);
+            IAuthenticationTokenProvider authenticationTokenProvider;
+            if (!this._resolver.TryResolve<IAuthenticationTokenProvider>(out authenticationTokenProvider))
+                return false;
+            authenticationTokenProvider.Create(context);
+            return true;
         }
 
         protected override async Task ApplyResponseChallengeAsync()

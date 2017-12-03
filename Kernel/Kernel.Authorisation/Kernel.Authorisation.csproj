@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationProvider\IAuthenticationProvider.cs" />
+    <Compile Include="Contexts\ITokenEndpointResponseContext.cs" />
     <Compile Include="IAuthorizationServerOptionsProvider.cs" />
+    <Compile Include="IAuthorizationServerProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
