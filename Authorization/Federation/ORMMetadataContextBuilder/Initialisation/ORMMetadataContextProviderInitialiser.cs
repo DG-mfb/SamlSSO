@@ -14,6 +14,7 @@ using Kernel.Reflection;
 using ORMMetadataContextProvider.FederationParty;
 using ORMMetadataContextProvider.Security;
 using Shared.Initialisation;
+using ORMMetadataContextProvider.Authorization;
 
 namespace ORMMetadataContextProvider.Initialisation
 {
@@ -30,6 +31,7 @@ namespace ORMMetadataContextProvider.Initialisation
             dependencyResolver.RegisterType<CertificateValidationConfigurationProvider>(Lifetime.Transient);
             dependencyResolver.RegisterFactory<Func<NameValueCollection>>(() => () => ConfigurationManager.AppSettings, Lifetime.Transient);
             dependencyResolver.RegisterFactory<IDbCustomConfiguration>(() => this.BuildDbCustomConfiguration(), Lifetime.Transient);
+            dependencyResolver.RegisterType<ORMAuthorizationServerConfigurationManager>(Lifetime.Transient);
             dependencyResolver.RegisterFactory<IDbMetadataContextBuilder>(() =>
             {
                 var cacheProvider = dependencyResolver.Resolve<ICacheProvider>();
