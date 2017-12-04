@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Kernel.Cache;
 using Kernel.Data.ORM;
 using Kernel.Federation.FederationPartner;
@@ -9,7 +11,7 @@ using ORMMetadataContextProvider.Models;
 
 namespace ORMMetadataContextProvider.FederationParty
 {
-    internal class FederationPartyContextBuilder : IAssertionPartyContextBuilder
+    internal class FederationPartyContextBuilder : IAssertionPartyContextBuilder, IConfigurationManager<FederationPartyConfiguration>
     {
         private readonly IDbContext _dbContext;
         private readonly ICacheProvider _cacheProvider;
@@ -19,6 +21,19 @@ namespace ORMMetadataContextProvider.FederationParty
             this._dbContext = dbContext;
             this._cacheProvider = cacheProvider;
         }
+        public Task<FederationPartyConfiguration> GetConfigurationAsync(string federationPartyId, CancellationToken cancel)
+        {
+            var configuration = this.BuildContext(federationPartyId);
+            return Task.FromResult(configuration);
+        }
+
+        public void RequestRefresh(string federationPartyId)
+        {
+            if (String.IsNullOrWhiteSpace(federationPartyId))
+                throw new ArgumentNullException("federationPartyId");
+            this._cacheProvider.Delete(federationPartyId);
+        }
+
         public FederationPartyConfiguration BuildContext(string federationPartyId)
         {
             if (this._cacheProvider.Contains(federationPartyId))
