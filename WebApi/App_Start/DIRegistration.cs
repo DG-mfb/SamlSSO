@@ -18,7 +18,7 @@ namespace WebApi.App_Start
             resolver.RegisterType<SSOAuthorizationServerProvider>(Lifetime.Transient);
             resolver.RegisterFactory<ISecureDataFormat<AuthenticationTicket>>(() =>
             {
-                var protector = new DpapiDataProtectionProvider("SSO server").Create("token");
+                var protector = new MachineKeyDataProtector();// new DpapiDataProtectionProvider("SSO server").Create("token");
                 var dataFormat = new TicketDataFormat(protector);
                 return dataFormat;
 

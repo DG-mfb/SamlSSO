@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DataProtection\DataProtector.cs" />
     <Compile Include="DataProtection\IDataProtector.cs" />
+    <Compile Include="DataProtection\MachineDataProtectorImplementation.cs" />
     <Compile Include="DataProtection\RSADataProtection.cs" />
     <Compile Include="DPAPIEncryption.cs" />
     <Compile Include="HashBase.cs" />
