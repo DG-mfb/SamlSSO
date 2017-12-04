@@ -1,7 +1,6 @@
 ﻿using Kernel.DependancyResolver;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler;
-using Microsoft.Owin.Security.DataProtection;
 using WebApi.Claims;
 using WebApi.CustomCofiguration;
 using WebApi.Token;
@@ -18,7 +17,7 @@ namespace WebApi.App_Start
             resolver.RegisterType<SSOAuthorizationServerProvider>(Lifetime.Transient);
             resolver.RegisterFactory<ISecureDataFormat<AuthenticationTicket>>(() =>
             {
-                var protector = new MachineKeyDataProtector();// new DpapiDataProtectionProvider("SSO server").Create("token");
+                var protector = new MachineKeyDataProtector("Auth service", "Microsoft.Owin.Security.IDataProtector", new[] { "Saml2" });// new DpapiDataProtectionProvider("SSO server").Create("token");
                 var dataFormat = new TicketDataFormat(protector);
                 return dataFormat;
 

@@ -47,6 +47,7 @@
     <Compile Include="DataProtection\DataProtector.cs" />
     <Compile Include="DataProtection\IDataProtector.cs" />
     <Compile Include="DataProtection\MachineDataProtectorImplementation.cs" />
+    <Compile Include="DataProtection\MachineKeyDataProtector.cs" />
     <Compile Include="DataProtection\RSADataProtection.cs" />
     <Compile Include="DPAPIEncryption.cs" />
     <Compile Include="HashBase.cs" />

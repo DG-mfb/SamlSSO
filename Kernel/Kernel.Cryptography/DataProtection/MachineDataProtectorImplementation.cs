@@ -3,9 +3,9 @@ using System.Web.Security;
 
 namespace Kernel.Cryptography.DataProtection
 {
-    public class MachineDataProtectorImplementation : DataProtector
+    internal class MachineDataProtectorImplementation : DataProtector
     {
-        public MachineDataProtectorImplementation(string applicationName, string primaryPurpose, string[] specificPurposes) 
+        internal MachineDataProtectorImplementation(string applicationName, string primaryPurpose, string[] specificPurposes) 
             : base(applicationName, primaryPurpose, specificPurposes)
         {
         }
