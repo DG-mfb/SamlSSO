@@ -15,7 +15,7 @@ namespace ORMMetadataContextProvider.Seeders
             var descriptor = new EntityDescriptorSettings
             {
                 //EntityId = "https://imperial.flowz_test.co.uk/",
-                EntityId = "https://www.eca-international-local.com",
+                EntityId = "https://www.eca-international-dev.com",
                 FederationId = String.Format("{0}_{1}", "eca", Guid.NewGuid()),
                 CacheDuration = new DatepartValue { Value = 100, Datepart = Datapart.Day },
                 ValidUntil = DateTimeOffset.Now.AddDays(90),

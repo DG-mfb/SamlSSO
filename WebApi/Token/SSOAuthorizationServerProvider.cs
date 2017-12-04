@@ -18,9 +18,13 @@ namespace WebApi.Token
         }
         async Task IAuthorizationServerProvider.TokenEndpointResponse<TContext>(TContext context)
         {
-            var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
-            var configuration = await configurationManager.GetConfigurationAsync("", CancellationToken.None);
             var relayState = context.RelayState;
+            var federationPartyId = relayState["federationPartyId"].ToString();
+            var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
+            var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
+            if (configuration == null)
+                return;
+            
             //if (!relayState.ContainsKey("returnUrl"))
             //    return;
             //var returnUrl = relayState["returnUrl"].ToString();

@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Kernel.Cache;
 using Kernel.Data.ORM;
 using Kernel.Federation.Authorization;
+using ORMMetadataContextProvider.Models.Autorisation;
 using Shared.Federtion.Authorization;
 
 namespace ORMMetadataContextProvider.Authorization
 {
     internal class ORMAuthorizationServerConfigurationManager : AuthorizationServerConfigurationManager
     {
+        private const string KeyPrefix = "auth";
         private readonly IDbContext _dbContext;
         private readonly ICacheProvider _cacheProvider;
 
@@ -21,12 +24,34 @@ namespace ORMMetadataContextProvider.Authorization
 
         public override Task<AuthorizationServerConfiguration> GetConfigurationAsync(string federationPartyId, CancellationToken cancel)
         {
-            var configuration = new AuthorizationServerConfiguration
+            AuthorizationServerConfiguration configuration = null;
+            var key = ORMAuthorizationServerConfigurationManager.FormatKey(federationPartyId);
+            if (this._cacheProvider.Contains(key))
             {
-                CreateToken = true,
-                TokenResponseUrl = new Uri("http://localhost:61463/api/SSO")
-            };
+                configuration = this._cacheProvider.Get<AuthorizationServerConfiguration>(federationPartyId);
+            }
+            else
+            {
+                var model = this._dbContext.Set<AuthorizationServerModel>()
+                    .Select(x => new { x, x.FederationPartySettings.FederationPartyId })
+                    .FirstOrDefault(x => x.FederationPartyId == federationPartyId);
+                if (model != null)
+                {
+                    configuration = new AuthorizationServerConfiguration
+                    {
+                        CreateToken = model.x.UseTokenAuthorisation,
+                        TokenResponseUrl = new Uri(model.x.TokenResponseUrl)
+                    };
+
+                    this._cacheProvider.Put(federationPartyId, configuration);
+                }
+            }
             return Task.FromResult(configuration);
+        }
+
+        private static string FormatKey(string key)
+        {
+            return String.Format("{0}_{1}", ORMAuthorizationServerConfigurationManager.KeyPrefix, key);
         }
     }
 }

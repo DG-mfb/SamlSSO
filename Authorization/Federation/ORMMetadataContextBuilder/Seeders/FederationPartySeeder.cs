@@ -41,7 +41,7 @@ namespace ORMMetadataContextProvider.Seeders
             {
                 RefreshInterval = new DatepartValue { Value = 30, Datepart = Datapart.Second },
                 AutoRefreshInterval = new DatepartValue { Value = 1, Datepart = Datapart.Day },
-                MetadataPath = null,
+                MetadataPath = @"file://D:\Dan\Software\ECA-Interenational\Metadata\atlasCopco\federation_metadata.xml",
                 MetadataLocation = "HTTP",
                 FederationPartyId = "atlasCopco"
             };

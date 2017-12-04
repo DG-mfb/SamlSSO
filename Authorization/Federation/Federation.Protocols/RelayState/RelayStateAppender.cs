@@ -24,10 +24,10 @@ namespace Federation.Protocols.RelayState
             if (authnRequestContext.RelyingState == null)
                 throw new ArgumentNullException("relayiState");
 
-            authnRequestContext.RelyingState["federationPartyId"] = authnRequestContext.FederationPartyContext.FederationPartyId;
-            authnRequestContext.RelyingState["assertionConsumerServices"] = authnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First().AssertionConsumerServices;
-            authnRequestContext.RelyingState["requestId"] = authnRequestContext.RequestId;
-            authnRequestContext.RelyingState["origin"] = authnRequestContext.Origin;
+            authnRequestContext.RelyingState[RelayStateContstants.FederationPartyId] = authnRequestContext.FederationPartyContext.FederationPartyId;
+            authnRequestContext.RelyingState[RelayStateContstants.AssertionConsumerServices] = authnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First().AssertionConsumerServices;
+            authnRequestContext.RelyingState[RelayStateContstants.RequestId] = authnRequestContext.RequestId;
+            authnRequestContext.RelyingState[RelayStateContstants.Origin] = authnRequestContext.Origin;
             this._logProvider.LogMessage(String.Format("Relay state built. Members: {0}", this.FormatMessage(authnRequestContext.RelyingState)));
             
             return Task.CompletedTask;

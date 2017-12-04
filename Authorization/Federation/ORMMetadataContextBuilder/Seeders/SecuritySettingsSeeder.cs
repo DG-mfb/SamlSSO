@@ -10,7 +10,7 @@ namespace ORMMetadataContextProvider.Seeders
             var securitySettings = new SecuritySettings
             {
                 X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom,
-                PinnedValidation = true,
+                PinnedValidation = false,
                 PinnedTypeValidator = "Microsoft.Owin.CertificateValidators.CertificateValidatorResolver, Microsoft.Owin.CertificateValidators, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
             };
             context.Add<SecuritySettings>(securitySettings);
