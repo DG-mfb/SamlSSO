@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
+using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.RelayState
 {

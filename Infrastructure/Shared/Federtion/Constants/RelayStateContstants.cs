@@ -1,6 +1,6 @@
-﻿namespace Federation.Protocols.RelayState
+﻿namespace Shared.Federtion.Constants
 {
-    internal class RelayStateContstants
+    public class RelayStateContstants
     {
         public const string FederationPartyId = "federationPartyId";
         public const string AssertionConsumerServices = "assertionConsumerServices";

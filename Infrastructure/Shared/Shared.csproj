@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Federtion\Authorization\AuthorizationServerConfigurationManager.cs" />
+    <Compile Include="Federtion\Constants\RelayStateContstants.cs" />
     <Compile Include="Federtion\IdentityConfigurationHelper.cs" />
     <Compile Include="Federtion\Constants\AuthnticationContexts.cs" />
     <Compile Include="Federtion\Factories\IMetadataHandler.cs" />

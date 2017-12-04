@@ -6,6 +6,7 @@ using Kernel.Authorisation;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Authorization;
 using Kernel.Federation.FederationPartner;
+using Shared.Federtion.Constants;
 
 namespace WebApi.Token
 {
@@ -19,7 +20,7 @@ namespace WebApi.Token
         async Task IAuthorizationServerProvider.TokenEndpointResponse<TContext>(TContext context)
         {
             var relayState = context.RelayState;
-            var federationPartyId = relayState["federationPartyId"].ToString();
+            var federationPartyId = relayState[RelayStateContstants.FederationPartyId].ToString();
             var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
             var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
             if (configuration == null)

@@ -147,6 +147,10 @@
       <Project>{681BB5E0-8DB0-44FA-8950-EEF3ADC42745}</Project>
       <Name>UnityResolver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Shared\Shared.csproj">
+      <Project>{FA2CD1BF-A890-4306-9EDB-A1B10042E57E}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kernel\Kernel.Authentication\Kernel.Authentication.csproj">
       <Project>{9492C7B7-6584-4FFF-A68F-8F0AEFD8077E}</Project>
       <Name>Kernel.Authentication</Name>
