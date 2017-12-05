@@ -12,7 +12,7 @@
 	/// <summary>
 	/// Build a SQLServer connection string from an IDbConnectionDefinition
 	/// </summary>
-	internal class SQLServerConnectionStringBuilder : IConnectionStringProvider, IAutoRegisterAsTransient
+	internal class SQLServerConnectionStringBuilder : IConnectionStringProvider<SqlConnectionStringBuilder>, IAutoRegisterAsTransient
 	{
 		#region static methods
 

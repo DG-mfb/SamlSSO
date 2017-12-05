@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using Kernel.Data;
 using Kernel.Data.Connection;
@@ -21,7 +22,7 @@ namespace Provider.EntityFramework
 		/// </summary>
 		/// <param name="connectionString"></param>
 		/// <param name="identityProvider"></param>
-		public DBContext(IConnectionStringProvider connectionString, IDbCustomConfiguration customConfiguration)
+		public DBContext(IConnectionStringProvider<SqlConnectionStringBuilder> connectionString, IDbCustomConfiguration customConfiguration)
 			: base(connectionString.GetConnectionString().ConnectionString)
         {
             this.CustomConfiguration = customConfiguration;

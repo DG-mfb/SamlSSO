@@ -3,7 +3,7 @@ using Kernel.Data.Connection;
 
 namespace ORMMetadataContextProvider.Tests.Mock
 {
-    internal class MetadataConnectionStringProviderMock : IConnectionStringProvider
+    internal class MetadataConnectionStringProviderMock : IConnectionStringProvider<SqlConnectionStringBuilder>
     {
         public SqlConnectionStringBuilder GetConnectionString()
         {
