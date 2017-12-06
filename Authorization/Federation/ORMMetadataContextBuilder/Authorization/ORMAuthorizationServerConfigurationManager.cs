@@ -28,7 +28,7 @@ namespace ORMMetadataContextProvider.Authorization
             var key = ORMAuthorizationServerConfigurationManager.FormatKey(federationPartyId);
             if (this._cacheProvider.Contains(key))
             {
-                configuration = this._cacheProvider.Get<AuthorizationServerConfiguration>(federationPartyId);
+                configuration = this._cacheProvider.Get<AuthorizationServerConfiguration>(key);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace ORMMetadataContextProvider.Authorization
                         TokenResponseUrl = new Uri(model.x.TokenResponseUrl)
                     };
 
-                    this._cacheProvider.Put(federationPartyId, configuration);
+                    this._cacheProvider.Put(key, configuration);
                 }
             }
             return Task.FromResult(configuration);
