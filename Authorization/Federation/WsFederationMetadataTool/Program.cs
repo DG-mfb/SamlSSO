@@ -23,6 +23,7 @@ namespace WsFederationMetadataTool
             {
                 var usage = options.GetUsage();
                 Console.WriteLine(usage);
+                Console.ReadLine();
                 return;
             }
 
