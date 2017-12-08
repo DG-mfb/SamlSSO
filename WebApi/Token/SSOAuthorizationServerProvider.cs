@@ -20,30 +20,24 @@ namespace WebApi.Token
         }
         async Task IAuthorizationServerProvider.TokenEndpointResponse<TContext>(TContext context)
         {
-            //var relayState = context.RelayState;
-            //if (!relayState.ContainsKey(RelayStateContstants.FederationPartyId))
-            //    throw new InvalidOperationException("Federation party id is not in the relay state.");
+            var relayState = context.RelayState;
+            if (!relayState.ContainsKey(RelayStateContstants.FederationPartyId))
+                throw new InvalidOperationException("Federation party id is not in the relay state.");
 
-            //var federationPartyId = relayState[RelayStateContstants.FederationPartyId].ToString();
-            //var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
-            //var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
-            ////if no configuration for the parner return, no need to throw an exception.
-            //if (configuration == null)
-            //    return;
-            ////cast the context as a SSOTokenEndpointResponseContext to access IOwinContext if you want to wrire to the
-            ////response. it the request is get for example
+            var federationPartyId = relayState[RelayStateContstants.FederationPartyId].ToString();
+            var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
+            var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
+            
+            //if no configuration for the parner return, no need to throw an exception.
+            if (configuration == null)
+                return;
+            
             var sSOTokenEndpointResponseContext = context as SSOTokenEndpointResponseContext;
-            //if (sSOTokenEndpointResponseContext != null)
-            //{
-                //var httpClient = new HttpClient();
-                //var url = "http://localhost:62048/Account/LoginSSO";
-               
-                //for instance 
-                //var result = await HttpClientExtensions.PostAsJsonAsync(httpClient, configuration.TokenResponseUrl, context.Token);
-                
+            if (sSOTokenEndpointResponseContext != null)
+            {
                 await sSOTokenEndpointResponseContext.Response.WriteAsync(context.Token);
                 context.RequestCompleted();
-            //}
+            }
         }
     }
 }
