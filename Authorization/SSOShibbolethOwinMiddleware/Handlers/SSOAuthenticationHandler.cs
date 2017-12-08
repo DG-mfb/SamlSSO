@@ -35,12 +35,29 @@ namespace SSOOwinMiddleware.Handlers
             this._logger = logger;
         }
 
-        public override Task<bool> InvokeAsync()
+        public override async Task<bool> InvokeAsync()
         {
             if (!this.Options.SSOPath.HasValue || base.Request.Path != this.Options.SSOPath)
-                return base.InvokeAsync();
-            Context.Authentication.Challenge(this.Options.AuthenticationType);
-            return Task.FromResult(true);
+            {
+                var ticket = await base.AuthenticateAsync();
+                if (ticket != null)
+                {
+                    AuthenticationTokenCreateContext context;
+                    var tokenCreated = this.TryCreateToken(ticket, out context);
+                    if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
+                    {
+                        var complete = await this.TryTokenEndpointResponse(context, null);
+
+                        return complete;
+                    }
+                }
+                return await base.InvokeAsync();
+            }
+            else
+            {
+                Context.Authentication.Challenge(this.Options.AuthenticationType);
+                return true;
+            }
         }
 
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
@@ -84,14 +101,14 @@ namespace SSOOwinMiddleware.Handlers
                     {
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
                         var ticket = new AuthenticationTicket(identity, new AuthenticationProperties());
-                        AuthenticationTokenCreateContext context;
-                        var tokenCreated = this.TryCreateToken(ticket, out context);
-                        if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
-                        {
-                            var complete = await this.TryTokenEndpointResponse(context, responseContext.RelayState as IDictionary<string, object>);
-                            if (complete)
-                                return null;
-                        }
+                        //AuthenticationTokenCreateContext context;
+                        //var tokenCreated = this.TryCreateToken(ticket, out context);
+                        //if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
+                        //{
+                        //    var complete = await this.TryTokenEndpointResponse(context, responseContext.RelayState as IDictionary<string, object>);
+                        //    if (complete)
+                        //        return null;
+                        //}
                         return ticket;
                     }
                 }
