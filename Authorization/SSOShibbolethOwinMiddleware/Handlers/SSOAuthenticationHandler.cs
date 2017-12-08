@@ -19,6 +19,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
+using Shared.Federtion.Constants;
 using Shared.Federtion.Factories;
 using SSOOwinMiddleware.Contexts;
 
@@ -46,7 +47,7 @@ namespace SSOOwinMiddleware.Handlers
                     var tokenCreated = this.TryCreateToken(ticket, out context);
                     if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
                     {
-                        var complete = await this.TryTokenEndpointResponse(context, null);
+                        var complete = await this.TryTokenEndpointResponse(context, new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, ticket.Properties.Dictionary[RelayStateContstants.FederationPartyId] } });
 
                         return complete;
                     }
@@ -100,7 +101,9 @@ namespace SSOOwinMiddleware.Handlers
                     if (identity != null)
                     {
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
-                        var ticket = new AuthenticationTicket(identity, new AuthenticationProperties());
+                        var properties = new AuthenticationProperties();
+                        properties.Dictionary.Add(RelayStateContstants.FederationPartyId, ((IDictionary<string, object>)responseContext.RelayState)[RelayStateContstants.FederationPartyId].ToString());
+                        var ticket = new AuthenticationTicket(identity, properties);
                         return ticket;
                     }
                 }
