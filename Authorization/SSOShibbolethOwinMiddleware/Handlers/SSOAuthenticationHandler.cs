@@ -101,14 +101,6 @@ namespace SSOOwinMiddleware.Handlers
                     {
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
                         var ticket = new AuthenticationTicket(identity, new AuthenticationProperties());
-                        //AuthenticationTokenCreateContext context;
-                        //var tokenCreated = this.TryCreateToken(ticket, out context);
-                        //if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
-                        //{
-                        //    var complete = await this.TryTokenEndpointResponse(context, responseContext.RelayState as IDictionary<string, object>);
-                        //    if (complete)
-                        //        return null;
-                        //}
                         return ticket;
                     }
                 }
