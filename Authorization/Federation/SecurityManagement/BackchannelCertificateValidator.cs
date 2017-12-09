@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Logging;
 using Kernel.Security.Validation;
+using Kernel.Web;
 using SecurityManagement.BackchannelCertificateValidationRules;
 
 namespace SecurityManagement
@@ -62,7 +63,8 @@ namespace SecurityManagement
             //default rule. SslPolicyErrors no error vaidation. To ve reviewed
             Func<BackchannelCertificateValidationContext, Task> seed = x =>
             {
-                if(!x.IsValid && x.SslPolicyErrors == SslPolicyErrors.None)
+                var isLocal = Utility.IsLocalIpAddress(httpMessage.RequestUri.Host);
+                if (isLocal || (!x.IsValid && x.SslPolicyErrors == SslPolicyErrors.None))
                     x.Validated();
                 return Task.CompletedTask;
             };
