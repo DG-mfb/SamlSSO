@@ -9,6 +9,7 @@ using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.Authorisation;
 using Kernel.DependancyResolver;
+using Kernel.Federation.Authorization;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
@@ -43,11 +44,12 @@ namespace SSOOwinMiddleware.Handlers
                 var ticket = await base.AuthenticateAsync();
                 if (ticket != null)
                 {
+                    var relayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, ticket.Properties.Dictionary[RelayStateContstants.FederationPartyId] } };
                     AuthenticationTokenCreateContext context;
-                    var tokenCreated = this.TryCreateToken(ticket, out context);
+                    var tokenCreated = this.TryCreateToken(ticket, relayState, out context);
                     if (tokenCreated && !String.IsNullOrWhiteSpace(context.Token))
                     {
-                        var complete = await this.TryTokenEndpointResponse(context, new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, ticket.Properties.Dictionary[RelayStateContstants.FederationPartyId] } });
+                        var complete = await this.TryTokenEndpointResponse(context, relayState);
 
                         return complete;
                     }
@@ -127,9 +129,21 @@ namespace SSOOwinMiddleware.Handlers
             return sSOTokenEndpointResponseContext.IsRequestCompleted;
         }
 
-        private bool TryCreateToken(AuthenticationTicket ticket, out AuthenticationTokenCreateContext context)
+        private bool TryCreateToken(AuthenticationTicket ticket, IDictionary<string, object> relayState, out AuthenticationTokenCreateContext context)
         {
             context = null;
+            if (!relayState.ContainsKey(RelayStateContstants.FederationPartyId))
+                throw new InvalidOperationException("Federation party id is not in the relay state.");
+
+            var federationPartyId = relayState[RelayStateContstants.FederationPartyId].ToString();
+            var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
+            var configurationTask = configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
+            configurationTask.Wait();
+            var configuration = configurationTask.Result;
+
+            //if no configuration for the parner return, no need to throw an exception.
+            if (configuration == null || !configuration.CreateToken)
+                return false;
             ISecureDataFormat<AuthenticationTicket> dataFormat;
             if (!this._resolver.TryResolve<ISecureDataFormat<AuthenticationTicket>>(out dataFormat))
                 return false;

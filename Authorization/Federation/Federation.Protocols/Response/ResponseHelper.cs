@@ -84,14 +84,15 @@ namespace Federation.Protocols.Response
             throw new Exception(msg);
         }
 
-        internal static void EnsureRequestPathMatch(object state, Uri path)
+        internal static void EnsureRequestIdMatch(object state, string requestId)
         {
             var relayState = state as IDictionary<string, object>;
-            var cosr = (ICollection<IndexedEndPointConfiguration>)relayState[RelayStateContstants.AssertionConsumerServices];
-            
-            var assertionServices = cosr.Select(x => x.Location);
-            if (!assertionServices.Any(x => x == path))
-                throw new Exception(String.Format("Requested path{0} is not in federation party assertion configuration.", path.AbsoluteUri));
+            if (relayState == null)
+                throw new ArgumentNullException("relay state");
+            var requestIdFromState = relayState[RelayStateContstants.RequestId].ToString();
+            if (String.Equals(requestId, requestIdFromState, StringComparison.Ordinal))
+                return;
+            throw new InvalidOperationException("RequestId and InResponseTo don't match.");
         }
     }
 }

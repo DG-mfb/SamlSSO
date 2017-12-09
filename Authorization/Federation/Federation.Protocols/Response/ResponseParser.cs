@@ -45,7 +45,7 @@ namespace Federation.Protocols.Response
 
                 responseStatus.FederationPartyId = partnerId.ToString();
 
-                ResponseHelper.EnsureRequestPathMatch(relayState, context.RequestUri);
+                ResponseHelper.EnsureRequestIdMatch(relayState, responseStatus.InResponseTo);
             }
             else
             {

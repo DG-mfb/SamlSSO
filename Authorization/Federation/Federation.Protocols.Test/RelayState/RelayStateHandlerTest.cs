@@ -49,11 +49,10 @@ namespace Federation.Protocols.Test.RelayState
             var authnRequestContext = new AuthnRequestContext(new Uri("http://localhost"), new Uri("http://localhost"), configuration, new []{new Uri("http://localhost") });
             await handler.BuildRelayState(authnRequestContext);
             //ASSERT
-            Assert.AreEqual(4, authnRequestContext.RelyingState.Count);
+            Assert.AreEqual(3, authnRequestContext.RelyingState.Count);
             Assert.AreEqual("local", authnRequestContext.RelyingState["federationPartyId"]);
-            Assert.AreEqual("assertionConsumerServices", authnRequestContext.RelyingState.ElementAt(1).Key);
-            Assert.AreEqual(authnRequestContext.RequestId, authnRequestContext.RelyingState.ElementAt(2).Value);
-            Assert.AreEqual("http://localhost/", authnRequestContext.RelyingState.ElementAt(3).Value.ToString());
+            Assert.AreEqual(authnRequestContext.RequestId, authnRequestContext.RelyingState.ElementAt(1).Value);
+            Assert.AreEqual("http://localhost/", authnRequestContext.RelyingState.ElementAt(2).Value.ToString());
         }
     }
 }

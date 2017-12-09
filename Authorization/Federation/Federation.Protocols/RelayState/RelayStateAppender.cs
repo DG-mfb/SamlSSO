@@ -26,7 +26,6 @@ namespace Federation.Protocols.RelayState
                 throw new ArgumentNullException("relayiState");
 
             authnRequestContext.RelyingState[RelayStateContstants.FederationPartyId] = authnRequestContext.FederationPartyContext.FederationPartyId;
-            authnRequestContext.RelyingState[RelayStateContstants.AssertionConsumerServices] = authnRequestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First().AssertionConsumerServices;
             authnRequestContext.RelyingState[RelayStateContstants.RequestId] = authnRequestContext.RequestId;
             authnRequestContext.RelyingState[RelayStateContstants.Origin] = authnRequestContext.Origin;
             this._logProvider.LogMessage(String.Format("Relay state built. Members: {0}", this.FormatMessage(authnRequestContext.RelyingState)));

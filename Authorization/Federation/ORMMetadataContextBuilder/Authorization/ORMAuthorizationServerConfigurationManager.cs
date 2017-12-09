@@ -40,7 +40,7 @@ namespace ORMMetadataContextProvider.Authorization
                     configuration = new AuthorizationServerConfiguration
                     {
                         CreateToken = model.x.UseTokenAuthorisation,
-                        TokenResponseUrl = new Uri(model.x.TokenResponseUrl)
+                        TokenResponseUrl = String.IsNullOrWhiteSpace(model.x.TokenResponseUrl) ? null : new Uri(model.x.TokenResponseUrl)
                     };
 
                     this._cacheProvider.Put(key, configuration);
