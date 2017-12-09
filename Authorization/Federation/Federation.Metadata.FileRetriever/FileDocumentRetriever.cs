@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -10,7 +9,7 @@ namespace Federation.Metadata.FileRetriever
 {
     public class FileDocumentRetriever : IFileDocumentRetriever
     {
-        public long MaxResponseContentBufferSize { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public long MaxResponseContentBufferSize { get; set; }
 
         public async Task<string> GetDocumentAsync(string address, CancellationToken cancel)
         {
