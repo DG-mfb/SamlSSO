@@ -26,10 +26,11 @@ namespace WebApi
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
 
-            SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon")
-                .UseMetadataMiddleware("/sp/metadata", MetadataType.SP, resolver)
-                .RegisterDiscoveryService(resolver)
-                .RegisterLogger(resolver);
+            //SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon")
+            SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app)
+           .UseMetadataMiddleware("/sp/metadata", MetadataType.SP, resolver)
+           .RegisterDiscoveryService(resolver)
+           .RegisterLogger(resolver);
         }
     }
 }

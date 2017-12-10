@@ -65,12 +65,11 @@ namespace SSOOwinMiddleware.Handlers
 
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            if (!base.Options.AssertionEndpoinds.Contains(Request.Path))
+            if (base.Options.AssertionEndpoinds.Count > 0 && !base.Options.AssertionEndpoinds.Contains(Request.Path))
                 return null;
 
             try
             {
-                this._logger.WriteInformation(String.Format("Authenticated response received to: {0}", Request.Path));
                 if (string.Equals(this.Request.Method, "POST", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(this.Request.ContentType) && (this.Request.ContentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase) && this.Request.Body.CanRead))
                 {
                     if (!this.Request.Body.CanSeek)
@@ -83,7 +82,10 @@ namespace SSOOwinMiddleware.Handlers
                     }
 
                     var form = await this.Request.ReadFormAsync();
+                    if (form.Get(HttpRedirectBindingConstants.SamlResponse) == null)
+                        return null;
 
+                    this._logger.WriteInformation(String.Format("Saml2 response received"));
                     var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
                     var protocolHanlder = protocolFactory(Bindings.Http_Post);
 
@@ -108,8 +110,9 @@ namespace SSOOwinMiddleware.Handlers
                         var ticket = new AuthenticationTicket(identity, properties);
                         return ticket;
                     }
+                    this._logger.WriteInformation(String.Format("Authentication failed. No authentication ticket issued."));
                 }
-                this._logger.WriteInformation(String.Format("Authentication failed. No authentication ticket issued."));
+                
                 return null;
             }
             catch (Exception ex)
