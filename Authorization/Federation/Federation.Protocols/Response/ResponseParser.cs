@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Response;
+using Kernel.Initialisation;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
 using Shared.Federtion.Response;
@@ -50,8 +52,11 @@ namespace Federation.Protocols.Response
             else
             {
                 throw new NotSupportedException("Idp initiated SSO is not supported.");
-                responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, "local" } };
-                responseStatus.FederationPartyId = "local";
+                var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<IdpInitDiscoveryService>();
+                var federationParnerId = service.ResolveParnerId(responseStatus);
+                
+                responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId} };
+                responseStatus.FederationPartyId = federationParnerId;
             }
             return responseStatus;
         }
