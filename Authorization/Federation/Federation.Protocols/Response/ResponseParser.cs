@@ -50,6 +50,7 @@ namespace Federation.Protocols.Response
             else
             {
                 throw new NotSupportedException("Idp initiated SSO is not supported.");
+                responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, "local" } };
                 responseStatus.FederationPartyId = "local";
             }
             return responseStatus;
