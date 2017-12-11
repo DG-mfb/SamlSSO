@@ -39,24 +39,17 @@ namespace Federation.Protocols.Response
                     throw new InvalidOperationException("Relay state is missing in the response.");
 
                 responseStatus.RelayState = relayState;
-
-                var relayStateDictionary = relayState as IDictionary<string, object>;
-                if (relayStateDictionary == null)
-                    throw new InvalidOperationException(String.Format("Expected relay state type of: {0}, but it was: {1}", typeof(IDictionary<string, object>).Name, relayState.GetType().Name));
-                var partnerId = relayStateDictionary[RelayStateContstants.FederationPartyId];
-
-                responseStatus.FederationPartyId = partnerId.ToString();
-
+                
                 ResponseHelper.EnsureRequestIdMatch(relayState, responseStatus.InResponseTo);
             }
             else
             {
-                throw new NotSupportedException("Idp initiated SSO is not supported.");
                 var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<IdpInitDiscoveryService>();
                 var federationParnerId = service.ResolveParnerId(responseStatus);
-                
-                responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId} };
-                responseStatus.FederationPartyId = federationParnerId;
+                if (String.IsNullOrWhiteSpace(federationParnerId))
+                    throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", responseStatus.Issuer));
+
+                responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
             }
             return responseStatus;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Shared.Federtion.Constants;
 
 namespace Shared.Federtion.Response
 {
@@ -13,7 +14,22 @@ namespace Shared.Federtion.Response
             this.StatusMessage = String.Empty;
             this.MessageDetails = String.Empty;
         }
-        public string FederationPartyId { get; set; }
+        public string FederationPartyId
+        {
+            get
+            {
+                if (this.RelayState == null)
+                    throw new ArgumentNullException("relay state");
+
+                var relayStateDictionary = this.RelayState as IDictionary<string, object>;
+                if (relayStateDictionary == null)
+                    throw new InvalidOperationException(String.Format("Expected relay state type of: {0}, but it was: {1}", typeof(IDictionary<string, object>).Name, this.RelayState.GetType().Name));
+                object partnerId;
+                if (relayStateDictionary.TryGetValue(RelayStateContstants.FederationPartyId, out partnerId))
+                    return partnerId.ToString();
+                return null;
+            }
+        }
         public string Issuer { get; set; }
         public string Response { get; set; }
         public object RelayState { get; set; }

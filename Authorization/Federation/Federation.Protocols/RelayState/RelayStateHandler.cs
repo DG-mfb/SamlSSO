@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Kernel.Configuration;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
+using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.RelayState
 {
@@ -19,7 +20,9 @@ namespace Federation.Protocols.RelayState
 
         public async Task<object> GetRelayStateFromFormData(IDictionary<string, string> form)
         {
-            var relayStateCompressed = form["RelayState"];
+            if (!form.ContainsKey(HttpRedirectBindingConstants.RelayState))
+                return null;
+            var relayStateCompressed = form[HttpRedirectBindingConstants.RelayState];
             var relayState = await this._relayStateSerialiser.Deserialize(relayStateCompressed);
             return relayState;
         }
