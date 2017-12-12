@@ -27,13 +27,17 @@ namespace Federation.Protocols.Response.Validation
             var context = new SamlResponseValidationContext(response, form);
             var factory = ApplicationConfiguration.Instance.DependencyResolver.Resolve<RuleFactory>();
             var rules = factory.GetValidationRules(r => r.Scope == (response.IsIdpInitiated ? RuleScope.IdpInitiated : RuleScope.SPInitiated));
-            foreach(var r in rules)
+            var seed = new Func<ValidationContext, Task>(c =>
             {
-                await r.Validate(context, next => Task.CompletedTask);
-            }
-           
-            if (!context.IsValid)
-                throw new Exception(EnumerableExtensions.Aggregate(context.ValidationResult.Select(x => x.ErrorMessage)));
+                if (!c.IsValid)
+                    throw new Exception(EnumerableExtensions.Aggregate(context.ValidationResult.Select(x => x.ErrorMessage)));
+                return Task.CompletedTask;
+            });
+            var del = rules
+                .Reverse()
+                .Aggregate(seed, (next, r) => new Func<ValidationContext, Task>(ctx => r.Validate(ctx, next)));
+            await del(context);
+            
         }
 
         Task IValidator.Validate(Kernel.Validation.ValidationContext context)
