@@ -1,7 +1,9 @@
-﻿namespace Kernel.Validation
+﻿using System.Threading.Tasks;
+
+namespace Kernel.Validation
 {
     public interface IValidator
     {
-        void Validate(ValidationContext context);
+        Task Validate(ValidationContext context);
     }
 }

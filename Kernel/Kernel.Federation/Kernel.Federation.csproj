@@ -126,6 +126,7 @@
     <Compile Include="Protocols\ISamlMessageDespatcher.cs" />
     <Compile Include="Protocols\Response\IReponseHandler.cs" />
     <Compile Include="Protocols\Response\IResponseParser.cs" />
+    <Compile Include="Protocols\Response\IResponseValidator.cs" />
     <Compile Include="Protocols\SamlOutboundContext%271.cs" />
     <Compile Include="Tokens\HandleTokenContext.cs" />
     <Compile Include="Tokens\IssuingAuthority.cs" />
@@ -155,6 +156,10 @@
     <ProjectReference Include="..\Kernel.Security\Kernel.Security.csproj">
       <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
       <Name>Kernel.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kernel.Validation\Kernel.Validation.csproj">
+      <Project>{7BDF6D7A-5FF9-469B-9881-4E89779AC789}</Project>
+      <Name>Kernel.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kernel\Kernel.csproj">
       <Project>{E198C691-91A6-4082-9976-F5F006F24960}</Project>

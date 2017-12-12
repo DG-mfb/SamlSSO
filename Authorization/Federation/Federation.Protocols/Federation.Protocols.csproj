@@ -80,6 +80,15 @@
     <Compile Include="Response\ResponseBuilder.cs" />
     <Compile Include="Response\ResponseHelper.cs" />
     <Compile Include="Response\ResponseParser.cs" />
+    <Compile Include="Response\Validation\SamlResponseValidationContext.cs" />
+    <Compile Include="Response\Validation\IdpInitResponseValidator.cs" />
+    <Compile Include="Response\Validation\SPInitResponseValidator.cs" />
+    <Compile Include="Response\Validation\ValidationRules\InResponseToRule.cs" />
+    <Compile Include="Response\Validation\ValidationRules\ResponseValidationRule.cs" />
+    <Compile Include="Response\Validation\ValidationRules\RuleFactory.cs" />
+    <Compile Include="Response\Validation\ValidationRules\RuleScope.cs" />
+    <Compile Include="Response\Validation\ValidationRules\RelayStateInResponseRule.cs" />
+    <Compile Include="Response\Validation\ValidationRules\ResponseSuccessRule.cs" />
     <Compile Include="Tokens\TokenHelper.cs" />
     <Compile Include="Response\ResponseHandler.cs" />
     <Compile Include="Tokens\SecurityTokenHandler.cs" />
@@ -127,6 +136,10 @@
     <ProjectReference Include="..\..\..\Kernel\Kernel.Security\Kernel.Security.csproj">
       <Project>{7C4225E8-700D-4FEE-9BBB-28A935364F05}</Project>
       <Name>Kernel.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Kernel\Kernel.Validation\Kernel.Validation.csproj">
+      <Project>{7BDF6D7A-5FF9-469B-9881-4E89779AC789}</Project>
+      <Name>Kernel.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Kernel\Kernel\Kernel.csproj">
       <Project>{E198C691-91A6-4082-9976-F5F006F24960}</Project>
