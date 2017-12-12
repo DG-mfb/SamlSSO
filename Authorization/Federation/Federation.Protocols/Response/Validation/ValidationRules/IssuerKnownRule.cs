@@ -26,18 +26,17 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
             }
         }
 
-        protected override async Task<bool> ValidateInternal(SamlResponseValidationContext context)
+        protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
             try
             {
-
                 var federationParnerId = this._service.ResolveParnerId(context.Response);
                 if (String.IsNullOrWhiteSpace(federationParnerId))
                     throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.Issuer));
 
                 context.Response.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
 
-                return true;
+                return Task.FromResult(true);
             }
             catch(Exception ex)
             {
