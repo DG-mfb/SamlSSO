@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Response;
@@ -29,7 +28,7 @@ namespace Federation.Protocols.Response
             var responseBase64 = elements[HttpRedirectBindingConstants.SamlResponse];
             var responseBytes = Convert.FromBase64String(responseBase64);
             var responseText = Encoding.UTF8.GetString(responseBytes);
-            this._logProvider.LogMessage(String.Format("Response recieved:\r\n {0}", responseText));
+            this._logProvider.LogMessage(String.Format("Response received:\r\n {0}", responseText));
             var responseStatus = ResponseHelper.ParseResponseStatus(responseText, this._logProvider);
             ResponseHelper.EnsureSuccessAndThrow(responseStatus);
             if (!responseStatus.IsIdpInitiated)
