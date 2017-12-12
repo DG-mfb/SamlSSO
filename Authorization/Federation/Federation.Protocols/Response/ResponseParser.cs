@@ -28,22 +28,23 @@ namespace Federation.Protocols.Response
             var responseText = Encoding.UTF8.GetString(responseBytes);
             this._logProvider.LogMessage(String.Format("Response received:\r\n {0}", responseText));
             var responseStatus = ResponseHelper.ParseResponseStatus(responseText, this._logProvider);
-            
-            if (!responseStatus.IsIdpInitiated)
-            {
-                var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<SPInitResponseValidator>();
-                await service.ValidateResponse(responseStatus, elements);
-               
-            }
-            else
-            {
-                var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<IdpInitDiscoveryService>();
-                var federationParnerId = service.ResolveParnerId(responseStatus);
-                if (String.IsNullOrWhiteSpace(federationParnerId))
-                    throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", responseStatus.Issuer));
+            var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<ResponseValidator>();
+            await service.ValidateResponse(responseStatus, elements);
 
-                responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
-            }
+            //if (!responseStatus.IsIdpInitiated)
+            //{
+            //    var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<ResponseValidator>();
+            //    await service.ValidateResponse(responseStatus, elements);
+            //}
+            //else
+            //{
+            //    var service = ApplicationConfiguration.Instance.DependencyResolver.Resolve<IdpInitDiscoveryService>();
+            //    var federationParnerId = service.ResolveParnerId(responseStatus);
+            //    if (String.IsNullOrWhiteSpace(federationParnerId))
+            //        throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", responseStatus.Issuer));
+
+            //    responseStatus.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
+            //}
             return responseStatus;
         }
     }

@@ -22,9 +22,11 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
         public IEnumerable<IValidationRule> GetValidationRules(Func<ResponseValidationRule, bool> filter)
         {
             var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(ResponseValidationRule).IsAssignableFrom(t));
-            return types.Select(t => this._resolver.Resolve(t))
-                .Cast<ResponseValidationRule>()
-                .Where(filter); 
+            var rules = types.Select(t => this._resolver.Resolve(t))
+                .Cast<ResponseValidationRule>();
+            return rules.Where(r => r.Scope == RuleScope.Always)
+            .ToList()
+            .Union(rules.Where(filter));
         }
 
         public IEnumerable<IValidationRule> GetValidationRules(Type type)

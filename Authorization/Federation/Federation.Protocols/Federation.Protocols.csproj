@@ -81,9 +81,9 @@
     <Compile Include="Response\ResponseHelper.cs" />
     <Compile Include="Response\ResponseParser.cs" />
     <Compile Include="Response\Validation\SamlResponseValidationContext.cs" />
-    <Compile Include="Response\Validation\IdpInitResponseValidator.cs" />
-    <Compile Include="Response\Validation\SPInitResponseValidator.cs" />
+    <Compile Include="Response\Validation\ResponseValidator.cs" />
     <Compile Include="Response\Validation\ValidationRules\InResponseToRule.cs" />
+    <Compile Include="Response\Validation\ValidationRules\IssuerKnownRule.cs" />
     <Compile Include="Response\Validation\ValidationRules\ResponseValidationRule.cs" />
     <Compile Include="Response\Validation\ValidationRules\RuleFactory.cs" />
     <Compile Include="Response\Validation\ValidationRules\RuleScope.cs" />

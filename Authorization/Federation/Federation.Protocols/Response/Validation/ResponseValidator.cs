@@ -12,11 +12,11 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response.Validation
 {
-    internal class SPInitResponseValidator : IResponseValidator<ResponseStatus>
+    internal class ResponseValidator : IResponseValidator<ResponseStatus>
     {
         private readonly ILogProvider _logProvider;
 
-        public SPInitResponseValidator(ILogProvider logProvider)
+        public ResponseValidator(ILogProvider logProvider)
         {
             this._logProvider = logProvider;
         }
@@ -26,9 +26,7 @@ namespace Federation.Protocols.Response.Validation
                 return;
             var context = new SamlResponseValidationContext(response, form);
             var factory = ApplicationConfiguration.Instance.DependencyResolver.Resolve<RuleFactory>();
-            var rules = factory.GetValidationRules(r => r.Scope == RuleScope.Always)
-                .ToList()
-                .Union(factory.GetValidationRules(r => r.Scope == RuleScope.SPInitiated));
+            var rules = factory.GetValidationRules(r => r.Scope == (response.IsIdpInitiated ? RuleScope.IdpInitiated : RuleScope.SPInitiated));
             foreach(var r in rules)
             {
                 await r.Validate(context, next => Task.CompletedTask);
