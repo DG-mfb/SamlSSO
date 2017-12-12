@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
@@ -26,25 +25,18 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         protected override async Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
-            try
+            if (context.Response.RelayState == null)
             {
-                if (context.Response.RelayState == null)
+                var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
+                if (relayState == null)
                 {
-                    var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
-                    if (relayState == null)
-                    {
-                        context.ValidationResult.Add(new ValidationResult("Relay state is missing in the response."));
-                        return false;
-                    }
-
-                    context.Response.RelayState = relayState;
+                    context.ValidationResult.Add(new ValidationResult("Relay state is missing in the response."));
+                    return false;
                 }
-                return true;
+
+                context.Response.RelayState = relayState;
             }
-            catch(Exception ex)
-            {
-                throw;
-            }
+            return true;
         }
     }
 }

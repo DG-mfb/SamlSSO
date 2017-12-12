@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
 
@@ -28,20 +26,13 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
-            try
-            {
-                var federationParnerId = this._service.ResolveParnerId(context.Response);
-                if (String.IsNullOrWhiteSpace(federationParnerId))
-                    throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.Issuer));
+            var federationParnerId = this._service.ResolveParnerId(context.Response);
+            if (String.IsNullOrWhiteSpace(federationParnerId))
+                throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.Issuer));
 
-                context.Response.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
+            context.Response.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
 
-                return Task.FromResult(true);
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
+            return Task.FromResult(true);
         }
     }
 }

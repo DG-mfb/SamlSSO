@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Kernel.Logging;
 
 namespace Federation.Protocols.Response.Validation.ValidationRules
@@ -20,15 +19,8 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
-            try
-            {
-                ResponseHelper.EnsureSuccessAndThrow(context.Response);
-                return Task.FromResult(true);
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
+            ResponseHelper.EnsureSuccessAndThrow(context.Response);
+            return Task.FromResult(true);
         }
     }
 }

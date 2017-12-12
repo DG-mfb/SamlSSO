@@ -16,8 +16,17 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         public async Task Validate(ValidationContext context, Func<ValidationContext, Task> next)
         {
-            if (await this.ValidateInternal((SamlResponseValidationContext)context))
-                await next(context);
+            try
+            {
+                if (await this.ValidateInternal((SamlResponseValidationContext)context))
+                    await next(context);
+            }
+            catch(Exception e)
+            {
+                Exception inner;
+                this._logProvider.TryLogException(e, out inner);
+                throw;
+            }
         }
 
         protected abstract Task<bool> ValidateInternal(SamlResponseValidationContext context);
