@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InlineMetadataContextProvider;
+﻿using System.Collections.Generic;
 using Kernel.Federation.FederationPartner;
-using Kernel.Federation.MetaData;
 using NUnit.Framework;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
@@ -24,15 +18,17 @@ namespace JsonMetadataContextProvider.Test
             var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
             var config1 = inlineProvider.BuildContext("atlasCopco",  @"file://D:\Dan\Software\ECA-Interenational\Metadata\atlasCopco\federation_metadata.xml");
             configurations.Add(config1);
-            var config2 = inlineProvider.BuildContext("atlasCopco", @"file://D:\Dan\Software\ECA-Interenational\Metadata\atlasCopco\federation_metadata.xml");
+            var config2 = inlineProvider.BuildContext("local", "https://dg-mfb/idp/shibboleth");
             configurations.Add(config2);
             var serialised = jsonSerialiser.Serialize(configurations);
             var jsonProvider = new JsonMetadataContextProvider.FederationPartyContextBuilder(jsonSerialiser, null, () => serialised);
             //ACT
-            var found = jsonProvider.BuildContext("atlasCopco");
+            var found1 = jsonProvider.BuildContext("atlasCopco");
+            var found2 = jsonProvider.BuildContext("local");
             //ASSERT
-            Assert.IsNotNull(found);
-            Assert.AreEqual("atlasCopco", found.FederationPartyId);
+            Assert.IsNotNull(found1);
+            Assert.AreEqual("atlasCopco", found1.FederationPartyId);
+            Assert.AreEqual("local", found2.FederationPartyId);
         }
     }
 }
