@@ -21,6 +21,8 @@ namespace JsonMetadataContextProvider.Test
             configurations.Add(config1);
             var config2 = inlineProvider.BuildContext("local", "https://dg-mfb/idp/shibboleth");
             configurations.Add(config2);
+            var config3 = inlineProvider.BuildContext("testShib", "https://www.testshib.org/metadata/testshib-providers.xml");
+            configurations.Add(config3);
             var serialised = jsonSerialiser.Serialize(configurations);
             var cache = new MockCacheProvider();
             var jsonProvider = new JsonMetadataContextProvider.FederationPartyContextBuilder(jsonSerialiser, cache, () => serialised);

@@ -15,17 +15,19 @@ namespace InlineMetadataContextProvider
 {
     internal class MetadataHelper
     {
-        public static EntityDesriptorConfiguration BuildEntityDesriptorConfiguration()
+        public static EntityDesriptorConfiguration BuildEntityDesriptorConfiguration(bool includeOrganisation = false)
         {
-            var federationId = String.Format("{0}_{1}", "flowz", Guid.NewGuid());
+            var federationId = String.Format("{0}_{1}", "ECA", Guid.NewGuid());
             var entityDescriptorConfiguration = new EntityDesriptorConfiguration
             {
                 CacheDuration = TimeSpan.FromDays(100),
                 EntityId = "https://www.eca-international.com",
                 Id = federationId,
                 ValidUntil = new DateTimeOffset(DateTime.Now.AddDays(30)),
-                Organisation = MetadataHelper.BuildOrganisationConfiguration(),
             };
+            if (includeOrganisation)
+                entityDescriptorConfiguration.Organisation = MetadataHelper.BuildOrganisationConfiguration();
+
             return entityDescriptorConfiguration;
         }
 

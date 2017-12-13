@@ -76,6 +76,10 @@
       <Project>{F2858715-3D6E-4173-AC57-D1B8E874EDD1}</Project>
       <Name>FileSystemMetadataWriter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Authorization\Federation\JsonMetadataContextProvider\JsonMetadataContextProvider.csproj">
+      <Project>{132FA025-29D6-4DDE-9653-22477F4E01F0}</Project>
+      <Name>JsonMetadataContextProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Authorization\Federation\ORMMetadataContextBuilder\ORMMetadataContextProvider.csproj">
       <Project>{3A8DF840-5A87-4CD3-915E-07ABF10B065A}</Project>
       <Name>ORMMetadataContextProvider</Name>

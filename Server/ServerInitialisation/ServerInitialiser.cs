@@ -12,6 +12,7 @@ using Federation.Metadata.FileRetriever.Initialisation;
 using Federation.Metadata.HttpRetriever.Initialisation;
 using Federation.Protocols.Initialisation;
 using FileSystemMetadataWriter.Initialisation;
+using JsonMetadataContextProvider.Initialisation;
 using Kernel.DependancyResolver;
 using Kernel.Initialisation;
 using Kernel.Logging;
@@ -48,6 +49,7 @@ namespace ServerInitialisation
                 yield return typeof(HttpDocumentRetrieverInitialiser).Assembly;
                 yield return typeof(MetadataFederationPartnerInitialiser).Assembly;
                 yield return typeof(ORMMetadataContextProviderInitialiser).Assembly;
+                //yield return typeof(JsonMetadaContextProviderInitialiser).Assembly;
                 yield return typeof(OAuthAuthorisationServiceInitialiser).Assembly;
                 yield return typeof(DbContextInitialiser).Assembly;
                 yield return typeof(CacheProviderInitialiser).Assembly;
