@@ -72,6 +72,10 @@
       <Project>{E198C691-91A6-4082-9976-F5F006F24960}</Project>
       <Name>Kernel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Security\WebSecurity\Microsoft.Owin.CertificateValidators\Microsoft.Owin.CertificateValidators.csproj">
+      <Project>{854edcfa-6e4b-4efe-9691-a51e43b32a06}</Project>
+      <Name>Microsoft.Owin.CertificateValidators</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Serialisation\Serialisation.JSON\Serialisation.JSON.csproj">
       <Project>{4eb8ab3b-2e70-410f-aa9b-8f1c9490fa3a}</Project>
       <Name>Serialisation.JSON</Name>

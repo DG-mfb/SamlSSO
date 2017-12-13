@@ -28,7 +28,7 @@ namespace InlineMetadataContextProvider.Security
             var configuration = new BackchannelConfiguration
             {
                 UsePinningValidation = false,
-                //BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor("Microsoft.Owin.CertificateValidators.CertificateValidatorResolver, Microsoft.Owin.CertificateValidators, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null")
+                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor("Microsoft.Owin.CertificateValidators.CertificateValidatorResolver, Microsoft.Owin.CertificateValidators, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null")
             };
             
             return configuration;

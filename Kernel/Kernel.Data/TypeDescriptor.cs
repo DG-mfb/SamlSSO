@@ -6,18 +6,25 @@ namespace Kernel.Data
 {
     public class TypeDescriptor
     {
-        private string _fullQualifiedName;
+        public string FullQualifiedName { get; }
+        
         public TypeDescriptor(string fullQualifiedName)
         {
-            this._fullQualifiedName = fullQualifiedName;
+            this.FullQualifiedName = fullQualifiedName;
         }
-        public Type Type { get { return this.TypeFromName(); } }
+        public Type Type
+        {
+            get
+            {
+                return this.TypeFromName();
+            }
+        }
         
         private Type TypeFromName()
         {
-            return Type.GetType(this._fullQualifiedName, (an) =>
+            return Type.GetType(this.FullQualifiedName, (an) =>
             {
-                if (String.IsNullOrWhiteSpace(this._fullQualifiedName))
+                if (String.IsNullOrWhiteSpace(this.FullQualifiedName))
                     return null;
                 var assembly = AssemblyScanner.ScannableAssemblies.Where(x => x.FullName == an.FullName)
                 .FirstOrDefault();

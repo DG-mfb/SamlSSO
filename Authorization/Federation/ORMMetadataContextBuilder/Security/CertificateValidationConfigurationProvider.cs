@@ -50,8 +50,10 @@ namespace ORMMetadataContextProvider.Security
                 BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor(settings.SecuritySettings.PinnedTypeValidator)
             };
 
-            configuration.Pins = settings.Pins.GroupBy(k => k.PinType, v => v.Value)
-                .ToDictionary(k => k.Key, v => v.Select(r => r));
+            settings.Pins.GroupBy(k => k.PinType, v => v.Value)
+                .ToDictionary(k => k.Key, v => v.Select(r => r))
+                .Aggregate(configuration.Pins, (t, next)=> { t.Add(next.Key, next.Value); return t; });
+
             this._cacheProvider.Put(key, configuration);
             return configuration;
         }
