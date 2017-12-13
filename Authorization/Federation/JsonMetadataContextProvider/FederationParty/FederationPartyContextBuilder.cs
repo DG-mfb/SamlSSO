@@ -13,12 +13,12 @@ namespace JsonMetadataContextProvider
     {
         private readonly IJsonSerialiser  _serialiser;
         private readonly ICacheProvider _cacheProvider;
-        private string _source;
-        public FederationPartyContextBuilder(IJsonSerialiser serialiser, ICacheProvider cacheProvider, Func<string> source)
+        private Func<Type, string> _source;
+        public FederationPartyContextBuilder(IJsonSerialiser serialiser, ICacheProvider cacheProvider, Func<Type,string> source)
         {
             this._serialiser = serialiser;
             this._cacheProvider = cacheProvider;
-            this._source = source();
+            this._source = source;
         }
 
         public Task<FederationPartyConfiguration> GetConfigurationAsync(string federationPartyId, CancellationToken cancel)
@@ -39,7 +39,7 @@ namespace JsonMetadataContextProvider
             if (this._cacheProvider.Contains(federationPartyId))
                 return this._cacheProvider.Get<FederationPartyConfiguration>(federationPartyId);
 
-            var configurations = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source);
+            var configurations = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source(this.GetType()));
             var configuration = configurations.First(x => x.FederationPartyId == federationPartyId);
             this._cacheProvider.Put(federationPartyId, configuration);
             return configuration;

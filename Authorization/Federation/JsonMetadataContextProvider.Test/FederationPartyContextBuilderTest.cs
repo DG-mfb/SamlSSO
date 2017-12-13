@@ -25,7 +25,7 @@ namespace JsonMetadataContextProvider.Test
             configurations.Add(config3);
             var serialised = jsonSerialiser.Serialize(configurations);
             var cache = new MockCacheProvider();
-            var jsonProvider = new JsonMetadataContextProvider.FederationPartyContextBuilder(jsonSerialiser, cache, () => serialised);
+            var jsonProvider = new JsonMetadataContextProvider.FederationPartyContextBuilder(jsonSerialiser, cache, t => serialised);
             //ACT
             var found1 = jsonProvider.BuildContext("atlasCopco");
             var found2 = jsonProvider.BuildContext("local");

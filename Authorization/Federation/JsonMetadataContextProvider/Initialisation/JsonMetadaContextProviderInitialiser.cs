@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using JsonMetadataContextProvider.Authorization;
 using JsonMetadataContextProvider.Security;
 using Kernel.DependancyResolver;
+using Kernel.Federation.FederationPartner;
 using Shared.Initialisation;
 
 namespace JsonMetadataContextProvider.Initialisation
@@ -20,9 +21,15 @@ namespace JsonMetadataContextProvider.Initialisation
             dependencyResolver.RegisterType<FederationPartyContextBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<CertificateValidationConfigurationProvider>(Lifetime.Transient);
             dependencyResolver.RegisterType<JsonAuthorizationServerConfigurationManager>(Lifetime.Transient);
-            dependencyResolver.RegisterFactory<Func<string>>(() => () =>
+            dependencyResolver.RegisterFactory<Func<Type,string>>(() => t =>
             {
-                using (var reader = new StreamReader(@"D:\Dan\Software\Temp\JsonConfiguration.txt"))
+                string path = null;
+                if(t == typeof(FederationPartyContextBuilder))
+                    path = @"D:\Dan\Software\Temp\JsonConfiguration.txt";
+                if (String.IsNullOrWhiteSpace(path))
+                    throw new NotSupportedException("Unsupported type");
+
+                using (var reader = new StreamReader(path))
                 {
                     return reader.ReadToEnd();
                 }
