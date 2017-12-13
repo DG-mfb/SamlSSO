@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using JsonMetadataContextProvider.Test.Mock;
 using Kernel.Federation.FederationPartner;
+using Kernel.Security.Configuration;
 using NUnit.Framework;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
@@ -11,7 +14,7 @@ namespace JsonMetadataContextProvider.Test
     public class FederationPartyContextBuilderTest
     {
         [Test]
-        public void CrateJsonMetadata()
+        public void JsonFederationConfigurationTest()
         {
             //ARRANGE
             var configurations = new List<FederationPartyConfiguration>();
@@ -33,6 +36,59 @@ namespace JsonMetadataContextProvider.Test
             Assert.IsNotNull(found1);
             Assert.AreEqual("atlasCopco", found1.FederationPartyId);
             Assert.AreEqual("local", found2.FederationPartyId);
+        }
+
+        [Test]
+        public void JsonSecurityConfigurationTest()
+        {
+            //ARRANGE
+            var configurations = new List<object>();
+            var inlineProvider = new InlineMetadataContextProvider.Security.CertificateValidationConfigurationProvider();
+            var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
+            var config1 = inlineProvider.GetConfiguration("atlasCopco");
+            dynamic expando1 = new ExpandoObject();
+            expando1.Id = "atlasCopco";
+            expando1.Configuration = config1;
+            configurations.Add(expando1);
+
+            var config2 = inlineProvider.GetConfiguration("testshib");
+            dynamic expando2 = new ExpandoObject();
+            expando2.Id = "testshib";
+            expando2.Configuration = config2;
+            configurations.Add(expando2);
+            
+
+            var config3 = inlineProvider.GeBackchannelConfiguration("atlasCopco");
+            
+            dynamic expando3 = new ExpandoObject();
+            expando3.Id = "atlasCopco";
+            expando3.Metadata = "";
+            expando3.Configuration = config3;
+            configurations.Add(expando3);
+
+            var config4 = inlineProvider.GeBackchannelConfiguration("testshib");
+            dynamic expando4 = new ExpandoObject();
+            expando4.Id = "testshib";
+            expando4.Metadata = "https://www.testshib.org/metadata/testshib-providers.xml";
+            expando4.Configuration = config4;
+            configurations.Add(expando4);
+            
+
+            var serialised = jsonSerialiser.Serialize(configurations);
+
+            var deserialised = jsonSerialiser.Deserialize<IEnumerable<object>>(serialised);
+          
+            var foo = deserialised.Select(x => ((ExpandoObject)x).ToDictionary(k => k.Key, v => v.Value))
+                .ToList();
+            var cache = new MockCacheProvider();
+            var jsonProvider = new JsonMetadataContextProvider.Security.CertificateValidationConfigurationProvider(cache, t => serialised);
+            //ACT
+            var found1 = jsonProvider.GetConfiguration("atlasCopco");
+            var found2 = jsonProvider.GetConfiguration("testshib");
+            //ASSERT
+            //Assert.IsNotNull(found1);
+            //Assert.AreEqual("atlasCopco", found1.FederationPartyId);
+            //Assert.AreEqual("local", found2.FederationPartyId);
         }
     }
 }

@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Kernel.Cache;
 using Kernel.Federation.FederationPartner;
 using Kernel.Security.Configuration;
 using Kernel.Security.Validation;
 
-namespace JsonMetadataContextProvider.Security
+namespace InlineMetadataContextProvider.Security
 {
     internal class CertificateValidationConfigurationProvider : ICertificateValidationConfigurationProvider
     {
-        private const string PinsKey = "{0}_backchannel_key";
-        
-        private readonly ICacheProvider _cacheProvider;
-        private Func<Type, string> _source;
-
-        public CertificateValidationConfigurationProvider(ICacheProvider cacheProvider, Func<Type, string> source)
+        public CertificateValidationConfigurationProvider()
         {
-            this._source = source;
-            this._cacheProvider = cacheProvider;
         }
 
         public BackchannelConfiguration GeBackchannelConfiguration(string federationPartyId)
@@ -32,14 +24,11 @@ namespace JsonMetadataContextProvider.Security
 
         public BackchannelConfiguration GeBackchannelConfiguration(Expression<Func<FederationPartyConfiguration, bool>> predicate, string keyPrefex)
         {
-            var key = String.Format(CertificateValidationConfigurationProvider.PinsKey, keyPrefex);
-            if (this._cacheProvider.Contains(key))
-                return this._cacheProvider.Get<BackchannelConfiguration>(key);
-            
+           
             var configuration = new BackchannelConfiguration
             {
                 UsePinningValidation = false,
-                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor("Microsoft.Owin.CertificateValidators.CertificateValidatorResolver, Microsoft.Owin.CertificateValidators, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null")
+                //BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor("Microsoft.Owin.CertificateValidators.CertificateValidatorResolver, Microsoft.Owin.CertificateValidators, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null")
             };
             
             return configuration;

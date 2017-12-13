@@ -26,6 +26,8 @@ namespace JsonMetadataContextProvider.Initialisation
                 string path = null;
                 if(t == typeof(FederationPartyContextBuilder))
                     path = @"D:\Dan\Software\Temp\JsonConfiguration.txt";
+                if (t == typeof(CertificateValidationConfigurationProvider))
+                    path = @"D:\Dan\Software\Temp\SecurityConfiguration.txt";
                 if (String.IsNullOrWhiteSpace(path))
                     throw new NotSupportedException("Unsupported type");
 
