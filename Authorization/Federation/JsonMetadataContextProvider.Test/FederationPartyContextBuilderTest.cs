@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JsonMetadataContextProvider.Test.Mock;
 using Kernel.Federation.FederationPartner;
 using NUnit.Framework;
 using Serialisation.JSON;
@@ -21,7 +22,8 @@ namespace JsonMetadataContextProvider.Test
             var config2 = inlineProvider.BuildContext("local", "https://dg-mfb/idp/shibboleth");
             configurations.Add(config2);
             var serialised = jsonSerialiser.Serialize(configurations);
-            var jsonProvider = new JsonMetadataContextProvider.FederationPartyContextBuilder(jsonSerialiser, null, () => serialised);
+            var cache = new MockCacheProvider();
+            var jsonProvider = new JsonMetadataContextProvider.FederationPartyContextBuilder(jsonSerialiser, cache, () => serialised);
             //ACT
             var found1 = jsonProvider.BuildContext("atlasCopco");
             var found2 = jsonProvider.BuildContext("local");

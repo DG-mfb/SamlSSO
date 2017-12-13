@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Kernel.Cache;
@@ -37,12 +36,14 @@ namespace JsonMetadataContextProvider
 
         public FederationPartyConfiguration BuildContext(string federationPartyId)
         {
-            //using (var reader = new StreamReader(this._path))
-            {
-                //var content = reader.ReadToEnd();
-                var configuration = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source);
-                return configuration.First(x => x.FederationPartyId == federationPartyId);
-            }
+            if (this._cacheProvider.Contains(federationPartyId))
+                return this._cacheProvider.Get<FederationPartyConfiguration>(federationPartyId);
+
+            var configurations = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source);
+            var configuration = configurations.First(x => x.FederationPartyId == federationPartyId);
+            this._cacheProvider.Put(federationPartyId, configuration);
+            return configuration;
+
         }
 
         public void Dispose()
