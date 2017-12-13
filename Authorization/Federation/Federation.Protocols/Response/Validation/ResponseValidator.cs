@@ -35,7 +35,6 @@ namespace Federation.Protocols.Response.Validation
                 .Reverse()
                 .Aggregate(seed, (next, r) => new Func<ValidationContext, Task>(ctx => r.Validate(ctx, next)));
             await del(context);
-            
         }
 
         Task IValidator.Validate(Kernel.Validation.ValidationContext context)
