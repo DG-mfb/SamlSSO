@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
+using Shared.Federtion.Constants;
 
 namespace InlineMetadataContextProvider
 {
@@ -33,6 +34,10 @@ namespace InlineMetadataContextProvider
             var metadataContext = metadataBuilder.BuildContext(new MetadataGenerateRequest(MetadataType.SP, federationPartyId));
             var configuration = new FederationPartyConfiguration(federationPartyId, metadataPath)
             {
+                FederationPartyAuthnRequestConfiguration = new FederationPartyAuthnRequestConfiguration(null, new DefaultNameId(new Uri(NameIdentifierFormats.Unspecified)), null)
+                {
+                    Version = "2.0"
+                },
                 MetadataContext = metadataContext,
             };
             return configuration;

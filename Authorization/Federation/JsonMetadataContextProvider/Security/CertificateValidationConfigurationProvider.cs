@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Kernel.Cache;
 using Kernel.Federation.FederationPartner;
@@ -39,22 +38,17 @@ namespace JsonMetadataContextProvider.Security
             var configuration = new BackchannelConfiguration
             {
                 UsePinningValidation = false,
-                //BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor(settings.SecuritySettings.PinnedTypeValidator)
+                BackchannelValidatorResolver = new Kernel.Data.TypeDescriptor("Microsoft.Owin.CertificateValidators.CertificateValidatorResolver, Microsoft.Owin.CertificateValidators, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null")
             };
-
-            //configuration.Pins = settings.Pins.GroupBy(k => k.PinType, v => v.Value)
-            //    .ToDictionary(k => k.Key, v => v.Select(r => r));
-            //this._cacheProvider.Put(key, configuration);
+            
             return configuration;
         }
 
         public CertificateValidationConfiguration GetConfiguration(string federationPartyId)
         {
-           
-
             var configuration = new CertificateValidationConfiguration
             {
-                X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.None
+                X509CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom
             };
            
             return configuration;
