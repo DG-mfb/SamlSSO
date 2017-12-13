@@ -14,11 +14,12 @@ namespace JsonMetadataContextProvider
     {
         private readonly IJsonSerialiser  _serialiser;
         private readonly ICacheProvider _cacheProvider;
-        private string _path = "";
-        public FederationPartyContextBuilder(IJsonSerialiser serialiser, ICacheProvider cacheProvider)
+        private string _source;
+        public FederationPartyContextBuilder(IJsonSerialiser serialiser, ICacheProvider cacheProvider, Func<string> source)
         {
             this._serialiser = serialiser;
             this._cacheProvider = cacheProvider;
+            this._source = source();
         }
 
         public Task<FederationPartyConfiguration> GetConfigurationAsync(string federationPartyId, CancellationToken cancel)
@@ -36,10 +37,10 @@ namespace JsonMetadataContextProvider
 
         public FederationPartyConfiguration BuildContext(string federationPartyId)
         {
-            using (var reader = new StreamReader(this._path))
+            //using (var reader = new StreamReader(this._path))
             {
-                var content = reader.ReadToEnd();
-                var configuration = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(content);
+                //var content = reader.ReadToEnd();
+                var configuration = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source);
                 return configuration.First(x => x.FederationPartyId == federationPartyId);
             }
         }

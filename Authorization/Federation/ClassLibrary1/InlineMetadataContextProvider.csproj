@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FederationParty\FederationPartyContextBuilder.cs" />
     <Compile Include="Initialisation\InlineMetadaContextProviderInitialiser.cs" />
     <Compile Include="InlineMetadataContextBuilder.cs" />
     <Compile Include="MetadataHelper.cs" />

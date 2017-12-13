@@ -15,7 +15,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleTo("WsFederationMetadataProviderTests")]
 [assembly: InternalsVisibleTo("WsMetadataSerialisation.Test")]
-[assembly :InternalsVisibleTo("Federation.Protocols.Test")]
+[assembly: InternalsVisibleTo("Federation.Protocols.Test")]
+[assembly: InternalsVisibleTo("JsonMetadataContextProvider.Test")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
