@@ -11,6 +11,7 @@ namespace JsonMetadataContextProvider
 {
     internal class FederationPartyContextBuilder : IAssertionPartyContextBuilder, IConfigurationManager<FederationPartyConfiguration>
     {
+        private const string FederationKey = "{0}_federation_key";
         private readonly IJsonSerialiser  _serialiser;
         private readonly ICacheProvider _cacheProvider;
         private Func<Type, string> _source;
@@ -36,14 +37,14 @@ namespace JsonMetadataContextProvider
 
         public FederationPartyConfiguration BuildContext(string federationPartyId)
         {
-            if (this._cacheProvider.Contains(federationPartyId))
-                return this._cacheProvider.Get<FederationPartyConfiguration>(federationPartyId);
+            var key = String.Format(FederationPartyContextBuilder.FederationKey, federationPartyId);
+            if (this._cacheProvider.Contains(key))
+                return this._cacheProvider.Get<FederationPartyConfiguration>(key);
 
             var configurations = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source(this.GetType()));
             var configuration = configurations.First(x => x.FederationPartyId == federationPartyId);
-            this._cacheProvider.Put(federationPartyId, configuration);
+            this._cacheProvider.Put(key, configuration);
             return configuration;
-
         }
 
         public void Dispose()
