@@ -61,7 +61,7 @@ namespace JsonMetadataContextProvider.Test
             
             dynamic expando3 = new ExpandoObject();
             expando3.Id = "atlasCopco";
-            expando3.Metadata = "";
+            expando3.MetadataAddress = "";
             expando3.Configuration = config3;
             configurations.Add(expando3);
 
