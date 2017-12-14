@@ -3,8 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using JsonMetadataContextProvider.Authorization;
 using JsonMetadataContextProvider.Security;
+using Kernel.Configuration;
 using Kernel.DependancyResolver;
-using Kernel.Federation.FederationPartner;
 using Shared.Initialisation;
 
 namespace JsonMetadataContextProvider.Initialisation
@@ -25,9 +25,9 @@ namespace JsonMetadataContextProvider.Initialisation
             {
                 string path = null;
                 if(t == typeof(FederationPartyContextBuilder))
-                    path = @"D:\Dan\Software\Temp\JsonConfiguration.txt";
+                    path = AppSettingsConfigurationManager.GetSetting("federationConfigurationFile", String.Empty);
                 if (t == typeof(CertificateValidationConfigurationProvider))
-                    path = @"D:\Dan\Software\Temp\SecurityConfiguration.txt";
+                    path = AppSettingsConfigurationManager.GetSetting("securityConfigurationFile", String.Empty);
                 if (String.IsNullOrWhiteSpace(path))
                     throw new NotSupportedException("Unsupported type");
 

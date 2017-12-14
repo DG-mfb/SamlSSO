@@ -1,8 +1,8 @@
 ﻿namespace Kernel.Configuration
 {
-	using System;
-	using System.Configuration;
-	using Kernel.Reflection;
+    using System;
+    using System.Configuration;
+    using Kernel.Reflection;
 
     public class AppSettingsConfigurationManager
     {

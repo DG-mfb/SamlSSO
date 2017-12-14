@@ -57,6 +57,10 @@
       <Project>{5A1D47F4-B15F-4F42-8EAF-24F1474FE503}</Project>
       <Name>Kernel.Cache</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Kernel\Kernel.Configuration\Kernel.Configuration.csproj">
+      <Project>{B78BEABA-813A-4C65-BA17-2207E5F37B66}</Project>
+      <Name>Kernel.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Kernel\Kernel.Data\Kernel.Data.csproj">
       <Project>{58F76882-5E21-452F-A070-76D468D6E27C}</Project>
       <Name>Kernel.Data</Name>

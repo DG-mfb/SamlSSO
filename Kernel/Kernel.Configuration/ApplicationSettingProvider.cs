@@ -1,15 +1,14 @@
 ﻿namespace Kernel.Configuration
 {
-	using System;
-	using System.Security;
-	using Kernel.Configuration;
-	using Kernel.Extensions;
-	using Kernel.Reflection;
+    using System;
+    using System.Security;
+    using Kernel.Extensions;
+    using Kernel.Reflection;
 
-	/// <summary>
-	/// Provides application settings
-	/// </summary>
-	public class ApplicationSettingProvider
+    /// <summary>
+    /// Provides application settings
+    /// </summary>
+    public class ApplicationSettingProvider
 	{
 		private static string _applicationName;
 
@@ -59,7 +58,7 @@
 		/// <value>
 		/// The name of the unity master database.
 		/// </value>
-		public static string UnityMasterDatabaseName
+		public static string MasterDatabaseName
 		{
 			get
 			{
