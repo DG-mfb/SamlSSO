@@ -12,7 +12,6 @@ using Federation.Metadata.FileRetriever.Initialisation;
 using Federation.Metadata.HttpRetriever.Initialisation;
 using Federation.Protocols.Initialisation;
 using FileSystemMetadataWriter.Initialisation;
-using JsonMetadataContextProvider.Initialisation;
 using Kernel.DependancyResolver;
 using Kernel.Initialisation;
 using Kernel.Logging;
@@ -21,7 +20,6 @@ using MemoryCacheProvider.Initialisation;
 using Microsoft.AspNet.Identity.Owin.Provider.Initialisation;
 using Microsoft.Owin.CertificateValidators.Initialisation;
 using OAuthAuthorisationService.Initialisation;
-using ORMMetadataContextProvider.Initialisation;
 using Provider.EntityFramework.Initialisation;
 using SecurityManagement.Initialisation;
 using Serialisation.JSON.Initialisation;
@@ -48,8 +46,6 @@ namespace ServerInitialisation
                 yield return typeof(IdentityInitialiser).Assembly;
                 yield return typeof(HttpDocumentRetrieverInitialiser).Assembly;
                 yield return typeof(MetadataFederationPartnerInitialiser).Assembly;
-                yield return typeof(ORMMetadataContextProviderInitialiser).Assembly;
-                //yield return typeof(JsonMetadaContextProviderInitialiser).Assembly;
                 yield return typeof(OAuthAuthorisationServiceInitialiser).Assembly;
                 yield return typeof(DbContextInitialiser).Assembly;
                 yield return typeof(CacheProviderInitialiser).Assembly;
@@ -64,6 +60,13 @@ namespace ServerInitialisation
                 yield return typeof(FileDocumentRetrieverInitialiser).Assembly;
             }
         }
+
+        public ServerInitialiser()
+        {
+            this.InitialiserTypes = new List<string>();
+        }
+
+        public ICollection<string> InitialiserTypes { get; }
 
         public async Task Initialise(IDependencyResolver dependencyResolver)
 		{
@@ -87,7 +90,7 @@ namespace ServerInitialisation
 			//Aggregate all exeptions and throw 
 			foreach (var x in initialisers)
 			{
-				if (!condition(x))
+				if (!this.InitialiserTypes.Contains(x.Type.AssemblyQualifiedName) && !condition(x))
 					continue;
 
 				using (new InformationLogEventWriter(String.Format("Initialiser {0}", x.GetType().Name)))
@@ -124,7 +127,32 @@ namespace ServerInitialisation
 						typeof(Initialiser).IsAssignableFrom(x)
 					)
 				)
-				.Select(x => Activator.CreateInstance(x) as Initialiser)
+                .Select(x => Activator.CreateInstance(x) as Initialiser)
+                .Where(x => x.AutoDiscoverable)
+                .Union(this.InitialiserTypes.Select(x => 
+                {
+                    try
+                    {
+                        return Type.GetType(x, (an) =>
+                        {
+                            if (String.IsNullOrWhiteSpace(x))
+                                return null;
+                            var assembly = AssemblyScanner.ScannableAssemblies.Where(a => a.FullName == an.FullName)
+                            .FirstOrDefault();
+                            if (assembly == null)
+                                throw new InvalidOperationException(String.Format("Assembly name: {0} can't be resolved.", an));
+                            return assembly;
+                        }, (a, s, b) =>
+                        {
+                            return a.GetType(s, b);
+                        });
+                    }
+                    catch(Exception e)
+                    {
+                        throw;
+                    }
+                })
+                .Select(x => Activator.CreateInstance(x) as Initialiser))
 				.OrderBy(x => x.Order);
 		}
 

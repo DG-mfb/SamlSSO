@@ -26,6 +26,14 @@
             }
         }
 
+        public virtual bool AutoDiscoverable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         /// <summary>
         /// Performs initialisation.
         /// </summary>

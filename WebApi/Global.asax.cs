@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
-using System.Web.Routing;
+using Kernel.Configuration;
 using Kernel.Initialisation;
 using Kernel.Logging;
+using ORMMetadataContextProvider.Initialisation;
 using ServerInitialisation;
 using UnityResolver;
 using WebApi.App_Start;
@@ -34,6 +32,9 @@ namespace WebApi
                 var container = ApplicationConfiguration.Instance.DependencyResolver;
                 DIRegistration.Register(container);
                 var initialiser = ApplicationConfiguration.Instance.ServerInitialiserFactory();
+                var datadaSource = AppSettingsConfigurationManager.GetSetting("dataInitialiser", String.Empty);
+                if(!String.IsNullOrWhiteSpace(datadaSource))
+                    initialiser.InitialiserTypes.Add(datadaSource);
                 var task = initialiser.Initialise(container);
             }
         }

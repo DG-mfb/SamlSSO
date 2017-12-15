@@ -15,6 +15,13 @@ namespace JsonMetadataContextProvider.Initialisation
         {
             get { return 1; }
         }
+        public override bool AutoDiscoverable
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {

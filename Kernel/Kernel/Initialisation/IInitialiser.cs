@@ -11,6 +11,7 @@
     {
         byte Order { get; }
         Type Type { get; }
+        bool AutoDiscoverable { get; }
         Task Initialise(IDependencyResolver dependencyResolver);
     }
 }
