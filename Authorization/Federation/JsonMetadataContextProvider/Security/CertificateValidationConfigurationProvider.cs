@@ -25,7 +25,7 @@ namespace JsonMetadataContextProvider.Security
 
         public BackchannelConfiguration GeBackchannelConfiguration(string federationPartyId)
         {
-            return this.GeBackchannelConfiguration(x => x.id == federationPartyId, federationPartyId);
+            throw new NotImplementedException();
         }
 
         public BackchannelConfiguration GeBackchannelConfiguration(Uri partyUri)

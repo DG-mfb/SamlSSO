@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.ServiceModel.Security;
 using JsonMetadataContextProvider.Test.Mock;
@@ -61,14 +62,14 @@ namespace JsonMetadataContextProvider.Test
             
             dynamic expando3 = new ExpandoObject();
             expando3.Id = "atlasCopco";
-            expando3.MetadataAddress = "";
+            expando3.MetadataAddress = new Uri(@"file://D:\Dan\Software\ECA-Interenational\Metadata\atlasCopco\federation_metadata.xml").AbsoluteUri;
             expando3.Configuration = config3;
             configurations.Add(expando3);
 
             var config4 = inlineProvider.GeBackchannelConfiguration("testshib");
             dynamic expando4 = new ExpandoObject();
             expando4.Id = "testshib";
-            expando4.MetadataAddress = "https://www.testshib.org/metadata/testshib-providers.xml";
+            expando4.MetadataAddress = new Uri("https://www.testshib.org/metadata/testshib-providers.xml").AbsoluteUri;
             expando4.Configuration = config4;
             configurations.Add(expando4);
             
@@ -79,8 +80,8 @@ namespace JsonMetadataContextProvider.Test
             var jsonProvider = new JsonMetadataContextProvider.Security.CertificateValidationConfigurationProvider(jsonSerialiser, cache, t => serialised);
             //ACT
             
-            var found1 = jsonProvider.GeBackchannelConfiguration("atlasCopco");
-            var found2 = jsonProvider.GeBackchannelConfiguration("testshib");
+            var found1 = jsonProvider.GeBackchannelConfiguration(new Uri(@"file://D:\Dan\Software\ECA-Interenational\Metadata\atlasCopco\federation_metadata.xml"));
+            var found2 = jsonProvider.GeBackchannelConfiguration(new Uri("https://www.testshib.org/metadata/testshib-providers.xml"));
             //ASSERT
             Assert.IsNotNull(found1);
             Assert.False(found1.UsePinningValidation);

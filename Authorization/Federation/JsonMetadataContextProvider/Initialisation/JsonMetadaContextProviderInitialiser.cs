@@ -28,6 +28,8 @@ namespace JsonMetadataContextProvider.Initialisation
                     path = AppSettingsConfigurationManager.GetSetting("federationConfigurationFile", String.Empty);
                 if (t == typeof(CertificateValidationConfigurationProvider))
                     path = AppSettingsConfigurationManager.GetSetting("securityConfigurationFile", String.Empty);
+                if (t == typeof(JsonAuthorizationServerConfigurationManager))
+                    path = AppSettingsConfigurationManager.GetSetting("authorizationServerConfiguration", String.Empty);
                 if (String.IsNullOrWhiteSpace(path))
                     throw new NotSupportedException("Unsupported type");
 
