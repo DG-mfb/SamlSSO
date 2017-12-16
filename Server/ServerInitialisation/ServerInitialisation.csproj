@@ -128,6 +128,10 @@
       <Project>{e198c691-91a6-4082-9976-f5f006f24960}</Project>
       <Name>Kernel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Notifications\SmtpNotification\SmtpNotification.csproj">
+      <Project>{A962236F-0E16-44F8-B407-8FCFE492DB06}</Project>
+      <Name>SmtpNotification</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ORM\Providers\Provider.EntityFramework\Provider.EntityFramework.csproj">
       <Project>{8CE800B3-084A-4900-BEC3-27B81707ADC9}</Project>
       <Name>Provider.EntityFramework</Name>

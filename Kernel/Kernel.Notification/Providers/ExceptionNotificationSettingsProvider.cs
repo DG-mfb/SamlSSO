@@ -5,7 +5,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
-    using System.Threading.Tasks;
     using Kernel.Configuration;
     using Kernel.Configuration.Notification;
     using Kernel.Logging;
@@ -31,9 +30,7 @@
                 return typeof(Type).GetHashCode();
             }
         }
-
-        private static Task _initTask;
-
+        
         private static EmailMessage _emailMessage;
 
         private static IList<ValidationResult> _validationResult;
@@ -69,7 +66,13 @@
             get { return _isValid; }
         }
 
-        public bool IsInitialised { get { return _initTask.IsCompleted; } }
+        public static bool IsInitialised
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public override Exception Error
         {
@@ -78,15 +81,14 @@
 
         static ExceptionNotificationSettingsProvider()
         {
-            _initTask = InitInternal();
+            InitInternal();
         }
 
-        public void WaitToInitialise()
+        public static void WaitToInitialise()
         {
-            _initTask.Wait();
         }
 
-        private async static Task InitInternal()
+        private static void InitInternal()
         {
             try
             {
@@ -101,56 +103,55 @@
                 _emailMessage = new EmailMessage();
 
                 _settings = new Dictionary<string, ExceptionNotificationSettings>();
+                
+                
+                    var types = ReflectionHelper.GetAllTypes(t => typeof(Exception).IsAssignableFrom(t))
+                        .Distinct(new TypeComparer());
 
-                await Task.Factory.StartNew(() =>
+                    PopulateEmaiMessage(section.EmailConfiguration);
+
+                    var timer = new Stopwatch();
+
+                    LoggerManager.WriteInformationToEventLog("Loading all exceptions...");
+
+                    timer.Start();
+
+                    var dict = types.ToDictionary(k => k.FullName);
+
+                    timer.Stop();
+
+                    LoggerManager.WriteInformationToEventLog(string.Format("Loading all exceptions took {0}", timer.Elapsed));
+
+
+                foreach (ExceptionNotificationSettingsConfigurationElement setting in section.ExceptionNotificationSettings)
+                {
+                    if (!dict.ContainsKey(setting.Name) || _settings.ContainsKey(setting.Name))
+                        continue;
+
+                    double minutes;
+
+                    if (!ReflectionHelper.TryParseOrDefault<double>(setting.TimeSpan, out minutes))
                     {
-                        var types = ReflectionHelper.GetAllTypes(t => typeof(Exception).IsAssignableFrom(t))
-                            .Distinct(new TypeComparer());
+                        _validationResult.Add(new ValidationResult(string.Format("Configuration setting TimeSpan for {0} is not numerical. Value is {1}.", setting.Name, setting.TimeSpan)));
 
-                        PopulateEmaiMessage(section.EmailConfiguration);
+                        LoggerManager.WriteWarningToEventLog(string.Format("Configuration setting TimeSpan for {0} is not numerical. Value is {1}.", setting.Name, setting.TimeSpan));
 
-                        var timer = new Stopwatch();
+                        continue;
+                    }
 
-                        LoggerManager.WriteInformationToEventLog("Loading all exceptions...");
+                    var newSettings = new ExceptionNotificationSettings
+                    {
+                        NotificationEntryType = dict[setting.Name],
+                        TimeSpan = TimeSpan.FromMinutes(minutes),
+                        To = setting.OverrideRecipients.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    };
 
-                        timer.Start();
+                    if (!IsSettingsValid(newSettings, _validationResult))
+                        continue;
 
-                        var dict = types.ToDictionary(k => k.FullName);
+                    _settings[setting.Name] = newSettings;
 
-                        timer.Stop();
-
-                        LoggerManager.WriteInformationToEventLog(string.Format("Loading all exceptions took {0}", timer.Elapsed));
-
-
-                        foreach (ExceptionNotificationSettingsConfigurationElement setting in section.ExceptionNotificationSettings)
-                        {
-                            if (!dict.ContainsKey(setting.Name) || _settings.ContainsKey(setting.Name))
-                                continue;
-
-                            double minutes;
-
-                            if (!ReflectionHelper.TryParseOrDefault<double>(setting.TimeSpan, out minutes))
-                            {
-                                _validationResult.Add(new ValidationResult(string.Format("Configuration setting TimeSpan for {0} is not numerical. Value is {1}.", setting.Name, setting.TimeSpan)));
-
-                                LoggerManager.WriteWarningToEventLog(string.Format("Configuration setting TimeSpan for {0} is not numerical. Value is {1}.", setting.Name, setting.TimeSpan));
-
-                                continue;
-                            }
-
-                            var newSettings = new ExceptionNotificationSettings
-                            {
-                                NotificationEntryType = dict[setting.Name],
-                                TimeSpan = TimeSpan.FromMinutes(minutes),
-                                To = setting.OverrideRecipients.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            };
-
-                            if (!IsSettingsValid(newSettings, _validationResult))
-                                continue;
-
-                            _settings[setting.Name] = newSettings;
-                        }
-                    });
+                }
             }
             catch (Exception ex)
             {

@@ -25,6 +25,7 @@ using SecurityManagement.Initialisation;
 using Serialisation.JSON.Initialisation;
 using Serialisation.Xml.Initialisation;
 using Shared.Initialisation;
+using SmtpNotification.Initialisation;
 using WebClientMetadataWriter.Initialisation;
 using WsFederationMetadataDispatcher.Initialisation;
 using WsFederationMetadataProvider.Initialisation;
@@ -58,6 +59,7 @@ namespace ServerInitialisation
                 yield return typeof(BackchannelValidatorsInitialiser).Assembly;
                 yield return typeof(OwinIdentityInitialiser).Assembly;
                 yield return typeof(FileDocumentRetrieverInitialiser).Assembly;
+                yield return typeof(SmtpInitialiser).Assembly;
             }
         }
 
