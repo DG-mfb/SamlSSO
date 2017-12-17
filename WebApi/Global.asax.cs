@@ -32,9 +32,9 @@ namespace WebApi
                 var container = ApplicationConfiguration.Instance.DependencyResolver;
                 DIRegistration.Register(container);
                 var initialiser = ApplicationConfiguration.Instance.ServerInitialiserFactory();
-                var datadaSource = AppSettingsConfigurationManager.GetSetting("dataInitialiser", String.Empty);
-                if(!String.IsNullOrWhiteSpace(datadaSource))
-                    initialiser.InitialiserTypes.Add(datadaSource);
+                var dataSource = AppSettingsConfigurationManager.GetSetting("dataInitialiser", String.Empty);
+                if(!String.IsNullOrWhiteSpace(dataSource))
+                    initialiser.InitialiserTypes.Add(dataSource);
                 var task = initialiser.Initialise(container);
             }
         }
