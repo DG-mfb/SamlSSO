@@ -4,25 +4,27 @@
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Security.Principal;
+    using Kernel.Configuration;
 
     public class LogEventSourceProvider
     {
         private const string _defaultSource = "_default";
-        
+
         private static IDictionary<string, string> _sources;
 
-        public const string EventLogName = "Flowz";
+        public static string EventLogName;
 
         static LogEventSourceProvider()
         {
+            LogEventSourceProvider.EventLogName = AppSettingsConfigurationManager.GetSetting("EventLogName", "Softnet Application Events");
             LogEventSourceProvider._sources = new Dictionary<string, string>();
 
-            LogEventSourceProvider._sources[_defaultSource] = "Flowz Application";
+            LogEventSourceProvider._sources[_defaultSource] = "ECA_SP Application";
         }
 
         public static string GetSourceName(string applicationName)
         {
-            if(LogEventSourceProvider._sources.ContainsKey(applicationName))
+            if (LogEventSourceProvider._sources.ContainsKey(applicationName))
                 return LogEventSourceProvider._sources[applicationName];
 
             if (LogEventSourceProvider.IsRegistered(applicationName))
@@ -41,12 +43,12 @@
 
             if (!isExists)
             {
-                if(LogEventSourceProvider.IsUserAdministrator())
+                if (LogEventSourceProvider.IsUserAdministrator())
                 {
                     var source = new EventSourceCreationData(sourceName, EventLogName);
 
                     EventLog.CreateEventSource(source);
-                }  
+                }
             }
 
             return isExists;
@@ -55,7 +57,7 @@
         private static bool IsUserAdministrator()
         {
             bool isAdmin;
-            
+
             try
             {
                 var user = WindowsIdentity.GetCurrent();
