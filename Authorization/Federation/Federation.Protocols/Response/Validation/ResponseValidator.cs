@@ -22,6 +22,7 @@ namespace Federation.Protocols.Response.Validation
         }
         public async Task ValidateResponse(ResponseStatus response, IDictionary<string, string> form)
         {
+            this._logProvider.LogMessage("Validating saml response.");
             var context = new SamlResponseValidationContext(response, form);
             var factory = ApplicationConfiguration.Instance.DependencyResolver.Resolve<RuleFactory>();
             var rules = factory.GetValidationRules(r => r.Scope == (response.IsIdpInitiated ? RuleScope.IdpInitiated : RuleScope.SPInitiated));

@@ -25,6 +25,7 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         protected override async Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
+            base._logProvider.LogMessage("RelayState In Response Rule running.");
             if (context.Response.RelayState == null)
             {
                 var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);

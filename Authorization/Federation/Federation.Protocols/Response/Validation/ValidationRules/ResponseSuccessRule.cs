@@ -19,7 +19,9 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
+            base._logProvider.LogMessage("ResponseSuccessRule running.");
             ResponseHelper.EnsureSuccessAndThrow(context.Response);
+            base._logProvider.LogMessage("ResponseSuccessRule success.");
             return Task.FromResult(true);
         }
     }
