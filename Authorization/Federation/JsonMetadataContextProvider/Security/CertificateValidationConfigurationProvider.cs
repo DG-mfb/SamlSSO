@@ -63,7 +63,7 @@ namespace JsonMetadataContextProvider.Security
             var result = deserialised.Where(x => ((dynamic)x).id == federationPartyId && ((dynamic)x).configuration.GetType() == typeof(CertificateValidationConfiguration))
                 .SingleOrDefault();
             if (result == null)
-                throw new InvalidOperationException("No backchannel configuration found.");
+                throw new InvalidOperationException("No certificate configuration found.");
             var configuration = ((dynamic)result).configuration;
             this._cacheProvider.Put(key, configuration);
 

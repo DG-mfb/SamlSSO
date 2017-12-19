@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Kernel.Compression;
 using Kernel.Federation.Protocols;
 
-namespace Federation.Protocols.Endocing
+namespace Federation.Protocols.Encodiing
 {
     internal class MessageEncoding : IMessageEncoding
     {

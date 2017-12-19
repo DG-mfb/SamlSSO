@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders;
-using Federation.Protocols.Endocing;
+using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Federation.Protocols.Request.ClauseBuilders;

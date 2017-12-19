@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DeflateCompression;
-using Federation.Protocols.Endocing;
+using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Test.Mock;
 using Kernel.Federation.Protocols;

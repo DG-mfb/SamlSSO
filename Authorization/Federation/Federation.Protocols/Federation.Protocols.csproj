@@ -51,7 +51,7 @@
     <Compile Include="Bindings\HttpRedirect\ClauseBuilders\SamlRequestBuilder.cs" />
     <Compile Include="Bindings\HttpRedirect\HttpRedirectBindingHandler.cs" />
     <Compile Include="Bindings\HttpRedirect\HttpRedirectContext.cs" />
-    <Compile Include="Endocing\MessageEncoding.cs" />
+    <Compile Include="Encodiing\MessageEncoding.cs" />
     <Compile Include="Extensions\Saml20AssertionExtensions.cs" />
     <Compile Include="Extensions\SamlAttributeExtensions.cs" />
     <Compile Include="Helper.cs" />

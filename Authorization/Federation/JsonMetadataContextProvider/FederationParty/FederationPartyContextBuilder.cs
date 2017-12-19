@@ -42,7 +42,9 @@ namespace JsonMetadataContextProvider
                 return this._cacheProvider.Get<FederationPartyConfiguration>(key);
 
             var configurations = this._serialiser.Deserialize<IEnumerable<FederationPartyConfiguration>>(this._source(this.GetType()));
-            var configuration = configurations.First(x => x.FederationPartyId == federationPartyId);
+            var configuration = configurations.FirstOrDefault(x => x.FederationPartyId == federationPartyId);
+            if (configuration == null)
+                throw new InvalidOperationException(String.Format("No federation configuration found for: {0}", federationPartyId));
             this._cacheProvider.Put(key, configuration);
             return configuration;
         }

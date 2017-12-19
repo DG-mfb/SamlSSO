@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Xml;
 using DeflateCompression;
-using Federation.Protocols.Endocing;
+using Federation.Protocols.Encodiing;
 using Federation.Protocols.Test.Mock;
 using Kernel.Security.CertificateManagement;
 using NUnit.Framework;

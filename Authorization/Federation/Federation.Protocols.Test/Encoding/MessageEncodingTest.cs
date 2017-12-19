@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DeflateCompression;
-using Federation.Protocols.Endocing;
+using Federation.Protocols.Encodiing;
 using NUnit.Framework;
 
 namespace Federation.Protocols.Test.Encoding
