@@ -73,7 +73,7 @@
     <Compile Include="Request\ClauseBuilders\AudienceRestrictionClauseBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\IssuerClauseBuilder.cs" />
     <Compile Include="Request\Handlers\AuthnRequestHandler.cs" />
-    <Compile Include="Request\RederectRequestDispatcher.cs" />
+    <Compile Include="Request\RedirectRequestDispatcher.cs" />
     <Compile Include="Request\PostRequestDispatcher.cs" />
     <Compile Include="Response\IdpInitDiscoveryService.cs" />
     <Compile Include="Response\ResponseDispatcher.cs" />

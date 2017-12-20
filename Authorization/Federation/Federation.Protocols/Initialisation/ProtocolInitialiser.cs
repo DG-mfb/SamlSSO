@@ -47,7 +47,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<AuthnRequestSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<PostRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseDispatcher>(Lifetime.Transient);
-            dependencyResolver.RegisterType<RederectRequestDispatcher>(Lifetime.Transient);
+            dependencyResolver.RegisterType<RedirectRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateAppender>(Lifetime.Transient);
 

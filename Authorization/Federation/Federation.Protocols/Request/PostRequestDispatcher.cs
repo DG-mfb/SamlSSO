@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Cryptography.Signing.Xml;
+using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Logging;
@@ -14,14 +16,16 @@ namespace Federation.Protocols.Request
 {
     internal class PostRequestDispatcher : ISamlMessageDespatcher<HttpPostRequestContext>
     {
+        private readonly IDependencyResolver _dependencyResolver;
         private readonly IAuthnRequestSerialiser _serialiser;
         private readonly ILogProvider _logProvider;
         private IRelayStateSerialiser _relayStateSerialiser;
         private ICertificateManager _certManager;
         private IXmlSignatureManager _xmlSignatureManager;
 
-        public PostRequestDispatcher(IAuthnRequestSerialiser serialiser, IRelayStateSerialiser relayStateSerialiser, IXmlSignatureManager xmlSignatureManager, ICertificateManager certManager, ILogProvider logProvider)
+        public PostRequestDispatcher(IDependencyResolver dependencyResolver, IAuthnRequestSerialiser serialiser, IRelayStateSerialiser relayStateSerialiser, IXmlSignatureManager xmlSignatureManager, ICertificateManager certManager, ILogProvider logProvider)
         {
+            this._dependencyResolver = dependencyResolver;
             this._xmlSignatureManager = xmlSignatureManager;
             this._certManager = certManager;
             this._serialiser = serialiser;
@@ -68,6 +72,11 @@ namespace Federation.Protocols.Request
             var samlForm = form.ToString();
             this._logProvider.LogMessage(String.Format("Despatching saml form./r/n. {0}", samlForm));
             await context.DespatchDelegate(samlForm);
+        }
+
+        private IEnumerable<ISamlClauseBuilder> GetBuilders()
+        {
+            return this._dependencyResolver.ResolveAll<IPostClauseBuilder>();
         }
     }
 }

@@ -5,7 +5,7 @@ using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
 {
-    internal class RelayStateBuilder : ISamlClauseBuilder
+    internal class RelayStateBuilder : IRedirectClauseBuilder
     {
         private readonly IRelayStateSerialiser _relayStateSerialiser;
         public RelayStateBuilder(IRelayStateSerialiser relayStateSerialiser)

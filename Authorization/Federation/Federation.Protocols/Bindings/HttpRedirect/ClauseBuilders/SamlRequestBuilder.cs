@@ -7,7 +7,7 @@ using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
 {
-    internal class SamlRequestBuilder : ISamlClauseBuilder
+    internal class SamlRequestBuilder : IRedirectClauseBuilder
     {
         private readonly IAuthnRequestSerialiser _authnRequestSerialiser;
         public SamlRequestBuilder(IAuthnRequestSerialiser authnRequestSerialiser)

@@ -8,11 +8,11 @@ using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 
 namespace Federation.Protocols.Request
 {
-    internal class RederectRequestDispatcher : ISamlMessageDespatcher<HttpRedirectRequestContext>
+    internal class RedirectRequestDispatcher : ISamlMessageDespatcher<HttpRedirectRequestContext>
     {
         private readonly IDependencyResolver _dependencyResolver;
 
-        public RederectRequestDispatcher(IDependencyResolver dependencyResolver)
+        public RedirectRequestDispatcher(IDependencyResolver dependencyResolver)
         {
             this._dependencyResolver = dependencyResolver;
         }
@@ -37,7 +37,7 @@ namespace Federation.Protocols.Request
         }
         private IEnumerable<ISamlClauseBuilder> GetBuilders()
         {
-            return this._dependencyResolver.ResolveAll<ISamlClauseBuilder>();
+            return this._dependencyResolver.ResolveAll<IRedirectClauseBuilder>();
         }
     }
 }

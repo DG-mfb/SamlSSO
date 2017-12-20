@@ -10,7 +10,7 @@ using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
 {
-    internal class SignatureBuilder : ISamlClauseBuilder
+    internal class SignatureBuilder : IRedirectClauseBuilder
     {
         private readonly ICertificateManager _certificateManager;
         readonly ILogProvider _logProvider;
