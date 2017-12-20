@@ -2,10 +2,11 @@
 using System.IO;
 using System.Text;
 using System.Web;
+using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Shared.Federtion.Forms
 {
-    public class SAMLForm
+    public class SAMLForm : ISamlForm
     {
         private static string htmlFormTemplate = "<html xmlns=\"http://www.w3.org/1999/xhtml\"><body onload=\"document.forms.samlform.submit()\"><noscript><p><strong>Note:</strong> Since your browser does not support Javascript, you must press the Continue button once to proceed.</p></noscript><form id=\"samlform\" action=\"{0}\" method=\"post\"><div>{1}</div><noscript><div><input type=\"submit\" value=\"Continue\"/></div></noscript></form></body></html>";
         private IDictionary<string, string> hiddenControls = (IDictionary<string, string>)new Dictionary<string, string>();
@@ -48,7 +49,7 @@ namespace Shared.Federtion.Forms
             }
         }
 
-        public void AddHiddenControl(string controlName, string controlValue)
+        private void AddHiddenControl(string controlName, string controlValue)
         {
             this.hiddenControls.Add(controlName, controlValue);
         }
@@ -73,6 +74,16 @@ namespace Shared.Federtion.Forms
             StringBuilder stringBuilder2 = new StringBuilder();
             stringBuilder2.AppendFormat(SAMLForm.htmlFormTemplate, (object)this.actionURL, (object)stringBuilder1.ToString());
             return stringBuilder2.ToString();
+        }
+
+        public void SetRequest(string request)
+        {
+            this.AddHiddenControl("SAMLRequest", request);
+        }
+
+        public void SetRelatState(string state)
+        {
+            this.AddHiddenControl("RelayState", state);
         }
     }
 }

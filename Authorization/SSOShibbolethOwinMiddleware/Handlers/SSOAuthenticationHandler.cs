@@ -22,6 +22,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using Shared.Federtion.Constants;
 using Shared.Federtion.Factories;
+using Shared.Federtion.Forms;
 using SSOOwinMiddleware.Contexts;
 
 namespace SSOOwinMiddleware.Handlers
@@ -214,7 +215,7 @@ namespace SSOOwinMiddleware.Handlers
                 }
                 else
                 {
-                    outboundContext = new HttpPostRequestContext
+                    outboundContext = new HttpPostRequestContext(new SAMLForm())
                     {
                         BindingContext = new HttpPostContext(requestContext),
                         DespatchDelegate = (form) =>

@@ -63,13 +63,11 @@ namespace Federation.Protocols.Request
 
             var relyingStateSerialised = await this._relayStateSerialiser.Serialize(context.BindingContext.RelayState);
             this._logProvider.LogMessage(String.Format("Building SAML form. Destination url: {0}", context.BindingContext.DestinationUri.AbsoluteUri));
-            var form = new SAMLForm
-            {
-                ActionURL = context.BindingContext.DestinationUri.AbsoluteUri
-            };
-            form.AddHiddenControl("SAMLRequest", base64Encoded);
-            form.AddHiddenControl("RelayState", relyingStateSerialised);
-            var samlForm = form.ToString();
+            
+            context.Form.ActionURL = context.BindingContext.DestinationUri.AbsoluteUri;
+            context.Form.SetRequest(base64Encoded);
+            context.Form.SetRelatState(relyingStateSerialised);
+            var samlForm = context.Form;
             this._logProvider.LogMessage(String.Format("Despatching saml form./r/n. {0}", samlForm));
             await context.DespatchDelegate(samlForm);
         }
