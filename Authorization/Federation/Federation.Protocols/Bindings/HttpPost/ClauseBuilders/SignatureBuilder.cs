@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
+using Kernel.Cryptography.Signing.Xml;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
@@ -14,33 +15,36 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
     {
         private readonly ICertificateManager _certificateManager;
         readonly ILogProvider _logProvider;
+        private readonly IXmlSignatureManager _xmlSignatureManager;
 
-        public SignatureBuilder(ICertificateManager certificateManager, ILogProvider logProvider)
+        public SignatureBuilder(ICertificateManager certificateManager, ILogProvider logProvider, IXmlSignatureManager xmlSignatureManager)
         {
             this._certificateManager = certificateManager;
             this._logProvider = logProvider;
+            this._xmlSignatureManager = xmlSignatureManager;
         }
         public uint Order { get { return 2; } }
 
         public Task Build(BindingContext context)
         {
-            throw new NotImplementedException();
-            //if (context == null)
-            //    throw new ArgumentNullException("context");
 
-            //var httpRedirectContext = context as HttpRedirectContext;
-            //if (httpRedirectContext == null)
-            //    throw new InvalidOperationException(String.Format("Binding context must be of type:{0}. It was: {1}", typeof(HttpRedirectContext).Name, context.GetType().Name));
-            //var federationParty = httpRedirectContext.AuthnRequestContext.FederationPartyContext;
-            //var metadataContext = federationParty.MetadataContext;
-            //var entityDescriptor = metadataContext.EntityDesriptorConfiguration;
-            //var spDescriptor = entityDescriptor.SPSSODescriptors
-            //    .First();
-            //var certContext = spDescriptor.KeyDescriptors.First(x => x.IsDefault && x.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing)
-            //    .CertificateContext;
-            //if (spDescriptor.AuthenticationRequestsSigned)
-            //    this.SignRequest(context.ClauseBuilder, certContext);
-            //return Task.CompletedTask;
+            if (context == null)
+                throw new ArgumentNullException("context");
+
+            var requestContext = ((RequestBindingContext)context).AuthnRequestContext;
+            
+            var descriptor = requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors
+                .First();
+            if (descriptor.AuthenticationRequestsSigned)
+            {
+                this._logProvider.LogMessage("Signing authentication request.");
+                var certContext = descriptor.KeyDescriptors
+                    .First(k => k.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing).CertificateContext;
+                var cert = this._certificateManager.GetCertificateFromContext(certContext);
+                this._xmlSignatureManager.WriteSignature(context.Request, requestContext.RequestId, cert.PrivateKey, "", "");
+                this._logProvider.LogMessage(String.Format("Authentication request signed./r/n{0}", context.Request.OuterXml));
+            }
+            return Task.CompletedTask;
         }
 
         internal void SignRequest(StringBuilder sb, CertificateContext certContext)

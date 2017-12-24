@@ -27,7 +27,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(httpRedirectContext.AuthnRequestContext);
 
             var serialised = await this._authnRequestSerialiser.SerializeAndCompress(authnRequest);
-            this.AppendRequest(context.ClauseBuilder, serialised);
+            this.AppendRequest(httpRedirectContext.ClauseBuilder, serialised);
         }
 
         internal void AppendRequest(StringBuilder builder, string request)

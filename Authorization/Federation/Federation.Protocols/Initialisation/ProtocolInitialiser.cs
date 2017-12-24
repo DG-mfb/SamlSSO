@@ -38,6 +38,11 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<SamlRequestBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<SignatureBuilder>(Lifetime.Transient);
+
+            dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.SamlRequestBuilder>(Lifetime.Transient);
+            dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.RelayStateBuilder>(Lifetime.Transient);
+            dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.SignatureBuilder>(Lifetime.Transient);
+
             dependencyResolver.RegisterType<RelayStateHandler>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelaystateSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<SubjectConfirmationDataValidator>(Lifetime.Transient);

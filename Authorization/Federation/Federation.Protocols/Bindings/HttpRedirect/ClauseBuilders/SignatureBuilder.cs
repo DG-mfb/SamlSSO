@@ -38,7 +38,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var certContext = spDescriptor.KeyDescriptors.First(x => x.IsDefault && x.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing)
                 .CertificateContext;
             if (spDescriptor.AuthenticationRequestsSigned)
-                this.SignRequest(context.ClauseBuilder, certContext);
+                this.SignRequest(httpRedirectContext.ClauseBuilder, certContext);
             return Task.CompletedTask;
         }
 
