@@ -36,6 +36,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<MessageEncoding>(Lifetime.Transient);
             dependencyResolver.RegisterType<HttpRedirectBindingHandler>(Lifetime.Transient);
             dependencyResolver.RegisterType<SamlRequestBuilder>(Lifetime.Transient);
+            dependencyResolver.RegisterType<RequestEncoderBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<SignatureBuilder>(Lifetime.Transient);
 

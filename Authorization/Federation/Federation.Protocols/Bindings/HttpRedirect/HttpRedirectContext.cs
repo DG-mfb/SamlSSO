@@ -23,7 +23,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
             var clauseBuilder = new StringBuilder();
             var query = base.RequestParts.Aggregate(clauseBuilder, (b, next) =>
             {
-                b.AppendFormat("{0}={1}&", next.Key, next.Value);
+                b.AppendFormat("{0}={1}&", next.Key, Uri.EscapeDataString(Helper.UpperCaseUrlEncode(next.Value)));
                 return b;
             }, r => r.ToString().TrimEnd('&'));
 

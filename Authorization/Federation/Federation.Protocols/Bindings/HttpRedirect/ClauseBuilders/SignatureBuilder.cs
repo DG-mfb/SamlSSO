@@ -19,7 +19,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             this._certificateManager = certificateManager;
             this._logProvider = logProvider;
         }
-        public uint Order { get { return 2; } }
+        public uint Order { get { return 3; } }
 
         public Task Build(BindingContext context)
         {
@@ -43,7 +43,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
 
         internal void SignRequest(BindingContext context, CertificateContext certContext)
         {
-            context.RequestParts.Add(HttpRedirectBindingConstants.SigAlg, Uri.EscapeDataString(SignedXml.XmlDsigRSASHA1Url));
+            context.RequestParts.Add(HttpRedirectBindingConstants.SigAlg, SignedXml.XmlDsigRSASHA1Url);
             this.SignData((HttpRedirectContext)context, certContext);
         }
         internal void SignData(HttpRedirectContext context, CertificateContext certContext)
@@ -51,8 +51,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var query = context.BuildQuesryString();
             this._logProvider.LogMessage(String.Format("Signing request with certificate from context: {0}", certContext.ToString()));
             var base64 = this._certificateManager.SignToBase64(query, certContext);
-            var escaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(base64));
-            context.RequestParts.Add(HttpRedirectBindingConstants.Signature, escaped);
+            context.RequestParts.Add(HttpRedirectBindingConstants.Signature, base64);
         }
     }
 }
