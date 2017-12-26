@@ -13,12 +13,12 @@ namespace Federation.Protocols.Request
 {
     internal class PostRequestDispatcher : ISamlMessageDespatcher<HttpPostRequestContext>
     {
-        private readonly IDependencyResolver _dependencyResolver;
+        private readonly Func<IEnumerable<ISamlClauseBuilder>> _buildesFactory;
         private readonly ILogProvider _logProvider;
         
-        public PostRequestDispatcher(IDependencyResolver dependencyResolver, ILogProvider logProvider)
+        public PostRequestDispatcher(Func<IEnumerable<IPostClauseBuilder>> buildesFactory, ILogProvider logProvider)
         {
-            this._dependencyResolver = dependencyResolver;
+            this._buildesFactory = buildesFactory;
             this._logProvider = logProvider;
         }
         public Task SendAsync(SamlOutboundContext context)
@@ -30,7 +30,7 @@ namespace Federation.Protocols.Request
         {
             if (context == null)
                 throw new ArgumentNullException("context");
-            var builders = this.GetBuilders().OrderBy(x => x.Order);
+            var builders = this._buildesFactory().OrderBy(x => x.Order);
             foreach(var b in builders)
             {
                 await b.Build(context.BindingContext);
@@ -47,11 +47,6 @@ namespace Federation.Protocols.Request
             var samlForm = context.Form;
             this._logProvider.LogMessage(String.Format("Despatching saml form./r/n. {0}", samlForm));
             await context.DespatchDelegate(samlForm);
-        }
-
-        private IEnumerable<ISamlClauseBuilder> GetBuilders()
-        {
-            return this._dependencyResolver.ResolveAll<IPostClauseBuilder>();
         }
     }
 }

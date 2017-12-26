@@ -11,7 +11,7 @@ namespace Federation.Protocols.Request
     {
         private readonly Func<IEnumerable<ISamlClauseBuilder>> _buildesFactory;
 
-        public RedirectRequestDispatcher(Func<IEnumerable<ISamlClauseBuilder>> buildesFactory)
+        public RedirectRequestDispatcher(Func<IEnumerable<IRedirectClauseBuilder>> buildesFactory)
         {
             this._buildesFactory = buildesFactory;
         }

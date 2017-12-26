@@ -78,9 +78,14 @@ namespace Federation.Protocols.Initialisation
 
                 };
             }, Lifetime.Singleton);
-            dependencyResolver.RegisterFactory<Func<IEnumerable<ISamlClauseBuilder>>>(() =>
+            dependencyResolver.RegisterFactory<Func<IEnumerable<IRedirectClauseBuilder>>>(() =>
             {
                 return () => dependencyResolver.ResolveAll<IRedirectClauseBuilder>();
+            }, Lifetime.Singleton);
+
+            dependencyResolver.RegisterFactory<Func<IEnumerable<IPostClauseBuilder>>>(() =>
+            {
+                return () => dependencyResolver.ResolveAll<IPostClauseBuilder>();
             }, Lifetime.Singleton);
             return Task.CompletedTask;
         }
