@@ -16,8 +16,6 @@ using Federation.Protocols.Test.Mock;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
-using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
-using Kernel.Security.CertificateManagement;
 using NUnit.Framework;
 using SecurityManagement;
 using SecurityManagement.Signing;
@@ -38,6 +36,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             //ARRANGE
             var isValid = false;
             string url = String.Empty;
+            IDictionary<string, object> relayState = null;
             var builders = new List<IPostClauseBuilder>();
 
             var requestUri = new Uri("http://localhost:59611/");
@@ -79,6 +78,10 @@ namespace Federation.Protocols.Test.Request.Dispatchers
                 {
                     url = form.ActionURL;
                     var request = ((SAMLForm)form).HiddenControls[HttpRedirectBindingConstants.SamlRequest];
+                    var state = ((SAMLForm)form).HiddenControls[HttpRedirectBindingConstants.RelayState];
+                    var task = relayStateSerialiser.Deserialize(state);
+                    task.Wait();
+                    relayState = task.Result as IDictionary<string, object>;
                     var cert = certificateManager.GetCertificateFromContext(certContext);
                     isValid = this.VerifySignature(request, cert);
                     return Task.CompletedTask;
@@ -91,6 +94,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             await dispatcher.SendAsync(outboundContext);
             //ASSERT
             Assert.AreEqual(url, requestUri.AbsoluteUri);
+            Assert.IsTrue(Enumerable.SequenceEqual(relayState, authnRequestContext.RelyingState));
             Assert.IsTrue(isValid);
         }
 
