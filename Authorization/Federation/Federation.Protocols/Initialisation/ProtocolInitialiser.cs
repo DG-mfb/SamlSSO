@@ -78,7 +78,10 @@ namespace Federation.Protocols.Initialisation
 
                 };
             }, Lifetime.Singleton);
-
+            dependencyResolver.RegisterFactory<Func<IEnumerable<ISamlClauseBuilder>>>(() =>
+            {
+                return () => dependencyResolver.ResolveAll<IRedirectClauseBuilder>();
+            }, Lifetime.Singleton);
             return Task.CompletedTask;
         }
 

@@ -20,22 +20,22 @@ namespace Federation.Protocols.Test.RelayState
         [Test]
         public async Task RelayStateBuilder_test()
         {
-            throw new NotImplementedException();
             ////ARRANGE
-            //var relayState = new Dictionary<string, object> { { "relayState" ,"Test state" } };
-            //var compressor = new DeflateCompressor();
-            //var messageEncoder = new MessageEncoding(compressor);
-            //var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
-            //var logger = new LogProviderMock();
-            //var serialiser = new RelaystateSerialiser(jsonSerialiser, messageEncoder, logger) as IRelayStateSerialiser;
+            var relayState = new Dictionary<string, object> { { "relayState", "Test state" } };
+            var compressor = new DeflateCompressor();
+            var messageEncoder = new MessageEncoding(compressor);
+            var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
+            var logger = new LogProviderMock();
+            var serialiser = new RelaystateSerialiser(jsonSerialiser, messageEncoder, logger) as IRelayStateSerialiser;
+
+            var context = new BindingContext(relayState, new Uri("localhost:"));
+            var builder = new RelayStateBuilder(serialiser);
+            //ACT
+            await builder.Build(context);
             
-            //var context = new BindingContext(relayState, new Uri("localhost:"));
-            //var builder = new RelayStateBuilder(serialiser);
-            ////ACT
-            //await builder.Build(context);
-            //var result = context.ClauseBuilder.ToString();
             ////ASSERT
-            //Assert.IsTrue(result.StartsWith(String.Format("&{0}", HttpRedirectBindingConstants.RelayState)));
+            Assert.AreEqual(1, context.RequestParts.Count);
+            Assert.IsTrue(context.RequestParts.ContainsKey(HttpRedirectBindingConstants.RelayState));
         }
     }
 }
