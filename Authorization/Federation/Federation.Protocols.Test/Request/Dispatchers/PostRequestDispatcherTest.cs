@@ -1,38 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
+using System.Xml;
 using DeflateCompression;
-using Federation.Protocols.Bindings.HttpRedirect;
-using Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders;
+using Federation.Protocols.Bindings.HttpPost;
+using Federation.Protocols.Bindings.HttpPost.ClauseBuilders;
 using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Security.CertificateManagement;
 using NUnit.Framework;
 using SecurityManagement;
+using SecurityManagement.Signing;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
 using Serialisation.Xml;
 using Shared.Federtion.Constants;
+using Shared.Federtion.Forms;
 
 namespace Federation.Protocols.Test.Request.Dispatchers
 {
     [TestFixture]
-    internal class RedirectRequestDispatcherTest
+    internal class PostRequestDispatcherTest
     {
         [Test]
-        public async Task Redirect_end_to_end_test()
+        public async Task Post_end_to_end_test()
         {
             //ARRANGE
             var isValid = false;
             string url = String.Empty;
-            var builders = new List<IRedirectClauseBuilder>();
+            var builders = new List<IPostClauseBuilder>();
 
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
@@ -53,10 +59,6 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             var authnBuilder = new SamlRequestBuilder(serialiser);
             builders.Add(authnBuilder);
             
-            //request compression builder
-            var encodingBuilder = new RequestEncoderBuilder(encoder);
-            builders.Add(encodingBuilder);
-
             //relay state builder
             var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
             var relayStateSerialiser = new RelaystateSerialiser(jsonSerialiser, encoder, logger) as IRelayStateSerialiser;
@@ -65,24 +67,25 @@ namespace Federation.Protocols.Test.Request.Dispatchers
 
             //signature builder
             var certificateManager = new CertificateManager(logger);
-            var signatureBuilder = new SignatureBuilder(certificateManager, logger);
+            var xmlSinatureManager = new XmlSignatureManager();
+            var signatureBuilder = new SignatureBuilder(certificateManager, logger, xmlSinatureManager);
             builders.Add(signatureBuilder);
 
             //context
-            var outboundContext = new HttpRedirectRequestContext
+            var outboundContext = new HttpPostRequestContext(new SAMLForm())
             {
-                BindingContext = new HttpRedirectContext(authnRequestContext),
-                DespatchDelegate = redirectUri =>
+                BindingContext = new HttpPostContext(authnRequestContext),
+                DespatchDelegate = form =>
                 {
-                    url = redirectUri.GetLeftPart(UriPartial.Path);
-                    var query = redirectUri.Query.TrimStart('?');
+                    url = form.ActionURL;
+                    var request = ((SAMLForm)form).HiddenControls[HttpRedirectBindingConstants.SamlRequest];
                     var cert = certificateManager.GetCertificateFromContext(certContext);
-                    isValid = this.VerifySignature(query, cert, certificateManager);
+                    isValid = this.VerifySignature(request, cert);
                     return Task.CompletedTask;
                 }
             };
             //dispatcher
-            var dispatcher = new RedirectRequestDispatcher(() => builders);
+            var dispatcher = new PostRequestDispatcher(() => builders, logger);
 
             //ACT
             await dispatcher.SendAsync(outboundContext);
@@ -91,14 +94,25 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             Assert.IsTrue(isValid);
         }
 
-        private bool VerifySignature(string request, X509Certificate2 certificate, ICertificateManager certificateManager)
+        private bool VerifySignature(string request, X509Certificate2 certificate)
         {
-            var i = request.IndexOf("Signature");
-            var data = request.Substring(0, i - 1);
-            var sgn = Uri.UnescapeDataString(request.Substring(i + 10));
-            
-            var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
-            return validated;
+            var unescaped = Uri.UnescapeDataString(request);
+            var decoded = Convert.FromBase64String(unescaped);
+            using (var ms = new MemoryStream(decoded))
+            {
+                ms.Position = 0;
+                using (var streamReader = new StreamReader(ms))
+                {
+                    var xmlRequest = streamReader.ReadToEnd();
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(xmlRequest);
+                    var signedXml = new SignedXml(xmlDocument);
+                    XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
+                    signedXml.LoadXml((XmlElement)nodeList[0]);
+                    var validated = signedXml.CheckSignature(certificate.PrivateKey);
+                    return validated;
+                }
+            }
         }
     }
 }
