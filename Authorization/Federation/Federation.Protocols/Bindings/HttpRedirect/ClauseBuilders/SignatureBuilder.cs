@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography.Xml;
-using System.Text;
 using System.Threading.Tasks;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
@@ -38,26 +37,22 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var certContext = spDescriptor.KeyDescriptors.First(x => x.IsDefault && x.Use == Kernel.Federation.MetaData.Configuration.Cryptography.KeyUsage.Signing)
                 .CertificateContext;
             if (spDescriptor.AuthenticationRequestsSigned)
-                this.SignRequest(httpRedirectContext.ClauseBuilder, certContext);
+                this.SignRequest(httpRedirectContext, certContext);
             return Task.CompletedTask;
         }
 
-        internal void SignRequest(StringBuilder sb, CertificateContext certContext)
+        internal void SignRequest(BindingContext context, CertificateContext certContext)
         {
-            this.AppendSignarureAlgorithm(sb);
-            this.SignData(sb, certContext);
+            context.RequestParts.Add(HttpRedirectBindingConstants.SigAlg, Uri.EscapeDataString(SignedXml.XmlDsigRSASHA1Url));
+            this.SignData((HttpRedirectContext)context, certContext);
         }
-        internal void SignData(StringBuilder sb, CertificateContext certContext)
+        internal void SignData(HttpRedirectContext context, CertificateContext certContext)
         {
+            var query = context.BuildQuesryString();
             this._logProvider.LogMessage(String.Format("Signing request with certificate from context: {0}", certContext.ToString()));
-            var base64 = this._certificateManager.SignToBase64(sb.ToString(), certContext);
+            var base64 = this._certificateManager.SignToBase64(query, certContext);
             var escaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(base64));
-            sb.AppendFormat("&{0}={1}", HttpRedirectBindingConstants.Signature, escaped);
-        }
-
-        internal void AppendSignarureAlgorithm(StringBuilder builder)
-        {
-            builder.AppendFormat("&{0}={1}", HttpRedirectBindingConstants.SigAlg, Uri.EscapeDataString(SignedXml.XmlDsigRSASHA1Url));
+            context.RequestParts.Add(HttpRedirectBindingConstants.Signature, escaped);
         }
     }
 }

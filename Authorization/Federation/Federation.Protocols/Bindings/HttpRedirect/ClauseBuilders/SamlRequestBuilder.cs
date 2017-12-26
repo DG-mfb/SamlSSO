@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 using Federation.Protocols.Request;
 using Kernel.Federation.Protocols;
@@ -27,12 +26,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(httpRedirectContext.AuthnRequestContext);
 
             var serialised = await this._authnRequestSerialiser.SerializeAndCompress(authnRequest);
-            this.AppendRequest(httpRedirectContext.ClauseBuilder, serialised);
-        }
-
-        internal void AppendRequest(StringBuilder builder, string request)
-        {
-            builder.AppendFormat("{0}={1}", HttpRedirectBindingConstants.SamlRequest, request);
+            context.RequestParts.Add(HttpRedirectBindingConstants.SamlRequest, serialised);
         }
     }
 }

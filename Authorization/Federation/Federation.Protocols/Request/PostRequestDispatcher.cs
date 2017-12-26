@@ -7,6 +7,7 @@ using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Logging;
+using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Request
 {
@@ -34,10 +35,10 @@ namespace Federation.Protocols.Request
             {
                 await b.Build(context.BindingContext);
             }
-            
-            var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(context.BindingContext.Request.OuterXml));
+            var request = context.BindingContext.RequestParts[HttpRedirectBindingConstants.SamlRequest];
+            var base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(request));
 
-            var relyingStateSerialised = context.BindingContext.State;
+            var relyingStateSerialised = context.BindingContext.RequestParts[HttpRedirectBindingConstants.RelayState];
             this._logProvider.LogMessage(String.Format("Building SAML form. Destination url: {0}", context.BindingContext.DestinationUri.AbsoluteUri));
             
             context.Form.ActionURL = context.BindingContext.DestinationUri.AbsoluteUri;

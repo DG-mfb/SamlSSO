@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Federation.Protocols.Request;
 using Kernel.Federation.Protocols;
+using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
 {
@@ -22,7 +23,7 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
             var request = AuthnRequestHelper.BuildAuthnRequest(requestContext);
 
             var serialised = this._authnRequestSerialiser.Serialize(request);
-            context.Request.LoadXml(serialised);
+            context.RequestParts.Add(HttpRedirectBindingConstants.SamlRequest, serialised);
             return Task.CompletedTask;
         }
     }

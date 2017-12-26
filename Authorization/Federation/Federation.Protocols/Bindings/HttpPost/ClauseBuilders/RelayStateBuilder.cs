@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Kernel.Federation.Protocols;
+using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
 {
@@ -24,8 +25,8 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
             var rsEncoded = await this._relayStateSerialiser.Serialize(context.RelayState);
             if (String.IsNullOrWhiteSpace(rsEncoded))
                 throw new InvalidOperationException("Invalid relay state after serialisation. It was null or empty string.");
-
-            context.State = rsEncoded;
+            
+            context.RequestParts.Add(HttpRedirectBindingConstants.RelayState, rsEncoded);
         }
     }
 }

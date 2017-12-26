@@ -31,8 +31,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
                 throw new InvalidOperationException("Invalid relay state after serialisation. It was null or empty string.");
 
             var rsEncodedEscaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(rsEncoded));
-            
-            httpRedirectContext.ClauseBuilder.AppendFormat("&{0}={1}", HttpRedirectBindingConstants.RelayState, rsEncodedEscaped);
+            context.RequestParts.Add(HttpRedirectBindingConstants.RelayState, rsEncodedEscaped);
         }
     }
 }
