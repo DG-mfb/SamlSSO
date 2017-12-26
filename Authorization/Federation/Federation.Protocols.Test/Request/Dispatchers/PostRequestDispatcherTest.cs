@@ -87,6 +87,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
                     return Task.CompletedTask;
                 }
             };
+
             //dispatcher
             var dispatcher = new PostRequestDispatcher(() => builders, logger);
 
