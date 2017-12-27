@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Kernel.Federation.MetaData.Configuration.EndPoint;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
@@ -21,7 +19,11 @@ namespace Federation.Protocols.Response
         }
         public async Task SendAsync(SamlOutboundContext context)
         {
-            //var httpClient = new HttpClient();
+            await this.SendAsync((HttpPostResponseOutboundContext)context);
+        }
+
+        public async Task SendAsync(HttpPostResponseOutboundContext context)
+        {
             using (var s = new StreamReader(@"D:\Dan\Software\Apira\Temp\MockResponse.xml"))
             {
                 var response = s.ReadToEnd();
@@ -31,21 +33,11 @@ namespace Federation.Protocols.Response
                     { "federationPartyId", "local" },
                 };
                 var relyingStateSerialised = await this._relayStateSerialiser.Serialize(relayState);
-                
-                //var content = new FormUrlEncodedContent(new[] 
-                //{
-                //    new KeyValuePair<string, string>("SAMLResponse", base64Encoded),
-                //    new KeyValuePair<string, string>("RelayState", relyingStateSerialised)
-                //});
-                //await httpClient.PostAsync("http://localhost:60879/api/Account/SSOLogon", content);
+                context.Form.SetRequest(base64Encoded);
+                context.Form.SetRelatState(relyingStateSerialised);
+                context.Form.ActionURL = "http://localhost:60879/api/Account/SSOLogon";
+                await context.DespatchDelegate(context.Form);
             }
-            
-            //throw new NotImplementedException();
-        }
-
-        public Task SendAsync(HttpPostResponseOutboundContext context)
-        {
-            throw new NotImplementedException();
         }
     }
 }
