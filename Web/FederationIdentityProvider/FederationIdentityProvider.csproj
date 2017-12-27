@@ -159,6 +159,10 @@
       <Project>{E111A891-B47D-4BDC-8BC2-62C2605FC9B8}</Project>
       <Name>InlineMetadataContextProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Authorization\Federation\ORMMetadataContextBuilder\ORMMetadataContextProvider.csproj">
+      <Project>{3a8df840-5a87-4cd3-915e-07abf10b065a}</Project>
+      <Name>ORMMetadataContextProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DependancyResolvers\UnityResolver\UnityResolver.csproj">
       <Project>{681BB5E0-8DB0-44FA-8950-EEF3ADC42745}</Project>
       <Name>UnityResolver</Name>
