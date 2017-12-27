@@ -6,6 +6,7 @@ using System.Xml;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Serialisation;
+using Kernel.Web;
 using Serialisation.Xml;
 using Shared.Federtion.Constants;
 
@@ -29,7 +30,7 @@ namespace Federation.Protocols.Request
             var xmlString = ((ISerializer)this).Serialize(o);
             var compressed = await this._messageEncoding.EncodeMessage<string>(xmlString);
             this._logProvider.LogMessage(String.Format("AuthnRequest compressed:\r\n {0}", compressed));
-            var encodedEscaped = Uri.EscapeDataString(Helper.UpperCaseUrlEncode(compressed));
+            var encodedEscaped = Uri.EscapeDataString(Utility.UpperCaseUrlEncode(compressed));
             return encodedEscaped;
         }
 

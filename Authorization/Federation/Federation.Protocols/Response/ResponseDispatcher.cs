@@ -21,7 +21,7 @@ namespace Federation.Protocols.Response
         }
         public async Task SendAsync(SamlOutboundContext context)
         {
-            var httpClient = new HttpClient();
+            //var httpClient = new HttpClient();
             using (var s = new StreamReader(@"D:\Dan\Software\Apira\Temp\MockResponse.xml"))
             {
                 var response = s.ReadToEnd();
@@ -29,15 +29,15 @@ namespace Federation.Protocols.Response
                 var relayState = new Dictionary<string, object>
                 {
                     { "federationPartyId", "local" },
-                    {"assertionConsumerServices", new List<IndexedEndPointConfiguration>{ new IndexedEndPointConfiguration { Location = new Uri("http://localhost:60879/api/Account/SSOLogon") } } }
                 };
                 var relyingStateSerialised = await this._relayStateSerialiser.Serialize(relayState);
-                var content = new FormUrlEncodedContent(new[] 
-                {
-                    new KeyValuePair<string, string>("SAMLResponse", base64Encoded),
-                    new KeyValuePair<string, string>("RelayState", relyingStateSerialised)
-                });
-                await httpClient.PostAsync("http://localhost:60879/api/Account/SSOLogon", content);
+                
+                //var content = new FormUrlEncodedContent(new[] 
+                //{
+                //    new KeyValuePair<string, string>("SAMLResponse", base64Encoded),
+                //    new KeyValuePair<string, string>("RelayState", relyingStateSerialised)
+                //});
+                //await httpClient.PostAsync("http://localhost:60879/api/Account/SSOLogon", content);
             }
             
             //throw new NotImplementedException();

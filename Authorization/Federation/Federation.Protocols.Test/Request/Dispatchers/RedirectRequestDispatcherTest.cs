@@ -71,7 +71,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             //context
             var outboundContext = new HttpRedirectRequestContext
             {
-                BindingContext = new HttpRedirectContext(authnRequestContext),
+                BindingContext = new RequestBindingContext(authnRequestContext),
                 DespatchDelegate = redirectUri =>
                 {
                     url = redirectUri.GetLeftPart(UriPartial.Path);

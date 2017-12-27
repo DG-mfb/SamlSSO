@@ -76,7 +76,6 @@
     <Compile Include="Protocols\IPostClauseBuilder.cs" />
     <Compile Include="Protocols\IRelayStateAppender.cs" />
     <Compile Include="Protocols\IRedirectClauseBuilder .cs" />
-    <Compile Include="Protocols\RequestBindingContext .cs" />
     <Compile Include="Protocols\BindingContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseOutboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseContext.cs" />

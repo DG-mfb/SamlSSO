@@ -19,7 +19,7 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
         {
             if (context == null)
                 throw new ArgumentNullException("context");
-            var requestContext = ((RequestBindingContext)context).AuthnRequestContext;
+            var requestContext = ((RequestPostBindingContext)context).AuthnRequestContext;
             var request = AuthnRequestHelper.BuildAuthnRequest(requestContext);
 
             var serialised = this._authnRequestSerialiser.Serialize(request);

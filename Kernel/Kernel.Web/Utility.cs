@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Text;
 
 namespace Kernel.Web
 {
@@ -64,6 +65,21 @@ namespace Kernel.Web
             }
 
             return false;
+        }
+
+        public static string UpperCaseUrlEncode(string value)
+        {
+            var result = new StringBuilder(value);
+            for (var i = 0; i < result.Length; i++)
+            {
+                if (result[i] == '%')
+                {
+                    result[++i] = char.ToUpper(result[i]);
+                    result[++i] = char.ToUpper(result[i]);
+                }
+            }
+
+            return result.ToString();
         }
     }
 }

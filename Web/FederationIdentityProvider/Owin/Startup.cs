@@ -10,6 +10,7 @@ using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Microsoft.Owin;
 using Owin;
+using Shared.Federtion.Forms;
 
 [assembly: OwinStartup(typeof(FederationIdentityProvider.Owin.Startup))]
 
@@ -35,7 +36,12 @@ namespace FederationIdentityProvider.Owin
                 a.Run(async c =>
                 {
                     var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
-                    var outboudContext = new HttpPostResponseOutboundContext { BindingContext = new BindingContext(new Dictionary<string, object>(), new Uri("http://localhost:60879/api/Account/SSOLogon")) };
+                    var outboudContext = new HttpPostResponseOutboundContext(new SAMLForm()) { BindingContext = new BindingContext(new Dictionary<string, object>(), new Uri("http://localhost:60879/api/Account/SSOLogon")) };
+                    outboudContext.DespatchDelegate = async form =>
+                    {
+                        await c.Response.WriteAsync(form.ToString());
+                        //return Task.CompletedTask;
+                    };
                     var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
                     var protocolHanlder = protocolFactory(Bindings.Http_Post);
                     await protocolHanlder.HandleOutbound(new SamlProtocolContext { RequestContext = outboudContext });

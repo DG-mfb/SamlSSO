@@ -73,7 +73,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             //context
             var outboundContext = new HttpPostRequestContext(new SAMLForm())
             {
-                BindingContext = new HttpPostContext(authnRequestContext),
+                BindingContext = new RequestPostBindingContext(authnRequestContext),
                 DespatchDelegate = form =>
                 {
                     url = form.ActionURL;

@@ -38,20 +38,5 @@ namespace Federation.Protocols
                 }
             }
         }
-
-        internal static string UpperCaseUrlEncode(string value)
-        {
-            var result = new StringBuilder(value);
-            for (var i = 0; i < result.Length; i++)
-            {
-                if (result[i] == '%')
-                {
-                    result[++i] = char.ToUpper(result[i]);
-                    result[++i] = char.ToUpper(result[i]);
-                }
-            }
-
-            return result.ToString();
-        }
     }
 }

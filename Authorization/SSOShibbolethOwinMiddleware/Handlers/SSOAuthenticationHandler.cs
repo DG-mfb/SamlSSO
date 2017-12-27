@@ -205,7 +205,7 @@ namespace SSOOwinMiddleware.Handlers
                 {
                     outboundContext = new HttpRedirectRequestContext
                     {
-                        BindingContext = new HttpRedirectContext(requestContext),
+                        BindingContext = new RequestBindingContext(requestContext),
                         DespatchDelegate = redirectUri =>
                         {
                             this.Response.Redirect(redirectUri.AbsoluteUri);
@@ -217,7 +217,7 @@ namespace SSOOwinMiddleware.Handlers
                 {
                     outboundContext = new HttpPostRequestContext(new SAMLForm())
                     {
-                        BindingContext = new HttpPostContext(requestContext),
+                        BindingContext = new RequestPostBindingContext(requestContext),
                         DespatchDelegate = (form) =>
                         {
                             Response.Write(form.ToString());
