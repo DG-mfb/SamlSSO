@@ -2,20 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Kernel.Federation.Protocols;
-using Kernel.Web;
 
-namespace Federation.Protocols.Bindings.HttpRedirect
+namespace Kernel.Federation.Protocols.Bindings.HttpRedirectBinding
 {
-    public class RequestBindingContext : HttpRedirectContext
-    {
-        public RequestBindingContext(AuthnRequestContext authnRequestContext)
-            : base(authnRequestContext.RelyingState, authnRequestContext.Destination)
-        {
-            this.AuthnRequestContext = authnRequestContext;
-        }
-        public AuthnRequestContext AuthnRequestContext { get; }
-    }
     public class HttpRedirectContext : BindingContext
     {
         public HttpRedirectContext(IDictionary<string, object> relayState, Uri destinationUri) : base(relayState, destinationUri)
@@ -29,16 +18,21 @@ namespace Federation.Protocols.Bindings.HttpRedirect
             return new Uri(url);
         }
 
-        internal string BuildQuesryString()
+        public virtual string BuildQuesryString()
         {
             var clauseBuilder = new StringBuilder();
             var query = base.RequestParts.Aggregate(clauseBuilder, (b, next) =>
             {
-                b.AppendFormat("{0}={1}&", next.Key, Uri.EscapeDataString(Utility.UpperCaseUrlEncode(next.Value)));
+                this.Format(b, next);
                 return b;
             }, r => r.ToString().TrimEnd('&'));
 
             return query;
+        }
+
+        protected virtual void Format(StringBuilder sb, KeyValuePair<string, string> value)
+        {
+            sb.AppendFormat("{0}={1}&", value.Key, Uri.EscapeDataString(value.Value));
         }
     }
 }

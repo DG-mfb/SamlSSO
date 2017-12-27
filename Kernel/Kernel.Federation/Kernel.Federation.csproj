@@ -72,7 +72,9 @@
     <Compile Include="MetaData\MetadataPublicationContext.cs" />
     <Compile Include="MetaData\MetadataPublicationProtocol.cs" />
     <Compile Include="Protocols\AuthnContext.cs" />
+    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\ISamlForm.cs" />
+    <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectContext.cs" />
     <Compile Include="Protocols\IPostClauseBuilder.cs" />
     <Compile Include="Protocols\IRelayStateAppender.cs" />
     <Compile Include="Protocols\IRedirectClauseBuilder .cs" />
