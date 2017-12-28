@@ -14,7 +14,8 @@ import { DOCUMENT } from '@angular/platform-browser';
 export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
-    returnUrl: string;
+	returnUrl: string;
+	state: string;
 
 	constructor( @Inject(DOCUMENT) private document: any,
 		private route: ActivatedRoute,
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
 		this.authenticationService.login(this.model.username, this.model.password)
 			.subscribe(
 			data => {
-				this.authenticationService.ssologin(this.model.username)
+				this.authenticationService.ssologin(this.model.username, this.returnUrl)
 					.subscribe(
 					d => {
 						this.document.location.href = 'http://localhost:60879/api/Account/SSOLogon';

@@ -65,7 +65,8 @@ namespace FederationIdentityProvider.Owin
                         HanlerAction = () =>
                         {
                             var id = Guid.NewGuid();
-                            c.Response.Redirect(String.Format("https://localhost:44342/client?{0}{1}", "sso/login?", id));
+                            var urlBase = c.Request.Uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
+                            c.Response.Redirect(String.Format("https://localhost:44342/client?returnUrl={0}{1}&state={2}", urlBase, "/api/sso/signon", id));
                         }
                     };
 
