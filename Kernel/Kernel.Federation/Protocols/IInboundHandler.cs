@@ -5,6 +5,6 @@ namespace Kernel.Federation.Protocols
 {
     public interface IInboundHandler<TResult>
     {
-        Task<TResult> Handle(HttpPostResponseContext context);
+        Task<TResult> Handle(SamlInboundContext context);
     }
 }

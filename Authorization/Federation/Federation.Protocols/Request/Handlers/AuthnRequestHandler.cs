@@ -15,7 +15,7 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.Handlers
 {
-    internal class AuthnRequestHandler
+    internal class AuthnRequestHandler : IInboundHandler<string>
     {
         private static ConcurrentDictionary<string, Uri> _relyingParties = new ConcurrentDictionary<string, Uri>();
         static AuthnRequestHandler()
@@ -92,6 +92,11 @@ namespace Federation.Protocols.Request.Handlers
 
             var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
             return validated;
+        }
+
+        public Task<string> Handle(SamlInboundContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

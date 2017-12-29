@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
-using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Federation.Protocols.Bindings.HttpPost
 {
@@ -27,9 +26,7 @@ namespace Federation.Protocols.Bindings.HttpPost
         public async Task HandleInbound(SamlInboundContext context)
         {
             var responseHandler = this._dependencyResolver.Resolve<IInboundHandler<ClaimsIdentity>>();
-            var httpPostContext = context as HttpPostResponseContext;
-            var result = await responseHandler.Handle(httpPostContext);
-            httpPostContext.Result = result;
+            var result = await responseHandler.Handle(context);
         }
     }
 }
