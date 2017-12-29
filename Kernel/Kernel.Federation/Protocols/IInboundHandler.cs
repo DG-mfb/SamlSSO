@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
-namespace Kernel.Federation.Protocols.Response
+namespace Kernel.Federation.Protocols
 {
-    public interface IReponseHandler<TResult>
+    public interface IInboundHandler<TResult>
     {
         Task<TResult> Handle(HttpPostResponseContext context);
     }

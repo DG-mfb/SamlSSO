@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Extensions;
@@ -11,12 +10,11 @@ using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Response;
 using Kernel.Federation.Tokens;
 using Kernel.Logging;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseHandler : IReponseHandler<ClaimsIdentity>
+    internal class ResponseHandler : IInboundHandler<ClaimsIdentity>
     {
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;

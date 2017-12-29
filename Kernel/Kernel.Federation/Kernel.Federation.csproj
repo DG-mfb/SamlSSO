@@ -128,7 +128,7 @@
     <Compile Include="Protocols\ISamlClauseBuilder.cs" />
     <Compile Include="Protocols\ISamlMessageDespatcher%271.cs" />
     <Compile Include="Protocols\ISamlMessageDespatcher.cs" />
-    <Compile Include="Protocols\Response\IReponseHandler.cs" />
+    <Compile Include="Protocols\IInboundHandler.cs" />
     <Compile Include="Protocols\Response\IResponseParser.cs" />
     <Compile Include="Protocols\Response\IResponseValidator.cs" />
     <Compile Include="Protocols\SamlOutboundContext%271.cs" />
