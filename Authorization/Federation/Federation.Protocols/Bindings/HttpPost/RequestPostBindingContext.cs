@@ -12,6 +12,5 @@ namespace Federation.Protocols.Bindings.HttpPost
             this.AuthnRequestContext = authnRequestContext;
         }
         public AuthnRequestContext AuthnRequestContext { get; }
-
     }
 }
