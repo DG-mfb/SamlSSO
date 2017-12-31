@@ -8,9 +8,9 @@ namespace Federation.Metadata.Consumer.Tests.Mock
     public class EntityDescriptorProviderMock
     {
         private static X509Certificate2 mockCert;
-        public static EntityDescriptor GetIdpEntityDescriptor()
+        public static EntityDescriptor GetIdpEntityDescriptor(string entityId)
         {
-            var descriptor = new EntityDescriptor();
+            var descriptor = new EntityDescriptor(new EntityId(entityId));
             var cert = EntityDescriptorProviderMock.GetMockCertificate();
             var idpRole = new IdentityProviderSingleSignOnDescriptor();
             idpRole.SingleSignOnServices.Add(new ProtocolEndpoint(new Uri(ProtocolBindings.HttpRedirect), new Uri("http://localhost:60879")));
@@ -18,9 +18,9 @@ namespace Federation.Metadata.Consumer.Tests.Mock
             return descriptor;
         }
 
-        public static EntityDescriptor GetSpEntityDescriptor()
+        public static EntityDescriptor GetSpEntityDescriptor(string entityId)
         {
-            var descriptor = new EntityDescriptor();
+            var descriptor = new EntityDescriptor(new EntityId(entityId));
             var cert = EntityDescriptorProviderMock.GetMockCertificate();
             var idpRole = new ServiceProviderSingleSignOnDescriptor();
             idpRole.AssertionConsumerServices.Add(0, new IndexedProtocolEndpoint(0, new Uri(ProtocolBindings.HttpRedirect), new Uri("http://localhost:60879")));
@@ -33,13 +33,13 @@ namespace Federation.Metadata.Consumer.Tests.Mock
             var descriptor = new EntitiesDescriptor();
             for (var i = 0; i < idpEntities; i++)
             {
-                var entityDesc = EntityDescriptorProviderMock.GetIdpEntityDescriptor();
+                var entityDesc = EntityDescriptorProviderMock.GetIdpEntityDescriptor(String.Format("IdpEntityId_{0}", i));
                 descriptor.ChildEntities.Add(entityDesc);
             }
 
             for (var i = 0; i < spEntities; i++)
             {
-                var entityDesc = EntityDescriptorProviderMock.GetSpEntityDescriptor();
+                var entityDesc = EntityDescriptorProviderMock.GetSpEntityDescriptor(String.Format("SPEntityId_{0}", i));
                 descriptor.ChildEntities.Add(entityDesc);
             }
             return descriptor;

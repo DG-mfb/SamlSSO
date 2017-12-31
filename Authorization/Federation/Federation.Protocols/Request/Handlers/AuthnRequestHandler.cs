@@ -80,7 +80,7 @@ namespace Federation.Protocols.Request.Handlers
             //if (handler == null)
             //    throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
             var spDescriptor = this._metadataHandler.GetRoleDescriptors<ServiceProviderSingleSignOnDescriptor>((EntityDescriptor)spMetadata)
-                .Single();
+                .Single().Roles.Single();
             return spDescriptor;
         }
         private bool VerifySignature(string request, X509Certificate2 certificate, ICertificateManager certificateManager)

@@ -187,7 +187,7 @@ namespace SSOOwinMiddleware.Handlers
                 if (handler == null)
                     throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
                 var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
-                    .Single();
+                    .Single().Roles.Single();
 
                 var federationPartyContextBuilder = this._resolver.Resolve<IAssertionPartyContextBuilder>();
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);

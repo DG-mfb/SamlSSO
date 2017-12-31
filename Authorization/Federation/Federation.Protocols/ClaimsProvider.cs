@@ -40,6 +40,15 @@ namespace Federation.Protocols
             var claims = base.CreateClaims(user.Item1);
             this._logProvider.LogMessage(String.Format("Identity claims built."));
 
+            var sessionData = user.Item1.Assertion.Statements.OfType<Saml2AuthenticationStatement>()
+                .Select(x => new { x.SessionIndex, x.SessionNotOnOrAfter, Issuer = user.Item1.Assertion.Issuer.Value})
+                .Where(x => !String.IsNullOrWhiteSpace(x.SessionIndex));
+            if (sessionData != null && sessionData.Count() > 0)
+            {
+                var issuer = this._tokenHandlerConfigurationProvider.GetTrustedIssuersConfiguration().IssuerNameRegistry.GetIssuerName(user.Item1.IssuerToken);
+                claims.AddClaim(new Claim(ClaimTypes.UserData, sessionData.First().SessionIndex, "string", issuer));
+            }
+
             IDictionary<string, ClaimsIdentity> identity = authenticationTypes.ToDictionary(k => k, v => claims);
             if (this.CustomClaimsProvider != null)
             {

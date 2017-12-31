@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.Linq;
+using Kernel.Federation.MetaData;
 using Shared.Federtion.Factories;
 
 namespace Federation.Metadata.FederationPartner.Handlers
 {
     internal abstract class MetadataHandler : IMetadataHandler
     {
-        public IEnumerable<IdentityProviderSingleSignOnDescriptor> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata)
+        public IEnumerable<EntityRoleDescriptor<IdentityProviderSingleSignOnDescriptor>> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata)
         {
             var descriptors = this.GetRoleDescriptors<IdentityProviderSingleSignOnDescriptor>(metadata);
 
@@ -26,6 +27,6 @@ namespace Federation.Metadata.FederationPartner.Handlers
             return endPoint.Location;
         }
 
-        protected abstract IEnumerable<TRole> GetRoleDescriptors<TRole>(MetadataBase metadata);
+        protected abstract IEnumerable<EntityRoleDescriptor<TRole>> GetRoleDescriptors<TRole>(MetadataBase metadata);
     }
 }

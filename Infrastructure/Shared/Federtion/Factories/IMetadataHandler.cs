@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Metadata;
+using Kernel.Federation.MetaData;
 
 namespace Shared.Federtion.Factories
 {
     public interface IMetadataHandler
     {
-        IEnumerable<IdentityProviderSingleSignOnDescriptor> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata);
+        IEnumerable<EntityRoleDescriptor<IdentityProviderSingleSignOnDescriptor>> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata);
         Uri GetIdentityProviderSingleSignOnServices(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding);
     }
 }

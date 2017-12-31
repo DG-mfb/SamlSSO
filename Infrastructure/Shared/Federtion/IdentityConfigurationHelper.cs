@@ -49,7 +49,7 @@ namespace Shared.Federtion
             if (identityRegister == null)
                 return;
 
-            var register = idps.SelectMany(x => x.Keys.SelectMany(y => y.KeyInfo.Select(cl =>
+            var register = idps.SelectMany(x => x.Roles, (d, r)=> new { d.EntityId, r}).SelectMany(x => x.r.Keys.SelectMany(y => y.KeyInfo.Select(cl =>
             {
                 var binaryClause = cl as BinaryKeyIdentifierClause;
                 if (binaryClause == null)
@@ -58,10 +58,10 @@ namespace Shared.Federtion
                 var certContent = binaryClause.GetBuffer();
                 var cert = new X509Certificate2(certContent);
                 return cert;
-            }))).Aggregate(identityRegister, (t, next) => 
+            })), (d, c)=> new { d.EntityId, c}).Aggregate(identityRegister, (t, next) => 
             {
-                if (!identityRegister.ConfiguredTrustedIssuers.Keys.Contains(next.Thumbprint))
-                    identityRegister.AddTrustedIssuer(certManager.GetCertificateThumbprint(next), entityId);
+                if (!identityRegister.ConfiguredTrustedIssuers.Keys.Contains(next.c.Thumbprint))
+                    identityRegister.AddTrustedIssuer(certManager.GetCertificateThumbprint(next.c), next.EntityId);
                 return t;
             });
         }

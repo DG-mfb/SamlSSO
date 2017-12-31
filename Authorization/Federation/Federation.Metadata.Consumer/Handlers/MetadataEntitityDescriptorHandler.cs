@@ -10,12 +10,13 @@ namespace Federation.Metadata.FederationPartner.Handlers
     /// </summary>
     internal class MetadataEntitityDescriptorHandler : MetadataHandler, IMetadataHandler<EntityDescriptor>
     {
-        public IEnumerable<TRole> GetRoleDescriptors<TRole>(EntityDescriptor metadata)
+        public IEnumerable<EntityRoleDescriptor<TRole>> GetRoleDescriptors<TRole>(EntityDescriptor metadata)
         {
-            return metadata.RoleDescriptors.OfType<TRole>();
+            return metadata.RoleDescriptors.OfType<TRole>()
+                .Aggregate(new EntityRoleDescriptor<TRole>(metadata.EntityId.Id), (r, next) => { r.Roles.Add(next); return r; }, r => new[] { r });
         }
         
-        protected override IEnumerable<TRole> GetRoleDescriptors<TRole>(MetadataBase metadata)
+        protected override IEnumerable<EntityRoleDescriptor<TRole>> GetRoleDescriptors<TRole>(MetadataBase metadata)
         {
             return this.GetRoleDescriptors<TRole>((EntityDescriptor)metadata);
         }
