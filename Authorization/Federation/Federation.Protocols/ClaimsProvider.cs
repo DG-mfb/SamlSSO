@@ -53,7 +53,7 @@ namespace Federation.Protocols
             if (this.CustomClaimsProvider != null)
             {
                 this._logProvider.LogMessage(String.Format("Customising Identity claims."));
-                identity = await this.CustomClaimsProvider.GenerateUserIdentitiesAsync(new ClaimsIdentityContext(claims, user.Item2.RelayState), authenticationTypes);
+                identity = await this.CustomClaimsProvider.GenerateUserIdentitiesAsync(new ClaimsIdentityContext(claims, user.Item1.Assertion, user.Item2.RelayState), authenticationTypes);
             }
             
             return identity;
