@@ -46,7 +46,7 @@ namespace Federation.Protocols
             if (sessionData != null && sessionData.Count() > 0)
             {
                 var issuer = this._tokenHandlerConfigurationProvider.GetTrustedIssuersConfiguration().IssuerNameRegistry.GetIssuerName(user.Item1.IssuerToken);
-                claims.AddClaim(new Claim(ClaimTypes.UserData, sessionData.First().SessionIndex, "http://www.w3.org/2001/XMLSchema#string", issuer));
+                claims.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sessionIndex", sessionData.First().SessionIndex, "http://www.w3.org/2001/XMLSchema#string", issuer));
             }
 
             IDictionary<string, ClaimsIdentity> identity = authenticationTypes.ToDictionary(k => k, v => claims);
