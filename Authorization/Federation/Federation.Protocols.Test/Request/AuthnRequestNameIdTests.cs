@@ -22,7 +22,7 @@ namespace Federation.Protocols.Test.Request
             var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Transient);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            var requestConfiguration = federationContex.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
+            var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             //ACT
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
@@ -55,7 +55,7 @@ namespace Federation.Protocols.Test.Request
             var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Persistent);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient), new Uri(NameIdentifierFormats.Persistent) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            var requestConfiguration = federationContex.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
+            var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             //ACT
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
@@ -88,7 +88,7 @@ namespace Federation.Protocols.Test.Request
             var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Windows);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient), new Uri(NameIdentifierFormats.Persistent) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            var requestConfiguration = federationContex.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
+            var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             //ACT
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
@@ -121,7 +121,7 @@ namespace Federation.Protocols.Test.Request
             var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Persistent);
             var supportedNameIdentifierFormats = new List<Uri>();
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            var requestConfiguration = federationContex.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
+            var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             //ACT
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
@@ -154,7 +154,7 @@ namespace Federation.Protocols.Test.Request
             var federationContex = federationPartyContextBuilder.BuildContext("local", NameIdentifierFormats.Encrypted);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient), new Uri(NameIdentifierFormats.Persistent) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            var requestConfiguration = federationContex.GetRequestConfigurationFromContext(Guid.NewGuid().ToString());
+            var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             //ACT
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);

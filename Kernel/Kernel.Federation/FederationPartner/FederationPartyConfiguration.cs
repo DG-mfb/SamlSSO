@@ -87,7 +87,7 @@ namespace Kernel.Federation.FederationPartner
             this.InboundBinding = new Uri(Bindings.Http_Post);
             this.IssuingAuthority = new IssuingAuthority(federationPartyId);
         }
-        public AuthnRequestConfiguration GetRequestConfigurationFromContext(string requestId)
+        public AuthnRequestConfiguration GetAuthnRequestConfigurationFromContext(string requestId)
         {
             if (this.MetadataContext == null)
                 throw new ArgumentNullException("metadataContext");
