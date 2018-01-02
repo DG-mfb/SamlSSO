@@ -26,12 +26,12 @@ namespace Federation.Protocols.Request.Handlers
 
         private readonly IRelayStateHandler _relayStateHandler;
         private readonly ICertificateManager _certificateManager;
-        private readonly IAuthnRequestSerialiser _authnRequestSerialiser;
+        private readonly IRequestSerialiser _authnRequestSerialiser;
         private readonly IConfigurationRetriever<MetadataBase> _configurationRetriever;
         private readonly IMetadataHandler<EntityDescriptor> _metadataHandler;
         public AuthnRequestHandler(IRelayStateHandler relayStateHandler, 
             ICertificateManager certificateManager,
-            IAuthnRequestSerialiser authnRequestSerialiser,
+            IRequestSerialiser authnRequestSerialiser,
             IConfigurationRetriever<MetadataBase> configurationRetriever,
             IMetadataHandler<EntityDescriptor> metadataHandler)
         {

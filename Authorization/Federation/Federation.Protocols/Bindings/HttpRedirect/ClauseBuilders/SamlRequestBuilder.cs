@@ -8,8 +8,8 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
 {
     internal class SamlRequestBuilder : IRedirectClauseBuilder
     {
-        private readonly IAuthnRequestSerialiser _authnRequestSerialiser;
-        public SamlRequestBuilder(IAuthnRequestSerialiser authnRequestSerialiser)
+        private readonly IRequestSerialiser _authnRequestSerialiser;
+        public SamlRequestBuilder(IRequestSerialiser authnRequestSerialiser)
         {
             this._authnRequestSerialiser = authnRequestSerialiser;
         }

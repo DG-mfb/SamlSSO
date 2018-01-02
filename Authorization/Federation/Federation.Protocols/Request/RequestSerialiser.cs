@@ -12,13 +12,13 @@ using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Request
 {
-    internal class AuthnRequestSerialiser : IAuthnRequestSerialiser
+    internal class RequestSerialiser : IRequestSerialiser
     {
         private readonly IXmlSerialiser _serialiser;
         private readonly IMessageEncoding _messageEncoding;
         private readonly ILogProvider _logProvider;
 
-        public AuthnRequestSerialiser(IXmlSerialiser serialiser, IMessageEncoding messageEncoding, ILogProvider logProvider)
+        public RequestSerialiser(IXmlSerialiser serialiser, IMessageEncoding messageEncoding, ILogProvider logProvider)
         {
             this._serialiser = serialiser;
             this._messageEncoding = messageEncoding;
@@ -34,7 +34,7 @@ namespace Federation.Protocols.Request
             return encodedEscaped;
         }
 
-        async Task<T> IAuthnRequestSerialiser.DecompressAndDeserialize<T>(string data)
+        async Task<T> IRequestSerialiser.DecompressAndDeserialize<T>(string data)
         {
             var unescaped = Uri.UnescapeDataString(data);
             var decompressed = await this._messageEncoding.DecodeMessage(unescaped);

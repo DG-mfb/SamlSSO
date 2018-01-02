@@ -119,7 +119,7 @@
     <Compile Include="Protocols\AuthnRequestContext.cs" />
     <Compile Include="FederationPartner\IConfigurationManager.cs" />
     <Compile Include="FederationPartner\IConfigurationRetriever.cs" />
-    <Compile Include="Protocols\IAuthnRequestSerialiser.cs" />
+    <Compile Include="Protocols\IRequestSerialiser.cs" />
     <Compile Include="Protocols\IBindingHandler.cs" />
     <Compile Include="Protocols\IMessageEncoding.cs" />
     <Compile Include="Protocols\IProtocolHandler.cs" />

@@ -50,7 +50,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<ConditionsValidator>(Lifetime.Transient);
             dependencyResolver.RegisterType<TokenSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<SecurityTokenValidator>(Lifetime.Transient);
-            dependencyResolver.RegisterType<AuthnRequestSerialiser>(Lifetime.Transient);
+            dependencyResolver.RegisterType<RequestSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<PostRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<RedirectRequestDispatcher>(Lifetime.Transient);

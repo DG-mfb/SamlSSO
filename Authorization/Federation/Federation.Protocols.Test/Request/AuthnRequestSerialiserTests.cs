@@ -31,7 +31,7 @@ namespace Federation.Protocols.Test.Request
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
-            var serialiser = new AuthnRequestSerialiser(xmlSerialiser, encoder, logger) as IAuthnRequestSerialiser;
+            var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
 
@@ -57,7 +57,7 @@ namespace Federation.Protocols.Test.Request
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
-            var serialiser = new AuthnRequestSerialiser(xmlSerialiser, encoder, logger) as ISerializer;
+            var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as ISerializer;
             AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
 
