@@ -9,6 +9,11 @@ namespace Federation.Metadata.FederationPartner.Handlers
 {
     internal abstract class MetadataHandler : IMetadataHandler
     {
+        public Uri GetIdentityProviderSingleLogoutService(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<EntityRoleDescriptor<IdentityProviderSingleSignOnDescriptor>> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata)
         {
             var descriptors = this.GetRoleDescriptors<IdentityProviderSingleSignOnDescriptor>(metadata);

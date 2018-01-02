@@ -6,11 +6,11 @@ namespace Federation.Protocols.Bindings.HttpPost
 {
     public class RequestPostBindingContext : HttpPostContext
     {
-        public RequestPostBindingContext(AuthnRequestContext authnRequestContext)
+        public RequestPostBindingContext(RequestContext authnRequestContext)
             : base(authnRequestContext.RelyingState, authnRequestContext.Destination, new SAMLForm())
         {
-            this.AuthnRequestContext = authnRequestContext;
+            this.RequestContext = authnRequestContext;
         }
-        public AuthnRequestContext AuthnRequestContext { get; }
+        public RequestContext RequestContext { get; }
     }
 }

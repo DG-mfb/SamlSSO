@@ -7,7 +7,7 @@ namespace WebApi.CustomCofiguration
 {
     public class RelayStateCustomAppender : IRelayStateAppender
     {
-        public Task BuildRelayState(AuthnRequestContext authnRequestContext)
+        public Task BuildRelayState(RequestContext authnRequestContext)
         {
             var owinRequest = authnRequestContext as OwinAuthnRequestContext;
             if (owinRequest != null)

@@ -1,8 +1,23 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.IdentityModel.Metadata;
+using System.Threading;
+using System.Threading.Tasks;
 using Kernel.DependancyResolver;
+using Kernel.Federation.FederationPartner;
+using Kernel.Federation.MetaData;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
+using Shared.Federtion.Factories;
+using Kernel.Federation.Protocols;
+using Kernel.Federation.MetaData.Configuration;
+using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
+using Shared.Federtion.Forms;
+using Federation.Protocols.Bindings.HttpPost;
+using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
+using Federation.Protocols.Bindings.HttpRedirect;
+using Microsoft.Owin;
 
 namespace SLOOwinMiddleware.Handlers
 {
@@ -27,9 +42,80 @@ namespace SLOOwinMiddleware.Handlers
             return Task.FromResult<AuthenticationTicket>(null);
         }
 
-        protected override Task ApplyResponseGrantAsync()
+        protected async override Task ApplyResponseGrantAsync()
         {
-            return base.ApplyResponseGrantAsync();
+            var signout = this.Helper.LookupSignOut(this.Options.AuthenticationType, this.Options.AuthenticationMode);
+            if (signout == null)
+                return;
+            try
+            {
+                this._logger.WriteInformation(String.Format("Applying response grand for authenticationType: {0}, authenticationMode: {1}. Path: {2}", this.Options.AuthenticationType, this.Options.AuthenticationMode, this.Request.Path));
+                var discoveryService = this._resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
+                var federationPartyId = discoveryService.ResolveParnerId(Request.Context);
+
+                var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
+                var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new CancellationToken());
+
+                if (configuration == null)
+                    throw new InvalidOperationException("Cannot obtain metadata.");
+                var metadataType = configuration.GetType();
+                var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
+                var handler = this._resolver.Resolve(handlerType) as IMetadataHandler;
+                if (handler == null)
+                    throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+                var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
+                    .Single().Roles.Single();
+
+                var federationPartyContextBuilder = this._resolver.Resolve<IAssertionPartyContextBuilder>();
+                var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
+
+                var signInUrl = handler.GetIdentityProviderSingleLogoutService(idp, federationContext.OutboundBinding);
+
+                var requestContext = new OwinLogoutRequestContext(Context, signInUrl, base.Request.Uri, federationContext);
+                var relayStateAppenders = this._resolver.ResolveAll<IRelayStateAppender>();
+                foreach (var appender in relayStateAppenders)
+                {
+                    await appender.BuildRelayState(requestContext);
+                }
+                SamlOutboundContext outboundContext = null;
+                if (federationContext.OutboundBinding == new Uri(Bindings.Http_Redirect))
+                {
+                    outboundContext = new HttpRedirectRequestContext
+                    {
+                        BindingContext = new RequestBindingContext(requestContext),
+                        DespatchDelegate = redirectUri =>
+                        {
+                            this.Response.Redirect(redirectUri.AbsoluteUri);
+                            return Task.CompletedTask;
+                        }
+                    };
+                }
+                else
+                {
+                    outboundContext = new HttpPostRequestContext(new SAMLForm())
+                    {
+                        BindingContext = new RequestPostBindingContext(requestContext),
+                        DespatchDelegate = (form) =>
+                        {
+                            Response.Write(form.ToString());
+                            return Task.CompletedTask;
+                        },
+                    };
+                }
+                var protocolContext = new SamlProtocolContext
+                {
+                    RequestContext = outboundContext
+                };
+                var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
+                var protocolHanlder = protocolFactory(federationContext.OutboundBinding.AbsoluteUri);
+
+                await protocolHanlder.HandleOutbound(protocolContext);
+            }
+            catch (Exception ex)
+            {
+                this._logger.WriteError("An exception has been thrown when applying challenge", ex);
+                throw;
+            }
         }
     }
 }

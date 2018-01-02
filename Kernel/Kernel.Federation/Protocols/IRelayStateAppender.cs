@@ -5,6 +5,6 @@ namespace Kernel.Federation.Protocols
 {
     public interface IRelayStateAppender
     {
-        Task BuildRelayState(AuthnRequestContext authnRequestContext);
+        Task BuildRelayState(RequestContext authnRequestContext);
     }
 }

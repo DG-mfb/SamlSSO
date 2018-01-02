@@ -30,7 +30,7 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
             if (context == null)
                 throw new ArgumentNullException("context");
 
-            var requestContext = ((RequestPostBindingContext)context).AuthnRequestContext;
+            var requestContext = ((RequestPostBindingContext)context).RequestContext;
             
             var descriptor = requestContext.FederationPartyContext.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors
                 .First();

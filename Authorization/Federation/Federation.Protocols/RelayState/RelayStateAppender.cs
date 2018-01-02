@@ -18,7 +18,7 @@ namespace Federation.Protocols.RelayState
             this._logProvider = logProvider;
         }
 
-        public Task BuildRelayState(AuthnRequestContext authnRequestContext)
+        public Task BuildRelayState(RequestContext authnRequestContext)
         {
             if (authnRequestContext == null)
                 throw new ArgumentNullException();
