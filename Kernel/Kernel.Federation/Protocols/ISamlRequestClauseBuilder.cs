@@ -2,7 +2,7 @@
 
 namespace Kernel.Federation.Protocols
 {
-    public interface IAuthnRequestClauseBuilder<TRequest>
+    public interface ISamlRequestClauseBuilder<TRequest>
     {
         void Build(TRequest request, AuthnRequestConfiguration configuration);
     }

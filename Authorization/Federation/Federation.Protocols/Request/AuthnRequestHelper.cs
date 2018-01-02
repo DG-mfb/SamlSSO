@@ -8,9 +8,9 @@ namespace Federation.Protocols.Request
 {
     internal class AuthnRequestHelper
     {
-        internal static Func<IEnumerable<IAuthnRequestClauseBuilder<AuthnRequest>>> GetBuilders { get; set; }
+        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest>>> GetBuilders { get; set; }
 
-        internal static Func<Type, bool> Condition = t => !t.IsAbstract && !t.IsInterface && typeof(IAuthnRequestClauseBuilder<AuthnRequest>).IsAssignableFrom(t);
+        internal static Func<Type, bool> Condition = t => !t.IsAbstract && !t.IsInterface && typeof(ISamlRequestClauseBuilder<AuthnRequest>).IsAssignableFrom(t);
         internal static AuthnRequest BuildAuthnRequest(AuthnRequestContext authnRequestContext)
         {
             if (AuthnRequestHelper.GetBuilders == null)
@@ -20,12 +20,9 @@ namespace Federation.Protocols.Request
             
             var request = new AuthnRequest
             {
-                IsPassive = requestConfig.IsPassive,
-                ForceAuthn = requestConfig.ForceAuthn,
-                Destination = authnRequestContext.Destination.AbsoluteUri,
-                Version = requestConfig.Version,
-                IssueInstant = DateTime.UtcNow
+                Destination = authnRequestContext.Destination.AbsoluteUri, 
             };
+
             if(authnRequestContext.SupportedNameIdentifierFormats != null)
             {
                 authnRequestContext.SupportedNameIdentifierFormats.Aggregate(requestConfig.SupportedNameIdentifierFormats, (t, next) => 

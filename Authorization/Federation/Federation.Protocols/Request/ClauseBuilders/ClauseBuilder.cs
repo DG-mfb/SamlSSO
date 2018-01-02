@@ -4,7 +4,7 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.ClauseBuilders
 {
-    internal abstract class ClauseBuilder : IAuthnRequestClauseBuilder<AuthnRequest>
+    internal abstract class ClauseBuilder : ISamlRequestClauseBuilder<AuthnRequest>
     {
         public void Build(AuthnRequest request, AuthnRequestConfiguration configuration)
         {

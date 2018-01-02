@@ -84,7 +84,7 @@
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostRequestContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectInboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectRequestContext.cs" />
-    <Compile Include="Protocols\IAuthnRequestClauseBuilder.cs" />
+    <Compile Include="Protocols\ISamlRequestClauseBuilder.cs" />
     <Compile Include="FederationPartner\IAssertionPartyContextBuilder.cs" />
     <Compile Include="FederationPartner\FederationPartyConfiguration.cs" />
     <Compile Include="MetaData\Configuration\Cryptography\FileSystemStore.cs" />
