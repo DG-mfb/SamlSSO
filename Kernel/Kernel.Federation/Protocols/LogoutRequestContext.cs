@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Kernel.Federation.FederationPartner;
 
 namespace Kernel.Federation.Protocols
@@ -11,7 +10,5 @@ namespace Kernel.Federation.Protocols
         {
             
         }
-        
-        public ICollection<Uri> SupportedNameIdentifierFormats { get; }
     }
 }

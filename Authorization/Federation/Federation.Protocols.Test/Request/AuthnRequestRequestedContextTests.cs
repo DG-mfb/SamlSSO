@@ -42,10 +42,10 @@ namespace Federation.Protocols.Test.Request
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
             var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
-            AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             
             //ACT
-            var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
+            var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
 
             //ASSERT
             Assert.NotNull(authnRequest);
@@ -71,9 +71,9 @@ namespace Federation.Protocols.Test.Request
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
             var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
-            AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             //ACT
-            var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
+            var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
 
             //ASSERT
             Assert.NotNull(authnRequest);

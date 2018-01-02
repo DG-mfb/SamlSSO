@@ -32,8 +32,8 @@ namespace Federation.Protocols.Test.Request
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
-            AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
-            var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
 
             //ACT
             var serialised = await serialiser.SerializeAndCompress(authnRequest);
@@ -58,8 +58,8 @@ namespace Federation.Protocols.Test.Request
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as ISerializer;
-            AuthnRequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
-            var authnRequest = AuthnRequestHelper.BuildAuthnRequest(authnRequestContext);
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
 
             //ACT
             var serialised = serialiser.Serialize(authnRequest);

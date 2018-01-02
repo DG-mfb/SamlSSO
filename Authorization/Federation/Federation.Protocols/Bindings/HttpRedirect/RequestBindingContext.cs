@@ -9,12 +9,12 @@ namespace Federation.Protocols.Bindings.HttpRedirect
 {
     public class RequestBindingContext : HttpRedirectContext
     {
-        public RequestBindingContext(AuthnRequestContext authnRequestContext)
-            : base(authnRequestContext.RelyingState, authnRequestContext.Destination)
+        public RequestBindingContext(RequestContext requestContext)
+            : base(requestContext.RelyingState, requestContext.Destination)
         {
-            this.AuthnRequestContext = authnRequestContext;
+            this.RequestContext = requestContext;
         }
-        public AuthnRequestContext AuthnRequestContext { get; }
+        public RequestContext RequestContext { get; }
 
         protected override void Format(StringBuilder sb, KeyValuePair<string, string> value)
         {

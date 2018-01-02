@@ -23,7 +23,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var httpRedirectContext = context as RequestBindingContext;
             if (httpRedirectContext == null)
                 throw new InvalidOperationException(String.Format("Binding context must be of type:{0}. It was: {1}", typeof(RequestBindingContext).Name, context.GetType().Name));
-            var authnRequest = AuthnRequestHelper.BuildAuthnRequest(httpRedirectContext.AuthnRequestContext);
+            var authnRequest = RequestHelper.BuildRequest(httpRedirectContext.RequestContext);
 
             var serialised = this._authnRequestSerialiser.Serialize(authnRequest);
             context.RequestParts.Add(HttpRedirectBindingConstants.SamlRequest, serialised);

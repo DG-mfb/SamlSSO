@@ -30,7 +30,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
             var httpRedirectContext = context as RequestBindingContext;
             if (httpRedirectContext == null)
                 throw new InvalidOperationException(String.Format("Binding context must be of type:{0}. It was: {1}", typeof(RequestBindingContext).Name, context.GetType().Name));
-            var federationParty = httpRedirectContext.AuthnRequestContext.FederationPartyContext;
+            var federationParty = httpRedirectContext.RequestContext.FederationPartyContext;
             var metadataContext = federationParty.MetadataContext;
             var entityDescriptor = metadataContext.EntityDesriptorConfiguration;
             var spDescriptor = entityDescriptor.SPSSODescriptors
