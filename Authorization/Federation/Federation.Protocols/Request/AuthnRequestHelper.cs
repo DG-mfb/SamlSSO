@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Shared.Federtion.Models;
 
@@ -8,9 +9,9 @@ namespace Federation.Protocols.Request
 {
     internal class AuthnRequestHelper
     {
-        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest>>> GetBuilders { get; set; }
+        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetBuilders { get; set; }
 
-        internal static Func<Type, bool> Condition = t => !t.IsAbstract && !t.IsInterface && typeof(ISamlRequestClauseBuilder<AuthnRequest>).IsAssignableFrom(t);
+        internal static Func<Type, bool> Condition = t => !t.IsAbstract && !t.IsInterface && typeof(ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>).IsAssignableFrom(t);
         internal static AuthnRequest BuildAuthnRequest(AuthnRequestContext authnRequestContext)
         {
             if (AuthnRequestHelper.GetBuilders == null)

@@ -3,7 +3,7 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.ClauseBuilders
 {
-    internal class AssertionConsumerServiceClauseBuilder : ClauseBuilder
+    internal class AssertionConsumerServiceClauseBuilder : AutnRequestClauseBuilder
     {
         protected override void BuildInternal(AuthnRequest request, AuthnRequestConfiguration configuration)
         {

@@ -4,7 +4,7 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.ClauseBuilders
 {
-    internal class CommomAttributesBuilder : ClauseBuilder
+    internal class CommomAttributesBuilder : AutnRequestClauseBuilder
     {
         protected override void BuildInternal(AuthnRequest request, AuthnRequestConfiguration configuration)
         {

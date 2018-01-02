@@ -6,7 +6,7 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.ClauseBuilders
 {
-    internal class NameIdPolicyClauseBuilder : ClauseBuilder
+    internal class NameIdPolicyClauseBuilder : AutnRequestClauseBuilder
     {
         protected override void BuildInternal(AuthnRequest request, AuthnRequestConfiguration configuration)
         {

@@ -72,7 +72,7 @@
     <Compile Include="Request\ClauseBuilders\RequestedAuthContextBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\SubjectClauseBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\NameIdPolicyClauseBuilder.cs" />
-    <Compile Include="Request\ClauseBuilders\ClauseBuilder.cs" />
+    <Compile Include="Request\ClauseBuilders\AutnRequestClauseBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\AssertionConsumerServiceClauseBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\IdClauseBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\AudienceRestrictionClauseBuilder.cs" />

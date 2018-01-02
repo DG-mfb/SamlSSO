@@ -5,10 +5,11 @@ using Kernel.Federation.MetaData.Configuration.EntityDescriptors;
 
 namespace Kernel.Federation.FederationPartner
 {
-    public class AuthnRequestConfiguration
+    public class AuthnRequestConfiguration : RequestConfiguration
     {
         private readonly EntityDesriptorConfiguration _entityDesriptorConfiguration;
         public AuthnRequestConfiguration(string requestId, EntityDesriptorConfiguration entityDesriptorConfiguration, FederationPartyAuthnRequestConfiguration federationPartyAuthnRequestConfiguration)
+            :base(requestId, federationPartyAuthnRequestConfiguration.Version)
         {
             if (entityDesriptorConfiguration == null)
                 throw new ArgumentNullException("entityDesriptorConfiguration");
@@ -18,13 +19,11 @@ namespace Kernel.Federation.FederationPartner
 
             this._entityDesriptorConfiguration = entityDesriptorConfiguration;
             this.EntityId = entityDesriptorConfiguration.EntityId;
-            this.RequestId = requestId;
             this.AssertionConsumerServiceIndex = (ushort)entityDesriptorConfiguration.SPSSODescriptors.SelectMany(x => x.AssertionConsumerServices)
                 .Single(x => x.IsDefault.GetValueOrDefault()).Index;
             this.AudienceRestriction = new List<string> { entityDesriptorConfiguration.EntityId };
             this.ForceAuthn = federationPartyAuthnRequestConfiguration.ForceAuthn;
             this.IsPassive = federationPartyAuthnRequestConfiguration.IsPassive;
-            this.Version = federationPartyAuthnRequestConfiguration.Version;
             this.EncryptNameId = federationPartyAuthnRequestConfiguration.DefaultNameId.EncryptNameId;
             this.AllowCreateNameIdPolicy = federationPartyAuthnRequestConfiguration.DefaultNameId.AllowCreate;
             this.SupportedNameIdentifierFormats = new List<Uri>();
@@ -40,9 +39,8 @@ namespace Kernel.Federation.FederationPartner
         public bool EncryptNameId { get; }
         public bool AllowCreateNameIdPolicy { get; }
         public ushort AssertionConsumerServiceIndex { get; }
-        public string RequestId { get; }
+        
         public string EntityId { get; }
-        public string Version { get; }
         public ICollection<Uri> SupportedNameIdentifierFormats { get; }
         public RequestedAuthnContextConfiguration RequestedAuthnContextConfiguration { get; }
         public ScopingConfiguration ScopingConfiguration { get; }
