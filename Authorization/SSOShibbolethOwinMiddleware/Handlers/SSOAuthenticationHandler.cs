@@ -123,42 +123,6 @@ namespace SSOOwinMiddleware.Handlers
             }
         }
 
-        private async Task<bool> TryTokenEndpointResponse(AuthenticationTokenCreateContext context, IDictionary<string, object> relayState)
-        {
-            IAuthorizationServerProvider authorizationServerProvider;
-            if (!this._resolver.TryResolve<IAuthorizationServerProvider>(out authorizationServerProvider))
-                return false;
-            var sSOTokenEndpointResponseContext = new SSOTokenEndpointResponseContext(base.Context, base.Options, context.Token, relayState);
-            await authorizationServerProvider.TokenEndpointResponse(sSOTokenEndpointResponseContext);
-            return sSOTokenEndpointResponseContext.IsRequestCompleted;
-        }
-
-        private bool TryCreateToken(AuthenticationTicket ticket, IDictionary<string, object> relayState, out AuthenticationTokenCreateContext context)
-        {
-            context = null;
-            if (!relayState.ContainsKey(RelayStateContstants.FederationPartyId))
-                throw new InvalidOperationException("Federation party id is not in the relay state.");
-
-            var federationPartyId = relayState[RelayStateContstants.FederationPartyId].ToString();
-            var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
-            var configurationTask = configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
-            configurationTask.Wait();
-            var configuration = configurationTask.Result;
-
-            //if no configuration for the parner return, no need to throw an exception.
-            if (configuration == null || !configuration.CreateToken)
-                return false;
-            ISecureDataFormat<AuthenticationTicket> dataFormat;
-            if (!this._resolver.TryResolve<ISecureDataFormat<AuthenticationTicket>>(out dataFormat))
-                return false;
-            context = new AuthenticationTokenCreateContext(base.Context, dataFormat, ticket);
-            IAuthenticationTokenProvider authenticationTokenProvider;
-            if (!this._resolver.TryResolve<IAuthenticationTokenProvider>(out authenticationTokenProvider))
-                return false;
-            authenticationTokenProvider.Create(context);
-            return true;
-        }
-
         protected override async Task ApplyResponseChallengeAsync()
         {
             if (this.Response.StatusCode != 401)
@@ -239,6 +203,42 @@ namespace SSOOwinMiddleware.Handlers
                 this._logger.WriteError("An exception has been thrown when applying challenge", ex);
                 throw;
             }
+        }
+
+        private async Task<bool> TryTokenEndpointResponse(AuthenticationTokenCreateContext context, IDictionary<string, object> relayState)
+        {
+            IAuthorizationServerProvider authorizationServerProvider;
+            if (!this._resolver.TryResolve<IAuthorizationServerProvider>(out authorizationServerProvider))
+                return false;
+            var sSOTokenEndpointResponseContext = new SSOTokenEndpointResponseContext(base.Context, base.Options, context.Token, relayState);
+            await authorizationServerProvider.TokenEndpointResponse(sSOTokenEndpointResponseContext);
+            return sSOTokenEndpointResponseContext.IsRequestCompleted;
+        }
+
+        private bool TryCreateToken(AuthenticationTicket ticket, IDictionary<string, object> relayState, out AuthenticationTokenCreateContext context)
+        {
+            context = null;
+            if (!relayState.ContainsKey(RelayStateContstants.FederationPartyId))
+                throw new InvalidOperationException("Federation party id is not in the relay state.");
+
+            var federationPartyId = relayState[RelayStateContstants.FederationPartyId].ToString();
+            var configurationManager = this._resolver.Resolve<IConfigurationManager<AuthorizationServerConfiguration>>();
+            var configurationTask = configurationManager.GetConfigurationAsync(federationPartyId, CancellationToken.None);
+            configurationTask.Wait();
+            var configuration = configurationTask.Result;
+
+            //if no configuration for the parner return, no need to throw an exception.
+            if (configuration == null || !configuration.CreateToken)
+                return false;
+            ISecureDataFormat<AuthenticationTicket> dataFormat;
+            if (!this._resolver.TryResolve<ISecureDataFormat<AuthenticationTicket>>(out dataFormat))
+                return false;
+            context = new AuthenticationTokenCreateContext(base.Context, dataFormat, ticket);
+            IAuthenticationTokenProvider authenticationTokenProvider;
+            if (!this._resolver.TryResolve<IAuthenticationTokenProvider>(out authenticationTokenProvider))
+                return false;
+            authenticationTokenProvider.Create(context);
+            return true;
         }
     }
 }
