@@ -15,7 +15,6 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
         {
             this._certificateManager = certificateManager;
         }
-
         
         protected override Task<bool> ValidateInternal(SamlRequestValidationContext context)
         {

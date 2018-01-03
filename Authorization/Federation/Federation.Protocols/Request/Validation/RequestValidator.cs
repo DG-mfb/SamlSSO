@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Federation.Protocols.Request.Validation.ValidationRules;
@@ -8,10 +7,11 @@ using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Federation.Protocols.Request;
 using Kernel.Logging;
 using Kernel.Validation;
+using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.Validation
 {
-    internal class RequestValidator : IRequestValidator<HttpRedirectInboundContext>
+    internal class RequestValidator : IRequestValidator<AuthnRequest>
     {
         private readonly ILogProvider _logProvider;
         private readonly RuleFactory _ruleFactory;
@@ -25,10 +25,10 @@ namespace Federation.Protocols.Request.Validation
             throw new NotImplementedException();
         }
 
-        public async Task ValidateIRequest(HttpRedirectInboundContext context, IDictionary<string, string> form)
+        public async Task ValidateIRequest(AuthnRequest request, HttpRedirectInboundContext context)
         {
             this._logProvider.LogMessage("Validating saml response.");
-            var validationContext = new SamlRequestValidationContext(context, form);
+            var validationContext = new SamlRequestValidationContext(context, request);
             var rules = this._ruleFactory.GetValidationRules();
             var seed = new Func<ValidationContext, Task>(c =>
             {
