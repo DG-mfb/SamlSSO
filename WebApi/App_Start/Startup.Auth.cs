@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using SLOOwinMiddleware.Extensions;
 using SSOOwinMiddleware.Extensions;
 
 namespace WebApi
@@ -27,10 +28,13 @@ namespace WebApi
             app.UseOAuthBearerTokens(OAuthOptions);
 
             //SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, assertionEndpoints: "/api/Account/SSOLogon")
-            SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app)
-           .UseMetadataMiddleware("/sp/metadata", MetadataType.SP, resolver)
-           .RegisterDiscoveryService(resolver)
-           .RegisterLogger(resolver);
+            SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app);
+            SSOAuthenticationExtensions.UseMetadataMiddleware(app, "/sp/metadata", MetadataType.SP, resolver);
+            SSOAuthenticationExtensions.RegisterDiscoveryService(app, resolver);
+            SSOAuthenticationExtensions.RegisterLogger(app, resolver);
+
+           SLOAuthenticationExtensions.UseSaml2SLOAuthentication(app);
+           //SLOAuthenticationExtensions.RegisterLogger(app,resolver);
         }
     }
 }

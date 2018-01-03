@@ -11,7 +11,7 @@ using SLOOwinMiddleware.Logging;
 
 namespace SLOOwinMiddleware.Extensions
 {
-    public static class SSOAuthenticationExtensions
+    public static class SLOAuthenticationExtensions
     {
         public static IAppBuilder UseSaml2SLOAuthentication(this IAppBuilder app, SLOAuthenticationOptions options)
         {
@@ -55,7 +55,7 @@ namespace SLOOwinMiddleware.Extensions
             return app;
         }
 
-        public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app)
+        public static IAppBuilder UseSaml2SLOAuthentication(this IAppBuilder app)
         {
             var options = new SLOAuthenticationOptions();
            
@@ -70,12 +70,12 @@ namespace SLOOwinMiddleware.Extensions
             return app;
         }
 
-        public static IAppBuilder RegisterLogger(this IAppBuilder app, IDependencyResolver resolver)
-        {
-            SSOAuthenticationExtensions.RegisterLoggerFactory(app, resolver);
-            resolver.RegisterFactory<ILogger>(() => app.CreateLogger<SLOOwinMiddleware>(), Lifetime.Transient);
-            return app;
-        }
+        //public static IAppBuilder RegisterLogger(this IAppBuilder app, IDependencyResolver resolver)
+        //{
+        //    SLOAuthenticationExtensions.RegisterLoggerFactory(app, resolver);
+        //    resolver.RegisterFactory<ILogger>(() => app.CreateLogger<SLOOwinMiddleware>(), Lifetime.Transient);
+        //    return app;
+        //}
 
         //public static IAppBuilder RegisterDiscoveryService(this IAppBuilder app, IDependencyResolver resolver)
         //{

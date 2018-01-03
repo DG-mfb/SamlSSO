@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\SSOAuthenticationExtensions.cs" />
+    <Compile Include="Extensions\SLOAuthenticationExtensions.cs" />
     <Compile Include="Handlers\OwinLogoutRequestContext.cs" />
     <Compile Include="Handlers\SLOAuthenticationHandler.cs" />
     <Compile Include="Logging\CustomLogger.cs" />

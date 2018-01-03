@@ -38,5 +38,15 @@ namespace WebApi.Controllers
             //    return Ok(identityClaim);
             //return Ok(identity.Claims);
         }
+
+        [Route("Logout")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> Logout()
+        {
+            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+            authenticationManager.SignOut(new AuthenticationProperties(), "Saml2SLO");
+            return Ok();
+        }
     }
 }
