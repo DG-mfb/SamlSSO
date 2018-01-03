@@ -8,6 +8,6 @@ namespace Kernel.Federation.Protocols.Bindings.HttpPostBinding
     {
         public string AuthenticationMethod { get; set; }
         public Uri RequestUri { get; set; }
-        public ClaimsIdentity Result { get; set; }
+        public ClaimsIdentity Identity { get; set; }
     }
 }

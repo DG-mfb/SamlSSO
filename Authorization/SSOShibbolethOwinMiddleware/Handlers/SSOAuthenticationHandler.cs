@@ -102,7 +102,7 @@ namespace SSOOwinMiddleware.Handlers
                     this._logger.WriteInformation(String.Format("Handle response entering."));
                     await protocolHanlder.HandleInbound(protocolContext);
                     var responseContext = protocolContext.ResponseContext as HttpPostInboundContext;
-                    var identity = responseContext.Result;
+                    var identity = responseContext.Identity;
                     if (identity != null)
                     {
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));

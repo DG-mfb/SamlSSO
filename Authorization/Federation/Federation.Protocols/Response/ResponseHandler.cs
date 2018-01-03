@@ -46,7 +46,7 @@ namespace Federation.Protocols.Response
                         var response = await this._tokenHandler.HandleToken(handlerContext);
                         if (!response.IsValid)
                             throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
-                        httpPostContext.Result = response.Identity;
+                        httpPostContext.Identity = response.Identity;
                         return response.Identity;
                     }
                 }
