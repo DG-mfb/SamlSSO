@@ -83,7 +83,7 @@
     <Compile Include="Protocols\IRedirectClauseBuilder .cs" />
     <Compile Include="Protocols\BindingContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseOutboundContext.cs" />
-    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseContext.cs" />
+    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostInboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostRequestContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectInboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectRequestContext.cs" />
@@ -132,6 +132,7 @@
     <Compile Include="Protocols\ISamlMessageDespatcher%271.cs" />
     <Compile Include="Protocols\ISamlMessageDespatcher.cs" />
     <Compile Include="Protocols\IInboundHandler.cs" />
+    <Compile Include="Protocols\Request\IRequestValidator.cs" />
     <Compile Include="Protocols\Response\IResponseParser.cs" />
     <Compile Include="Protocols\Response\IResponseValidator.cs" />
     <Compile Include="Protocols\SamlOutboundContext%271.cs" />

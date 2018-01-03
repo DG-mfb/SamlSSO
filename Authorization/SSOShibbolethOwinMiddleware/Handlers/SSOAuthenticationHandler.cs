@@ -92,7 +92,7 @@ namespace SSOOwinMiddleware.Handlers
 
                     var protocolContext = new SamlProtocolContext
                     {
-                        ResponseContext = new HttpPostResponseContext
+                        ResponseContext = new HttpPostInboundContext
                         {
                             RequestUri = Request.Uri,
                             AuthenticationMethod = base.Options.AuthenticationType,
@@ -101,7 +101,7 @@ namespace SSOOwinMiddleware.Handlers
                     };
                     this._logger.WriteInformation(String.Format("Handle response entering."));
                     await protocolHanlder.HandleInbound(protocolContext);
-                    var responseContext = protocolContext.ResponseContext as HttpPostResponseContext;
+                    var responseContext = protocolContext.ResponseContext as HttpPostInboundContext;
                     var identity = responseContext.Result;
                     if (identity != null)
                     {

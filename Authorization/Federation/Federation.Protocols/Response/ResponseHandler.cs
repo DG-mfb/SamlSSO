@@ -18,9 +18,9 @@ namespace Federation.Protocols.Response
     {
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
-        private readonly IResponseParser<HttpPostResponseContext, ResponseStatus> _responseParser;
+        private readonly IResponseParser<HttpPostInboundContext, ResponseStatus> _responseParser;
 
-        public ResponseHandler(IResponseParser<HttpPostResponseContext, ResponseStatus> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
+        public ResponseHandler(IResponseParser<HttpPostInboundContext, ResponseStatus> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
         {
             this._responseParser = responseParser;
             this._tokenHandler = tokenHandler;
@@ -32,9 +32,9 @@ namespace Federation.Protocols.Response
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
-                var httpPostContext = context as HttpPostResponseContext;
+                var httpPostContext = context as HttpPostInboundContext;
                 if (httpPostContext == null)
-                    throw new InvalidOperationException(String.Format("Expected context of type: {0} but it was: {1}", typeof(HttpPostResponseContext).Name, context.GetType().Name));
+                    throw new InvalidOperationException(String.Format("Expected context of type: {0} but it was: {1}", typeof(HttpPostInboundContext).Name, context.GetType().Name));
 
                 var responseStatus = await this._responseParser.ParseResponse(httpPostContext);
                 context.RelayState = responseStatus.RelayState;

@@ -80,6 +80,11 @@
     <Compile Include="Request\Handlers\AuthnRequestHandler.cs" />
     <Compile Include="Request\RedirectRequestDispatcher.cs" />
     <Compile Include="Request\PostRequestDispatcher.cs" />
+    <Compile Include="Request\Validation\RequestValidator.cs" />
+    <Compile Include="Request\Validation\SamlRequestValidationContext.cs" />
+    <Compile Include="Request\Validation\ValidationRules\RequestValidationRule.cs" />
+    <Compile Include="Request\Validation\ValidationRules\SignatureValidRule.cs" />
+    <Compile Include="Request\Validation\ValidationRules\RuleFactory.cs" />
     <Compile Include="Response\IdpInitDiscoveryService.cs" />
     <Compile Include="Response\ResponseDispatcher.cs" />
     <Compile Include="Response\ResponseBuilder.cs" />
