@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
+using Kernel.Federation.Protocols.Request;
 using Kernel.Web;
 
 namespace Federation.Protocols.Bindings.HttpRedirect

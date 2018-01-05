@@ -1,7 +1,7 @@
 ﻿using System;
 using Kernel.Federation.FederationPartner;
 
-namespace Kernel.Federation.Protocols
+namespace Kernel.Federation.Protocols.Request
 {
     public class LogoutRequestContext : RequestContext
     {

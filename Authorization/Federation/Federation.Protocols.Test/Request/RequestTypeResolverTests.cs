@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using DeflateCompression;
 using Federation.Protocols.Encodiing;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
-using Kernel.Serialisation;
 using NUnit.Framework;
 using Serialisation.Xml;
 using Shared.Federtion.Constants;
@@ -16,10 +14,10 @@ using Shared.Federtion.Models;
 namespace Federation.Protocols.Test.Request
 {
     [TestFixture]
-    internal class AuthnRequestSerialiserTests
+    internal class RequestTypeResolverTests
     {
         [Test]
-        public async Task AuthnRequestSerialiser_with_compression_test()
+        public  void AuthnRequestType_test()
         {
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
@@ -35,17 +33,17 @@ namespace Federation.Protocols.Test.Request
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
             RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
-
+            var typeResolver = new RequestTypeResolver();
             //ACT
-            var serialised = await serialiser.SerializeAndCompress(authnRequest);
-            var deserialised = await serialiser.DecompressAndDeserialize<AuthnRequest>(serialised);
+            var serialised = serialiser.Serialize(authnRequest);
+            var type = typeResolver.ResolveMessageType(serialised);
             //ASSERT
-            Assert.NotNull(serialised);
-            Assert.AreEqual(authnRequest.Issuer.Value, deserialised.Issuer.Value);
+            
+            Assert.AreEqual(typeof(AuthnRequest), type);
         }
 
         [Test]
-        public  void AuthnRequestSerialiser_test()
+        public  void LogoutRequestType_test_test()
         {
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
@@ -58,16 +56,16 @@ namespace Federation.Protocols.Test.Request
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
-            var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as ISerializer;
+            var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
             RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
-
+            var typeResolver = new RequestTypeResolver();
             //ACT
             var serialised = serialiser.Serialize(authnRequest);
-            var deserialised = serialiser.Deserialize<AuthnRequest>(serialised);
+            var type = typeResolver.ResolveMessageType(serialised);
             //ASSERT
-            Assert.NotNull(serialised);
-            Assert.AreEqual(authnRequest.Issuer.Value, deserialised.Issuer.Value);
+
+            Assert.AreEqual(typeof(AuthnRequest), type);
         }
     }
 }

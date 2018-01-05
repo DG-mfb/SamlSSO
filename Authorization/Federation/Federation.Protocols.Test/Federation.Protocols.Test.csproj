@@ -68,6 +68,7 @@
     <Compile Include="RelayState\RelayStateSerialiserTest.cs" />
     <Compile Include="Request\AuthnRequestRequestedContextTests.cs" />
     <Compile Include="Request\AuthnRequestScopingTests.cs" />
+    <Compile Include="Request\RequestTypeResolverTests.cs" />
     <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Request\Dispatchers\PostRequestDispatcherTest.cs" />
     <Compile Include="Request\Dispatchers\RedirectRequestDispatcherTest.cs" />

@@ -16,6 +16,7 @@ using Federation.Protocols.Test.Mock;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
+using Kernel.Federation.Protocols.Request;
 using NUnit.Framework;
 using SecurityManagement;
 using SecurityManagement.Signing;

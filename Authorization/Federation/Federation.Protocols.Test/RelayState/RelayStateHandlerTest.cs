@@ -7,6 +7,7 @@ using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Test.Mock;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Request;
 using NUnit.Framework;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;

@@ -1,5 +1,5 @@
-﻿using Kernel.Federation.Protocols;
-using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
+﻿using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
+using Kernel.Federation.Protocols.Request;
 using Shared.Federtion.Forms;
 
 namespace Federation.Protocols.Bindings.HttpPost

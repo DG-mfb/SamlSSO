@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
-using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Request;
 using NUnit.Framework;
 using Shared.Federtion.Constants;
 using Shared.Federtion.Models;

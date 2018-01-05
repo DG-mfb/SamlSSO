@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Kernel.Federation.Protocols.Request;
 
 namespace Kernel.Federation.Protocols
 {

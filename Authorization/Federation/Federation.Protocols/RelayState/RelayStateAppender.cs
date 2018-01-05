@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Request;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
 

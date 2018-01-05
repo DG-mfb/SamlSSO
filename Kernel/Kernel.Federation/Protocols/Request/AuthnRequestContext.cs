@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Kernel.Federation.FederationPartner;
 
-namespace Kernel.Federation.Protocols
+namespace Kernel.Federation.Protocols.Request
 {
     public class AuthnRequestContext : RequestContext
     {

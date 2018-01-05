@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Request;
 using SSOOwinMiddleware;
 
 namespace WebApi.CustomCofiguration

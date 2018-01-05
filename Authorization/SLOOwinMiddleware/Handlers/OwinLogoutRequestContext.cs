@@ -1,6 +1,6 @@
 ﻿using System;
 using Kernel.Federation.FederationPartner;
-using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Request;
 using Microsoft.Owin;
 
 namespace SLOOwinMiddleware.Handlers

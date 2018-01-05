@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Request;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request
@@ -21,7 +22,7 @@ namespace Federation.Protocols.Request
                 return RequestHelper.BuildAuthnRequest((AuthnRequestContext)requestContext);
 
             if (requestContext is LogoutRequestContext)
-                return RequestHelper.BuildAuthnRequest((AuthnRequestContext)requestContext);
+                return RequestHelper.BuildLogoutRequest((LogoutRequestContext)requestContext);
 
             throw new NotSupportedException();
         }
@@ -55,7 +56,7 @@ namespace Federation.Protocols.Request
             return request;
         }
 
-        internal static AuthnRequest BuildLogoutRequest(AuthnRequestContext requestContext)
+        internal static AuthnRequest BuildLogoutRequest(LogoutRequestContext requestContext)
         {
             throw new NotImplementedException();
         }
