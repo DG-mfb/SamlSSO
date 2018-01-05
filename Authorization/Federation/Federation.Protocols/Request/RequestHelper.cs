@@ -63,7 +63,7 @@ namespace Federation.Protocols.Request
             return new LogoutRequest
             {
                 Destination = requestContext.Destination.AbsoluteUri,
-                Issuer = new NameId { Value = requestContext.FederationPartyContext.FederationPartyId, Format = NameIdentifierFormats.Entity },
+                Issuer = new NameId { Value = configurtion.EntityId, Format = NameIdentifierFormats.Entity },
                 Reason = requestContext.Reason.AbsoluteUri,
                 IssueInstant = DateTime.UtcNow,
                 Version = configurtion.Version, 
