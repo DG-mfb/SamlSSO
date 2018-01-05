@@ -50,7 +50,6 @@ namespace Federation.Protocols.Test.Request
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
-            //var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
 
             var xmlSerialiser = new XMLSerialiser();
@@ -59,10 +58,10 @@ namespace Federation.Protocols.Test.Request
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
             RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetLogoutRequestBuildersFactory();
-            var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
+            var logoutRequest = RequestHelper.BuildRequest(authnRequestContext);
             var typeResolver = new RequestTypeResolver();
             //ACT
-            var serialised = serialiser.Serialize(authnRequest);
+            var serialised = serialiser.Serialize(logoutRequest);
             var type = typeResolver.ResolveMessageType(serialised);
             //ASSERT
 
