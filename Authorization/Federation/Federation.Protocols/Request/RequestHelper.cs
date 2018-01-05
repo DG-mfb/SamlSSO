@@ -11,12 +11,12 @@ namespace Federation.Protocols.Request
 {
     internal class RequestHelper
     {
-        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetBuilders { get; set; }
+        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetAuthnRequestBuilders { get; set; }
 
         internal static Func<Type, bool> Condition = t => !t.IsAbstract && !t.IsInterface && typeof(ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>).IsAssignableFrom(t);
         internal static RequestAbstract BuildRequest(RequestContext requestContext)
         {
-            if (RequestHelper.GetBuilders == null)
+            if (RequestHelper.GetAuthnRequestBuilders == null)
                 throw new InvalidOperationException("GetBuilders factory not set");
 
             if (requestContext is AuthnRequestContext)
@@ -30,7 +30,7 @@ namespace Federation.Protocols.Request
 
         private static AuthnRequest BuildAuthnRequest(AuthnRequestContext requestContext)
         {
-            if (RequestHelper.GetBuilders == null)
+            if (RequestHelper.GetAuthnRequestBuilders == null)
                 throw new InvalidOperationException("GetBuilders factory not set");
 
             var requestConfig = requestContext.FederationPartyContext.GetAuthnRequestConfigurationFromContext(requestContext.RequestId);
@@ -49,7 +49,7 @@ namespace Federation.Protocols.Request
                 });
             }
 
-            var buiders = RequestHelper.GetBuilders();
+            var buiders = RequestHelper.GetAuthnRequestBuilders();
             foreach (var b in buiders)
             {
                 b.Build(request, requestConfig);

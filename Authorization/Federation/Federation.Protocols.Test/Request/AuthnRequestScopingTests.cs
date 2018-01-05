@@ -23,7 +23,7 @@ namespace Federation.Protocols.Test.Request
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
             var requestConfiguration = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
-            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
+            RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
             
             //ACT
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext) as AuthnRequest;
@@ -47,7 +47,7 @@ namespace Federation.Protocols.Test.Request
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContext, supportedNameIdentifierFormats);
             var requestConfiguration = federationContext.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
-            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
+            RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
             
             //ACT
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext) as AuthnRequest;
@@ -71,7 +71,7 @@ namespace Federation.Protocols.Test.Request
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContext, supportedNameIdentifierFormats);
             var requestConfiguration = federationContext.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
-            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
+            RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
 
             //ACT
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext) as AuthnRequest;

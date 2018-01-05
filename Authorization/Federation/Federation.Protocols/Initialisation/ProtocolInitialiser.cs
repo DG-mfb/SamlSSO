@@ -60,7 +60,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<ResponseParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateAppender>(Lifetime.Transient);
 
-            RequestHelper.GetBuilders = () => dependencyResolver.ResolveAll<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>();
+            RequestHelper.GetAuthnRequestBuilders = () => dependencyResolver.ResolveAll<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>();
             this.GetBuilders().Aggregate(dependencyResolver, (r, next) => {r.RegisterType(next, Lifetime.Transient); return r; });
 
             dependencyResolver.RegisterFactory<Func<Type, object>>(() => dependencyResolver.Resolve, Lifetime.Transient);
