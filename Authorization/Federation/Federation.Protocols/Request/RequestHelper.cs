@@ -64,7 +64,7 @@ namespace Federation.Protocols.Request
             {
                 Destination = requestContext.Destination.AbsoluteUri,
                 Issuer = new NameId { Value = requestContext.FederationPartyContext.FederationPartyId, Format = NameIdentifierFormats.Entity },
-                Reason = Reasons.User,
+                Reason = requestContext.Reason.AbsoluteUri,
                 IssueInstant = DateTime.UtcNow,
                 Version = configurtion.Version, 
             };

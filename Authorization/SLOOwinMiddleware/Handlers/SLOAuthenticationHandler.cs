@@ -18,6 +18,7 @@ using Federation.Protocols.Bindings.HttpPost;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Microsoft.Owin;
+using Shared.Federtion.Constants;
 
 namespace SLOOwinMiddleware.Handlers
 {
@@ -71,7 +72,7 @@ namespace SLOOwinMiddleware.Handlers
 
                 var signInUrl = handler.GetIdentityProviderSingleLogoutService(idp, federationContext.OutboundBinding);
 
-                var requestContext = new OwinLogoutRequestContext(Context, signInUrl, base.Request.Uri, federationContext);
+                var requestContext = new OwinLogoutRequestContext(Context, signInUrl, base.Request.Uri, federationContext, new Uri(Reasons.User));
                 var relayStateAppenders = this._resolver.ResolveAll<IRelayStateAppender>();
                 foreach (var appender in relayStateAppenders)
                 {

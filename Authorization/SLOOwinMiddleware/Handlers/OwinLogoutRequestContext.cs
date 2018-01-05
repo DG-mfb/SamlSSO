@@ -7,8 +7,8 @@ namespace SLOOwinMiddleware.Handlers
 {
     internal class OwinLogoutRequestContext : LogoutRequestContext
     {
-        public OwinLogoutRequestContext(IOwinContext context, Uri destination, Uri origin, FederationPartyConfiguration federationPartyContext)
-             :base(destination, origin, federationPartyContext)
+        public OwinLogoutRequestContext(IOwinContext context, Uri destination, Uri origin, FederationPartyConfiguration federationPartyContext, Uri reason)
+             :base(destination, origin, federationPartyContext, reason)
         {
         }
     }

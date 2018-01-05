@@ -51,7 +51,7 @@ namespace Federation.Protocols.Test.Request
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             //var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex);
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
 
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
