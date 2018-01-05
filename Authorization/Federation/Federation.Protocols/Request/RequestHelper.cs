@@ -62,11 +62,13 @@ namespace Federation.Protocols.Request
             var configurtion = requestContext.FederationPartyContext.GetAuthnRequestConfigurationFromContext(requestContext.RequestId);
             return new LogoutRequest
             {
+                Id = configurtion.RequestId,
                 Destination = requestContext.Destination.AbsoluteUri,
                 Issuer = new NameId { Value = configurtion.EntityId, Format = NameIdentifierFormats.Entity },
                 Reason = requestContext.Reason.AbsoluteUri,
                 IssueInstant = DateTime.UtcNow,
-                Version = configurtion.Version, 
+                Version = configurtion.Version,
+                SessionIndex = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString() }
             };
             throw new NotImplementedException();
         }

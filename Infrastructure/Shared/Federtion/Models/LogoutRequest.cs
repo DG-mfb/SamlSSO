@@ -71,7 +71,7 @@ namespace Shared.Federtion.Models
         /// </summary>
         /// <value>The index of the session.</value>
         [XmlElement("SessionIndex", Order = 2)]
-        public string SessionIndex { get; set; }
+        public string[] SessionIndex { get; set; }
 
         #endregion
     }

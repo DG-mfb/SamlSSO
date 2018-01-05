@@ -11,7 +11,13 @@ namespace Federation.Metadata.FederationPartner.Handlers
     {
         public Uri GetIdentityProviderSingleLogoutService(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding)
         {
-            throw new NotImplementedException();
+            if (descriptor == null)
+                throw new ArgumentNullException("descriptor");
+
+            var endPoint = descriptor.SingleLogoutServices.FirstOrDefault(x => x.Binding == binding);
+            if (endPoint == null)
+                throw new InvalidOperationException(String.Format("No endpoint found for binding: {0}.", binding));
+            return endPoint.Location;
         }
 
         public IEnumerable<EntityRoleDescriptor<IdentityProviderSingleSignOnDescriptor>> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata)
