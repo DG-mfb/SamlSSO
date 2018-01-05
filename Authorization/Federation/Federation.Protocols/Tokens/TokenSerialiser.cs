@@ -49,5 +49,10 @@ namespace Federation.Protocols.Tokens
         {
             throw new NotImplementedException();
         }
+
+        public bool CanReadToken(XmlReader reader)
+        {
+            return this._saml2SecurityTokenHandler.CanReadToken(reader);
+        }
     }
 }

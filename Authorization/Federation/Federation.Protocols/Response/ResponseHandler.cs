@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Federation.Protocols.Tokens;
 using Kernel.Extensions;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
@@ -13,27 +14,27 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseHandler : IInboundHandler<HttpPostInboundContext>
+    internal class ResponseHandler : IInboundHandler<HttpPostResponseInboundContext>
     {
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
-        private readonly IResponseParser<HttpPostInboundContext, ResponseStatus> _responseParser;
+        private readonly IResponseParser<HttpPostResponseInboundContext, ResponseStatus> _responseParser;
 
-        public ResponseHandler(IResponseParser<HttpPostInboundContext, ResponseStatus> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
+        public ResponseHandler(IResponseParser<HttpPostResponseInboundContext, ResponseStatus> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
         {
             this._responseParser = responseParser;
             this._tokenHandler = tokenHandler;
             this._logProvider = logProvider;
         }
-        public async Task Handle(HttpPostInboundContext context)
+        public async Task Handle(HttpPostResponseInboundContext context)
         {
             try
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
-                var httpPostContext = context as HttpPostInboundContext;
+                var httpPostContext = context as HttpPostResponseInboundContext;
                 if (httpPostContext == null)
-                    throw new InvalidOperationException(String.Format("Expected context of type: {0} but it was: {1}", typeof(HttpPostInboundContext).Name, context.GetType().Name));
+                    throw new InvalidOperationException(String.Format("Expected context of type: {0} but it was: {1}", typeof(HttpPostResponseInboundContext).Name, context.GetType().Name));
 
                 var responseStatus = await this._responseParser.ParseResponse(httpPostContext);
                 context.RelayState = responseStatus.RelayState;
@@ -41,11 +42,17 @@ namespace Federation.Protocols.Response
                 {
                     using (var xmlReader = XmlReader.Create(reader))
                     {
-                        var handlerContext = new HandleTokenContext(xmlReader, responseStatus.FederationPartyId, httpPostContext.AuthenticationMethod, responseStatus.RelayState);
-                        var response = await this._tokenHandler.HandleToken(handlerContext);
-                        if (!response.IsValid)
-                            throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
-                        httpPostContext.Identity = response.Identity;
+                        var hasToken = TokenHelper.TryToMoveToToken(xmlReader);
+                        context.HasSecurityToken = hasToken;
+                        this._logProvider.LogMessage(String.Format("Response is{0} a security token carrier.", hasToken ? String.Empty : " not"));
+                        if (hasToken)
+                        {
+                            var handlerContext = new HandleTokenContext(xmlReader, responseStatus.FederationPartyId, httpPostContext.AuthenticationMethod, responseStatus.RelayState);
+                            var response = await this._tokenHandler.HandleToken(handlerContext);
+                            if (!response.IsValid)
+                                throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
+                            httpPostContext.Identity = response.Identity;
+                        }
                     }
                 }
             }

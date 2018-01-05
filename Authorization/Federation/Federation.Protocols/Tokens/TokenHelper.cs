@@ -86,5 +86,18 @@ namespace Federation.Protocols.Tokens
                     throw new InvalidOperationException("Can't find assertion element.");
             }
         }
+
+        internal static bool TryToMoveToToken(XmlReader reader)
+        {
+            try
+            {
+                TokenHelper.MoveToToken(reader);
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
     }
 }

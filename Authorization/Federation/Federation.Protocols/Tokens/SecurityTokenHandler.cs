@@ -21,7 +21,12 @@ namespace Federation.Protocols.Tokens
             this._tokenValidator = tokenValidator;
             this._identityProvider = identityProvider;
         }
-        
+
+        public bool CanHandleToken(HandleTokenContext context)
+        {
+            return this._tokenSerialiser.CanReadToken(context.Token);
+        }
+
         public async Task<TokenHandlingResponse> HandleToken(HandleTokenContext context)
         {
             var partnerId = context._federationPartyId;

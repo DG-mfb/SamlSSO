@@ -84,7 +84,7 @@
     <Compile Include="Protocols\IRedirectClauseBuilder .cs" />
     <Compile Include="Protocols\BindingContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseOutboundContext.cs" />
-    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostInboundContext.cs" />
+    <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostResponseInboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpPostBinding\HttpPostRequestContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectInboundContext.cs" />
     <Compile Include="Protocols\Bindings\HttpRedirectBinding\HttpRedirectRequestContext.cs" />

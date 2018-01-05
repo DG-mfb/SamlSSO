@@ -10,7 +10,7 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseParser : IResponseParser<HttpPostInboundContext, ResponseStatus>
+    internal class ResponseParser : IResponseParser<HttpPostResponseInboundContext, ResponseStatus>
     {
         private readonly ILogProvider _logProvider;
         private readonly ResponseValidator _responseValidator;
@@ -20,7 +20,7 @@ namespace Federation.Protocols.Response
             this._logProvider = logProvider;
             this._responseValidator = responseValidator;
         }
-        public async Task<ResponseStatus> ParseResponse(HttpPostInboundContext context)
+        public async Task<ResponseStatus> ParseResponse(HttpPostResponseInboundContext context)
         {
             var elements = context.Form;
             var responseBase64 = elements[HttpRedirectBindingConstants.SamlResponse];
