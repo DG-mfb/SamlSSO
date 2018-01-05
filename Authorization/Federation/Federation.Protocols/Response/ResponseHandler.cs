@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Extensions;
@@ -14,7 +13,7 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseHandler : IInboundHandler<ClaimsIdentity>
+    internal class ResponseHandler : IInboundHandler<HttpPostInboundContext>
     {
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
@@ -26,7 +25,7 @@ namespace Federation.Protocols.Response
             this._tokenHandler = tokenHandler;
             this._logProvider = logProvider;
         }
-        public async Task<ClaimsIdentity> Handle(SamlInboundContext context)
+        public async Task Handle(HttpPostInboundContext context)
         {
             try
             {
@@ -47,7 +46,6 @@ namespace Federation.Protocols.Response
                         if (!response.IsValid)
                             throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
                         httpPostContext.Identity = response.Identity;
-                        return response.Identity;
                     }
                 }
             }
@@ -58,7 +56,6 @@ namespace Federation.Protocols.Response
                 if(innerEx != null)
                     throw innerEx;
             }
-            return null;
         }
     }
 }

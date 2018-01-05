@@ -3,8 +3,8 @@ using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Kernel.Federation.Protocols
 {
-    public interface IInboundHandler<TResult>
+    public interface IInboundHandler<TContext>
     {
-        Task<TResult> Handle(SamlInboundContext context);
+        Task Handle(TContext context);
     }
 }

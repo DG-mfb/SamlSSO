@@ -58,6 +58,7 @@
     <Compile Include="Encodiing\MessageEncoding.cs" />
     <Compile Include="Extensions\Saml20AssertionExtensions.cs" />
     <Compile Include="Extensions\SamlAttributeExtensions.cs" />
+    <Compile Include="Factories\InboundHandleFactory.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Initialisation\ProtocolInitialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

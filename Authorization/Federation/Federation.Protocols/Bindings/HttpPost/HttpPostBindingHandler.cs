@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Federation.Protocols.Factories;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Federation.Protocols.Bindings.HttpPost
 {
@@ -25,8 +28,9 @@ namespace Federation.Protocols.Bindings.HttpPost
         
         public async Task HandleInbound(SamlInboundContext context)
         {
-            var responseHandler = this._dependencyResolver.Resolve<IInboundHandler<ClaimsIdentity>>();
-            var result = await responseHandler.Handle(context);
+            var del = InboundHandleFactory.GetHandleDelegate(context.GetType());
+            var responseHandler = this._dependencyResolver.Resolve(typeof(IInboundHandler<>).MakeGenericType(context.GetType()));
+            await del(responseHandler, context);
         }
     }
 }

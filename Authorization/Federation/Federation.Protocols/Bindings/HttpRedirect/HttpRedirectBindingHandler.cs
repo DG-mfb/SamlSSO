@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Federation.Protocols.Factories;
 using Federation.Protocols.Request.Handlers;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
@@ -26,8 +28,10 @@ namespace Federation.Protocols.Bindings.HttpRedirect
 
         public async Task HandleInbound(SamlInboundContext context)
         {
-            var authnRequestHandler = this._dependencyResolver.Resolve<AuthnRequestHandler>();
-            await authnRequestHandler.HandleRequest((HttpRedirectInboundContext)context);
+            var del = InboundHandleFactory.GetHandleDelegate(context.GetType());
+            var handler = this._dependencyResolver.Resolve(typeof(IInboundHandler<>).MakeGenericType(context.GetType()));
+            
+            await del(handler, context);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
@@ -9,15 +9,16 @@ using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Federation.Protocols.Request.ClauseBuilders;
+using Federation.Protocols.Request.Handlers;
 using Federation.Protocols.Response;
 using Federation.Protocols.Tokens;
 using Federation.Protocols.Tokens.Validation;
 using Kernel.DependancyResolver;
+using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Kernel.Reflection;
 using Shared.Federtion.Models;
 using Shared.Initialisation;
-using Kernel.Federation.FederationPartner;
 
 namespace Federation.Protocols.Initialisation
 {
@@ -31,6 +32,7 @@ namespace Federation.Protocols.Initialisation
         protected override Task InitialiseInternal(IDependencyResolver dependencyResolver)
         {
             dependencyResolver.RegisterType<ResponseHandler>(Lifetime.Transient);
+            dependencyResolver.RegisterType<AuthnRequestHandler>(Lifetime.Transient);
             dependencyResolver.RegisterType<SecurityTokenHandler>(Lifetime.Transient);
             dependencyResolver.RegisterType<TokenHandlerConfigurationProvider>(Lifetime.Transient);
             dependencyResolver.RegisterType<ClaimsProvider>(Lifetime.Transient);

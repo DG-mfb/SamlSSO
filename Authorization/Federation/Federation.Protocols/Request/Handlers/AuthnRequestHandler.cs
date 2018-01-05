@@ -15,7 +15,7 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.Handlers
 {
-    internal class AuthnRequestHandler : IInboundHandler<string>
+    internal class AuthnRequestHandler : IInboundHandler<HttpRedirectInboundContext>
     {
         private static ConcurrentDictionary<string, Uri> _relyingParties = new ConcurrentDictionary<string, Uri>();
         static AuthnRequestHandler()
@@ -41,7 +41,7 @@ namespace Federation.Protocols.Request.Handlers
             this._relayStateHandler = relayStateHandler;
             this._certificateManager = certificateManager;
         }
-        public async Task HandleRequest(HttpRedirectInboundContext context)
+        public async Task Handle(HttpRedirectInboundContext context)
         {
             var requestEncoded = context.Form["SAMLRequest"];
             var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
@@ -92,11 +92,6 @@ namespace Federation.Protocols.Request.Handlers
 
             var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
             return validated;
-        }
-
-        public Task<string> Handle(SamlInboundContext context)
-        {
-            throw new NotImplementedException();
         }
     }
 }
