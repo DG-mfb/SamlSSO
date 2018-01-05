@@ -4,6 +4,7 @@ using System.Linq;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
+using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request
@@ -13,7 +14,7 @@ namespace Federation.Protocols.Request
         internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetBuilders { get; set; }
 
         internal static Func<Type, bool> Condition = t => !t.IsAbstract && !t.IsInterface && typeof(ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>).IsAssignableFrom(t);
-        internal static AuthnRequest BuildRequest(RequestContext requestContext)
+        internal static RequestAbstract BuildRequest(RequestContext requestContext)
         {
             if (RequestHelper.GetBuilders == null)
                 throw new InvalidOperationException("GetBuilders factory not set");
@@ -27,7 +28,7 @@ namespace Federation.Protocols.Request
             throw new NotSupportedException();
         }
 
-        internal static AuthnRequest BuildAuthnRequest(AuthnRequestContext requestContext)
+        private static AuthnRequest BuildAuthnRequest(AuthnRequestContext requestContext)
         {
             if (RequestHelper.GetBuilders == null)
                 throw new InvalidOperationException("GetBuilders factory not set");
@@ -56,8 +57,14 @@ namespace Federation.Protocols.Request
             return request;
         }
 
-        internal static AuthnRequest BuildLogoutRequest(LogoutRequestContext requestContext)
+        private static LogoutRequest BuildLogoutRequest(LogoutRequestContext requestContext)
         {
+            return new LogoutRequest
+            {
+                Destination = requestContext.Destination.AbsoluteUri,
+                Issuer = new NameId { Value = requestContext.FederationPartyContext.FederationPartyId },
+                Reason = Reasons.User
+            };
             throw new NotImplementedException();
         }
     }

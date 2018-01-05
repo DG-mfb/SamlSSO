@@ -12,10 +12,17 @@ namespace Federation.Protocols.Test.Mock
 {
     internal class AuthnRequestBuildersFactoryMock
     {
-        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetBuildersFactory()
+        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetAuthnRequestBuildersFactory()
         {
             return () => ReflectionHelper.GetAllTypes(new[] { typeof(AutnRequestClauseBuilder).Assembly }, t => RequestHelper.Condition(t))
                 .Select(x => (ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>)Activator.CreateInstance(x));
+        }
+
+        internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetLogoutRequestBuildersFactory()
+        {
+            throw new NotImplementedException();
+            //return () => ReflectionHelper.GetAllTypes(new[] { typeof(AutnRequestClauseBuilder).Assembly }, t => RequestHelper.Condition(t))
+            //    .Select(x => (ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>)Activator.CreateInstance(x));
         }
     }
 }

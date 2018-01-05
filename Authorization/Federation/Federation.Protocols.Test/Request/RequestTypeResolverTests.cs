@@ -31,12 +31,13 @@ namespace Federation.Protocols.Test.Request
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
-            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
             var typeResolver = new RequestTypeResolver();
             //ACT
             var serialised = serialiser.Serialize(authnRequest);
             var type = typeResolver.ResolveMessageType(serialised);
+
             //ASSERT
             
             Assert.AreEqual(typeof(AuthnRequest), type);
@@ -49,15 +50,15 @@ namespace Federation.Protocols.Test.Request
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
-            var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
+            //var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex);
 
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
-            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
             var typeResolver = new RequestTypeResolver();
             //ACT
@@ -65,7 +66,7 @@ namespace Federation.Protocols.Test.Request
             var type = typeResolver.ResolveMessageType(serialised);
             //ASSERT
 
-            Assert.AreEqual(typeof(AuthnRequest), type);
+            Assert.AreEqual(typeof(LogoutRequest), type);
         }
     }
 }

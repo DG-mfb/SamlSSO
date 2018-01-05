@@ -55,7 +55,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger);
-            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetBuildersFactory();
+            RequestHelper.GetBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
             var authnBuilder = new SamlRequestBuilder(serialiser);
             builders.Add(authnBuilder);
             
