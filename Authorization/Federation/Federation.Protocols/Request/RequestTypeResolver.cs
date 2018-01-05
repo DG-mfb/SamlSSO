@@ -20,13 +20,14 @@ namespace Federation.Protocols.Request
         public Type ResolveMessageType(string message)
         {
             var requests = GetRequestTypes();
-            foreach (var t in requests)
+            using (var reader = XmlReader.Create(new StringReader(message)))
             {
-                var fi = t.GetField("ElementName", BindingFlags.Public | BindingFlags.Static);
-                if (fi == null)
-                    continue;
-                using (var reader = XmlReader.Create(new StringReader(message)))
+                foreach (var t in requests)
                 {
+                    var fi = t.GetField("ElementName", BindingFlags.Public | BindingFlags.Static);
+                    if (fi == null)
+                        continue;
+
                     reader.MoveToContent();
                     if (reader.IsStartElement(fi.GetRawConstantValue().ToString(), Saml20Constants.Protocol))
                         return t;
