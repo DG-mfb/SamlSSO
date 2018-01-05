@@ -58,7 +58,7 @@ namespace Federation.Protocols.Test.Request
             var encoder = new MessageEncoding(compressor);
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
-            RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
+            RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetLogoutRequestBuildersFactory();
             var authnRequest = RequestHelper.BuildRequest(authnRequestContext);
             var typeResolver = new RequestTypeResolver();
             //ACT
