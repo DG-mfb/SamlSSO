@@ -7,5 +7,7 @@ namespace Kernel.Federation.Protocols
     {
         Task<string> SerializeAndCompress(object o);
         Task<T> DecompressAndDeserialize<T>(string data);
+        Task<string> Decompress(string data);
+
     }
 }

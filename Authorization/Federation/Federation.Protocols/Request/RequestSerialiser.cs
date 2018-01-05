@@ -36,8 +36,7 @@ namespace Federation.Protocols.Request
 
         async Task<T> IRequestSerialiser.DecompressAndDeserialize<T>(string data)
         {
-            var unescaped = Uri.UnescapeDataString(data);
-            var decompressed = await this._messageEncoding.DecodeMessage(unescaped);
+            var decompressed = await this.Decompress(data);
             return ((ISerializer)this).Deserialize<T>(decompressed);
         }
 
@@ -83,6 +82,13 @@ namespace Federation.Protocols.Request
         object[] ISerializer.Deserialize(Stream stream, IList<Type> messageTypes)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<string> Decompress(string data)
+        {
+            var unescaped = Uri.UnescapeDataString(data);
+            var decompressed = await this._messageEncoding.DecodeMessage(unescaped);
+            return decompressed;
         }
     }
 }

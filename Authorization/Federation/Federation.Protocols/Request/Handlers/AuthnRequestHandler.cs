@@ -2,15 +2,18 @@
 using System.Collections.Concurrent;
 using System.IdentityModel.Metadata;
 using System.IdentityModel.Tokens;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Security.CertificateManagement;
+using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.Handlers
@@ -45,7 +48,9 @@ namespace Federation.Protocols.Request.Handlers
         {
             var requestEncoded = context.Form["SAMLRequest"];
             var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
-            var request = await this._authnRequestSerialiser.DecompressAndDeserialize<AuthnRequest>(requestEncoded);
+            var decompressed = await this._authnRequestSerialiser.Decompress(requestEncoded);
+            var type = this.ResolveRequestType(decompressed);
+            var request = this._authnRequestSerialiser.Deserialize<AuthnRequest>(decompressed);
             var spDescriptor = await this.GetSPDescriptor(request);
             var keyDescriptors = spDescriptor.Keys.Where(k => k.Use == KeyType.Signing);
             var validated = false;
@@ -66,6 +71,16 @@ namespace Federation.Protocols.Request.Handlers
             context.HanlerAction();
         }
 
+        private Type ResolveRequestType(string message)
+        {
+            using (var reader = XmlReader.Create(new StringReader(message)))
+            {
+                reader.MoveToContent();
+                if(reader.IsStartElement(AuthnRequest.ElementName,Saml20Constants.Protocol))
+                    return typeof(AuthnRequest);
+                throw new NotSupportedException();
+            }
+        }
         private async Task<ServiceProviderSingleSignOnDescriptor> GetSPDescriptor(AuthnRequest request)
         {
             var issuer = request.Issuer.Value;
