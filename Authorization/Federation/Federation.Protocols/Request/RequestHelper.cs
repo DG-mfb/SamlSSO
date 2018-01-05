@@ -59,12 +59,15 @@ namespace Federation.Protocols.Request
 
         private static LogoutRequest BuildLogoutRequest(LogoutRequestContext requestContext)
         {
-            //return new LogoutRequest
-            //{
-            //    Destination = requestContext.Destination.AbsoluteUri,
-            //    Issuer = new NameId { Value = requestContext.FederationPartyContext.FederationPartyId },
-            //    Reason = Reasons.User
-            //};
+            var configurtion = requestContext.FederationPartyContext.GetAuthnRequestConfigurationFromContext(requestContext.RequestId);
+            return new LogoutRequest
+            {
+                Destination = requestContext.Destination.AbsoluteUri,
+                Issuer = new NameId { Value = requestContext.FederationPartyContext.FederationPartyId, Format = NameIdentifierFormats.Entity },
+                Reason = Reasons.User,
+                IssueInstant = DateTime.UtcNow,
+                Version = configurtion.Version, 
+            };
             throw new NotImplementedException();
         }
     }

@@ -7,18 +7,16 @@ namespace Kernel.Federation.FederationPartner
 {
     public class AuthnRequestConfiguration : RequestConfiguration
     {
-        private readonly EntityDesriptorConfiguration _entityDesriptorConfiguration;
+        //private readonly EntityDesriptorConfiguration _entityDesriptorConfiguration;
         public AuthnRequestConfiguration(string requestId, EntityDesriptorConfiguration entityDesriptorConfiguration, FederationPartyAuthnRequestConfiguration federationPartyAuthnRequestConfiguration)
-            :base(requestId, federationPartyAuthnRequestConfiguration.Version)
+            :base(requestId, federationPartyAuthnRequestConfiguration.Version, entityDesriptorConfiguration)
         {
             if (entityDesriptorConfiguration == null)
                 throw new ArgumentNullException("entityDesriptorConfiguration");
            
             if (federationPartyAuthnRequestConfiguration == null)
                 throw new ArgumentNullException("federationPartyAuthnRequestConfiguration");
-
-            this._entityDesriptorConfiguration = entityDesriptorConfiguration;
-            this.EntityId = entityDesriptorConfiguration.EntityId;
+            
             this.AssertionConsumerServiceIndex = (ushort)entityDesriptorConfiguration.SPSSODescriptors.SelectMany(x => x.AssertionConsumerServices)
                 .Single(x => x.IsDefault.GetValueOrDefault()).Index;
             this.AudienceRestriction = new List<string> { entityDesriptorConfiguration.EntityId };
@@ -40,7 +38,6 @@ namespace Kernel.Federation.FederationPartner
         public bool AllowCreateNameIdPolicy { get; }
         public ushort AssertionConsumerServiceIndex { get; }
         
-        public string EntityId { get; }
         public ICollection<Uri> SupportedNameIdentifierFormats { get; }
         public RequestedAuthnContextConfiguration RequestedAuthnContextConfiguration { get; }
         public ScopingConfiguration ScopingConfiguration { get; }

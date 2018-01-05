@@ -20,7 +20,7 @@ namespace Federation.Protocols.Test.Mock
 
         internal static Func<IEnumerable<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>> GetLogoutRequestBuildersFactory()
         {
-            throw new NotImplementedException();
+            return () => Enumerable.Empty<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>();
             //return () => ReflectionHelper.GetAllTypes(new[] { typeof(AutnRequestClauseBuilder).Assembly }, t => RequestHelper.Condition(t))
             //    .Select(x => (ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>)Activator.CreateInstance(x));
         }
