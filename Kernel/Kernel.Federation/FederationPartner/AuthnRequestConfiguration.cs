@@ -7,7 +7,6 @@ namespace Kernel.Federation.FederationPartner
 {
     public class AuthnRequestConfiguration : RequestConfiguration
     {
-        //private readonly EntityDesriptorConfiguration _entityDesriptorConfiguration;
         public AuthnRequestConfiguration(string requestId, EntityDesriptorConfiguration entityDesriptorConfiguration, FederationPartyAuthnRequestConfiguration federationPartyAuthnRequestConfiguration)
             :base(requestId, federationPartyAuthnRequestConfiguration.Version, entityDesriptorConfiguration)
         {
