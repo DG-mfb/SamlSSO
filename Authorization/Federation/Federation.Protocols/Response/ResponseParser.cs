@@ -39,7 +39,7 @@ namespace Federation.Protocols.Response
             var type = this._messageTypeResolver.ResolveMessageType(responseText, responseTypes);
             var statusResponse =  this._samlResponseParserFactory(type).Parse(responseText);
             var responseStatus = new SamlResponseContext { StatusResponse = statusResponse, RelayState = relayState, Response = responseText };
-            await this._responseValidator.ValidateResponse(responseStatus, elements);
+            await this._responseValidator.ValidateResponse(responseStatus);
             return responseStatus;
         }
 

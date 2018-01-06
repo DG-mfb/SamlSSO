@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Federation.Protocols.Response.Validation.ValidationRules;
@@ -20,10 +19,10 @@ namespace Federation.Protocols.Response.Validation
             this._logProvider = logProvider;
             this._ruleFactory = ruleFactory;
         }
-        public async Task ValidateResponse(SamlResponseContext response, IDictionary<string, string> form)
+        public async Task ValidateResponse(SamlResponseContext response)
         {
             this._logProvider.LogMessage("Validating saml response.");
-            var context = new SamlResponseValidationContext(response, form);
+            var context = new SamlResponseValidationContext(response);
             var rules = this._ruleFactory.GetValidationRules(r => r.Scope == (response.IsIdpInitiated ? RuleScope.IdpInitiated : RuleScope.SPInitiated));
             var seed = new Func<ValidationContext, Task>(c =>
             {
