@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
@@ -63,25 +61,36 @@ namespace Federation.Protocols.Response
                     throw new InvalidOperationException("Can't find status code element.");
             }
             
-            var status = new Status { StatusCode = new StatusCode() };
-
+            var status = new Status();
+            
+            
             while (reader.Read() && !(reader.NodeType == XmlNodeType.EndElement && reader.LocalName == "Status"))
             {
                 if (reader.IsStartElement("StatusCode", Saml20Constants.Protocol))
                 {
                     var statusCode = reader.GetAttribute("Value");
-                    status.StatusCode = new StatusCode();
+                    var newCode = new StatusCode();
+                    if (status.StatusCode == null)
+                        status.StatusCode = newCode;
+                    else
+                    {
+                        var temp = status.StatusCode;
+                        while (temp.SubStatusCode != null)
+                            temp = temp.SubStatusCode;
+                        temp.SubStatusCode = newCode;
+                    }
                     if (!String.IsNullOrWhiteSpace(statusCode))
                     {
-                        status.StatusCode.Value = statusCode;
+                        newCode.Value = statusCode;
                     }
+                    
                     continue;
                 }
 
                 if (reader.IsStartElement("StatusMessage", Saml20Constants.Protocol))
                 {
                     reader.Read();
-                    response.Status.StatusMessage = reader.Value;
+                    status.StatusMessage = reader.Value;
                     continue;
                 }
 

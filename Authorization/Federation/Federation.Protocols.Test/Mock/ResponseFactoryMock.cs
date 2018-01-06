@@ -16,6 +16,16 @@ namespace Federation.Protocols.Test.Mock
     {
         public static TokenResponse GetTokenResponseSuccess(string inResponseTo, string statusCode)
         {
+            var response = ResponseFactoryMock.GetTokenResponse(inResponseTo, statusCode);
+            var assertion = AssertionFactroryMock.BuildAssertion();
+            var token = AssertionFactroryMock.GetToken(assertion);
+            var assertionElement = AssertionFactroryMock.SerialiseToken(token);
+            response.Assertions = new XmlElement[] { assertionElement };
+            return response;
+        }
+
+        public static TokenResponse GetTokenResponse(string inResponseTo, string statusCode)
+        {
             var response = new TokenResponse
             {
                 ID = Guid.NewGuid().ToString(),
@@ -25,10 +35,6 @@ namespace Federation.Protocols.Test.Mock
                 Status = ResponseFactoryMock.BuildStatus(statusCode, null),
                 Issuer = new NameId { Value = "https://dg-mfb/idp/shibboleth", Format = NameIdentifierFormats.Entity }
             };
-            var assertion = AssertionFactroryMock.BuildAssertion();
-            var token = AssertionFactroryMock.GetToken(assertion);
-            var assertionElement = AssertionFactroryMock.SerialiseToken(token);
-            response.Assertions = new XmlElement[] { assertionElement };
             return response;
         }
 
@@ -41,9 +47,9 @@ namespace Federation.Protocols.Test.Mock
             };
         }
 
-        public static StatusDetail BuildStatuseDetail(ICollection<XmlElement> details)
+        public static void BuildStatuseDetail(Status status, ICollection<XmlElement> details)
         {
-            return new StatusDetail
+            status.StatusDetail = new StatusDetail
             {
                 Any = details.ToArray()
             };

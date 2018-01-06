@@ -75,7 +75,7 @@
     <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Request\Dispatchers\PostRequestDispatcherTest.cs" />
     <Compile Include="Request\Dispatchers\RedirectRequestDispatcherTest.cs" />
-    <Compile Include="Response\ResponseStatusTests.cs" />
+    <Compile Include="Response\SamlResponseContextTests.cs" />
     <Compile Include="Mock\Tokens\SubjectConfirmationDataValidatorMock.cs" />
     <Compile Include="Response\SamlTokenResponseParserTests.cs" />
     <Compile Include="Tokens\MiscellaneousTests.cs" />

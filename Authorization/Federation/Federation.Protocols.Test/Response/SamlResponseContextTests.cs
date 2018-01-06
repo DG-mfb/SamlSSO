@@ -7,7 +7,7 @@ using Shared.Federtion.Response;
 namespace Federation.Protocols.Test.Response
 {
     [TestFixture]
-    internal class ResponseStatusTests
+    internal class SamlResponseContextTests
     {
         [Test]
         public void ResponseStatusTest_success_response()
