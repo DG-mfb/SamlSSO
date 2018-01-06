@@ -38,9 +38,9 @@ namespace Federation.Protocols.Response
             var responseTypes = this.GetTypes();
             var type = this._messageTypeResolver.ResolveMessageType(responseText, responseTypes);
             var statusResponse =  this._samlResponseParserFactory(type).Parse(responseText);
-            var responseStatus = new SamlResponseContext { StatusResponse = statusResponse, RelayState = relayState, Response = responseText };
-            await this._responseValidator.ValidateResponse(responseStatus);
-            return responseStatus;
+            var responseContext = new SamlResponseContext { StatusResponse = statusResponse, RelayState = relayState, Response = responseText };
+            await this._responseValidator.ValidateResponse(responseContext);
+            return responseContext;
         }
 
         public IEnumerable<Type> GetTypes()
