@@ -11,7 +11,7 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response.Validation
 {
-    internal class ResponseValidator : IResponseValidator<ResponseStatus>
+    internal class ResponseValidator : IResponseValidator<SamlResponseContext>
     {
         private readonly ILogProvider _logProvider;
         private readonly RuleFactory _ruleFactory;
@@ -20,7 +20,7 @@ namespace Federation.Protocols.Response.Validation
             this._logProvider = logProvider;
             this._ruleFactory = ruleFactory;
         }
-        public async Task ValidateResponse(ResponseStatus response, IDictionary<string, string> form)
+        public async Task ValidateResponse(SamlResponseContext response, IDictionary<string, string> form)
         {
             this._logProvider.LogMessage("Validating saml response.");
             var context = new SamlResponseValidationContext(response, form);

@@ -1,0 +1,34 @@
+﻿using System;
+using System.Threading.Tasks;
+using Kernel.Logging;
+
+namespace Federation.Protocols.Response.Validation.ValidationRules
+{
+    internal class TokenInResponseRule : ResponseValidationRule
+    {
+        public TokenInResponseRule(ILogProvider logProvider)
+            : base(logProvider)
+        {
+        }
+
+        internal override RuleScope Scope
+        {
+            get
+            {
+                return RuleScope.Always;
+            }
+        }
+
+        protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
+        {
+            base._logProvider.LogMessage("TokenInResponseRule In Response Rule running.");
+            var tokenResponse = context.Response.StatusResponse as Shared.Federtion.Response.TokenResponse;
+            var hasToken = (tokenResponse != null && tokenResponse.Assertions != null && tokenResponse.Assertions.Length == 1);
+            if (context.Response.IsSuccess && !hasToken)
+            {
+                throw new InvalidOperationException("Security token is missing.");
+            }
+            return Task.FromResult(true);
+        }
+    }
+}

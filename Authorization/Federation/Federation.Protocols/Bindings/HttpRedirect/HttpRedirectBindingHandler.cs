@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Federation.Protocols.Factories;
-using Federation.Protocols.Request.Handlers;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
-using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 
 namespace Federation.Protocols.Bindings.HttpRedirect
 {

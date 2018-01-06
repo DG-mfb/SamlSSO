@@ -29,7 +29,7 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
             base._logProvider.LogMessage("Issuer Known Rule running.");
             var federationParnerId = this._service.ResolveParnerId(context.Response);
             if (String.IsNullOrWhiteSpace(federationParnerId))
-                throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.Issuer));
+                throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.StatusResponse.Issuer.Value));
 
             context.Response.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
 

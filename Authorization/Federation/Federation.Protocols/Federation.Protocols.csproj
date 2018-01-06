@@ -91,11 +91,16 @@
     <Compile Include="Response\ResponseDispatcher.cs" />
     <Compile Include="Response\ResponseBuilder.cs" />
     <Compile Include="Response\ResponseHelper.cs" />
+    <Compile Include="Response\SamlResponseParser.cs" />
+    <Compile Include="Response\SamlLogoutResponseParser.cs" />
+    <Compile Include="Response\SamlTokenResponseParser.cs" />
     <Compile Include="Response\ResponseParser.cs" />
     <Compile Include="Response\Validation\SamlResponseValidationContext.cs" />
     <Compile Include="Response\Validation\ResponseValidator.cs" />
     <Compile Include="Response\Validation\ValidationRules\InResponseToRule.cs" />
     <Compile Include="Response\Validation\ValidationRules\IssuerKnownRule.cs" />
+    <Compile Include="Response\Validation\ValidationRules\TokenInResponseRule.cs" />
+    <Compile Include="Response\Validation\ValidationRules\ResponseSignatureRule.cs" />
     <Compile Include="Response\Validation\ValidationRules\ResponseValidationRule.cs" />
     <Compile Include="Response\Validation\ValidationRules\RuleFactory.cs" />
     <Compile Include="Response\Validation\ValidationRules\RuleScope.cs" />

@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -51,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mock\AssertionFactroryMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
     <Compile Include="Mock\RelayStateSerialiserMock.cs" />
+    <Compile Include="Mock\ResponseFactoryMock.cs" />
     <Compile Include="Request\AuthnRequestNameIdTests.cs" />
     <Compile Include="Encoding\MessageEncodingTest.cs" />
     <Compile Include="HelperTests.cs" />
@@ -74,6 +77,7 @@
     <Compile Include="Request\Dispatchers\RedirectRequestDispatcherTest.cs" />
     <Compile Include="Response\ResponseStatusTests.cs" />
     <Compile Include="Mock\Tokens\SubjectConfirmationDataValidatorMock.cs" />
+    <Compile Include="Response\SamlTokenResponseParserTests.cs" />
     <Compile Include="Tokens\MiscellaneousTests.cs" />
     <Compile Include="Tokens\TokenHelperTests.cs" />
     <Compile Include="Tokens\TokenSerialiserTests.cs" />

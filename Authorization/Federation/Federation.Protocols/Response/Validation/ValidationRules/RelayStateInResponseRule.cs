@@ -1,18 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.Threading.Tasks;
-using Kernel.Federation.Protocols;
 using Kernel.Logging;
 
 namespace Federation.Protocols.Response.Validation.ValidationRules
 {
     internal class RelayStateInResponseRule : ResponseValidationRule
     {
-        private readonly IRelayStateHandler _relayStateHandler;
-
-        public RelayStateInResponseRule(IRelayStateHandler relayStateHandler, ILogProvider logProvider)
+        public RelayStateInResponseRule(ILogProvider logProvider)
             : base(logProvider)
         {
-            this._relayStateHandler = relayStateHandler;
+            
         }
 
         internal override RuleScope Scope
@@ -23,21 +20,14 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
             }
         }
 
-        protected override async Task<bool> ValidateInternal(SamlResponseValidationContext context)
+        protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
             base._logProvider.LogMessage("RelayState In Response Rule running.");
             if (context.Response.RelayState == null)
             {
-                var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
-                if (relayState == null)
-                {
-                    context.ValidationResult.Add(new ValidationResult("Relay state is missing in the response."));
-                    return false;
-                }
-
-                context.Response.RelayState = relayState;
+                throw new InvalidOperationException("Relay state is missing.");
             }
-            return true;
+            return Task.FromResult(true);
         }
     }
 }

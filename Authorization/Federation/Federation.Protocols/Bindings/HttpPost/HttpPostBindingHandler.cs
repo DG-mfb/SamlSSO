@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Federation.Protocols.Factories;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Protocols;
-using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Federation.Protocols.Bindings.HttpPost
 {

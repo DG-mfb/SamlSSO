@@ -8,8 +8,8 @@ namespace Federation.Protocols.Response.Validation
     internal class SamlResponseValidationContext : ValidationContext
     {
         public IDictionary<string, string> Form { get; }
-        public ResponseStatus Response { get { return (ResponseStatus)base.Entry; } }
-        public SamlResponseValidationContext(ResponseStatus entry, IDictionary<string, string> form) : this((object)entry)
+        public SamlResponseContext Response { get { return (SamlResponseContext)base.Entry; } }
+        public SamlResponseValidationContext(SamlResponseContext entry, IDictionary<string, string> form) : this((object)entry)
         {
             this.Form = form;
         }

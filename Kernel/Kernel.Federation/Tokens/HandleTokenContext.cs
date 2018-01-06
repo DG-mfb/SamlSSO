@@ -5,7 +5,7 @@ namespace Kernel.Federation.Tokens
 {
     public class HandleTokenContext
     {
-        public XmlReader Token { get; }
+        public XmlElement Token { get; }
         public string _federationPartyId { get; }
         public string AuthenticationMethod { get; }
         public object RelayState { get; }
@@ -19,7 +19,7 @@ namespace Kernel.Federation.Tokens
                 return rs["origin"].ToString();
             }
         }
-        public HandleTokenContext(XmlReader token, string federationPartyId, string authenticationMethod, object relayState)
+        public HandleTokenContext(XmlElement token, string federationPartyId, string authenticationMethod, object relayState)
         {
             this.Token = token;
             this._federationPartyId = federationPartyId;

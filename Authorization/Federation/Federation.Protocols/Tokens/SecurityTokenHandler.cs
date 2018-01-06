@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Xml;
 using Kernel.Authentication.Claims;
 using Kernel.Federation.Tokens;
 
@@ -24,14 +26,16 @@ namespace Federation.Protocols.Tokens
 
         public bool CanHandleToken(HandleTokenContext context)
         {
-            return this._tokenSerialiser.CanReadToken(context.Token);
+            var reader = XmlReader.Create(new StringReader(context.Token.OuterXml));
+            return this._tokenSerialiser.CanReadToken(reader);
         }
 
         public async Task<TokenHandlingResponse> HandleToken(HandleTokenContext context)
         {
             var partnerId = context._federationPartyId;
             ClaimsIdentity identity = null;
-            var token = this._tokenSerialiser.DeserialiseToken(context.Token, partnerId);
+            var reader = XmlReader.Create(new StringReader(context.Token.OuterXml));
+            var token = this._tokenSerialiser.DeserialiseToken(reader, partnerId);
             var validationResult = new List<ValidationResult>();
             var isValid = this._tokenValidator.Validate(token, validationResult, partnerId);
 
