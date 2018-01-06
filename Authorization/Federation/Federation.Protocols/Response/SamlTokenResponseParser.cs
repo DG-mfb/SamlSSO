@@ -13,15 +13,19 @@ namespace Federation.Protocols.Response
     {
         public SamlTokenResponseParser(ILogProvider logProvider):base(logProvider)
         {
-           
         }
         public Task<TokenResponse> ParseResponse(string context)
         {
-            var response = ParseInternal(context);
+            var response = ParseResponseInternal(context);
             return Task.FromResult(response);
         }
 
-        private TokenResponse ParseInternal(string responseText)
+        protected override StatusResponse ParseInernal(string response)
+        {
+            return this.ParseResponseInternal(response);
+        }
+
+        private TokenResponse ParseResponseInternal(string responseText)
         {
             var response = new TokenResponse();
             base.ReadResponseStatus(XmlReader.Create(new StringReader(responseText)), response);

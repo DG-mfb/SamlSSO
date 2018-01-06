@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
+using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Logging;
 using Shared.Federtion.Constants;
@@ -9,7 +10,7 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class SamlResponseParser
+    internal abstract class SamlResponseParser
     {
         protected readonly ILogProvider LogProvider;
 
@@ -17,7 +18,11 @@ namespace Federation.Protocols.Response
         {
             this.LogProvider = logProvider;
         }
-
+        public StatusResponse Parse(string response)
+        {
+            return this.ParseInernal(response);
+        }
+        protected abstract StatusResponse ParseInernal(string response);
         protected void ReadResponseStatus(XmlReader reader, StatusResponse response)
         {
             reader.MoveToContent();

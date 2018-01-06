@@ -16,6 +16,7 @@ using Federation.Protocols.Tokens.Validation;
 using Kernel.DependancyResolver;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Response;
 using Kernel.Reflection;
 using Shared.Federtion.Models;
 using Shared.Initialisation;
@@ -59,9 +60,16 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<RedirectRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateAppender>(Lifetime.Transient);
-
+            dependencyResolver.RegisterType<SamlTokenResponseParser>(Lifetime.Transient);
+            dependencyResolver.RegisterType<SamlLogoutResponseParser>(Lifetime.Transient);
             RequestHelper.GetAuthnRequestBuilders = () => dependencyResolver.ResolveAll<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>();
             this.GetBuilders().Aggregate(dependencyResolver, (r, next) => {r.RegisterType(next, Lifetime.Transient); return r; });
+
+            dependencyResolver.RegisterFactory<Func<Type, SamlResponseParser>>(() => t =>
+            {
+                var toResolve = typeof(IResponseParser<,>).MakeGenericType(typeof(string), t);
+                return (SamlResponseParser)dependencyResolver.Resolve(toResolve);
+            }, Lifetime.Singleton);
 
             dependencyResolver.RegisterFactory<Func<Type, object>>(() => dependencyResolver.Resolve, Lifetime.Transient);
             dependencyResolver.RegisterFactory< Func<string, IProtocolHandler> >(() =>

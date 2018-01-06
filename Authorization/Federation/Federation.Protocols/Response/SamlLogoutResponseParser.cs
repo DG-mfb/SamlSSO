@@ -11,24 +11,24 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class SamlLogoutResponseParser : SamlResponseParser, IResponseParser<SamlInboundContext, LogoutResponse>
+    internal class SamlLogoutResponseParser : SamlResponseParser, IResponseParser<string, LogoutResponse>
     {
         public SamlLogoutResponseParser(ILogProvider logProvider):base(logProvider)
         {
         }
 
-        public Task<LogoutResponse> ParseResponse(SamlInboundContext context)
+        public Task<LogoutResponse> ParseResponse(string context)
         {
-            var elements = context.Form;
-            var responseBase64 = elements[HttpRedirectBindingConstants.SamlResponse];
-            var responseBytes = Convert.FromBase64String(responseBase64);
-            var responseText = Encoding.UTF8.GetString(responseBytes);
-            base.LogProvider.LogMessage(String.Format("Response received:\r\n {0}", responseText));
-            var response = ParseInternal(responseText);
+            var response = ParseResponseInternal(context);
             return Task.FromResult(response);
         }
 
-        private LogoutResponse ParseInternal(string responseText)
+        protected override StatusResponse ParseInernal(string response)
+        {
+            return this.ParseResponseInternal(response);
+        }
+
+        private LogoutResponse ParseResponseInternal(string responseText)
         {
             var response = new LogoutResponse();
             base.ReadResponseStatus(XmlReader.Create(new StringReader(responseText)), response);

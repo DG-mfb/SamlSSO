@@ -66,7 +66,7 @@
     <Compile Include="RelayState\RelayStateAppender.cs" />
     <Compile Include="RelayState\RelayStateHandler.cs" />
     <Compile Include="RelayState\RelaystateSerialiser.cs" />
-    <Compile Include="Request\RequestTypeResolver.cs" />
+    <Compile Include="MessageTypeResolver.cs" />
     <Compile Include="Request\RequestHelper.cs" />
     <Compile Include="Request\ClauseBuilders\CommomAttributesBuilder.cs" />
     <Compile Include="Request\RequestSerialiser.cs" />
