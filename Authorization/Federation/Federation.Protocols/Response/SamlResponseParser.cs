@@ -103,7 +103,8 @@ namespace Federation.Protocols.Response
                         reader.ReadStartElement();
                         var doc = new XmlDocument();
                         var el = doc.ReadNode(reader);
-                        elements.Add((XmlElement)el);
+                        if(el is XmlElement)
+                            elements.Add((XmlElement)el);
                     }
                     status.StatusDetail.Any = elements.ToArray();
                     continue;

@@ -36,7 +36,7 @@ namespace Federation.Protocols.Response
                 var responseStatus = await this._responseParser.ParseResponse(httpPostContext);
                 context.RelayState = responseStatus.RelayState;
                 
-                var samlResponse = responseStatus.StatusResponse as Shared.Federtion.Response.TokenResponse;
+                var samlResponse = responseStatus.StatusResponse as TokenResponse;
                
                 var hasToken = (samlResponse != null && samlResponse.Assertions != null && samlResponse.Assertions.Length == 1);
                 context.HasSecurityToken = hasToken;
