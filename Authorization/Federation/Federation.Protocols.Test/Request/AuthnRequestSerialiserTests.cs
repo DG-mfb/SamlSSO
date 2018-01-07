@@ -5,12 +5,12 @@ using DeflateCompression;
 using Federation.Protocols.Encodiing;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
 using Kernel.Serialisation;
 using NUnit.Framework;
 using Serialisation.Xml;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Test.Request

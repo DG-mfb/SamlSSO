@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IdentityModel.Metadata;
-using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Security.CertificateManagement;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.Handlers
@@ -46,29 +45,30 @@ namespace Federation.Protocols.Request.Handlers
         }
         public async Task Handle(HttpRedirectInboundContext context)
         {
-            var requestEncoded = context.Form["SAMLRequest"];
-            var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
-            var decompressed = await this._authnRequestSerialiser.Decompress(requestEncoded);
-            var type = this.ResolveRequestType(decompressed);
-            var request = this._authnRequestSerialiser.Deserialize<AuthnRequest>(decompressed);
-            var spDescriptor = await this.GetSPDescriptor(request);
-            var keyDescriptors = spDescriptor.Keys.Where(k => k.Use == KeyType.Signing);
-            var validated = false;
-            foreach (var k in keyDescriptors.SelectMany(x => x.KeyInfo))
-            {
-                var binaryClause = k as BinaryKeyIdentifierClause;
-                if (binaryClause == null)
-                    throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
+            throw new NotImplementedException();
+            //var requestEncoded = context.Form["SAMLRequest"];
+            //var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
+            //var decompressed = await this._authnRequestSerialiser.Decompress(requestEncoded);
+            //var type = this.ResolveRequestType(decompressed);
+            //var request = this._authnRequestSerialiser.Deserialize<AuthnRequest>(decompressed);
+            //var spDescriptor = await this.GetSPDescriptor(request);
+            //var keyDescriptors = spDescriptor.Keys.Where(k => k.Use == KeyType.Signing);
+            //var validated = false;
+            //foreach (var k in keyDescriptors.SelectMany(x => x.KeyInfo))
+            //{
+            //    var binaryClause = k as BinaryKeyIdentifierClause;
+            //    if (binaryClause == null)
+            //        throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
 
-                var certContent = binaryClause.GetBuffer();
-                var cert = new X509Certificate2(certContent);
-                validated = this.VerifySignature(context.Request, cert, this._certificateManager);
-                if (validated)
-                    break;
-            }
-            if (!validated)
-                throw new InvalidOperationException("Invalid signature.");
-            context.HanlerAction();
+            //    var certContent = binaryClause.GetBuffer();
+            //    var cert = new X509Certificate2(certContent);
+            //    validated = this.VerifySignature(context.Request, cert, this._certificateManager);
+            //    if (validated)
+            //        break;
+            //}
+            //if (!validated)
+            //    throw new InvalidOperationException("Invalid signature.");
+            //context.HanlerAction();
         }
 
         private Type ResolveRequestType(string message)

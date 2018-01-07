@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Linq;
 using System.IdentityModel.Metadata;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Federation.Protocols.Bindings.HttpPost;
+using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.DependancyResolver;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
+using Kernel.Federation.MetaData.Configuration;
+using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
+using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
+using Microsoft.Owin;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using Shared.Federtion.Factories;
-using Kernel.Federation.Protocols;
-using Kernel.Federation.MetaData.Configuration;
-using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Shared.Federtion.Forms;
-using Federation.Protocols.Bindings.HttpPost;
-using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
-using Federation.Protocols.Bindings.HttpRedirect;
-using Microsoft.Owin;
-using Shared.Federtion.Constants;
 
 namespace SLOOwinMiddleware.Handlers
 {

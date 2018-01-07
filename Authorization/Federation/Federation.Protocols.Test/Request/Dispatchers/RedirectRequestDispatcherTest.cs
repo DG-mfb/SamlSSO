@@ -10,6 +10,7 @@ using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
@@ -20,7 +21,6 @@ using SecurityManagement;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
 using Serialisation.Xml;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Test.Request.Dispatchers
 {

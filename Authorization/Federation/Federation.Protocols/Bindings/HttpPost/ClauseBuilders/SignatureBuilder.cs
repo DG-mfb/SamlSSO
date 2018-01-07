@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using Kernel.Cryptography.Signing.Xml;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
 {

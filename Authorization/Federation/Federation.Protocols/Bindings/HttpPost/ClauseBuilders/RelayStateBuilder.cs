@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
 {

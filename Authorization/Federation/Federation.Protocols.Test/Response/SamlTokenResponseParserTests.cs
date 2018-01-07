@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using Federation.Protocols.Response;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using NUnit.Framework;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Test.Response
 {

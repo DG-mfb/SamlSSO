@@ -1,12 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Response;
 using Kernel.Logging;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings;
 using Kernel.Logging;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpPost
 {
@@ -20,18 +20,19 @@ namespace Federation.Protocols.Bindings.HttpPost
             this._relayStateHandler = relayStateHandler;
             this._logProvider = logProvider;
         }
-        public async Task<IDictionary<string, object>> Decode(IDictionary<string, string> request)
+        public async Task<SamlInboundMessage> Decode(IDictionary<string, string> request)
         {
-            var result = new Dictionary<string, object>();
+            var result = new SamlInboundMessage(new Uri(Kernel.Federation.MetaData.Configuration.Bindings.Http_Post), null);
+            
             foreach(var el in request)
             {
                 var decoded = await this.DecodeElement(el);
-                result.Add(decoded.Key, decoded.Value);
+                result.Elements.Add(decoded.Key, decoded.Value);
             }
             return result;
         }
 
-        private async Task<KeyValuePair<string, object>> DecodeElement(KeyValuePair<string, string> element)
+        public async Task<KeyValuePair<string, object>> DecodeElement(KeyValuePair<string, string> element)
         {
             if(element.Key == HttpRedirectBindingConstants.RelayState)
             {

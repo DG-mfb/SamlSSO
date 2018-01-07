@@ -6,11 +6,11 @@ using Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders;
 using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using NUnit.Framework;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Test.RelayState
 {

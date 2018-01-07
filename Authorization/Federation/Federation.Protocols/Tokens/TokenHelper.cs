@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
-using Shared.Federtion.Constants;
+using Kernel.Federation.Constants;
 
 namespace Federation.Protocols.Tokens
 {

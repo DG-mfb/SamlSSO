@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kernel.Configuration;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.RelayState
 {

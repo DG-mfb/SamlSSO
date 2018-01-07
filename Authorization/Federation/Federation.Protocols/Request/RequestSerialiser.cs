@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Serialisation;
 using Kernel.Web;
 using Serialisation.Xml;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Request
 {

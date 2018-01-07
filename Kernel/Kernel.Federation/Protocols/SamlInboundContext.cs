@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IdentityModel.Metadata;
+using Kernel.Federation.Protocols.Bindings;
 
 namespace Kernel.Federation.Protocols
 {
@@ -12,6 +13,6 @@ namespace Kernel.Federation.Protocols
         public ICollection<KeyDescriptor> Keys { get; }
         public object RelayState { get; set; }
         public string Request { get; set; }
-        public IDictionary<string, string> Form { get; set; }
+        public SamlInboundMessage Message { get; set; }
     }
 }

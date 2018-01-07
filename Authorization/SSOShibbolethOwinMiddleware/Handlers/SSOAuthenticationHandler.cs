@@ -10,17 +10,18 @@ using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.Authorisation;
 using Kernel.DependancyResolver;
 using Kernel.Federation.Authorization;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Bindings;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Microsoft.Owin;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Factories;
 using Shared.Federtion.Forms;
 using SSOOwinMiddleware.Contexts;
@@ -89,14 +90,16 @@ namespace SSOOwinMiddleware.Handlers
                     this._logger.WriteInformation(String.Format("Saml2 response received"));
                     var protocolFactory = this._resolver.Resolve<Func<string, IProtocolHandler>>();
                     var protocolHanlder = protocolFactory(Bindings.Http_Post);
-
+                    var decoder = _resolver.Resolve<IBindingDecoder<IDictionary<string, string>>>();
+                    var formToDictionary = form.ToDictionary(x => x.Key, v => form.Get(v.Key)) as IDictionary<string, string>;
+                    var formDecoded = await decoder.Decode(formToDictionary);
                     var protocolContext = new SamlProtocolContext
                     {
                         ResponseContext = new HttpPostResponseInboundContext
                         {
                             RequestUri = Request.Uri,
                             AuthenticationMethod = base.Options.AuthenticationType,
-                            Form = form.ToDictionary(x => x.Key, v => form.Get(v.Key)) as IDictionary<string, string>
+                            Message = formDecoded
                         }
                     };
                     this._logger.WriteInformation(String.Format("Handle response entering."));

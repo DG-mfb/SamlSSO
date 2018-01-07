@@ -1,11 +1,8 @@
-﻿using System;
-using System.IdentityModel.Metadata;
+﻿using System.IdentityModel.Metadata;
 using System.Linq;
 using Federation.Metadata.Consumer.Tests.Mock;
 using Federation.Metadata.FederationPartner.Handlers;
 using NUnit.Framework;
-using Shared.Federtion.Constants;
-using Shared.Federtion.Factories;
 
 namespace Federation.Metadata.Consumer.Tests
 {

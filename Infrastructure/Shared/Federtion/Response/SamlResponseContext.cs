@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Shared.Federtion.Constants;
+using Kernel.Federation.Constants;
 
 namespace Shared.Federtion.Response
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Serialization;
-using Shared.Federtion.Constants;
+using Kernel.Federation.Constants;
 
 namespace Shared.Federtion.Models
 {

@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Bindings.HttpRedirect.ClauseBuilders
 {

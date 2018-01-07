@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Kernel.Federation.Constants;
 using Kernel.Logging;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 using Shared.Federtion.Response;
 

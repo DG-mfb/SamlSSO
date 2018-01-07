@@ -3,8 +3,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Federation.Protocols.Test.Mock;
 using Federation.Protocols.Tokens;
+using Kernel.Federation.Constants;
 using NUnit.Framework;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Test.Tokens
 {

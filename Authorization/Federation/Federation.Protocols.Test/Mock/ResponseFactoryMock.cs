@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Xml;
+using Kernel.Federation.Constants;
 using Serialisation.Xml;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 using Shared.Federtion.Response;
 

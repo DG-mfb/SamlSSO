@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DeflateCompression;
 using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using NUnit.Framework;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Test.Encoding
 {
@@ -44,11 +43,11 @@ namespace Federation.Protocols.Test.Encoding
 
             var decoder = new PostBindingDecoder(logger, relayStateHandler);
             //ACT
-            var result = await decoder.Decode(form);
-            var stateFromResult = result[HttpRedirectBindingConstants.RelayState] as IDictionary<string, object>;
+            var message = await decoder.Decode(form);
+            var stateFromResult = message.Elements[HttpRedirectBindingConstants.RelayState] as IDictionary<string, object>;
             //ASSERT
             Assert.IsNotNull(stateFromResult);
-            Assert.AreEqual(serialised, result[HttpRedirectBindingConstants.SamlResponse]);
+            Assert.AreEqual(serialised, message.Elements[HttpRedirectBindingConstants.SamlResponse]);
             Assert.IsTrue(relayState.SequenceEqual(stateFromResult));
         }
     }

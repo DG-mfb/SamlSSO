@@ -1,8 +1,8 @@
-﻿using InlineMetadataContextProvider;
-using Kernel.Federation.MetaData;
+﻿using System;
+using InlineMetadataContextProvider;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
-using Shared.Federtion.Constants;
-using System;
+using Kernel.Federation.MetaData;
 
 namespace Federation.Protocols.Test.Mock
 {

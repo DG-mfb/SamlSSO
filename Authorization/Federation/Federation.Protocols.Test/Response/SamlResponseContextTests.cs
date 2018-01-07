@@ -1,7 +1,7 @@
 ﻿using System;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using NUnit.Framework;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Test.Response

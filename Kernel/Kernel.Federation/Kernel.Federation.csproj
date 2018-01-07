@@ -44,6 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audience\AudienceUriMode.cs" />
+    <Compile Include="Constants\AuthnticationContexts.cs" />
+    <Compile Include="Constants\HttpRedirectBindingConstants.cs" />
+    <Compile Include="Constants\NameIdentifierFormats.cs" />
+    <Compile Include="Constants\ProtocolBindings.cs" />
+    <Compile Include="Constants\Reasons.cs" />
+    <Compile Include="Constants\RelayStateContstants.cs" />
+    <Compile Include="Constants\Saml20Constants.cs" />
+    <Compile Include="Constants\StatusCodes.cs" />
+    <Compile Include="Constants\SubjectConfirmationMethods.cs" />
     <Compile Include="FederationPartner\RequestConfiguration.cs" />
     <Compile Include="Authorization\AuthorizationServerConfiguration.cs" />
     <Compile Include="Exceptions\AudienceRestrictionException.cs" />
@@ -74,6 +83,8 @@
     <Compile Include="MetaData\MetadataPublicationProtocol.cs" />
     <Compile Include="Protocols\AuthnContext.cs" />
     <Compile Include="Protocols\Bindings\IBindingDecoder.cs" />
+    <Compile Include="Protocols\Bindings\IBindingDecode%271r.cs" />
+    <Compile Include="Protocols\SamlInboundMessage.cs" />
     <Compile Include="Protocols\IMessageTypeResolver.cs" />
     <Compile Include="Protocols\Request\LogoutRequestContext.cs" />
     <Compile Include="Protocols\Request\RequestContext.cs" />

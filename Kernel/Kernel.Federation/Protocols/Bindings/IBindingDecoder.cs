@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Kernel.Federation.Protocols.Bindings
 {
-    public interface IBindingDecoder<TRequest>
+    public interface IBindingDecoder
     {
-        Task<IDictionary<string, object>> Decode(TRequest request);
+        Task<KeyValuePair<string, object>> DecodeElement(KeyValuePair<string, string> element);
     }
 }

@@ -54,25 +54,26 @@ namespace FederationIdentityProvider.Owin
             {
                 a.Run(async c =>
                 {
+                    throw new NotImplementedException();
                     var elements = c.Request.Query;
                     var queryStringRaw = c.Request.QueryString.Value;
 
-                    var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
-                    var context = new HttpRedirectInboundContext
-                    {
-                        Request = c.Request.QueryString.Value,
-                        Form = elements.ToDictionary(k => k.Key, v => v.Value.First()),
-                        HanlerAction = () =>
-                        {
-                            var id = Guid.NewGuid();
-                            var urlBase = c.Request.Uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
-                            c.Response.Redirect(String.Format("https://localhost:44342/client?returnUrl={0}{1}&state={2}", urlBase, "/api/sso/signon", id));
-                        }
-                    };
+                    //var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
+                    //var context = new HttpRedirectInboundContext
+                    //{
+                    //    Request = c.Request.QueryString.Value,
+                    //    Form = elements.ToDictionary(k => k.Key, v => v.Value.First()),
+                    //    HanlerAction = () =>
+                    //    {
+                    //        var id = Guid.NewGuid();
+                    //        var urlBase = c.Request.Uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
+                    //        c.Response.Redirect(String.Format("https://localhost:44342/client?returnUrl={0}{1}&state={2}", urlBase, "/api/sso/signon", id));
+                    //    }
+                    //};
 
-                    var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
-                    var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
-                    await protocolHanlder.HandleInbound(new SamlProtocolContext { ResponseContext = context });
+                    //var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
+                    //var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
+                    //await protocolHanlder.HandleInbound(new SamlProtocolContext { ResponseContext = context });
                 });
             });
         }

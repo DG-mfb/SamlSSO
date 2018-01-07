@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Kernel.Federation.Constants;
 using Kernel.Logging;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols.Response.Validation.ValidationRules
 {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols.Request;
 using NUnit.Framework;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Test.Request

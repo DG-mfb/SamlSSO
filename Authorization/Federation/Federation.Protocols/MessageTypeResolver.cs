@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
-using Shared.Federtion.Constants;
 
 namespace Federation.Protocols
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shared.Federtion.Constants;
+using Kernel.Federation.Constants;
 using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response

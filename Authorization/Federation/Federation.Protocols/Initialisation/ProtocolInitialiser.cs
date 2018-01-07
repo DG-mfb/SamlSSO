@@ -43,7 +43,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<RequestEncoderBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<SignatureBuilder>(Lifetime.Transient);
-
+            dependencyResolver.RegisterType<PostBindingDecoder>(Lifetime.Transient);
             dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.SamlRequestBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.RelayStateBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.SignatureBuilder>(Lifetime.Transient);

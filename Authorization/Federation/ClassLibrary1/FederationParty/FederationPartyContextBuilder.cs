@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
-using Shared.Federtion.Constants;
 
 namespace InlineMetadataContextProvider
 {

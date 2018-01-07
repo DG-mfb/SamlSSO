@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
 using System.Security.Cryptography.X509Certificates;
-using Shared.Federtion.Constants;
+using Kernel.Federation.Constants;
 
 namespace Federation.Metadata.Consumer.Tests.Mock
 {

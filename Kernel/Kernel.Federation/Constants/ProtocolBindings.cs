@@ -1,4 +1,4 @@
-﻿namespace Shared.Federtion.Constants
+﻿namespace Kernel.Federation.Constants
 {
     /// <summary>
     /// Protocol bindings

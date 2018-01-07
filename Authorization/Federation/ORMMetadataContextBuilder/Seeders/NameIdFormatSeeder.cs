@@ -1,7 +1,6 @@
 ﻿using Kernel.Data.ORM;
-using Kernel.Federation.MetaData.Configuration;
+using Kernel.Federation.Constants;
 using ORMMetadataContextProvider.Models;
-using Shared.Federtion.Constants;
 
 namespace ORMMetadataContextProvider.Seeders
 {

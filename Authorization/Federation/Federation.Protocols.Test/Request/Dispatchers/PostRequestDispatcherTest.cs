@@ -13,6 +13,7 @@ using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Federation.Protocols.Test.Mock;
+using Kernel.Federation.Constants;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
@@ -23,7 +24,6 @@ using SecurityManagement.Signing;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
 using Serialisation.Xml;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Forms;
 
 namespace Federation.Protocols.Test.Request.Dispatchers

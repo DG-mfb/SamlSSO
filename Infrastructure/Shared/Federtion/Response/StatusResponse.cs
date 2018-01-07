@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Xml;
 using System.Xml.Serialization;
-using Shared.Federtion.Constants;
+using Kernel.Federation.Constants;
 using Shared.Federtion.Models;
 
 namespace Shared.Federtion.Response

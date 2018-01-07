@@ -1,4 +1,4 @@
-﻿namespace Shared.Federtion.Constants
+﻿namespace Kernel.Federation.Constants
 {
     /// <summary>
     /// Constants related to SAML 2.0

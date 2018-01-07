@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
-using Shared.Federtion.Constants;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request

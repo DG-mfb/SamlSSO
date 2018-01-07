@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Kernel.Federation.Protocols;
 using Kernel.Validation;
 using Shared.Federtion.Models;
@@ -8,11 +7,11 @@ namespace Federation.Protocols.Request.Validation
 {
     internal class SamlRequestValidationContext : ValidationContext
     {
-        public IDictionary<string, string> Form
+        public SamlInboundMessage Form
         {
             get
             {
-                return  this.InboundContext.Form;
+                return  this.InboundContext.Message;
             }
         }
         public SamlInboundContext InboundContext { get; } 

@@ -1,5 +1,5 @@
-﻿using Kernel.Federation.FederationPartner;
-using Shared.Federtion.Constants;
+﻿using Kernel.Federation.Constants;
+using Kernel.Federation.FederationPartner;
 using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.ClauseBuilders
