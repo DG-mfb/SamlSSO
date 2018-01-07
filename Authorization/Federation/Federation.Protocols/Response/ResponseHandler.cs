@@ -29,11 +29,8 @@ namespace Federation.Protocols.Response
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
-                var httpPostContext = context as HttpPostResponseInboundContext;
-                if (httpPostContext == null)
-                    throw new InvalidOperationException(String.Format("Expected context of type: {0} but it was: {1}", typeof(HttpPostResponseInboundContext).Name, context.GetType().Name));
-
-                var responseStatus = await this._responseParser.ParseResponse(httpPostContext);
+               
+                var responseStatus = await this._responseParser.ParseResponse(context);
                 context.RelayState = responseStatus.RelayState;
                 
                 var samlResponse = responseStatus.StatusResponse as TokenResponse;
@@ -44,11 +41,11 @@ namespace Federation.Protocols.Response
                 if (hasToken)
                 {
                     var token = samlResponse.Assertions[0];
-                    var handlerContext = new HandleTokenContext(token, responseStatus.FederationPartyId, httpPostContext.AuthenticationMethod, responseStatus.RelayState);
+                    var handlerContext = new HandleTokenContext(token, responseStatus.FederationPartyId, context.AuthenticationMethod, responseStatus.RelayState);
                     var response = await this._tokenHandler.HandleToken(handlerContext);
                     if (!response.IsValid)
                         throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
-                    httpPostContext.Identity = response.Identity;
+                    context.Identity = response.Identity;
                 }
             }
             catch (Exception ex)

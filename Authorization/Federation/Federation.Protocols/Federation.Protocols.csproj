@@ -48,6 +48,7 @@
     <Compile Include="Bindings\HttpPost\ClauseBuilders\SamlRequestBuilder.cs" />
     <Compile Include="Bindings\HttpPost\ClauseBuilders\SignatureBuilder.cs" />
     <Compile Include="Bindings\HttpPost\HttpPostBindingHandler.cs" />
+    <Compile Include="Bindings\HttpPost\PostBindingDecoder.cs" />
     <Compile Include="Bindings\HttpPost\RequestPostBindingContext.cs" />
     <Compile Include="Bindings\HttpRedirect\ClauseBuilders\RequestEncoderBuilder.cs" />
     <Compile Include="Bindings\HttpRedirect\ClauseBuilders\SignatureBuilder.cs" />

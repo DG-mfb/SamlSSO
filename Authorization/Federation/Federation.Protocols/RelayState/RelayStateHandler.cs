@@ -23,7 +23,12 @@ namespace Federation.Protocols.RelayState
             if (!form.ContainsKey(HttpRedirectBindingConstants.RelayState))
                 return null;
             var relayStateCompressed = form[HttpRedirectBindingConstants.RelayState];
-            var relayState = await this._relayStateSerialiser.Deserialize(relayStateCompressed);
+            return await this.Decode(relayStateCompressed);
+        }
+
+        public async Task<object> Decode(string encoded)
+        {
+            var relayState = await this._relayStateSerialiser.Deserialize(encoded);
             return relayState;
         }
     }

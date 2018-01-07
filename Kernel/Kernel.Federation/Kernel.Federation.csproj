@@ -73,6 +73,7 @@
     <Compile Include="MetaData\MetadataPublicationContext.cs" />
     <Compile Include="MetaData\MetadataPublicationProtocol.cs" />
     <Compile Include="Protocols\AuthnContext.cs" />
+    <Compile Include="Protocols\Bindings\IBindingDecoder.cs" />
     <Compile Include="Protocols\IMessageTypeResolver.cs" />
     <Compile Include="Protocols\Request\LogoutRequestContext.cs" />
     <Compile Include="Protocols\Request\RequestContext.cs" />

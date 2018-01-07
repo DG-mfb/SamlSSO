@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Encoding\PostBindingDecodingTest.cs" />
     <Compile Include="Mock\AssertionFactroryMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
     <Compile Include="Mock\RelayStateSerialiserMock.cs" />
