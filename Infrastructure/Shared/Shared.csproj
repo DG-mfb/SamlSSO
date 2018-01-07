@@ -79,6 +79,7 @@
     <Compile Include="Federtion\Models\OneTimeUse.cs" />
     <Compile Include="Federtion\Models\ProxyRestriction.cs" />
     <Compile Include="Federtion\Models\RequestAbstract.cs" />
+    <Compile Include="Federtion\Request\SamlInboundRequestContext.cs" />
     <Compile Include="Federtion\Response\LogoutResponse.cs" />
     <Compile Include="Federtion\Response\TokenResponse.cs" />
     <Compile Include="Federtion\Response\SamlResponseContext.cs" />

@@ -10,6 +10,7 @@ using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Federation.Protocols.Request.ClauseBuilders;
 using Federation.Protocols.Request.Handlers;
+using Federation.Protocols.Request.Parsers;
 using Federation.Protocols.Response;
 using Federation.Protocols.Tokens;
 using Federation.Protocols.Tokens.Validation;
@@ -44,10 +45,11 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<RelayStateBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<SignatureBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<PostBindingDecoder>(Lifetime.Transient);
+            dependencyResolver.RegisterType<RedirectBindingDecoder>(Lifetime.Transient);
             dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.SamlRequestBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.RelayStateBuilder>(Lifetime.Transient);
             dependencyResolver.RegisterType<Bindings.HttpPost.ClauseBuilders.SignatureBuilder>(Lifetime.Transient);
-
+            dependencyResolver.RegisterType<RequestParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateHandler>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelaystateSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<SubjectConfirmationDataValidator>(Lifetime.Transient);
@@ -57,6 +59,7 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<RequestSerialiser>(Lifetime.Transient);
             dependencyResolver.RegisterType<PostRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseDispatcher>(Lifetime.Transient);
+            dependencyResolver.RegisterType<AuthnRequestParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RedirectRequestDispatcher>(Lifetime.Transient);
             dependencyResolver.RegisterType<ResponseParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<RelayStateAppender>(Lifetime.Transient);
@@ -67,8 +70,13 @@ namespace Federation.Protocols.Initialisation
 
             dependencyResolver.RegisterFactory<Func<Type, SamlResponseParser>>(() => t =>
             {
-                var toResolve = typeof(IResponseParser<,>).MakeGenericType(typeof(string), t);
+                var toResolve = typeof(IMessageParser<,>).MakeGenericType(typeof(string), t);
                 return (SamlResponseParser)dependencyResolver.Resolve(toResolve);
+            }, Lifetime.Singleton);
+            dependencyResolver.RegisterFactory<Func<Type, SamlRequestParser>>(() => t =>
+            {
+                var toResolve = typeof(IMessageParser<,>).MakeGenericType(typeof(string), t);
+                return (SamlRequestParser)dependencyResolver.Resolve(toResolve);
             }, Lifetime.Singleton);
 
             dependencyResolver.RegisterFactory<Func<Type, object>>(() => dependencyResolver.Resolve, Lifetime.Transient);

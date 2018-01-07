@@ -23,7 +23,7 @@ namespace Federation.Protocols.Test.Response
             
             var parser = new SamlTokenResponseParser(logger);
             //ACT
-            var tokenResponse = await parser.ParseResponse(serialised);
+            var tokenResponse = await parser.Parse(serialised);
             //ASSERT
             Assert.AreEqual(StatusCodes.Success, tokenResponse.Status.StatusCode.Value);
             Assert.IsNull(tokenResponse.Status.StatusCode.SubStatusCode);
@@ -51,7 +51,7 @@ namespace Federation.Protocols.Test.Response
 
             var parser = new SamlTokenResponseParser(logger);
             //ACT
-            var tokenResponse = await parser.ParseResponse(serialised);
+            var tokenResponse = await parser.Parse(serialised);
             //ASSERT
             Assert.AreEqual(StatusCodes.Responder, tokenResponse.Status.StatusCode.Value);
             Assert.IsNull(tokenResponse.Status.StatusCode.SubStatusCode);
@@ -74,7 +74,7 @@ namespace Federation.Protocols.Test.Response
 
             var parser = new SamlTokenResponseParser(logger);
             //ACT
-            var tokenResponse = await parser.ParseResponse(serialised);
+            var tokenResponse = await parser.Parse(serialised);
             //ASSERT
             Assert.AreEqual(StatusCodes.Responder, tokenResponse.Status.StatusCode.Value);
             Assert.IsNotNull(tokenResponse.Status.StatusCode.SubStatusCode);
@@ -100,7 +100,7 @@ namespace Federation.Protocols.Test.Response
 
             var parser = new SamlTokenResponseParser(logger);
             //ACT
-            var tokenResponse = await parser.ParseResponse(serialised);
+            var tokenResponse = await parser.Parse(serialised);
             //ASSERT
             Assert.AreEqual(StatusCodes.Responder, tokenResponse.Status.StatusCode.Value);
             Assert.IsNotNull(tokenResponse.Status.StatusCode.SubStatusCode);
@@ -134,7 +134,7 @@ namespace Federation.Protocols.Test.Response
 
             var parser = new SamlTokenResponseParser(logger);
             //ACT
-            var tokenResponse = await parser.ParseResponse(serialised);
+            var tokenResponse = await parser.Parse(serialised);
             //ASSERT
             Assert.AreEqual(StatusCodes.Responder, tokenResponse.Status.StatusCode.Value);
             Assert.IsNotNull(tokenResponse.Status.StatusCode.SubStatusCode);

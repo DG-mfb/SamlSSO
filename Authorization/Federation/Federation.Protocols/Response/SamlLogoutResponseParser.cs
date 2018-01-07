@@ -1,19 +1,19 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
-using Kernel.Federation.Protocols.Response;
+using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class SamlLogoutResponseParser : SamlResponseParser, IResponseParser<string, LogoutResponse>
+    internal class SamlLogoutResponseParser : SamlResponseParser, IMessageParser<string, LogoutResponse>
     {
         public SamlLogoutResponseParser(ILogProvider logProvider):base(logProvider)
         {
         }
 
-        public Task<LogoutResponse> ParseResponse(string context)
+        public Task<LogoutResponse> Parse(string context)
         {
             var response = ParseResponseInternal(context);
             return Task.FromResult(response);

@@ -69,6 +69,8 @@
     <Compile Include="RelayState\RelayStateHandler.cs" />
     <Compile Include="RelayState\RelaystateSerialiser.cs" />
     <Compile Include="MessageTypeResolver.cs" />
+    <Compile Include="Request\Parsers\AuthnRequestParser.cs" />
+    <Compile Include="Request\Parsers\RequestParser.cs" />
     <Compile Include="Request\RequestHelper.cs" />
     <Compile Include="Request\ClauseBuilders\CommomAttributesBuilder.cs" />
     <Compile Include="Request\RequestSerialiser.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Request\Handlers\AuthnRequestHandler.cs" />
     <Compile Include="Request\RedirectRequestDispatcher.cs" />
     <Compile Include="Request\PostRequestDispatcher.cs" />
+    <Compile Include="Request\SamlRequestParser.cs" />
     <Compile Include="Request\Validation\RequestValidator.cs" />
     <Compile Include="Request\Validation\SamlRequestValidationContext.cs" />
     <Compile Include="Request\Validation\ValidationRules\RequestValidationRule.cs" />

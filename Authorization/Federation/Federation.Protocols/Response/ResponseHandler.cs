@@ -15,9 +15,9 @@ namespace Federation.Protocols.Response
     {
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
-        private readonly IResponseParser<SamlInboundContext, SamlResponseContext> _responseParser;
+        private readonly IMessageParser<SamlInboundContext, SamlResponseContext> _responseParser;
 
-        public ResponseHandler(IResponseParser<SamlInboundContext, SamlResponseContext> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
+        public ResponseHandler(IMessageParser<SamlInboundContext, SamlResponseContext> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
         {
             this._responseParser = responseParser;
             this._tokenHandler = tokenHandler;
@@ -30,7 +30,7 @@ namespace Federation.Protocols.Response
                 if (context == null)
                     throw new ArgumentNullException("context");
                
-                var responseStatus = await this._responseParser.ParseResponse(context);
+                var responseStatus = await this._responseParser.Parse(context);
                 
                 var samlResponse = responseStatus.StatusResponse as TokenResponse;
                

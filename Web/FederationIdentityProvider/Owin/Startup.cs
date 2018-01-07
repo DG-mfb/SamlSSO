@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
 using Kernel.Federation.Protocols;
+using Kernel.Federation.Protocols.Bindings;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Microsoft.Owin;
 using Owin;
 using Shared.Federtion.Forms;
+using Shared.Federtion.Request;
 
 [assembly: OwinStartup(typeof(FederationIdentityProvider.Owin.Startup))]
 
@@ -54,26 +56,31 @@ namespace FederationIdentityProvider.Owin
             {
                 a.Run(async c =>
                 {
-                    throw new NotImplementedException();
+                    
+                      //throw new NotImplementedException();
                     var elements = c.Request.Query;
                     var queryStringRaw = c.Request.QueryString.Value;
 
-                    //var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
-                    //var context = new HttpRedirectInboundContext
-                    //{
-                    //    Request = c.Request.QueryString.Value,
-                    //    Form = elements.ToDictionary(k => k.Key, v => v.Value.First()),
-                    //    HanlerAction = () =>
-                    //    {
-                    //        var id = Guid.NewGuid();
-                    //        var urlBase = c.Request.Uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
-                    //        c.Response.Redirect(String.Format("https://localhost:44342/client?returnUrl={0}{1}&state={2}", urlBase, "/api/sso/signon", id));
-                    //    }
-                    //};
-
-                    //var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
-                    //var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
-                    //await protocolHanlder.HandleInbound(new SamlProtocolContext { ResponseContext = context });
+                    var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
+                    var parser = resolver.Resolve<IMessageParser<SamlInboundContext, SamlInboundRequestContext>>();
+                    var decoder = resolver.Resolve<IBindingDecoder<Uri>>();
+                    var message = await decoder.Decode(c.Request.Uri);
+                    var form = elements.ToDictionary(k => k.Key, v => v.Value.First());
+                    var context = new HttpRedirectInboundContext
+                    {
+                        
+                        Message = message,
+                        HanlerAction = () =>
+                        {
+                            var id = Guid.NewGuid();
+                            var urlBase = c.Request.Uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
+                            c.Response.Redirect(String.Format("https://localhost:44342/client?returnUrl={0}{1}&state={2}", urlBase, "/api/sso/signon", id));
+                        }
+                    };
+                    await parser.Parse(context);
+                    var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
+                    var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
+                    await protocolHanlder.HandleInbound(new SamlProtocolContext { ResponseContext = context });
                 });
             });
         }

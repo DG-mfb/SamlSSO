@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 using Federation.Protocols.Response.Validation;
 using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
-using Kernel.Federation.Protocols.Response;
 using Kernel.Logging;
 using Kernel.Reflection;
 using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseParser : IResponseParser<SamlInboundContext, SamlResponseContext>
+    internal class ResponseParser : IMessageParser<SamlInboundContext, SamlResponseContext>
     {
         private readonly ILogProvider _logProvider;
         private readonly ResponseValidator _responseValidator;
@@ -25,7 +24,7 @@ namespace Federation.Protocols.Response
             this._responseValidator = responseValidator;
             this._relayStateHandler = relayStateHandler;
         }
-        public async Task<SamlResponseContext> ParseResponse(SamlInboundContext context)
+        public async Task<SamlResponseContext> Parse(SamlInboundContext context)
         {
             var message = context.Message;
             var responseText = message.Elements[HttpRedirectBindingConstants.SamlResponse].ToString();

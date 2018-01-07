@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kernel.Federation.Constants;
@@ -13,17 +14,18 @@ namespace Federation.Protocols.Bindings.HttpRedirect
         private readonly ILogProvider _logProvider;
        
         private readonly IMessageEncoding _messageEncoding;
-        private readonly Func<Uri, IDictionary<string, string>> _formater;
         
-        public RedirectBindingDecoder(ILogProvider logProvider, IMessageEncoding messageEncoding, Func<Uri, IDictionary<string, string>> formater)
+        public RedirectBindingDecoder(ILogProvider logProvider, IMessageEncoding messageEncoding)
         {
             this._messageEncoding = messageEncoding;
             this._logProvider = logProvider;
-            this._formater = formater;
         }
         public async Task<SamlInboundMessage> Decode(Uri request)
         {
-            var source = this._formater(request);
+            var source = request.Query.TrimStart('?').Split('&')
+                .Select(x => x.Split('='))
+                .ToDictionary(k => k[0], v => v[1]);
+                
             var result = new SamlInboundMessage(new Uri(Kernel.Federation.MetaData.Configuration.Bindings.Http_Redirect), request);
             
             foreach (var el in source)
@@ -42,7 +44,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
             }
             if (element.Key == HttpRedirectBindingConstants.SamlRequest || element.Key == HttpRedirectBindingConstants.SamlResponse)
             {
-                var value = await this._messageEncoding.DecodeMessage(element.Value);
+                var value = await this._messageEncoding.DecodeMessage(Uri.UnescapeDataString(element.Value));
                 return new KeyValuePair<string, object>(element.Key, value);
             }
             var elementText = Uri.UnescapeDataString(element.Value);
