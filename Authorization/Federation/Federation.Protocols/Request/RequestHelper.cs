@@ -65,12 +65,12 @@ namespace Federation.Protocols.Request
                 Id = configurtion.RequestId,
                 Destination = requestContext.Destination.AbsoluteUri,
                 Issuer = new NameId { Value = configurtion.EntityId, Format = NameIdentifierFormats.Entity },
+                Item = new NameId { Value = "jDoe@domain.com", Format = NameIdentifierFormats.Email },
                 Reason = requestContext.Reason.AbsoluteUri,
                 IssueInstant = DateTime.UtcNow,
                 Version = configurtion.Version,
                 SessionIndex = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString() }
             };
-            throw new NotImplementedException();
         }
     }
 }

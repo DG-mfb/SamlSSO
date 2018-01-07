@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Kernel.Federation.Constants;
+using Kernel.Federation.Protocols;
 
 namespace Shared.Federtion.Response
 {
@@ -14,12 +15,12 @@ namespace Shared.Federtion.Response
         {
             get
             {
-                if (this.RelayState == null)
-                    throw new ArgumentNullException("relay state");
+                if (this.SamlInboundMessage == null)
+                    throw new ArgumentNullException("SamlInboundMessage");
 
-                var relayStateDictionary = this.RelayState as IDictionary<string, object>;
-                if (relayStateDictionary == null)
-                    throw new InvalidOperationException(String.Format("Expected relay state type of: {0}, but it was: {1}", typeof(IDictionary<string, object>).Name, this.RelayState.GetType().Name));
+                IDictionary<string, object> relayStateDictionary;
+                if (!this.SamlInboundMessage.TryGetRelayState(out relayStateDictionary))
+                    throw new InvalidOperationException(String.Format("Expected relay state type of: {0}", typeof(IDictionary<string, object>).Name));
                 object partnerId;
                 if (relayStateDictionary.TryGetValue(RelayStateContstants.FederationPartyId, out partnerId))
                     return partnerId.ToString();
@@ -29,7 +30,7 @@ namespace Shared.Federtion.Response
         public StatusResponse StatusResponse { get; set; }
         
         public string Response { get; set; }
-        public object RelayState { get; set; }
+        public SamlInboundMessage SamlInboundMessage { get; set; }
        
         public bool IsSuccess
         {

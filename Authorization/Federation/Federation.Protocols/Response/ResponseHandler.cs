@@ -31,7 +31,6 @@ namespace Federation.Protocols.Response
                     throw new ArgumentNullException("context");
                
                 var responseStatus = await this._responseParser.ParseResponse(context);
-                context.RelayState = responseStatus.RelayState;
                 
                 var samlResponse = responseStatus.StatusResponse as TokenResponse;
                
@@ -41,7 +40,7 @@ namespace Federation.Protocols.Response
                 if (hasToken)
                 {
                     var token = samlResponse.Assertions[0];
-                    var handlerContext = new HandleTokenContext(token, responseStatus.FederationPartyId, context.AuthenticationMethod, responseStatus.RelayState);
+                    var handlerContext = new HandleTokenContext(token, responseStatus.FederationPartyId, context.AuthenticationMethod, responseStatus.SamlInboundMessage.RelayState);
                     var response = await this._tokenHandler.HandleToken(handlerContext);
                     if (!response.IsValid)
                         throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));

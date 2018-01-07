@@ -6,15 +6,15 @@ namespace Kernel.Federation.Protocols
 {
     public class SamlInboundMessage
     {
-        public SamlInboundMessage(Uri binding, Uri requestUrl)
+        public SamlInboundMessage(Uri binding, Uri originUrl)
         {
             this.Elements = new Dictionary<string, object>();
             this.Binding = binding;
-            this.RequestUrl = requestUrl;
+            this.OriginUrl = originUrl;
         }
         public IDictionary<string, object> Elements { get; }
         public Uri Binding { get; }
-        public Uri RequestUrl { get; }
+        public Uri OriginUrl { get; }
         public bool IsSamlRequest
         {
             get
@@ -28,6 +28,31 @@ namespace Kernel.Federation.Protocols
             {
                 return this.Elements.ContainsKey(HttpRedirectBindingConstants.SamlResponse);
             }
+        }
+
+        public bool HasRelaySate
+        {
+            get
+            {
+                return this.Elements.ContainsKey(HttpRedirectBindingConstants.RelayState);
+            }
+        }
+
+        public object RelayState
+        {
+            get
+            {
+                if (this.HasRelaySate)
+                    return this.Elements[HttpRedirectBindingConstants.RelayState];
+                return null;
+            }
+        }
+
+        public bool TryGetRelayState<T>(out T state) where T: class
+        {
+            var relaySate = this.RelayState;
+            state = relaySate as T;
+            return state != null;
         }
     }
 }

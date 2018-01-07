@@ -23,7 +23,7 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
             base._logProvider.LogMessage("RelayState In Response Rule running.");
-            if (context.Response.RelayState == null)
+            if (!context.Response.SamlInboundMessage.HasRelaySate)
             {
                 throw new InvalidOperationException("Relay state is missing.");
             }

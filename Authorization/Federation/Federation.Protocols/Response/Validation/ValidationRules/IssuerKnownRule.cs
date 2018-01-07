@@ -31,7 +31,7 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
             if (String.IsNullOrWhiteSpace(federationParnerId))
                 throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.StatusResponse.Issuer.Value));
 
-            context.Response.RelayState = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
+            context.Response.SamlInboundMessage.Elements[HttpRedirectBindingConstants.RelayState] = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
 
             return Task.FromResult(true);
         }

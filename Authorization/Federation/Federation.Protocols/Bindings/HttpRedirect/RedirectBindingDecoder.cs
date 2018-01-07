@@ -12,13 +12,11 @@ namespace Federation.Protocols.Bindings.HttpRedirect
     {
         private readonly ILogProvider _logProvider;
        
-        private readonly IRelayStateHandler _relayStateHandler;
         private readonly IMessageEncoding _messageEncoding;
         private readonly Func<Uri, IDictionary<string, string>> _formater;
         
-        public RedirectBindingDecoder(ILogProvider logProvider, IRelayStateHandler relayStateHandler, IMessageEncoding messageEncoding, Func<Uri, IDictionary<string, string>> formater)
+        public RedirectBindingDecoder(ILogProvider logProvider, IMessageEncoding messageEncoding, Func<Uri, IDictionary<string, string>> formater)
         {
-            this._relayStateHandler = relayStateHandler;
             this._messageEncoding = messageEncoding;
             this._logProvider = logProvider;
             this._formater = formater;
@@ -40,8 +38,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
         {
             if(element.Key == HttpRedirectBindingConstants.RelayState)
             {
-                var value = await this._relayStateHandler.Decode(element.Value);
-                return new KeyValuePair<string, object>(element.Key, value);
+                return new KeyValuePair<string, object>(element.Key, element.Value);
             }
             if (element.Key == HttpRedirectBindingConstants.SamlRequest || element.Key == HttpRedirectBindingConstants.SamlResponse)
             {

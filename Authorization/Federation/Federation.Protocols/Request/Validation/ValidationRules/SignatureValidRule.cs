@@ -18,21 +18,22 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
         
         protected override Task<bool> ValidateInternal(SamlRequestValidationContext context)
         {
-            var inboundContext = context.InboundContext;
-            var validated = false;
-            foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
-            {
-                var binaryClause = k as BinaryKeyIdentifierClause;
-                if (binaryClause == null)
-                    throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
+            throw new NotImplementedException();
+            //var inboundContext = context.InboundContext;
+            //var validated = false;
+            //foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
+            //{
+            //    var binaryClause = k as BinaryKeyIdentifierClause;
+            //    if (binaryClause == null)
+            //        throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
 
-                var certContent = binaryClause.GetBuffer();
-                var cert = new X509Certificate2(certContent);
-                validated = this.VerifySignature(inboundContext.Request, cert);
-                if (validated)
-                    break;
-            }
-            return Task.FromResult(validated);
+            //    var certContent = binaryClause.GetBuffer();
+            //    var cert = new X509Certificate2(certContent);
+            //    validated = this.VerifySignature(inboundContext.Request, cert);
+            //    if (validated)
+            //        break;
+            //}
+            //return Task.FromResult(validated);
         }
 
         private bool VerifySignature(string request, X509Certificate2 certificate)

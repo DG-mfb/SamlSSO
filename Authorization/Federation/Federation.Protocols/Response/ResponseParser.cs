@@ -17,21 +17,25 @@ namespace Federation.Protocols.Response
         private readonly ResponseValidator _responseValidator;
         private readonly Func<Type, SamlResponseParser> _samlResponseParserFactory;
         private readonly MessageTypeResolver _messageTypeResolver = new MessageTypeResolver();
-        public ResponseParser(Func<Type, SamlResponseParser> samlResponseParserFactory, ILogProvider logProvider, ResponseValidator responseValidator)
+        private readonly IRelayStateHandler _relayStateHandler;
+        public ResponseParser(Func<Type, SamlResponseParser> samlResponseParserFactory, IRelayStateHandler relayStateHandler, ILogProvider logProvider, ResponseValidator responseValidator)
         {
             this._samlResponseParserFactory = samlResponseParserFactory;
             this._logProvider = logProvider;
             this._responseValidator = responseValidator;
+            this._relayStateHandler = relayStateHandler;
         }
         public async Task<SamlResponseContext> ParseResponse(SamlInboundContext context)
         {
             var message = context.Message;
             var responseText = message.Elements[HttpRedirectBindingConstants.SamlResponse].ToString();
-            var relayState = message.Elements[HttpRedirectBindingConstants.RelayState];
+            
             var responseTypes = this.GetTypes();
             var type = this._messageTypeResolver.ResolveMessageType(responseText, responseTypes);
             var statusResponse =  this._samlResponseParserFactory(type).Parse(responseText);
-            var responseContext = new SamlResponseContext { StatusResponse = statusResponse, RelayState = relayState, Response = responseText };
+            
+            var relayState = await this.ResolveRelayState(message, !String.IsNullOrEmpty(statusResponse.InResponseTo));
+            var responseContext = new SamlResponseContext { StatusResponse = statusResponse, SamlInboundMessage = message, Response = responseText };
             await this._responseValidator.ValidateResponse(responseContext);
             return responseContext;
         }
@@ -40,6 +44,19 @@ namespace Federation.Protocols.Response
         {
             var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(StatusResponse).IsAssignableFrom(t));
             return types;
+        }
+
+        private async Task<object> ResolveRelayState(SamlInboundMessage message, bool spInitiated)
+        {
+            if (!message.HasRelaySate)
+                return null;
+
+            var relayStateRaw = message.RelayState;
+            object relayState = relayStateRaw;
+            if (spInitiated && relayStateRaw != null)
+                relayState = await this._relayStateHandler.Decode(relayStateRaw.ToString());
+            message.Elements[HttpRedirectBindingConstants.RelayState] = relayState;
+            return relayState;
         }
     }
 }

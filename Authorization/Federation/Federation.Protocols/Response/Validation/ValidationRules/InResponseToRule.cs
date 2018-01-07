@@ -23,11 +23,11 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
             base._logProvider.LogMessage("In Response To Rule running.");
-            if (context.Response.RelayState == null)
+            if (context.Response.SamlInboundMessage.RelayState == null)
             {
                 throw new InvalidOperationException("Relay state is missing.");
             }
-            ResponseHelper.EnsureRequestIdMatch(context.Response.RelayState, context.Response.StatusResponse.InResponseTo);
+            ResponseHelper.EnsureRequestIdMatch(context.Response.SamlInboundMessage.RelayState, context.Response.StatusResponse.InResponseTo);
             return Task.FromResult(true);
         }
     }

@@ -41,14 +41,14 @@ namespace Federation.Protocols.Test.Encoding
                 { HttpRedirectBindingConstants.RelayState, serialisedRelaySatate }
             };
 
-            var decoder = new PostBindingDecoder(logger, relayStateHandler);
+            var decoder = new PostBindingDecoder(logger);
             //ACT
             var message = await decoder.Decode(form);
-            var stateFromResult = message.Elements[HttpRedirectBindingConstants.RelayState] as IDictionary<string, object>;
+            var stateFromResult = message.Elements[HttpRedirectBindingConstants.RelayState];
             //ASSERT
             Assert.IsNotNull(stateFromResult);
             Assert.AreEqual(serialised, message.Elements[HttpRedirectBindingConstants.SamlResponse]);
-            Assert.IsTrue(relayState.SequenceEqual(stateFromResult));
+            Assert.AreEqual(serialisedRelaySatate, message.Elements[HttpRedirectBindingConstants.RelayState]);
         }
     }
 }

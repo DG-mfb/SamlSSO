@@ -13,11 +13,8 @@ namespace Federation.Protocols.Bindings.HttpPost
     {
         private readonly ILogProvider _logProvider;
        
-        private readonly IRelayStateHandler _relayStateHandler;
-        
-        public PostBindingDecoder(ILogProvider logProvider, IRelayStateHandler relayStateHandler)
+        public PostBindingDecoder(ILogProvider logProvider)
         {
-            this._relayStateHandler = relayStateHandler;
             this._logProvider = logProvider;
         }
         public async Task<SamlInboundMessage> Decode(IDictionary<string, string> request)
@@ -36,8 +33,7 @@ namespace Federation.Protocols.Bindings.HttpPost
         {
             if(element.Key == HttpRedirectBindingConstants.RelayState)
             {
-                var value = await this._relayStateHandler.Decode(element.Value);
-                return new KeyValuePair<string, object>(element.Key, value);
+                return new KeyValuePair<string, object>(element.Key, element.Value);
             }
             var elementBytes = Convert.FromBase64String(element.Value);
             var elementText = Encoding.UTF8.GetString(elementBytes);

@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Metadata;
-using Kernel.Federation.Protocols.Bindings;
+﻿using Kernel.Federation.Constants;
 
 namespace Kernel.Federation.Protocols
 {
     public class SamlInboundContext
     {
-        public SamlInboundContext()
+        public object RelayState
         {
-            this.Keys = new List<KeyDescriptor>();
+            get
+            {
+                if (this.Message != null && this.Message.Elements.ContainsKey(HttpRedirectBindingConstants.RelayState))
+                    return this.Message.Elements[HttpRedirectBindingConstants.RelayState];
+                return null;
+            }
         }
-        public ICollection<KeyDescriptor> Keys { get; }
-        public object RelayState { get; set; }
-        public string Request { get; set; }
         public SamlInboundMessage Message { get; set; }
     }
 }
