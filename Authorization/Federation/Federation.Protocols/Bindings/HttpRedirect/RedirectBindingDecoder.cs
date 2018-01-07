@@ -40,7 +40,7 @@ namespace Federation.Protocols.Bindings.HttpRedirect
         {
             if(element.Key == HttpRedirectBindingConstants.RelayState)
             {
-                return new KeyValuePair<string, object>(element.Key, element.Value);
+                return new KeyValuePair<string, object>(element.Key, Uri.UnescapeDataString(element.Value));
             }
             if (element.Key == HttpRedirectBindingConstants.SamlRequest || element.Key == HttpRedirectBindingConstants.SamlResponse)
             {

@@ -69,6 +69,7 @@
     <Compile Include="RelayState\RelayStateHandler.cs" />
     <Compile Include="RelayState\RelaystateSerialiser.cs" />
     <Compile Include="MessageTypeResolver.cs" />
+    <Compile Include="Request\Parsers\LogoutRequestParser.cs" />
     <Compile Include="Request\Parsers\AuthnRequestParser.cs" />
     <Compile Include="Request\Parsers\RequestParser.cs" />
     <Compile Include="Request\RequestHelper.cs" />
