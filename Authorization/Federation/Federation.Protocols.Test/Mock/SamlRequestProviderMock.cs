@@ -23,31 +23,37 @@ namespace Federation.Protocols.Test.Mock
     {
         public static async Task<Uri> BuildAuthnRequestRedirectUrl()
         {
-            var bindingContext = await SamlRequestProviderMock.BuildRequestBindingContext();
-            return bindingContext.GetDestinationUrl();
-        }
-
-        public static async Task<SamlInboundMessage> BuilSamlInboundMessage()
-        {
-            throw new NotImplementedException();
-            //var bindingContext = await SamlRequestProviderMock.BuildRequestBindingContext();
-        }
-
-        public static async Task<RequestBindingContext> BuildRequestBindingContext()
-        {
-            string url = String.Empty;
-            var builders = new List<IRedirectClauseBuilder>();
-
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
-            var spDescriptor = federationContex.MetadataContext.EntityDesriptorConfiguration.SPSSODescriptors.First();
-            var certContext = spDescriptor.KeyDescriptors.Where(x => x.Use == KeyUsage.Signing && x.IsDefault)
-                .Select(x => x.CertificateContext)
-                .First();
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            authnRequestContext.RelyingState.Add("relayState", "Test state");
+            var bindingContext = await SamlRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
+            return bindingContext.GetDestinationUrl();
+        }
+
+        public static async Task<Uri> BuildLogoutRequestRedirectUrl()
+        {
+            var requestUri = new Uri("http://localhost:59611/");
+            var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
+            var federationContex = federationPartyContextBuilder.BuildContext("local");
+            var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
+            var bindingContext = await SamlRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
+            return bindingContext.GetDestinationUrl();
+        }
+
+        public static Task<SamlInboundMessage> BuilSamlInboundMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task<RequestBindingContext> BuildRequestBindingContext(RequestContext requestContext)
+        {
+            string url = String.Empty;
+            var builders = new List<IRedirectClauseBuilder>();
+            
+            requestContext.RelyingState.Add("relayState", "Test state");
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
@@ -71,7 +77,7 @@ namespace Federation.Protocols.Test.Mock
             var certificateManager = new CertificateManager(logger);
             var signatureBuilder = new SignatureBuilder(certificateManager, logger);
             builders.Add(signatureBuilder);
-            var bindingContext = new RequestBindingContext(authnRequestContext);
+            var bindingContext = new RequestBindingContext(requestContext);
             foreach (var b in builders)
             {
                 await b.Build(bindingContext);

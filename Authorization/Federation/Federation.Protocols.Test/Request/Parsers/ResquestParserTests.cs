@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.Threading.Tasks;
-using System.Web.Util;
 using DeflateCompression;
 using Federation.Metadata.FederationPartner.Handlers;
 using Federation.Protocols.Bindings.HttpRedirect;
@@ -45,6 +44,34 @@ namespace Federation.Protocols.Test.Request.Parsers
                 configurationManger, logger, requestValidator);
             var redirectBindingDecoder = new RedirectBindingDecoder(logger, encoder);
             var message = await redirectBindingDecoder.Decode(authnRequestUrl);
+            var context = new SamlInboundContext { Message = message };
+            //ACT
+            var result = await requestParser.Parse(context);
+            //ASSERT
+            Assert.IsTrue(result.IsValidated);
+        }
+
+        [Test]
+        public async Task ParseLogoutRequest()
+        {
+            //ARRANGE
+            var logoutRequestUrl = await SamlRequestProviderMock.BuildLogoutRequestRedirectUrl();
+            Func<Type, IMetadataHandler> metadataHandlerFactory = t => new MetadataEntitityDescriptorHandler();
+            var xmlSerialiser = new XMLSerialiser();
+            var compressor = new DeflateCompressor();
+            var encoder = new MessageEncoding(compressor);
+            var logger = new LogProviderMock();
+            var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
+            var certManager = new CertificateManager(logger);
+            Func<IEnumerable<RequestValidationRule>> rulesResolver = () => new[] { new SignatureValidRule(logger, certManager) };
+            var requestValidator = new Federation.Protocols.Request.Validation.RequestValidator(logger, new RuleFactory(rulesResolver));
+            var configurationRetrieverMock = new ConfigurationRetrieverMock();
+            var federationPartyContextBuilderMock = new FederationPartyContextBuilderMock();
+            var configurationManger = new ConfigurationManager<MetadataBase>(federationPartyContextBuilderMock, configurationRetrieverMock);
+            var requestParser = new RequestParser(metadataHandlerFactory, t => new LogoutRequestParser(serialiser, logger),
+                configurationManger, logger, requestValidator);
+            var redirectBindingDecoder = new RedirectBindingDecoder(logger, encoder);
+            var message = await redirectBindingDecoder.Decode(logoutRequestUrl);
             var context = new SamlInboundContext { Message = message };
             //ACT
             var result = await requestParser.Parse(context);
