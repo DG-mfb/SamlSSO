@@ -59,7 +59,8 @@
     <Compile Include="Mock\Metadata\ConfigurationRetrieverMock.cs" />
     <Compile Include="Mock\RelayStateSerialiserMock.cs" />
     <Compile Include="Mock\ResponseFactoryMock.cs" />
-    <Compile Include="Mock\SamlRequestProviderMock.cs" />
+    <Compile Include="Mock\SamlPostRequestProviderMock.cs" />
+    <Compile Include="Mock\SamlRedirectRequestProviderMock.cs" />
     <Compile Include="Request\AuthnRequestNameIdTests.cs" />
     <Compile Include="Encoding\MessageEncodingTest.cs" />
     <Compile Include="HelperTests.cs" />
@@ -75,7 +76,8 @@
     <Compile Include="RelayState\RelayStateSerialiserTest.cs" />
     <Compile Include="Request\AuthnRequestRequestedContextTests.cs" />
     <Compile Include="Request\AuthnRequestScopingTests.cs" />
-    <Compile Include="Request\Parsers\ResquestParserTests.cs" />
+    <Compile Include="Request\Parsers\PostRequestParserTests.cs" />
+    <Compile Include="Request\Parsers\RequestParserTests.cs" />
     <Compile Include="Request\RequestTypeResolverTests.cs" />
     <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Request\Dispatchers\PostRequestDispatcherTest.cs" />

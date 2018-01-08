@@ -9,8 +9,8 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 {
     internal class RuleFactory : IValidationRuleFactory<ResponseValidationRule>
     {
-        private readonly IDependencyResolver _resolver;
-        public RuleFactory(IDependencyResolver resolver)
+        private readonly Func<IEnumerable<ResponseValidationRule>> _resolver;
+        public RuleFactory(Func<IEnumerable<ResponseValidationRule>> resolver)
         {
             this._resolver = resolver;
         }
@@ -21,9 +21,8 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
 
         public IEnumerable<IValidationRule> GetValidationRules(Func<ResponseValidationRule, bool> filter)
         {
-            var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(ResponseValidationRule).IsAssignableFrom(t));
-            var rules = types.Select(t => this._resolver.Resolve(t))
-                .Cast<ResponseValidationRule>();
+            var rules = this._resolver();
+            
             return rules.Where(r => r.Scope == RuleScope.Always)
             .ToList()
             .Union(rules.Where(filter));

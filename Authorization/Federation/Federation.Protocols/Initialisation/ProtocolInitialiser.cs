@@ -13,6 +13,7 @@ using Federation.Protocols.Request.Handlers;
 using Federation.Protocols.Request.Parsers;
 using Federation.Protocols.Request.Validation.ValidationRules;
 using Federation.Protocols.Response;
+using Federation.Protocols.Response.Validation.ValidationRules;
 using Federation.Protocols.Tokens;
 using Federation.Protocols.Tokens.Validation;
 using Kernel.DependancyResolver;
@@ -116,6 +117,14 @@ namespace Federation.Protocols.Initialisation
                 var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(RequestValidationRule).IsAssignableFrom(t));
                 var rules = types.Select(t => dependencyResolver.Resolve(t))
                     .Cast<RequestValidationRule>();
+                return rules;
+            }, Lifetime.Singleton);
+
+            dependencyResolver.RegisterFactory<Func<IEnumerable<ResponseValidationRule>>>(() => () =>
+            {
+                var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(ResponseValidationRule).IsAssignableFrom(t));
+                var rules = types.Select(t => dependencyResolver.Resolve(t))
+                    .Cast<ResponseValidationRule>();
                 return rules;
             }, Lifetime.Singleton);
 

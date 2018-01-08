@@ -24,6 +24,7 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
             
             if (!validated)
                 throw new InvalidOperationException("Invalid signature.");
+            context.RequestContext.Validated();
             return Task.FromResult(validated);
         }
     }

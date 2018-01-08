@@ -17,7 +17,7 @@ using Serialisation.Xml;
 
 namespace Federation.Protocols.Test.Mock
 {
-    internal class SamlRequestProviderMock
+    internal class SamlRedirectRequestProviderMock
     {
         public static async Task<Uri> BuildAuthnRequestRedirectUrl()
         {
@@ -26,7 +26,7 @@ namespace Federation.Protocols.Test.Mock
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            var bindingContext = await SamlRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
+            var bindingContext = await SamlRedirectRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return bindingContext.GetDestinationUrl();
         }
 
@@ -37,7 +37,7 @@ namespace Federation.Protocols.Test.Mock
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
-            var bindingContext = await SamlRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
+            var bindingContext = await SamlRedirectRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return bindingContext.GetDestinationUrl();
         }
 

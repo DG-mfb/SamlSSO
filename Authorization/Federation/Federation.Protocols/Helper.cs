@@ -76,15 +76,12 @@ namespace Federation.Protocols
                 if (validated)
                     break;
             }
-            if (validated)
-                inboundContext.Validated();
             return validated;
         }
 
         public static bool ValidateMessageSignature(SamlInboundMessageContext inboundContext, ICertificateManager certificateManager)
         {
             var validated = false;
-            //base._logProvider.LogMessage("ResponseSignatureRule running.");
             var cspParams = new CspParameters();
             cspParams.KeyContainerName = "XML_DSIG_RSA_KEY";
             var rsaKey = new RSACryptoServiceProvider(cspParams);
@@ -94,15 +91,30 @@ namespace Federation.Protocols
             var signEl = TokenHelper.GetElement("Signature", "http://www.w3.org/2000/09/xmldsig#", doc.DocumentElement);
             if (signEl == null)
                 return true;
-
-            var certEl = TokenHelper.GetElement("X509Certificate", "http://www.w3.org/2000/09/xmldsig#", signEl);
             var signedXml = new SignedXml(doc.DocumentElement);
-            var dcert2 = new X509Certificate2(Convert.FromBase64String(certEl.InnerText));
-
             signedXml.LoadXml(signEl);
-            validated = signedXml.CheckSignature(dcert2, true);
+            
+            foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
+            {
+                var binaryClause = k as BinaryKeyIdentifierClause;
+                if (binaryClause == null)
+                    throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
 
-            //base._logProvider.LogMessage(String.Format("ResponseSignatureRule{0}.", validated ? " success" : "failure"));
+                var certContent = binaryClause.GetBuffer();
+                var cert = new X509Certificate2(certContent);
+                validated = signedXml.CheckSignature(cert, true);
+                if (validated)
+                    break;
+            }
+            if (!validated)
+            {
+                var certEl = TokenHelper.GetElement("X509Certificate", "http://www.w3.org/2000/09/xmldsig#", signEl);
+                if (certEl != null)
+                {
+                    var dcert2 = new X509Certificate2(Convert.FromBase64String(certEl.InnerText));
+                    validated = signedXml.CheckSignature(dcert2, true);
+                }
+            }
             return validated;
         }
     }

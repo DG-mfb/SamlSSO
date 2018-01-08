@@ -21,13 +21,13 @@ using Shared.Federtion.Factories;
 namespace Federation.Protocols.Test.Request.Parsers
 {
     [TestFixture]
-    internal class ResquestParserTests
+    internal partial class RequestParserTests
     {
         [Test]
-        public async Task ParseAuthnRequest()
+        public async Task ParseAuthnRequest_redirect_binding()
         {
             //ARRANGE
-            var authnRequestUrl = await SamlRequestProviderMock.BuildAuthnRequestRedirectUrl();
+            var authnRequestUrl = await SamlRedirectRequestProviderMock.BuildAuthnRequestRedirectUrl();
             Func<Type, IMetadataHandler> metadataHandlerFactory = t => new MetadataEntitityDescriptorHandler();
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
@@ -52,10 +52,10 @@ namespace Federation.Protocols.Test.Request.Parsers
         }
 
         [Test]
-        public async Task ParseLogoutRequest()
+        public async Task ParseLogoutRequest_redirect_binding()
         {
             //ARRANGE
-            var logoutRequestUrl = await SamlRequestProviderMock.BuildLogoutRequestRedirectUrl();
+            var logoutRequestUrl = await SamlRedirectRequestProviderMock.BuildLogoutRequestRedirectUrl();
             Func<Type, IMetadataHandler> metadataHandlerFactory = t => new MetadataEntitityDescriptorHandler();
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
