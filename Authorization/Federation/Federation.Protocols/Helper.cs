@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Kernel.Compression;
+using Kernel.Federation.Protocols;
+using Kernel.Security.CertificateManagement;
 
 namespace Federation.Protocols
 {
@@ -37,6 +40,19 @@ namespace Federation.Protocols
                     }
                 }
             }
+        }
+
+        internal static bool VerifyRedirectSignature(Uri request, X509Certificate2 certificate, SamlInboundMessage message, ICertificateManager certificateManager)
+        {
+            var queryString = request.Query.TrimStart('?');
+            var i = queryString.IndexOf("Signature");
+            if (i == -1)
+                throw new InvalidOperationException("No signature found.");
+            var data = queryString.Substring(0, i - 1);
+            var sgn = message.Signature.Signature;
+
+            var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
+            return validated;
         }
     }
 }

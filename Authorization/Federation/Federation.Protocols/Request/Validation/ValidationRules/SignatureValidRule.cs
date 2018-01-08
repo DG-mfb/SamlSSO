@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Logging;
@@ -28,26 +28,13 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
 
                 var certContent = binaryClause.GetBuffer();
                 var cert = new X509Certificate2(certContent);
-                validated = this.VerifySignature(inboundContext.Request, cert);
+                validated = Helper.VerifyRedirectSignature(inboundContext.Request, cert, context.RequestContext.SamlInboundMessage, this._certificateManager);
                 if (validated)
                     break;
             }
             if (validated)
                 context.RequestContext.Validated();
             return Task.FromResult(validated);
-        }
-
-        private bool VerifySignature(Uri request, X509Certificate2 certificate)
-        {
-            var queryString = request.Query.TrimStart('?');
-            var i = queryString.IndexOf("Signature");
-            if (i == -1)
-                throw new InvalidOperationException("No signature found.");
-            var data = queryString.Substring(0, i - 1);
-            var sgn = Uri.UnescapeDataString(queryString.Substring(i + 10));
-            
-            var validated = this._certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
-            return validated;
         }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="DataProtection\MachineDataProtectorImplementation.cs" />
     <Compile Include="DataProtection\MachineKeyDataProtector.cs" />
     <Compile Include="DataProtection\RSADataProtection.cs" />
+    <Compile Include="DataSignatureDescriptor.cs" />
     <Compile Include="DPAPIEncryption.cs" />
     <Compile Include="HashBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

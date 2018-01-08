@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.Xml;
+using Kernel.Cryptography;
 using Kernel.Federation.Constants;
 
 namespace Kernel.Federation.Protocols
@@ -45,6 +47,28 @@ namespace Kernel.Federation.Protocols
                 if (this.HasRelaySate)
                     return this.Elements[HttpRedirectBindingConstants.RelayState];
                 return null;
+            }
+        }
+
+        public bool IsSigned
+        {
+            get
+            {
+                return this.Elements.ContainsKey(HttpRedirectBindingConstants.Signature);
+            }
+        }
+
+        public DataSignatureDescriptor Signature
+        {
+            get
+            {
+                if (!this.IsSigned)
+                    throw new InvalidOperationException("No signature element found.");
+                var signature = this.Elements[HttpRedirectBindingConstants.Signature].ToString();
+                var sigAlg = SignedXml.XmlDsigRSASHA1Url;
+                if (this.Elements.ContainsKey(HttpRedirectBindingConstants.SigAlg))
+                    sigAlg = this.Elements[HttpRedirectBindingConstants.SigAlg].ToString();
+                return new DataSignatureDescriptor(sigAlg, signature);
             }
         }
 
