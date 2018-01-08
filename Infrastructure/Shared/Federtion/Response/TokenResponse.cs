@@ -22,8 +22,9 @@ namespace Shared.Federtion.Response
         /// Specifies an assertion by value, or optionally an encrypted assertion by value.
         /// </summary>
         /// <value>The items.</value>
-        [XmlElement("Assertion", Namespace = Saml20Constants.Assertion, Order = 1)]
+        //[XmlElement("Assertion", Namespace = Saml20Constants.Assertion, Order = 1)]
         //[XmlElement("EncryptedAssertion", Namespace = Saml20Constants.Assertion, Order = 1)]
+        [XmlIgnore]
         public XmlElement[] Assertions { get; set; }
 
         #endregion
