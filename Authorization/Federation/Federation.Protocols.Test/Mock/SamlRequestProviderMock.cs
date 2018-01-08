@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DeflateCompression;
 using Federation.Protocols.Bindings.HttpRedirect;
@@ -9,7 +8,6 @@ using Federation.Protocols.Encodiing;
 using Federation.Protocols.RelayState;
 using Federation.Protocols.Request;
 using Kernel.Federation.Constants;
-using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
 using SecurityManagement;
