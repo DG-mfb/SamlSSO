@@ -61,6 +61,7 @@ namespace Federation.Protocols.Request.Parsers
             var keys = idp.Keys.Where(x => x.Use == KeyType.Signing);
             keys.Aggregate(context.Keys, (t, next) => { t.Add(next); return t; });
         }
+
         private IEnumerable<Type> GetTypes()
         {
             var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(RequestAbstract).IsAssignableFrom(t));
