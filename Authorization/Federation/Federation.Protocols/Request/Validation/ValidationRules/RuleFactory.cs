@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Kernel.DependancyResolver;
-using Kernel.Reflection;
 using Kernel.Validation;
 
 namespace Federation.Protocols.Request.Validation.ValidationRules
 {
     internal class RuleFactory : IValidationRuleFactory<RequestValidationRule>
     {
-        private readonly IDependencyResolver _resolver;
-        public RuleFactory(IDependencyResolver resolver)
+        private readonly Func<IEnumerable<RequestValidationRule>> _resolver;
+        public RuleFactory(Func<IEnumerable<RequestValidationRule>> resolver)
         {
             this._resolver = resolver;
         }
@@ -21,9 +18,8 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
 
         public IEnumerable<IValidationRule> GetValidationRules(Func<RequestValidationRule, bool> filter)
         {
-            var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(RequestValidationRule).IsAssignableFrom(t));
-            var rules = types.Select(t => this._resolver.Resolve(t))
-                .Cast<RequestValidationRule>();
+            var rules = this._resolver();
+            
             return rules;
         }
 

@@ -56,8 +56,10 @@
     <Compile Include="Encoding\PostBindingDecodingTest.cs" />
     <Compile Include="Mock\AssertionFactroryMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
+    <Compile Include="Mock\Metadata\ConfigurationRetrieverMock.cs" />
     <Compile Include="Mock\RelayStateSerialiserMock.cs" />
     <Compile Include="Mock\ResponseFactoryMock.cs" />
+    <Compile Include="Mock\SamlRequestProviderMock.cs" />
     <Compile Include="Request\AuthnRequestNameIdTests.cs" />
     <Compile Include="Encoding\MessageEncodingTest.cs" />
     <Compile Include="HelperTests.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="RelayState\RelayStateSerialiserTest.cs" />
     <Compile Include="Request\AuthnRequestRequestedContextTests.cs" />
     <Compile Include="Request\AuthnRequestScopingTests.cs" />
+    <Compile Include="Request\Parsers\ResquestParserTests.cs" />
     <Compile Include="Request\RequestTypeResolverTests.cs" />
     <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Request\Dispatchers\PostRequestDispatcherTest.cs" />
@@ -141,6 +144,10 @@
       <Project>{E111A891-B47D-4BDC-8BC2-62C2605FC9B8}</Project>
       <Name>InlineMetadataContextProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Federation.Metadata.Consumer\Federation.Metadata.FederationPartner.csproj">
+      <Project>{EEC53E9A-3970-4EEC-8FFC-6B1AEA371A77}</Project>
+      <Name>Federation.Metadata.FederationPartner</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Federation.Protocols\Federation.Protocols.csproj">
       <Project>{33862A55-E53A-45EF-85C4-A9E1DEF4181C}</Project>
       <Name>Federation.Protocols</Name>
@@ -157,6 +164,7 @@
     <Content Include="Assertions\SignedAssertion.xml" />
     <Content Include="Assertions\EncryptedAssertion.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

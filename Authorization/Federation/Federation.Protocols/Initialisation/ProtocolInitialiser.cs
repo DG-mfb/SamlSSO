@@ -11,6 +11,7 @@ using Federation.Protocols.Request;
 using Federation.Protocols.Request.ClauseBuilders;
 using Federation.Protocols.Request.Handlers;
 using Federation.Protocols.Request.Parsers;
+using Federation.Protocols.Request.Validation.ValidationRules;
 using Federation.Protocols.Response;
 using Federation.Protocols.Tokens;
 using Federation.Protocols.Tokens.Validation;
@@ -109,6 +110,15 @@ namespace Federation.Protocols.Initialisation
             {
                 return () => dependencyResolver.ResolveAll<IPostClauseBuilder>();
             }, Lifetime.Singleton);
+
+            dependencyResolver.RegisterFactory<Func<IEnumerable<RequestValidationRule>>>(() => () =>
+            {
+                var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(RequestValidationRule).IsAssignableFrom(t));
+                var rules = types.Select(t => dependencyResolver.Resolve(t))
+                    .Cast<RequestValidationRule>();
+                return rules;
+            }, Lifetime.Singleton);
+
             return Task.CompletedTask;
         }
 

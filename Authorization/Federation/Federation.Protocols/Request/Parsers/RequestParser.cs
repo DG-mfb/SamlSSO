@@ -40,9 +40,9 @@ namespace Federation.Protocols.Request.Parsers
             
             var responseTypes = this.GetTypes();
             var type = this._messageTypeResolver.ResolveMessageType(requestText, responseTypes);
-            var reqeuest =  this._samlResponseParserFactory(type).Parse(requestText);
+            var request =  this._samlResponseParserFactory(type).Parse(requestText);
             
-            var requestContext = new SamlInboundRequestContext { SamlRequest = reqeuest, SamlInboundMessage = message, Request = requestText };
+            var requestContext = new SamlInboundRequestContext { SamlRequest = request, SamlInboundMessage = message, Request = message.OriginUrl };
             await this.ResolveIssuerKeys(requestContext);
             await this._requestValidator.ValidateIRequest(requestContext);
             return requestContext;
@@ -59,7 +59,7 @@ namespace Federation.Protocols.Request.Parsers
             var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
                 .Single().Roles.Single();
             var keys = idp.Keys.Where(x => x.Use == KeyType.Signing);
-            keys.Select(x => { context.Keys.Add(x); return true; });
+            keys.Aggregate(context.Keys, (t, next) => { t.Add(next); return t; });
         }
         private IEnumerable<Type> GetTypes()
         {

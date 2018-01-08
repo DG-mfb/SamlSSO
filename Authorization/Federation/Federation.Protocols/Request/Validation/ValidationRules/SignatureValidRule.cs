@@ -32,14 +32,19 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
                 if (validated)
                     break;
             }
+            if (validated)
+                context.RequestContext.Validated();
             return Task.FromResult(validated);
         }
 
-        private bool VerifySignature(string request, X509Certificate2 certificate)
+        private bool VerifySignature(Uri request, X509Certificate2 certificate)
         {
-            var i = request.IndexOf("Signature");
-            var data = request.Substring(0, i - 1);
-            var sgn = Uri.UnescapeDataString(request.Substring(i + 10));
+            var queryString = request.Query.TrimStart('?');
+            var i = queryString.IndexOf("Signature");
+            if (i == -1)
+                throw new InvalidOperationException("No signature found.");
+            var data = queryString.Substring(0, i - 1);
+            var sgn = Uri.UnescapeDataString(queryString.Substring(i + 10));
             
             var validated = this._certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
             return validated;
