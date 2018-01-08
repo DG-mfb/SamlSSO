@@ -19,6 +19,9 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
             var validated = false;
             if (inboundContext.SamlInboundMessage.Binding == new Uri(Kernel.Federation.Constants.ProtocolBindings.HttpRedirect))
                 validated = Helper.ValidateRedirectSignature(inboundContext, this._certificateManager);
+            else
+                validated = Helper.ValidateMessageSignature(inboundContext, this._certificateManager);
+            
             if (!validated)
                 throw new InvalidOperationException("Invalid signature.");
             return Task.FromResult(validated);
