@@ -36,13 +36,13 @@ namespace Federation.Protocols.Request.Parsers
         public async Task<SamlInboundRequestContext> Parse(SamlInboundContext context)
         {
             var message = context.Message;
-            var requestText = message.Elements[HttpRedirectBindingConstants.SamlRequest].ToString();
+            var requestText = message.SamlMessage;
             
             var responseTypes = this.GetTypes();
             var type = this._messageTypeResolver.ResolveMessageType(requestText, responseTypes);
             var request =  this._samlResponseParserFactory(type).Parse(requestText);
             
-            var requestContext = new SamlInboundRequestContext { SamlRequest = request, SamlInboundMessage = message, Request = message.OriginUrl };
+            var requestContext = new SamlInboundRequestContext { SamlRequest = request, SamlInboundMessage = message, OriginUrl = message.OriginUrl };
             await this.ResolveIssuerKeys(requestContext);
             await this._requestValidator.ValidateIRequest(requestContext);
             return requestContext;

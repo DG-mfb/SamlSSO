@@ -10,7 +10,7 @@ using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Response
 {
-    internal class ResponseParser : IMessageParser<SamlInboundContext, SamlResponseContext>
+    internal class ResponseParser : IMessageParser<SamlInboundContext, SamlInboundResponseContext>
     {
         private readonly ILogProvider _logProvider;
         private readonly ResponseValidator _responseValidator;
@@ -24,17 +24,17 @@ namespace Federation.Protocols.Response
             this._responseValidator = responseValidator;
             this._relayStateHandler = relayStateHandler;
         }
-        public async Task<SamlResponseContext> Parse(SamlInboundContext context)
+        public async Task<SamlInboundResponseContext> Parse(SamlInboundContext context)
         {
             var message = context.Message;
-            var responseText = message.Elements[HttpRedirectBindingConstants.SamlResponse].ToString();
+            var responseText = message.SamlMessage;
             
             var responseTypes = this.GetTypes();
             var type = this._messageTypeResolver.ResolveMessageType(responseText, responseTypes);
             var statusResponse =  this._samlResponseParserFactory(type).Parse(responseText);
             
             var relayState = await this.ResolveRelayState(message, !String.IsNullOrEmpty(statusResponse.InResponseTo));
-            var responseContext = new SamlResponseContext { StatusResponse = statusResponse, SamlInboundMessage = message, Response = responseText };
+            var responseContext = new SamlInboundResponseContext { StatusResponse = statusResponse, SamlInboundMessage = message };
             await this._responseValidator.ValidateResponse(responseContext);
             return responseContext;
         }

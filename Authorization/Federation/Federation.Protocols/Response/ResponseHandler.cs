@@ -15,9 +15,9 @@ namespace Federation.Protocols.Response
     {
         private readonly ITokenHandler _tokenHandler;
         private readonly ILogProvider _logProvider;
-        private readonly IMessageParser<SamlInboundContext, SamlResponseContext> _responseParser;
+        private readonly IMessageParser<SamlInboundContext, SamlInboundResponseContext> _responseParser;
 
-        public ResponseHandler(IMessageParser<SamlInboundContext, SamlResponseContext> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
+        public ResponseHandler(IMessageParser<SamlInboundContext, SamlInboundResponseContext> responseParser, ITokenHandler tokenHandler, ILogProvider logProvider)
         {
             this._responseParser = responseParser;
             this._tokenHandler = tokenHandler;

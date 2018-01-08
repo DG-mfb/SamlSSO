@@ -1,11 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
-using Shared.Federtion.Request;
 
 namespace Federation.Protocols.Request.Validation.ValidationRules
 {
@@ -22,29 +18,10 @@ namespace Federation.Protocols.Request.Validation.ValidationRules
             var inboundContext = context.RequestContext;
             var validated = false;
             if (inboundContext.SamlInboundMessage.Binding == new Uri(Kernel.Federation.Constants.ProtocolBindings.HttpRedirect))
-                validated = this.ValidateRedirectSignature(inboundContext);
-            
+                validated = Helper.ValidateRedirectSignature(inboundContext, this._certificateManager);
+            if (!validated)
+                throw new InvalidOperationException("Invalid signature.");
             return Task.FromResult(validated);
-        }
-
-        private bool ValidateRedirectSignature(SamlInboundRequestContext inboundContext)
-        {
-            var validated = false;
-            foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
-            {
-                var binaryClause = k as BinaryKeyIdentifierClause;
-                if (binaryClause == null)
-                    throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
-
-                var certContent = binaryClause.GetBuffer();
-                var cert = new X509Certificate2(certContent);
-                validated = Helper.VerifyRedirectSignature(inboundContext.Request, cert, inboundContext.SamlInboundMessage, this._certificateManager);
-                if (validated)
-                    break;
-            }
-            if (validated)
-                inboundContext.Validated();
-            return validated;
         }
     }
 }

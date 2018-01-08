@@ -7,7 +7,7 @@ namespace Federation.Protocols.Response
 {
     internal class ResponseHelper
     {
-        internal static void EnsureSuccessAndThrow(SamlResponseContext status)
+        internal static void EnsureSuccessAndThrow(SamlInboundResponseContext status)
         {
             if (status.IsSuccess)
                 return;

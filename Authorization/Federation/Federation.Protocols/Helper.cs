@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -6,6 +8,7 @@ using System.Threading.Tasks;
 using Kernel.Compression;
 using Kernel.Federation.Protocols;
 using Kernel.Security.CertificateManagement;
+using Shared.Federtion;
 
 namespace Federation.Protocols
 {
@@ -52,6 +55,25 @@ namespace Federation.Protocols
             var sgn = message.Signature.Signature;
 
             var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
+            return validated;
+        }
+        public static bool ValidateRedirectSignature(SamlInboundMessageContext inboundContext, ICertificateManager certificateManager)
+        {
+            var validated = false;
+            foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
+            {
+                var binaryClause = k as BinaryKeyIdentifierClause;
+                if (binaryClause == null)
+                    throw new InvalidOperationException(String.Format("Expected type: {0} but it was: {1}", typeof(BinaryKeyIdentifierClause), k.GetType()));
+
+                var certContent = binaryClause.GetBuffer();
+                var cert = new X509Certificate2(certContent);
+                validated = Helper.VerifyRedirectSignature(inboundContext.OriginUrl, cert, inboundContext.SamlInboundMessage, certificateManager);
+                if (validated)
+                    break;
+            }
+            if (validated)
+                inboundContext.Validated();
             return validated;
         }
     }

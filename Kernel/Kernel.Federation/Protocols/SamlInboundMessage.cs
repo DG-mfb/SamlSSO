@@ -24,6 +24,18 @@ namespace Kernel.Federation.Protocols
                 return this.Elements.ContainsKey(HttpRedirectBindingConstants.SamlRequest);
             }
         }
+
+        public string SamlMessage
+        {
+            get
+            {
+                if (this.IsSamlRequest)
+                    return this.Elements[HttpRedirectBindingConstants.SamlRequest].ToString();
+                if (this.IsSamlRsponse)
+                    return this.Elements[HttpRedirectBindingConstants.SamlResponse].ToString();
+                throw new InvalidOperationException("No saml massage element");
+            }
+        }
         public bool IsSamlRsponse
         {
             get

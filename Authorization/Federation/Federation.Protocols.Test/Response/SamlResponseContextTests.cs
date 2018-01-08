@@ -17,7 +17,7 @@ namespace Federation.Protocols.Test.Response
             var inResponseTo = Guid.NewGuid().ToString();
             var expectedAggregatedMessage = String.Format("StatusCode: {0}\r\n", StatusCodes.Success);
             var responseStatus = ResponseFactoryMock.GetTokenResponseSuccess(inResponseTo, StatusCodes.Success);
-            var responseContext = new SamlResponseContext { StatusResponse = responseStatus };
+            var responseContext = new SamlInboundResponseContext { StatusResponse = responseStatus };
             //ACT
 
             //ASSERT
@@ -36,7 +36,7 @@ namespace Federation.Protocols.Test.Response
             var response = ResponseFactoryMock.GetTokenResponse(inResponseTo, StatusCodes.Responder);
             ResponseFactoryMock.GetStatusCode(StatusCodes.NoAuthnContext, response.Status.StatusCode);
             var expectedAggregatedMessage = String.Format("StatusCode: {0}\r\nAdditional status code: {1}\r\n", StatusCodes.Responder, StatusCodes.NoAuthnContext);
-            var responseContext = new SamlResponseContext { StatusResponse = response };
+            var responseContext = new SamlInboundResponseContext { StatusResponse = response };
 
             ////ACT
 
@@ -56,7 +56,7 @@ namespace Federation.Protocols.Test.Response
             ResponseFactoryMock.GetStatusCode(StatusCodes.NoAuthnContext, response.Status.StatusCode);
             response.Status.StatusMessage = "Test message";
             var expectedAggregatedMessage = String.Format("StatusCode: {0}\r\nAdditional status code: {1}\r\nMessage status: {2}\r\n", StatusCodes.Responder, StatusCodes.NoAuthnContext, "Test message");
-            var responseContext = new SamlResponseContext { StatusResponse = response };
+            var responseContext = new SamlInboundResponseContext { StatusResponse = response };
 
             ////ACT
 

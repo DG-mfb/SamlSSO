@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Kernel.Federation.Constants;
-using Kernel.Federation.Protocols;
 
 namespace Shared.Federtion.Response
 {
-    public class SamlResponseContext
+    public class SamlInboundResponseContext : SamlInboundMessageContext
     {
-        public SamlResponseContext()
+        public SamlInboundResponseContext()
         {
         }
         public string FederationPartyId
@@ -28,9 +27,6 @@ namespace Shared.Federtion.Response
             }
         }
         public StatusResponse StatusResponse { get; set; }
-        
-        public string Response { get; set; }
-        public SamlInboundMessage SamlInboundMessage { get; set; }
        
         public bool IsSuccess
         {

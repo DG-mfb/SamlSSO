@@ -82,12 +82,13 @@
     <Compile Include="Federtion\Request\SamlInboundRequestContext.cs" />
     <Compile Include="Federtion\Response\LogoutResponse.cs" />
     <Compile Include="Federtion\Response\TokenResponse.cs" />
-    <Compile Include="Federtion\Response\SamlResponseContext.cs" />
+    <Compile Include="Federtion\Response\SamlInboundResponseContext.cs" />
     <Compile Include="Federtion\Forms\SAMLForm.cs" />
     <Compile Include="Federtion\Response\Status.cs" />
     <Compile Include="Federtion\Response\StatusCode.cs" />
     <Compile Include="Federtion\Response\StatusDetail.cs" />
     <Compile Include="Federtion\Response\StatusResponse.cs" />
+    <Compile Include="Federtion\SamlInboundMessageContext.cs" />
     <Compile Include="Initialisation\Initialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
