@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.IdentityModel.Metadata;
+using System.Threading;
 using System.Threading.Tasks;
 using Federation.Protocols.Request.Validation;
-using Federation.Protocols.Response.Validation;
 using Kernel.Federation.Constants;
+using Kernel.Federation.FederationPartner;
+using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Reflection;
+using Shared.Federtion.Factories;
 using Shared.Federtion.Models;
 using Shared.Federtion.Request;
-using Shared.Federtion.Response;
 
 namespace Federation.Protocols.Request.Parsers
 {
@@ -19,13 +23,15 @@ namespace Federation.Protocols.Request.Parsers
         private readonly RequestValidator _requestValidator;
         private readonly Func<Type, SamlRequestParser> _samlResponseParserFactory;
         private readonly MessageTypeResolver _messageTypeResolver = new MessageTypeResolver();
-        private readonly IRelayStateHandler _relayStateHandler;
-        public RequestParser(Func<Type, SamlRequestParser> samlResponseParserFactory, IRelayStateHandler relayStateHandler, ILogProvider logProvider, RequestValidator requestValidator)
+        private readonly IConfigurationManager<MetadataBase> _configurationManager;
+        private readonly Func<Type, IMetadataHandler> _metadataHandlerFactory;
+        public RequestParser(Func<Type, IMetadataHandler> metadataHandlerFactory, Func<Type, SamlRequestParser> samlResponseParserFactory, IConfigurationManager<MetadataBase> configurationManager, ILogProvider logProvider, RequestValidator requestValidator)
         {
+            this._metadataHandlerFactory = metadataHandlerFactory;
             this._samlResponseParserFactory = samlResponseParserFactory;
             this._logProvider = logProvider;
             this._requestValidator = requestValidator;
-            this._relayStateHandler = relayStateHandler;
+            this._configurationManager = configurationManager;
         }
         public async Task<SamlInboundRequestContext> Parse(SamlInboundContext context)
         {
@@ -37,11 +43,25 @@ namespace Federation.Protocols.Request.Parsers
             var reqeuest =  this._samlResponseParserFactory(type).Parse(requestText);
             
             var requestContext = new SamlInboundRequestContext { SamlRequest = reqeuest, SamlInboundMessage = message, Request = requestText };
-            //await this._requestValidator.ValidateIRequest(requestContext);
+            await this.ResolveIssuerKeys(requestContext);
+            await this._requestValidator.ValidateIRequest(requestContext);
             return requestContext;
         }
 
-        public IEnumerable<Type> GetTypes()
+        private async Task ResolveIssuerKeys(SamlInboundRequestContext context)
+        {
+            var configuration = await this._configurationManager.GetConfigurationAsync(context.SamlRequest.Issuer.Value, CancellationToken.None);
+            var metadataType = configuration.GetType();
+            var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
+            var handler = this._metadataHandlerFactory(handlerType);
+            if (handler == null)
+                throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+            var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
+                .Single().Roles.Single();
+            var keys = idp.Keys.Where(x => x.Use == KeyType.Signing);
+            keys.Select(x => { context.Keys.Add(x); return true; });
+        }
+        private IEnumerable<Type> GetTypes()
         {
             var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(RequestAbstract).IsAssignableFrom(t));
             return types;

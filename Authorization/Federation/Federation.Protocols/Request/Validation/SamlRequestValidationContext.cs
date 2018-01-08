@@ -1,24 +1,14 @@
 ﻿using System;
-using Kernel.Federation.Protocols;
 using Kernel.Validation;
-using Shared.Federtion.Models;
+using Shared.Federtion.Request;
 
 namespace Federation.Protocols.Request.Validation
 {
     internal class SamlRequestValidationContext : ValidationContext
     {
-        public SamlInboundMessage Form
+        public SamlInboundRequestContext RequestContext { get { return (SamlInboundRequestContext)base.Entry; } }
+        public SamlRequestValidationContext(SamlInboundRequestContext context) : this((object)context)
         {
-            get
-            {
-                return  this.InboundContext.Message;
-            }
-        }
-        public SamlInboundContext InboundContext { get; } 
-        public RequestAbstract Request { get { return (RequestAbstract)base.Entry; } }
-        public SamlRequestValidationContext(SamlInboundContext context, RequestAbstract request) : this((object)request)
-        {
-            this.InboundContext = context;
         }
 
         protected SamlRequestValidationContext(object entry) : base(entry)

@@ -6,7 +6,7 @@ namespace Federation.Protocols.Response.Validation
 {
     internal class SamlResponseValidationContext : ValidationContext
     {
-        public SamlResponseContext Response { get { return (SamlResponseContext)base.Entry; } }
+        public SamlResponseContext ResponseContext { get { return (SamlResponseContext)base.Entry; } }
         public SamlResponseValidationContext(SamlResponseContext entry) : this((object)entry)
         {
         }

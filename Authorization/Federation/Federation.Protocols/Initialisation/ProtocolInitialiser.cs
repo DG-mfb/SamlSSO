@@ -17,8 +17,8 @@ using Federation.Protocols.Tokens.Validation;
 using Kernel.DependancyResolver;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.Protocols;
-using Kernel.Federation.Protocols.Response;
 using Kernel.Reflection;
+using Shared.Federtion.Factories;
 using Shared.Federtion.Models;
 using Shared.Initialisation;
 
@@ -67,6 +67,8 @@ namespace Federation.Protocols.Initialisation
             dependencyResolver.RegisterType<SamlTokenResponseParser>(Lifetime.Transient);
             dependencyResolver.RegisterType<SamlLogoutResponseParser>(Lifetime.Transient);
             RequestHelper.GetAuthnRequestBuilders = () => dependencyResolver.ResolveAll<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>();
+
+            dependencyResolver.RegisterFactory<Func<Type, IMetadataHandler>>(() => t => dependencyResolver.Resolve(t) as IMetadataHandler, Lifetime.Singleton);
             this.GetBuilders().Aggregate(dependencyResolver, (r, next) => {r.RegisterType(next, Lifetime.Transient); return r; });
 
             dependencyResolver.RegisterFactory<Func<Type, SamlResponseParser>>(() => t =>

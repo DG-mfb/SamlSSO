@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Validation;
 
 namespace Kernel.Federation.Protocols.Request
 {
     public interface IRequestValidator<TRequest> : IValidator
     {
-        Task ValidateIRequest(TRequest request, HttpRedirectInboundContext context);
+        Task ValidateIRequest(TRequest request);
     }
 }

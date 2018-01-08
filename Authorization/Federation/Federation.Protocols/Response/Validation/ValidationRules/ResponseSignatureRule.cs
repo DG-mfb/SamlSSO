@@ -31,7 +31,7 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
             cspParams.KeyContainerName = "XML_DSIG_RSA_KEY";
             var rsaKey = new RSACryptoServiceProvider(cspParams);
             var doc = new XmlDocument();
-            doc.LoadXml(context.Response.Response);
+            doc.LoadXml(context.ResponseContext.Response);
             
             var signEl = TokenHelper.GetElement("Signature", "http://www.w3.org/2000/09/xmldsig#", doc.DocumentElement);
             if (signEl == null)

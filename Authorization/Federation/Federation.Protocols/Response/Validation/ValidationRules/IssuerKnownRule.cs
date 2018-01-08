@@ -27,11 +27,11 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
             base._logProvider.LogMessage("Issuer Known Rule running.");
-            var federationParnerId = this._service.ResolveParnerId(context.Response);
+            var federationParnerId = this._service.ResolveParnerId(context.ResponseContext);
             if (String.IsNullOrWhiteSpace(federationParnerId))
-                throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.Response.StatusResponse.Issuer.Value));
+                throw new InvalidOperationException(String.Format("Unsolicited Web SSO initiated by unknow issuer. Issuer: {0}", context.ResponseContext.StatusResponse.Issuer.Value));
 
-            context.Response.SamlInboundMessage.Elements[HttpRedirectBindingConstants.RelayState] = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
+            context.ResponseContext.SamlInboundMessage.Elements[HttpRedirectBindingConstants.RelayState] = new Dictionary<string, object> { { RelayStateContstants.FederationPartyId, federationParnerId } };
 
             return Task.FromResult(true);
         }

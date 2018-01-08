@@ -22,9 +22,9 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
         protected override Task<bool> ValidateInternal(SamlResponseValidationContext context)
         {
             base._logProvider.LogMessage("TokenInResponseRule In Response Rule running.");
-            var tokenResponse = context.Response.StatusResponse as Shared.Federtion.Response.TokenResponse;
+            var tokenResponse = context.ResponseContext.StatusResponse as Shared.Federtion.Response.TokenResponse;
             var hasToken = (tokenResponse != null && tokenResponse.Assertions != null && tokenResponse.Assertions.Length == 1);
-            if (context.Response.IsSuccess && !hasToken)
+            if (context.ResponseContext.IsSuccess && !hasToken)
             {
                 throw new InvalidOperationException("Security token is missing.");
             }
