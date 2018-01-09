@@ -22,11 +22,12 @@ namespace Federation.Protocols.Test.Request
             var federationContex = federationPartyContextBuilder.BuildContext("local", (RequestedAuthnContextConfiguration)null);
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
-            
+
             //ACT
+            var config = federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString());
             
             //ASSERT
-            Assert.Throws<ArgumentNullException>(() => federationContex.GetAuthnRequestConfigurationFromContext(Guid.NewGuid().ToString()));
+            Assert.IsNull(config.RequestedAuthnContextConfiguration);
         }
 
         [Test]

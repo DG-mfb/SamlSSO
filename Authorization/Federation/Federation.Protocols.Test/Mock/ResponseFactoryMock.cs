@@ -36,6 +36,20 @@ namespace Federation.Protocols.Test.Mock
             return response;
         }
 
+        public static LogoutResponse GetLogoutResponse(string inResponseTo, string statusCode)
+        {
+            var response = new LogoutResponse
+            {
+                ID = "Test_" + Guid.NewGuid().ToString(),
+                Destination = "http://localhost:59611/",
+                IssueInstant = DateTime.UtcNow,
+                InResponseTo = inResponseTo,
+                Status = ResponseFactoryMock.BuildStatus(statusCode, null),
+                Issuer = new NameId { Value = "https://dg-mfb/idp/shibboleth", Format = NameIdentifierFormats.Entity }
+            };
+            return response;
+        }
+
         public static Status BuildStatus(string code, string message = null)
         {
             return new Status

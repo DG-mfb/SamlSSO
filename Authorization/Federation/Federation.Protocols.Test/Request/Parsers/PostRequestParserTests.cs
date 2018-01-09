@@ -19,6 +19,7 @@ using SecurityManagement.Signing;
 using Serialisation.Xml;
 using Shared.Federtion;
 using Shared.Federtion.Factories;
+using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Test.Request.Parsers
 {
@@ -52,12 +53,12 @@ namespace Federation.Protocols.Test.Request.Parsers
             var result = await requestParser.Parse(context);
             //ASSERT
             Assert.IsTrue(result.IsValidated);
+            Assert.IsInstanceOf<AuthnRequest>(result.SamlRequest);
         }
 
         [Test]
         public async Task ParseLogoutRequest_post_binding()
         {
-            throw new NotImplementedException();
             //ARRANGE
             var form = await SamlPostRequestProviderMock.BuildLogoutRequestPostForm();
             Func<Type, IMetadataHandler> metadataHandlerFactory = t => new MetadataEntitityDescriptorHandler();
@@ -82,6 +83,7 @@ namespace Federation.Protocols.Test.Request.Parsers
             var result = await requestParser.Parse(context);
             //ASSERT
             Assert.IsTrue(result.IsValidated);
+            Assert.IsInstanceOf<LogoutRequest>(result.SamlRequest);
         }
     }
 }
