@@ -88,7 +88,8 @@ namespace Federation.Protocols
             var doc = new XmlDocument();
             doc.LoadXml(inboundContext.SamlMassage);
 
-            var signEl = TokenHelper.GetElement("Signature", "http://www.w3.org/2000/09/xmldsig#", doc.DocumentElement);
+            var signEl = TokenHelper.GetAllElements("Signature", "http://www.w3.org/2000/09/xmldsig#", doc.DocumentElement)
+                .FirstOrDefault(x => x.ParentNode == doc.DocumentElement);
             if (signEl == null)
                 return true;
             var signedXml = new SignedXml(doc.DocumentElement);

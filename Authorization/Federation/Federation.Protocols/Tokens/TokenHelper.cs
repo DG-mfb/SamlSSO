@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
 using Kernel.Federation.Constants;
+using System.Collections.Generic;
 
 namespace Federation.Protocols.Tokens
 {
@@ -76,6 +78,12 @@ namespace Federation.Protocols.Tokens
         {
             var list = doc.GetElementsByTagName(element, elementNS);
             return list.Count == 0 ? null : (XmlElement)list[0];
+        }
+
+        internal static IEnumerable<XmlElement> GetAllElements(string element, string elementNS, XmlElement doc)
+        {
+            var list = doc.GetElementsByTagName(element, elementNS);
+            return list.Cast<XmlElement>();
         }
 
         internal static void MoveToToken(XmlReader reader)

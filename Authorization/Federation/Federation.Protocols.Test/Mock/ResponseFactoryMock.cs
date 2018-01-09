@@ -26,7 +26,7 @@ namespace Federation.Protocols.Test.Mock
         {
             var response = new TokenResponse
             {
-                ID = Guid.NewGuid().ToString(),
+                ID = "Test_" + Guid.NewGuid().ToString(),
                 Destination = "http://localhost:59611/",
                 IssueInstant = DateTime.UtcNow,
                 InResponseTo = inResponseTo,

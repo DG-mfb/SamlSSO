@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using DeflateCompression;
 using Federation.Metadata.FederationPartner.Handlers;
 using Federation.Protocols.Bindings.HttpPost;
@@ -16,6 +17,7 @@ using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using NUnit.Framework;
 using SecurityManagement;
+using SecurityManagement.Signing;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
 using Serialisation.Xml;
@@ -37,13 +39,19 @@ namespace Federation.Protocols.Test.Response.Parsers
             var response = ResponseFactoryMock.GetTokenResponseSuccess(inResponseTo, StatusCodes.Success);
             var logger = new LogProviderMock();
             var serialised = ResponseFactoryMock.Serialize(response);
-            var base64Encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(serialised));
+            var xmlSignatureManager = new XmlSignatureManager();
+            var document = new XmlDocument();
+            document.LoadXml(serialised);
+            var cert = AssertionFactroryMock.GetMockCertificate();
+            xmlSignatureManager.SignXml(document, response.ID, cert.PrivateKey);
+            var base64Encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(document.DocumentElement.OuterXml));
 
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
             var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
             var relayStateSerialiser = new RelaystateSerialiser(jsonSerialiser, encoder, logger) as IRelayStateSerialiser;
             var relayState = await relayStateSerialiser.Serialize(new Dictionary<string, object> { { "Key", "Value" } });
+            
             var form = new SAMLForm();
             form.SetResponse(base64Encoded);
             form.SetRelatState(relayState);
