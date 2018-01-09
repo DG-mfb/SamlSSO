@@ -9,9 +9,7 @@ namespace Kernel.Federation.Protocols.Request
             : base(destination, origin, federationPartyContext)
         {
             this.Reason = reason;
-            this.RequestId = String.Format("{0}_{1}", federationPartyContext.MetadataContext.EntityDesriptorConfiguration.Id, Guid.NewGuid().ToString());
         }
         public Uri Reason { get; }
-        public string RequestId { get; }
     }
 }

@@ -41,13 +41,7 @@ namespace Federation.Protocols.Response
                 this._logProvider.LogMessage(String.Format("Response is{0} a security token carrier.", hasToken ? String.Empty : " not"));
                 if (hasToken)
                 {
-                    //temporarly solution
-                    var foo = responseStatus.SamlMassage;
-                    var doc = new XmlDocument();
-                    doc.LoadXml(foo);
-                    var el = doc.DocumentElement;
-                    var token = el;
-                    //var token = samlResponse.Assertions[0];
+                    var token = samlResponse.Assertions[0];
                     var handlerContext = new HandleTokenContext(token, responseStatus.FederationPartyId, context.AuthenticationMethod, responseStatus.SamlInboundMessage.RelayState);
                     var response = await this._tokenHandler.HandleToken(handlerContext);
                     if (!response.IsValid)

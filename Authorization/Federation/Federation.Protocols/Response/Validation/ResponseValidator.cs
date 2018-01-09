@@ -28,6 +28,7 @@ namespace Federation.Protocols.Response.Validation
             {
                 if (!c.IsValid)
                     throw new Exception(EnumerableExtensions.Aggregate(context.ValidationResult.Select(x => x.ErrorMessage)));
+                context.ResponseContext.Validated();
                 return Task.CompletedTask;
             });
             var del = rules

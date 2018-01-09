@@ -14,7 +14,7 @@ namespace Federation.Protocols.Response
         public SamlTokenResponseParser(ILogProvider logProvider):base(logProvider)
         {
         }
-        public Task<TokenResponse> Parse(string context)
+        public new Task<TokenResponse> Parse(string context)
         {
             var response = ParseResponseInternal(context);
             return Task.FromResult(response);
@@ -29,19 +29,29 @@ namespace Federation.Protocols.Response
         {
             var response = new TokenResponse();
             base.ReadResponseStatus(XmlReader.Create(new StringReader(responseText)), response);
-            this.ReadToken(XmlReader.Create(new StringReader(responseText)), response);
+            this.ReadToken(responseText, response);
             return response;
         }
 
-        private void ReadToken(XmlReader reader, TokenResponse response)
+        private void ReadToken(string responseText, TokenResponse response)
         {
-            var hasToken = TokenHelper.TryToMoveToToken(reader);
-            if(hasToken)
+            var hasToken = this.HasToken(responseText);
+            if (hasToken)
             {
                 var assertions = new List<XmlElement>();
                 var doc = new XmlDocument();
-                var el = doc.ReadNode(reader);
+                doc.LoadXml(responseText);
+                var el = doc.DocumentElement;
                 response.Assertions = new[] { (XmlElement)el };
+            }
+        }
+
+        private bool HasToken(string response)
+        {
+            using (var reader = XmlReader.Create(new StringReader(response)))
+            {
+                var hasToken = TokenHelper.TryToMoveToToken(reader);
+                return hasToken;
             }
         }
     }

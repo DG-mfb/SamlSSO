@@ -23,6 +23,9 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
         {
             base._logProvider.LogMessage("TokenInResponseRule In Response Rule running.");
             var tokenResponse = context.ResponseContext.StatusResponse as Shared.Federtion.Response.TokenResponse;
+            if (tokenResponse == null)
+                return Task.FromResult(true);
+
             var hasToken = (tokenResponse != null && tokenResponse.Assertions != null && tokenResponse.Assertions.Length == 1);
             if (context.ResponseContext.IsSuccess && !hasToken)
             {
