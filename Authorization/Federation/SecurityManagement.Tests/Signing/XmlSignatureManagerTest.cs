@@ -80,7 +80,7 @@ namespace SecurityManagement.Tests.Signing
             var cert = CertificateProviderMock.GetMockCertificate();
 
             //ACT
-            signatureManager.SignXml(document, "eca_e2376d50-2f84-4a6b-bdc6-8283a8b2d990_bde559c1-fe68-4ff8-898f-5660a794156a", cert.PrivateKey);
+            signatureManager.SignXml(document, "eca_e2376d50-2f84-4a6b-bdc6-8283a8b2d990_bde559c1-fe68-4ff8-898f-5660a794156a", cert.PrivateKey, "saml,samlp");
 
             var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
                 .Cast<XmlElement>()

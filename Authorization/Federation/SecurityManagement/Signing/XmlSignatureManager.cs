@@ -8,12 +8,12 @@ namespace SecurityManagement.Signing
 {
     internal class XmlSignatureManager : IXmlSignatureManager
     {
-        public void WriteSignature(XmlDocument xmlElement, string referenceId, AsymmetricAlgorithm signingKey, string digestMethod, string signatureMethod)
+        public void WriteSignature(XmlDocument xmlElement, string referenceId, AsymmetricAlgorithm signingKey, string digestMethod, string signatureMethod, string inclusiveNamespacesPrefixList = null)
         {
-            this.SignXml(xmlElement, referenceId, signingKey);
+            this.SignXml(xmlElement, referenceId, signingKey, inclusiveNamespacesPrefixList);
         }
 
-        public void SignXml(XmlDocument xmlDoc, string referenceId, AsymmetricAlgorithm key)
+        public void SignXml(XmlDocument xmlDoc, string referenceId, AsymmetricAlgorithm key, string inclusiveNamespacesPrefixList)
         {
             // Check arguments.
             if (xmlDoc == null)
@@ -31,10 +31,16 @@ namespace SecurityManagement.Signing
             var reference = new Reference();
 
             reference.Uri = "#" + referenceId;
-
+            signedXml.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
+            
             // Add an enveloped transformation to the reference.
             var env = new XmlDsigEnvelopedSignatureTransform();
             reference.AddTransform(env);
+            // Add an C14N transformation to the reference.
+            var cn14 = new XmlDsigExcC14NTransform(false);
+            if(String.IsNullOrWhiteSpace(inclusiveNamespacesPrefixList))
+                cn14.InclusiveNamespacesPrefixList= inclusiveNamespacesPrefixList;
+            reference.AddTransform(cn14);
 
             // Add the reference to the SignedXml object.
             signedXml.AddReference(reference);

@@ -43,7 +43,7 @@ namespace Federation.Protocols.Test.Response.Parsers
             var document = new XmlDocument();
             document.LoadXml(serialised);
             var cert = AssertionFactroryMock.GetMockCertificate();
-            xmlSignatureManager.SignXml(document, response.ID, cert.PrivateKey);
+            xmlSignatureManager.SignXml(document, response.ID, cert.PrivateKey, null);
             var base64Encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(document.DocumentElement.OuterXml));
 
             var compressor = new DeflateCompressor();
