@@ -13,6 +13,7 @@ using Federation.Protocols.Tokens;
 using System.Security.Cryptography.Xml;
 using System.Security.Cryptography;
 using System.Xml;
+using Kernel.Cryptography.Signing.Xml;
 
 namespace Federation.Protocols
 {
@@ -79,7 +80,7 @@ namespace Federation.Protocols
             return validated;
         }
 
-        public static bool ValidateMessageSignature(SamlInboundMessageContext inboundContext, ICertificateManager certificateManager)
+        public static bool ValidateMessageSignature(SamlInboundMessageContext inboundContext, IXmlSignatureManager signatureManager)
         {
             var validated = false;
             var cspParams = new CspParameters();
@@ -92,8 +93,8 @@ namespace Federation.Protocols
                 .FirstOrDefault(x => x.ParentNode == doc.DocumentElement);
             if (signEl == null)
                 return true;
-            var signedXml = new SignedXml(doc.DocumentElement);
-            signedXml.LoadXml(signEl);
+            //var signedXml = new SignedXml(doc.DocumentElement);
+            //signedXml.LoadXml(signEl);
             
             foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
             {
@@ -103,7 +104,7 @@ namespace Federation.Protocols
 
                 var certContent = binaryClause.GetBuffer();
                 var cert = new X509Certificate2(certContent);
-                validated = signedXml.CheckSignature(cert, true);
+                validated = signatureManager.VerifySignature(doc, signEl,cert.PublicKey.Key);//signedXml.CheckSignature(cert, true);
                 if (validated)
                     break;
             }
@@ -113,7 +114,7 @@ namespace Federation.Protocols
                 if (certEl != null)
                 {
                     var dcert2 = new X509Certificate2(Convert.FromBase64String(certEl.InnerText));
-                    validated = signedXml.CheckSignature(dcert2, true);
+                    validated = signatureManager.VerifySignature(doc, signEl, dcert2.PublicKey.Key);//signedXml.CheckSignature(dcert2, true);
                 }
             }
             return validated;

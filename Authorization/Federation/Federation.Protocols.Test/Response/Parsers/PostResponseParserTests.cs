@@ -60,7 +60,8 @@ namespace Federation.Protocols.Test.Response.Parsers
             var xmlSerialiser = new XMLSerialiser();
             
             var certManager = new CertificateManager(logger);
-            Func<IEnumerable<ResponseValidationRule>> rulesResolver = () => new[] { new ResponseSignatureRule(logger, certManager)};
+            var signatureManager = new XmlSignatureManager();
+            Func<IEnumerable<ResponseValidationRule>> rulesResolver = () => new[] { new ResponseSignatureRule(logger, certManager, signatureManager)};
             var requestValidator = new Federation.Protocols.Response.Validation.ResponseValidator(logger, new RuleFactory(rulesResolver));
             var configurationRetrieverMock = new ConfigurationRetrieverMock();
             var federationPartyContextBuilderMock = new FederationPartyContextBuilderMock();

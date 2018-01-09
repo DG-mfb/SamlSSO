@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Kernel.Cryptography.Signing.Xml;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
 
@@ -8,9 +9,11 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
     internal class ResponseSignatureRule : ResponseValidationRule
     {
         private readonly ICertificateManager _certificateManager;
-        public ResponseSignatureRule(ILogProvider logProvider, ICertificateManager certificateManager) : base(logProvider)
+        private readonly IXmlSignatureManager _signatureManager;
+        public ResponseSignatureRule(ILogProvider logProvider, ICertificateManager certificateManager, IXmlSignatureManager signatureManager) : base(logProvider)
         {
             this._certificateManager = certificateManager;
+            this._signatureManager = signatureManager;
         }
 
         internal override RuleScope Scope
@@ -29,7 +32,7 @@ namespace Federation.Protocols.Response.Validation.ValidationRules
                 validated = Helper.ValidateRedirectSignature(inboundContext, this._certificateManager);
             else
             {
-                validated = Helper.ValidateMessageSignature(inboundContext, this._certificateManager);
+                validated = Helper.ValidateMessageSignature(inboundContext, this._signatureManager);
             }
 
             base._logProvider.LogMessage(String.Format("ResponseSignatureRule{0}.", validated ? " success" : "failure"));

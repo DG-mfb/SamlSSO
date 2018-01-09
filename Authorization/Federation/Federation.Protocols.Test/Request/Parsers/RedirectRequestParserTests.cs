@@ -14,6 +14,7 @@ using Federation.Protocols.Test.Mock.Metadata;
 using Kernel.Federation.Protocols;
 using NUnit.Framework;
 using SecurityManagement;
+using SecurityManagement.Signing;
 using Serialisation.Xml;
 using Shared.Federtion;
 using Shared.Federtion.Factories;
@@ -35,7 +36,8 @@ namespace Federation.Protocols.Test.Request.Parsers
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
             var certManager = new CertificateManager(logger);
-            Func<IEnumerable<RequestValidationRule>> rulesResolver = () => new[] { new SignatureValidRule(logger, certManager)};
+            var signatureManager = new XmlSignatureManager();
+            Func<IEnumerable<RequestValidationRule>> rulesResolver = () => new[] { new SignatureValidRule(logger, certManager, signatureManager)};
             var requestValidator = new Federation.Protocols.Request.Validation.RequestValidator(logger, new RuleFactory(rulesResolver));
             var configurationRetrieverMock = new ConfigurationRetrieverMock();
             var federationPartyContextBuilderMock = new FederationPartyContextBuilderMock();
@@ -63,7 +65,8 @@ namespace Federation.Protocols.Test.Request.Parsers
             var logger = new LogProviderMock();
             var serialiser = new RequestSerialiser(xmlSerialiser, encoder, logger) as IRequestSerialiser;
             var certManager = new CertificateManager(logger);
-            Func<IEnumerable<RequestValidationRule>> rulesResolver = () => new[] { new SignatureValidRule(logger, certManager) };
+            var signatureManager = new XmlSignatureManager();
+            Func<IEnumerable<RequestValidationRule>> rulesResolver = () => new[] { new SignatureValidRule(logger, certManager, signatureManager) };
             var requestValidator = new Federation.Protocols.Request.Validation.RequestValidator(logger, new RuleFactory(rulesResolver));
             var configurationRetrieverMock = new ConfigurationRetrieverMock();
             var federationPartyContextBuilderMock = new FederationPartyContextBuilderMock();

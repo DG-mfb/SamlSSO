@@ -48,7 +48,13 @@ namespace SecurityManagement.Signing
 
             // Append the element to the XML document.
             xmlDoc.DocumentElement.AppendChild(xmlDoc.ImportNode(xmlDigitalSignature, true));
+        }
 
+        public bool VerifySignature(XmlDocument xmlDoc, XmlElement signature, AsymmetricAlgorithm key)
+        {
+            var signedXml = new SignedXml(xmlDoc.DocumentElement);
+            signedXml.LoadXml(signature);
+            return signedXml.CheckSignature(key);
         }
     }
 }
