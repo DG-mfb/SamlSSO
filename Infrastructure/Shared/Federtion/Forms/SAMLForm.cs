@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Web;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 
 namespace Shared.Federtion.Forms
@@ -78,12 +79,17 @@ namespace Shared.Federtion.Forms
 
         public void SetRequest(string request)
         {
-            this.AddHiddenControl("SAMLRequest", request);
+            this.AddHiddenControl(HttpRedirectBindingConstants.SamlRequest, request);
+        }
+
+        public void SetResponse(string response)
+        {
+            this.AddHiddenControl(HttpRedirectBindingConstants.SamlResponse, response);
         }
 
         public void SetRelatState(string state)
         {
-            this.AddHiddenControl("RelayState", state);
+            this.AddHiddenControl(HttpRedirectBindingConstants.RelayState, state);
         }
     }
 }

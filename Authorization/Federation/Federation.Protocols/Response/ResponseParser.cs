@@ -25,7 +25,7 @@ namespace Federation.Protocols.Response
         private readonly IRelayStateHandler _relayStateHandler;
         private readonly IConfigurationManager<MetadataBase> _configurationManager;
         private readonly Func<Type, IMetadataHandler> _metadataHandlerFactory;
-        public ResponseParser(Func<Type, SamlResponseParser> samlResponseParserFactory, Func<Type, IMetadataHandler> metadataHandlerFactory, IConfigurationManager<MetadataBase> configurationManager, IRelayStateHandler relayStateHandler, ILogProvider logProvider, ResponseValidator responseValidator)
+        public ResponseParser(Func<Type, IMetadataHandler> metadataHandlerFactory, Func<Type, SamlResponseParser> samlResponseParserFactory, IConfigurationManager<MetadataBase> configurationManager, IRelayStateHandler relayStateHandler, ILogProvider logProvider, ResponseValidator responseValidator)
         {
             this._metadataHandlerFactory = metadataHandlerFactory;
             this._configurationManager = configurationManager;

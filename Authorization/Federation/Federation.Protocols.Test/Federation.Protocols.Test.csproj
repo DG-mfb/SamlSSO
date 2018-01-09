@@ -77,11 +77,13 @@
     <Compile Include="Request\AuthnRequestRequestedContextTests.cs" />
     <Compile Include="Request\AuthnRequestScopingTests.cs" />
     <Compile Include="Request\Parsers\PostRequestParserTests.cs" />
-    <Compile Include="Request\Parsers\RequestParserTests.cs" />
+    <Compile Include="Request\Parsers\RedirectRequestParserTests.cs" />
     <Compile Include="Request\RequestTypeResolverTests.cs" />
     <Compile Include="Request\AuthnRequestSerialiserTests.cs" />
     <Compile Include="Request\Dispatchers\PostRequestDispatcherTest.cs" />
     <Compile Include="Request\Dispatchers\RedirectRequestDispatcherTest.cs" />
+    <Compile Include="Response\Parsers\PostResponseParserTests.cs" />
+    <Compile Include="Response\Parsers\RedirectRequestParserTests.cs" />
     <Compile Include="Response\SamlResponseContextTests.cs" />
     <Compile Include="Mock\Tokens\SubjectConfirmationDataValidatorMock.cs" />
     <Compile Include="Response\SamlTokenResponseParserTests.cs" />

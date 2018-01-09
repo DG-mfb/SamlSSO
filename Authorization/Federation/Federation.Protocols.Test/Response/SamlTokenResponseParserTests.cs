@@ -15,7 +15,7 @@ namespace Federation.Protocols.Test.Response
         public async Task ParseResponse_success_Test()
         {
             //ARRANGE
-            var inResponseTo = Guid.NewGuid().ToString();
+            var inResponseTo = "Test_" + Guid.NewGuid().ToString();
             
             var response = ResponseFactoryMock.GetTokenResponseSuccess(inResponseTo, StatusCodes.Success);
             var logger = new LogProviderMock();

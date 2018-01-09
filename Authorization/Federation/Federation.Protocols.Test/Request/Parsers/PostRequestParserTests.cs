@@ -22,7 +22,7 @@ using Shared.Federtion.Factories;
 namespace Federation.Protocols.Test.Request.Parsers
 {
     [TestFixture]
-    internal partial class RequestParserTests
+    internal partial class RedirectRequestParserTests
     {
         [Test]
         public async Task ParseAuthnRequest_post_binding()

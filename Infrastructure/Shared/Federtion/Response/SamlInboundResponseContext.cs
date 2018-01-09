@@ -20,7 +20,6 @@ namespace Shared.Federtion.Response
                 IDictionary<string, object> relayStateDictionary;
                 if (!this.SamlInboundMessage.TryGetRelayState(out relayStateDictionary))
                     return this.StatusResponse.Issuer.Value;
-                    //throw new InvalidOperationException(String.Format("Expected relay state type of: {0}", typeof(IDictionary<string, object>).Name));
                 object partnerId;
                 if (relayStateDictionary.TryGetValue(RelayStateContstants.FederationPartyId, out partnerId))
                     return partnerId.ToString();
