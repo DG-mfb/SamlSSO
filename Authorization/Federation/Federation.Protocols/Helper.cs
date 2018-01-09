@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.IdentityModel.Tokens;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using Federation.Protocols.Tokens;
 using Kernel.Compression;
+using Kernel.Cryptography.Signing.Xml;
 using Kernel.Federation.Protocols;
 using Kernel.Security.CertificateManagement;
 using Shared.Federtion;
-using Federation.Protocols.Tokens;
-using System.Security.Cryptography.Xml;
-using System.Security.Cryptography;
-using System.Xml;
-using Kernel.Cryptography.Signing.Xml;
 
 namespace Federation.Protocols
 {
@@ -93,8 +92,6 @@ namespace Federation.Protocols
                 .FirstOrDefault(x => x.ParentNode == doc.DocumentElement);
             if (signEl == null)
                 return true;
-            //var signedXml = new SignedXml(doc.DocumentElement);
-            //signedXml.LoadXml(signEl);
             
             foreach (var k in inboundContext.Keys.SelectMany(x => x.KeyInfo))
             {
@@ -104,7 +101,7 @@ namespace Federation.Protocols
 
                 var certContent = binaryClause.GetBuffer();
                 var cert = new X509Certificate2(certContent);
-                validated = signatureManager.VerifySignature(doc, signEl,cert.PublicKey.Key);//signedXml.CheckSignature(cert, true);
+                validated = signatureManager.VerifySignature(doc, signEl,cert.PublicKey.Key);
                 if (validated)
                     break;
             }
