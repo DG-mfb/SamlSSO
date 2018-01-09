@@ -38,7 +38,7 @@ namespace SecurityManagement.Signing
             reference.AddTransform(env);
             // Add an C14N transformation to the reference.
             var cn14 = new XmlDsigExcC14NTransform(false);
-            if(String.IsNullOrWhiteSpace(inclusiveNamespacesPrefixList))
+            if(!String.IsNullOrWhiteSpace(inclusiveNamespacesPrefixList))
                 cn14.InclusiveNamespacesPrefixList= inclusiveNamespacesPrefixList;
             reference.AddTransform(cn14);
 

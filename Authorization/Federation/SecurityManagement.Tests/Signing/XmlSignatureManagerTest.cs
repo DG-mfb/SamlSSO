@@ -90,6 +90,26 @@ namespace SecurityManagement.Tests.Signing
             Assert.True(isValid);
         }
 
+        [Test]
+        public void SignResponse()
+        {
+            //ARRANGE
+            var signatureManager = new XmlSignatureManager();
+            var document = new XmlDocument();
+            document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml");
+            var cert = CertificateProviderMock.GetMockCertificate();
+
+            //ACT
+            signatureManager.SignXml(document, "Test_64f68a98-05fc-4e68-a0e0-ed7edb76c8df", cert.PrivateKey, "saml,samlp");
+
+            var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
+                .Cast<XmlElement>()
+                .First(x => x.ParentNode == document.DocumentElement);
+            var isValid = signatureManager.VerifySignature(document, signEl, cert.PublicKey.Key);
+            //ASSERT
+            Assert.True(isValid);
+        }
+
         public SecurityTokenHandlerConfiguration GetConfiguration()
         {
             var inner = new X509CertificateStoreTokenResolver("testCertStore", StoreLocation.LocalMachine);
