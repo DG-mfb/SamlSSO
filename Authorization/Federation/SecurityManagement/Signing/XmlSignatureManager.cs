@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Xml;
@@ -17,9 +18,9 @@ namespace SecurityManagement.Signing
         {
             // Check arguments.
             if (xmlDoc == null)
-                throw new ArgumentException("xmlDoc");
+                throw new ArgumentException("xmlDocument");
             if (key == null)
-                throw new ArgumentException("Key");
+                throw new ArgumentException("asymmetricAlgorithm");
 
             // Create a SignedXml object.
             var signedXml = new SignedXml(xmlDoc);
@@ -58,9 +59,29 @@ namespace SecurityManagement.Signing
 
         public bool VerifySignature(XmlDocument xmlDoc, XmlElement signature, AsymmetricAlgorithm key)
         {
+            if (xmlDoc == null)
+                throw new ArgumentNullException("xmlDocument");
+            if (signature == null)
+                throw new ArgumentNullException("signature");
+            if (key == null)
+                throw new ArgumentNullException("asymmetricAlgorithm");
+
             var signedXml = new SignedXml(xmlDoc.DocumentElement);
             signedXml.LoadXml(signature);
             return signedXml.CheckSignature(key);
+        }
+
+        public bool VerifySignature(XmlDocument xmlDoc, AsymmetricAlgorithm key)
+        {
+            if (xmlDoc == null)
+                throw new ArgumentNullException("xmlDocument");
+            if (key == null)
+                throw new ArgumentNullException("asymmetricAlgorithm");
+
+            var signEl = xmlDoc.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
+               .Cast<XmlElement>()
+               .First(x => x.ParentNode == xmlDoc.DocumentElement);
+            return this.VerifySignature(xmlDoc, signEl, key);
         }
     }
 }

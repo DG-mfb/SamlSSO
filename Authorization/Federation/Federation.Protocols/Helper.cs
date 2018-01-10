@@ -105,6 +105,7 @@ namespace Federation.Protocols
                 if (validated)
                     break;
             }
+
             if (!validated)
             {
                 var certEl = TokenHelper.GetElement("X509Certificate", "http://www.w3.org/2000/09/xmldsig#", signEl);

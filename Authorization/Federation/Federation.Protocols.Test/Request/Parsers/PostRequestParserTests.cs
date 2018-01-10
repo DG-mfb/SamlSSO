@@ -30,7 +30,7 @@ namespace Federation.Protocols.Test.Request.Parsers
         public async Task ParseAuthnRequest_post_binding()
         {
             //ARRANGE
-            var form = await SamlPostRequestProviderMock.BuildAuthnRequestPosttForm();
+            var form = await SamlPostRequestProviderMock.BuildAuthnRequestPostForm();
             Func<Type, IMetadataHandler> metadataHandlerFactory = t => new MetadataEntitityDescriptorHandler();
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();

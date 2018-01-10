@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -20,7 +19,7 @@ namespace SecurityManagement.Tests.Signing
     internal class XmlSignatureManagerTest
     {
         [Test]
-        [Ignore("Temp")]
+        [Ignore("File source.")]
         public void TempTest()
         {
             //ARRANGE
@@ -40,7 +39,7 @@ namespace SecurityManagement.Tests.Signing
         }
 
         [Test]
-        [Ignore("Temp test")]
+        [Ignore("File source")]
         public void TempAssertionTest()
         {
             //ARRANGE
@@ -71,41 +70,61 @@ namespace SecurityManagement.Tests.Signing
         }
 
         [Test]
-        public void SignRequest()
+        public async Task VerifyAuthRequestSignature()
         {
             //ARRANGE
             var signatureManager = new XmlSignatureManager();
             var document = new XmlDocument();
-            document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\AuthnRequest.xml");
+            var request = await SamlPostRequestProviderMock.BuildAuthnRequest();
+            document.LoadXml(request.Item1);
             var cert = CertificateProviderMock.GetMockCertificate();
 
             //ACT
-            signatureManager.SignXml(document, "eca_e2376d50-2f84-4a6b-bdc6-8283a8b2d990_bde559c1-fe68-4ff8-898f-5660a794156a", cert.PrivateKey, "saml,samlp");
-
-            var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
-                .Cast<XmlElement>()
-                .First(x => x.ParentNode == document.DocumentElement);
-            var isValid = signatureManager.VerifySignature(document, signEl, cert.PublicKey.Key);
+            
+            var isValid = signatureManager.VerifySignature(document, cert.PublicKey.Key);
+            
             //ASSERT
             Assert.True(isValid);
         }
 
         [Test]
-        public void SignResponse()
+        public void SignResponse_namespace_included()
         {
             //ARRANGE
             var signatureManager = new XmlSignatureManager();
-            var document = new XmlDocument();
-            document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml");
+            var inResponseTo = "Test_" + Guid.NewGuid();
+            var tokenResponse = ResponseFactoryMock.GetTokenResponseSuccess(inResponseTo);
             var cert = CertificateProviderMock.GetMockCertificate();
+            var serialised = ResponseFactoryMock.Serialize(tokenResponse);
+            var document = new XmlDocument();
+            document.LoadXml(serialised);
 
             //ACT
-            signatureManager.SignXml(document, "Test_64f68a98-05fc-4e68-a0e0-ed7edb76c8df", cert.PrivateKey, "saml,samlp");
+            signatureManager.WriteSignature(document, tokenResponse.ID, cert.PrivateKey, String.Empty, String.Empty, "saml,samlp");
+            
+            var isValid = signatureManager.VerifySignature(document, cert.PublicKey.Key);
+            
+            //ASSERT
+            Assert.True(isValid);
+        }
 
-            var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
-                .Cast<XmlElement>()
-                .First(x => x.ParentNode == document.DocumentElement);
-            var isValid = signatureManager.VerifySignature(document, signEl, cert.PublicKey.Key);
+        [Test]
+        public void SignResponse_namespace_not_included()
+        {
+            //ARRANGE
+            var signatureManager = new XmlSignatureManager();
+            var inResponseTo = "Test_" + Guid.NewGuid();
+            var tokenResponse = ResponseFactoryMock.GetTokenResponseSuccess(inResponseTo);
+            var cert = CertificateProviderMock.GetMockCertificate();
+            var serialised = ResponseFactoryMock.Serialize(tokenResponse);
+            var document = new XmlDocument();
+            document.LoadXml(serialised);
+
+            //ACT
+            signatureManager.WriteSignature(document, tokenResponse.ID, cert.PrivateKey, String.Empty, String.Empty);
+
+            var isValid = signatureManager.VerifySignature(document, cert.PublicKey.Key);
+
             //ASSERT
             Assert.True(isValid);
         }

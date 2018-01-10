@@ -10,14 +10,13 @@ using Federation.Protocols.Request;
 using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
-using SecurityManagement;
 using SecurityManagement.Signing;
 using Serialisation.JSON;
 using Serialisation.JSON.SettingsProviders;
 using Serialisation.Xml;
 using Shared.Federtion.Forms;
 
-namespace Federation.Protocols.Test.Mock
+namespace SecurityManagement.Tests.Mock
 {
     internal class SamlPostRequestProviderMock
     {
@@ -31,7 +30,7 @@ namespace Federation.Protocols.Test.Mock
             var form = await SamlPostRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return form;
         }
-        public static async Task<string> BuildAuthnRequest()
+        public static async Task<Tuple<string, string>> BuildAuthnRequest()
         {
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
@@ -39,7 +38,8 @@ namespace Federation.Protocols.Test.Mock
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
             var authnRequestContext = new AuthnRequestContext(requestUri, new Uri("http://localhost"), federationContex, supportedNameIdentifierFormats);
             var request = await SamlPostRequestProviderMock.BuildRequest(authnRequestContext);
-            return request;
+            
+            return new Tuple<string, string>(request, authnRequestContext.RequestId);
         }
 
         public static async Task<string> BuildLogoutRequest()
@@ -63,12 +63,7 @@ namespace Federation.Protocols.Test.Mock
             var form = await SamlPostRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return form;
         }
-
-        public static Task<SamlInboundMessage> BuilSamlInboundMessage()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public static async Task<SAMLForm> BuildRequestBindingContext(RequestContext requestContext)
         {
             string url = String.Empty;
