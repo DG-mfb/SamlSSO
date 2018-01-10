@@ -24,8 +24,8 @@ namespace SecurityManagement.Tests.Signing
         {
             //ARRANGE
             var signatureManager = new XmlSignatureManager();
-            var document = new XmlDocument();
-            document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\AtlasResponse.xml");
+            var document = new XmlDocument() { PreserveWhitespace = false };
+            document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml");
             var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
                 .Cast<XmlElement>()
                 .First(x => x.ParentNode == document.DocumentElement);
@@ -43,9 +43,14 @@ namespace SecurityManagement.Tests.Signing
         public void TempAssertionTest()
         {
             //ARRANGE
+            var foo = new StreamReader(@"D:\Dan\Software\ECA-Interenational\Temp\Base64.txt");
+            var base64 = foo.ReadToEnd();
+            var boo = Convert.FromBase64String(base64);
+            var requestFromBase64 = Encoding.UTF8.GetString(boo);
+            
             var signatureManager = new XmlSignatureManager();
             var document = new XmlDocument();
-            document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\AtlasResponse.xml");
+            //document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml");
             var assertion = (XmlElement)document.GetElementsByTagName("Assertion", Saml20Constants.Assertion)[0];
             var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
                 .Cast<XmlElement>()
@@ -57,14 +62,58 @@ namespace SecurityManagement.Tests.Signing
             var handler = new Saml2SecurityTokenHandler();
             var config = this.GetConfiguration();
             handler.Configuration = config;
-            var reader = XmlReader.Create(new StringReader(document.OuterXml));
+            //var reader = XmlReader.Create(new StringReader(document.OuterXml));
+            var reader = XmlReader.Create(new StringReader(requestFromBase64));
+            //var reader = XmlReader.Create(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml");
             this.MoveToToken(reader);
-            var reader1 = XmlReader.Create(new StringReader(document1.OuterXml));
+            //var reader1 = XmlReader.Create(new StringReader(document1.OuterXml));
             var token = handler.ReadToken(reader);
-            var token1 = handler.ReadToken(reader1);
+            //var token1 = handler.ReadToken(reader1);
             //ACT
             var isValid = signatureManager.VerifySignature(document1, signEl, dcert2.PublicKey.Key);
             var isValid1 = signatureManager.VerifySignature(document, signEl, dcert2.PublicKey.Key);
+            //ASSERT
+            Assert.True(isValid);
+        }
+
+        [Test]
+        [Ignore("File source")]
+        public void TempAssertionTest1()
+        {
+            //ARRANGE
+            var foo = new StreamReader(@"D:\Dan\Software\ECA-Interenational\Temp\Base64.txt");
+            var base64 = foo.ReadToEnd();
+            var boo = Convert.FromBase64String(base64);
+            var requestFromBase64 = Encoding.UTF8.GetString(boo);
+            var reader = XmlReader.Create(new StringReader(requestFromBase64));
+            var reader1 = XmlReader.Create(new StringReader(requestFromBase64));
+            reader1.MoveToContent();
+            var signatureManager = new XmlSignatureManager();
+            var document = new XmlDocument { PreserveWhitespace = false };
+            //document.Load(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml");
+            var xml = reader1.ReadOuterXml();
+            document.LoadXml(xml);
+            var assertion = (XmlElement)document.GetElementsByTagName("Assertion", Saml20Constants.Assertion)[0];
+            var signEl = document.GetElementsByTagName("Signature", "http://www.w3.org/2000/09/xmldsig#")
+                .Cast<XmlElement>()
+                .First(x => x.ParentNode == document.DocumentElement);
+            var certEl = (XmlElement)signEl.GetElementsByTagName("X509Certificate", "http://www.w3.org/2000/09/xmldsig#")[0];
+            var dcert2 = new X509Certificate2(Convert.FromBase64String(certEl.InnerText));
+            //var document1 = new XmlDocument();
+            //document1.LoadXml(assertion.OuterXml);
+            var handler = new Saml2SecurityTokenHandler();
+            var config = this.GetConfiguration();
+            handler.Configuration = config;
+            //var reader = XmlReader.Create(new StringReader(document.OuterXml));
+            
+            //var reader = XmlReader.Create(@"D:\Dan\Software\ECA-Interenational\Temp\TestResponse.xml", new XmlReaderSettings {  });
+            this.MoveToToken(reader);
+            //var reader1 = XmlReader.Create(new StringReader(document1.OuterXml));
+            var token = handler.ReadToken(reader);
+            //var token1 = handler.ReadToken(reader1);
+            //ACT
+            //var isValid = signatureManager.VerifySignature(document1, signEl, dcert2.PublicKey.Key);
+            var isValid = signatureManager.VerifySignature(document, signEl, dcert2.PublicKey.Key);
             //ASSERT
             Assert.True(isValid);
         }

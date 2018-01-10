@@ -39,7 +39,7 @@ namespace Federation.Protocols.Response
             if (hasToken)
             {
                 var assertions = new List<XmlElement>();
-                var doc = new XmlDocument();
+                var doc = new XmlDocument { PreserveWhitespace = true };
                 doc.LoadXml(responseText);
                 var el = doc.DocumentElement;
                 response.Assertions = new[] { (XmlElement)el };

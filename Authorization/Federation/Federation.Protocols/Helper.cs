@@ -85,7 +85,7 @@ namespace Federation.Protocols
             var cspParams = new CspParameters();
             cspParams.KeyContainerName = "XML_DSIG_RSA_KEY";
             var rsaKey = new RSACryptoServiceProvider(cspParams);
-            var doc = new XmlDocument();
+            var doc = new XmlDocument { PreserveWhitespace = true };
             doc.LoadXml(inboundContext.SamlMassage);
 
             var signEl = TokenHelper.GetAllElements("Signature", "http://www.w3.org/2000/09/xmldsig#", doc.DocumentElement)
