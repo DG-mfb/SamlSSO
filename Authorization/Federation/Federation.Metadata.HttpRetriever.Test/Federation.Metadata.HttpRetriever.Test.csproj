@@ -51,6 +51,8 @@
   <ItemGroup>
     <Compile Include="HttpDocumentRetrieverTests.cs" />
     <Compile Include="Mock\CertificateValidatorMock.cs" />
+    <Compile Include="Mock\HttpClientMock.cs" />
+    <Compile Include="Mock\HttpDocumentRetrieverMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

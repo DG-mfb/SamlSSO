@@ -15,13 +15,13 @@ namespace Federation.Metadata.HttpRetriever.Test
             //ARRANGE
             var certValidator = new CertificateValidatorMock();
             
-            var documentRetriever = new HttpDocumentRetriever(certValidator);
-            var address = "https://www.testshib.org/metadata/testshib-providers.xml";
+            var documentRetriever = new HttpDocumentRetrieverMock(certValidator);
+            var address = "https://localhost";
             //ACT
             var doc = await documentRetriever.GetDocumentAsync(address, CancellationToken.None);
             //ASSERT
             Assert.False(String.IsNullOrWhiteSpace(doc));
-
+            Assert.AreEqual("Content", doc);
         }
     }
 }

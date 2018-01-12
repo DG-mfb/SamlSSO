@@ -20,15 +20,14 @@ namespace Federation.Metadata.Consumer.Tests
         {
             //ARRANGE
             var certValidator = new CertificateValidatorMock();
-            var documentRetrieer = new HttpDocumentRetriever(certValidator);
+            var documentRetrieer = new HttpDocumentRetrieverMock(certValidator);
 
             //ACT
-            
-            //var document = await documentRetrieer.GetDocumentAsync("https://dg-mfb/idp/shibboleth", new CancellationToken());
-            var document = await documentRetrieer.GetDocumentAsync("https://www.testshib.org/metadata/testshib-providers.xml", new CancellationToken());
+            var document = await documentRetrieer.GetDocumentAsync("https://localhost", new CancellationToken());
             
             //ASSERT
             Assert.IsFalse(String.IsNullOrWhiteSpace(document));
+            Assert.AreEqual("Content", document);
         }
 
         [Test]

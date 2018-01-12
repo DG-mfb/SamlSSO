@@ -71,17 +71,11 @@ namespace Federation.Metadata.HttpRetriever
                 };
                 using (messageHandler)
                 {
-                    var httpClient = new HttpClient(messageHandler)
-                    {
-                        Timeout = this.Timeout,
-                        MaxResponseContentBufferSize = this.MaxResponseContentBufferSize
-                    };
-
+                    var httpClient = this.GetHttpClient(messageHandler);
                     using (httpClient)
                     {
-                        var httpResponseMessage = await httpClient.GetAsync(address, cancel)
-                            .ConfigureAwait(true);
-
+                        var httpResponseMessage = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, address), cancel)
+                           .ConfigureAwait(true);
                         var response = httpResponseMessage;
                         httpResponseMessage = null;
                         response.EnsureSuccessStatusCode();
@@ -96,6 +90,15 @@ namespace Federation.Metadata.HttpRetriever
                 throw new IOException(String.Format("IDX10804: Unable to retrieve document from: '{0}'.", address), ex);
             }
             return str1;
+        }
+
+        protected virtual HttpClient GetHttpClient(WebRequestHandler messageHandler)
+        {
+            return new HttpClient(messageHandler)
+            {
+                Timeout = this.Timeout,
+                MaxResponseContentBufferSize = this.MaxResponseContentBufferSize
+            };
         }
     }
 }

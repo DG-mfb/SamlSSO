@@ -57,6 +57,8 @@
     <Compile Include="Mock\ConfigurationRetrieverMock.cs" />
     <Compile Include="Mock\EntityDescriptorProviderMock.cs" />
     <Compile Include="Mock\FederationPartyContextBuilderMock.cs" />
+    <Compile Include="Mock\HttpClientMock.cs" />
+    <Compile Include="Mock\HttpDocumentRetrieverMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
