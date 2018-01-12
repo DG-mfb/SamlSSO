@@ -13,6 +13,7 @@ namespace Federation.Metadata.Consumer.Tests.Mock
             var descriptor = new EntityDescriptor(new EntityId(entityId));
             var cert = EntityDescriptorProviderMock.GetMockCertificate();
             var idpRole = new IdentityProviderSingleSignOnDescriptor();
+            idpRole.ProtocolsSupported.Add(new Uri("urn:oasis:names:tc:SAML:2.0:protocol"));
             idpRole.SingleSignOnServices.Add(new ProtocolEndpoint(new Uri(ProtocolBindings.HttpRedirect), new Uri("http://localhost:60879")));
             descriptor.RoleDescriptors.Add(idpRole);
             return descriptor;

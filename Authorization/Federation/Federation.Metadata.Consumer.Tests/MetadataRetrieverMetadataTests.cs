@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Federation.Metadata.Consumer.Tests.Mock;
 using Federation.Metadata.FederationPartner.Configuration;
-using Federation.Metadata.HttpRetriever;
 using Kernel.Federation.FederationPartner;
 using NUnit.Framework;
 using SecurityManagement;
@@ -27,7 +26,7 @@ namespace Federation.Metadata.Consumer.Tests
             
             //ASSERT
             Assert.IsFalse(String.IsNullOrWhiteSpace(document));
-            Assert.AreEqual("Content", document);
+            Assert.AreEqual(HttpClientMock.Metadata, document);
         }
 
         [Test]
@@ -37,7 +36,7 @@ namespace Federation.Metadata.Consumer.Tests
             var logger = new LogProviderMock();
             var bckChannelcertValidator = new CertificateValidatorMock();
            
-            var documentRetrieer = new HttpDocumentRetriever(bckChannelcertValidator);
+            var documentRetrieer = new HttpDocumentRetrieverMock(bckChannelcertValidator);
             var configurationProvider = new CertificateValidationConfigurationProvider();
             var certValidator = new CertificateValidator(configurationProvider, logger);
             
@@ -45,13 +44,12 @@ namespace Federation.Metadata.Consumer.Tests
             var configurationRetriever = new WsFederationConfigurationRetriever(_ => documentRetrieer, serialiser);
             
             //ACT
-            //var baseMetadata = await WsFederationConfigurationRetriever.GetAsync("https://dg-mfb/idp/shibboleth", documentRetrieer, new CancellationToken());
-            var context = new FederationPartyConfiguration("local", "https://www.testshib.org/metadata/testshib-providers.xml");
+            var context = new FederationPartyConfiguration("local", "https://localhost");
             var baseMetadata = await configurationRetriever.GetAsync(context, new CancellationToken());
-            var metadata = baseMetadata as EntitiesDescriptor;
+            var metadata = baseMetadata as EntityDescriptor;
             //ASSERT
             Assert.IsTrue(metadata != null);
-            Assert.AreEqual(2, metadata.ChildEntities.Count);
+            Assert.AreEqual(1, metadata.RoleDescriptors.Count);
         }
     }
 }
