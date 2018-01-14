@@ -213,7 +213,7 @@ namespace SSOOwinMiddleware.Handlers
             IAuthorizationServerProvider authorizationServerProvider;
             if (!this._resolver.TryResolve<IAuthorizationServerProvider>(out authorizationServerProvider))
                 return false;
-            var sSOTokenEndpointResponseContext = new SSOTokenEndpointResponseContext(base.Context, base.Options, context.Token, relayState);
+            var sSOTokenEndpointResponseContext = new SSOTokenEndpointResponseContext(base.Context, base.Options, context.Token, context.Ticket, relayState);
             await authorizationServerProvider.TokenEndpointResponse(sSOTokenEndpointResponseContext);
             return sSOTokenEndpointResponseContext.IsRequestCompleted;
         }
