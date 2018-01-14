@@ -13,9 +13,10 @@ namespace Federation.Protocols.Test
             //ARRANGE
             var str = "String to compress.";
             var compression = new DeflateCompressor();
-            
+
             //ACT
-            var compressed = await Helper.DeflateEncode(str, compression);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(str);
+            var compressed = await Helper.DeflateEncode(buffer, compression);
             var decompressed = await Helper.DeflateDecompress(compressed, compression);
 
             //ASSERT

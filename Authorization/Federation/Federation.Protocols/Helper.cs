@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Federation.Protocols.Tokens;
@@ -18,33 +17,34 @@ namespace Federation.Protocols
 {
     internal class Helper
     {
-        internal static async Task<string> DeflateEncode(string val, ICompression compression)
+        internal static async Task<byte[]> DeflateEncode(byte[] val, ICompression compression)
         {
-            var strArr = Encoding.UTF8.GetBytes(val);
-            using (var memoryStream = new MemoryStream(strArr))
+            //var strArr = Encoding.UTF8.GetBytes(val);
+            using (var memoryStream = new MemoryStream(val))
             {
                 using (var compressed = new MemoryStream())
                 {
                     await compression.Compress(memoryStream, compressed);
                     compressed.Position = 0;
-                    return Convert.ToBase64String(compressed.GetBuffer(), 0, (int)compressed.Length, Base64FormattingOptions.None);
+                    var result = new byte[compressed.Length];
+                    Array.Copy(compressed.GetBuffer(), result, result.Length);
+                    return result;
                 }
             }
         }
 
-        internal static async Task<string> DeflateDecompress(string value, ICompression compression)
+        internal static async Task<byte[]> DeflateDecompress(byte[] value, ICompression compression)
         {
-            var encoded = Convert.FromBase64String(value);
-            using (var compressed = new MemoryStream(encoded))
+            //var encoded = Convert.FromBase64String(value);
+            using (var compressed = new MemoryStream(value))
             {
                 using (var decompressed = new MemoryStream())
                 {
                     await compression.Decompress(compressed, decompressed);
                     decompressed.Position = 0;
-                    using (var streamReader = new StreamReader(decompressed, Encoding.UTF8))
-                    {
-                        return await streamReader.ReadToEndAsync();
-                    }
+                    var result = new byte[decompressed.Length];
+                    Array.Copy(decompressed.GetBuffer(), result, result.Length);
+                    return result;
                 }
             }
         }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Kernel.Compression;
 using Kernel.Federation.Protocols;
@@ -20,12 +22,19 @@ namespace Federation.Protocols.Encodiing
 
         public async Task<string> DecodeMessage(string message)
         {
-            return await Helper.DeflateDecompress(message, this._compression);
+            var buffer = Convert.FromBase64String(message);
+            var decoded = await Helper.DeflateDecompress(buffer, this._compression);
+            using (var reader = new StreamReader(new MemoryStream(decoded), Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
         }
 
         public async Task<string> EncodeMessage<TMessage>(TMessage message)
         {
-            return await Helper.DeflateEncode(message.ToString(), this._compression);
+            var buffer = Encoding.UTF8.GetBytes(message.ToString());
+            var encoded = await Helper.DeflateEncode(buffer, this._compression);
+            return Convert.ToBase64String(encoded, Base64FormattingOptions.None);
         }
     }
 }
