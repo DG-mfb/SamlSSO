@@ -16,7 +16,7 @@ namespace Federation.Protocols.Test
 
             //ACT
             var buffer = System.Text.Encoding.UTF8.GetBytes(str);
-            var compressed = await Helper.DeflateEncode(buffer, compression);
+            var compressed = await Helper.DeflateCompress(buffer, compression);
             var decompressed = await Helper.DeflateDecompress(compressed, compression);
 
             //ASSERT

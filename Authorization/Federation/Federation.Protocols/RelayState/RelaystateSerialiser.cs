@@ -21,6 +21,7 @@ namespace Federation.Protocols.RelayState
             this._jsonSerialiser = jsonSerialiser;
             this._encoding = encoding;
             this._logProvider = logProvider;
+            this.DataProtector = new Kernel.Cryptography.DataProtection.DpapiDataProtector("SSO", "saml", "relaystate");
         }
         public IDataProtector DataProtector { private get; set; }
         public object[] Deserialize(Stream stream, IList<Type> messageTypes)
@@ -41,13 +42,14 @@ namespace Federation.Protocols.RelayState
         public async Task<string> Serialize(object data)
         {
             var jsonString = this._jsonSerialiser.Serialize(data);
-            if(this.DataProtector != null)
+            this._logProvider.LogMessage(String.Format("Relay state serialised:\r\n{0}", jsonString));
+            if (this.DataProtector != null)
             {
                 var buffer = Encoding.UTF8.GetBytes(jsonString);
                 var dataProtected = this.DataProtector.Protect(buffer);
-                jsonString = Convert.ToBase64String(dataProtected);
+                this._logProvider.LogMessage("Relay state data protected");
+                return await this._encoding.EncodeMessage(dataProtected);
             }
-            this._logProvider.LogMessage(String.Format("Relay state serialised:\r\n{0}", jsonString));
             var encoded = await this._encoding.EncodeMessage(jsonString);
             return encoded;
         }
@@ -59,12 +61,16 @@ namespace Federation.Protocols.RelayState
         
         async Task<object> IRelayStateSerialiser.Deserialize(string data)
         {
-            var decoded = await this._encoding.DecodeMessage(data);
+            string decoded;
             if (this.DataProtector != null)
             {
-                var buffer = Convert.FromBase64String(decoded);
+                var buffer = await this._encoding.Decode(data);
                 var dataProtected = this.DataProtector.Unprotect(buffer);
                 decoded = Encoding.UTF8.GetString(dataProtected);
+            }
+            else
+            {
+                decoded = await this._encoding.DecodeMessage(data);
             }
             var deserialised = this._jsonSerialiser.Deserialize(decoded);
             return deserialised;

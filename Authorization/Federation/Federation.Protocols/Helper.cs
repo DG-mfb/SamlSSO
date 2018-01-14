@@ -17,7 +17,7 @@ namespace Federation.Protocols
 {
     internal class Helper
     {
-        internal static async Task<byte[]> DeflateEncode(byte[] val, ICompression compression)
+        internal static async Task<byte[]> DeflateCompress(byte[] val, ICompression compression)
         {
             //var strArr = Encoding.UTF8.GetBytes(val);
             using (var memoryStream = new MemoryStream(val))

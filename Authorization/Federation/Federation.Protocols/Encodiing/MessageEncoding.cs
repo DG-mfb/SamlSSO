@@ -30,10 +30,22 @@ namespace Federation.Protocols.Encodiing
             }
         }
 
+        public async Task<byte[]> Decode(string message)
+        {
+            var buffer = Convert.FromBase64String(message);
+            var decoded = await Helper.DeflateDecompress(buffer, this._compression);
+            return decoded;
+        }
+
         public async Task<string> EncodeMessage<TMessage>(TMessage message)
         {
             var buffer = Encoding.UTF8.GetBytes(message.ToString());
-            var encoded = await Helper.DeflateEncode(buffer, this._compression);
+            return await this.EncodeMessage(buffer);
+        }
+
+        public async Task<string> EncodeMessage(byte[] message)
+        {
+            var encoded = await Helper.DeflateCompress(message, this._compression);
             return Convert.ToBase64String(encoded, Base64FormattingOptions.None);
         }
     }
