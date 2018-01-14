@@ -15,11 +15,13 @@ namespace Federation.Protocols.Encodiing
             this._compression = compression;
         }
 
+        [Obsolete("To be removed.", false)]
         public Task<TMessage> DecodeMessage<TMessage>(string message)
         {
             throw new NotImplementedException();
         }
 
+        [Obsolete("To be removed.", false)]
         public async Task<string> DecodeMessage(string message)
         {
             var buffer = Convert.FromBase64String(message);
