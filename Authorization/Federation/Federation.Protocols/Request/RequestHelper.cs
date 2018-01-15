@@ -65,11 +65,11 @@ namespace Federation.Protocols.Request
                 Id = configurtion.RequestId,
                 Destination = requestContext.Destination.AbsoluteUri,
                 Issuer = new NameId { Value = configurtion.EntityId, Format = NameIdentifierFormats.Entity },
-                Item = new NameId { Value = "jDoe@domain.com", Format = NameIdentifierFormats.Email },
-                Reason = requestContext.Reason.AbsoluteUri,
+                Item = new NameId { Value = requestContext.SamlLogoutContext.NameId.Value, Format = requestContext.SamlLogoutContext.NameId.Format.AbsoluteUri },
+                Reason = requestContext.SamlLogoutContext.Reason.AbsoluteUri,
                 IssueInstant = DateTime.UtcNow,
                 Version = configurtion.Version,
-                SessionIndex = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString() }
+                SessionIndex = requestContext.SamlLogoutContext.SessionIndex
             };
         }
     }

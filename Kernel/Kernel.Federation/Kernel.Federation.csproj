@@ -149,6 +149,7 @@
     <Compile Include="Protocols\Request\IRequestValidator.cs" />
     <Compile Include="Protocols\IMessageParser.cs" />
     <Compile Include="Protocols\Response\IResponseValidator.cs" />
+    <Compile Include="Protocols\SamlLogoutContext.cs" />
     <Compile Include="Protocols\SamlOutboundContext%271.cs" />
     <Compile Include="Tokens\HandleTokenContext.cs" />
     <Compile Include="Tokens\IssuingAuthority.cs" />

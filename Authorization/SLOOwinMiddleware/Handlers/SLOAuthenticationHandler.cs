@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Metadata;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -71,8 +72,8 @@ namespace SLOOwinMiddleware.Handlers
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 
                 var signInUrl = handler.GetIdentityProviderSingleLogoutService(idp, federationContext.OutboundBinding);
-
-                var requestContext = new OwinLogoutRequestContext(Context, signInUrl, base.Request.Uri, federationContext, new Uri(Reasons.User));
+                //resolve here name id and session for logout context
+                var requestContext = new OwinLogoutRequestContext(Context, signInUrl, base.Request.Uri, federationContext, new SamlLogoutContext(new Uri(Reasons.User), new Saml2NameIdentifier("")));
                 var relayStateAppenders = this._resolver.ResolveAll<IRelayStateAppender>();
                 foreach (var appender in relayStateAppenders)
                 {
