@@ -71,10 +71,10 @@ namespace SLOOwinMiddleware.Handlers
                 var federationPartyContextBuilder = this._resolver.Resolve<IAssertionPartyContextBuilder>();
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 
-                var signInUrl = handler.GetIdentityProviderSingleLogoutService(idp, federationContext.OutboundBinding);
+                var signoutUrl = handler.GetIdentityProviderSingleLogoutService(idp, federationContext.OutboundBinding);
                 var logoutContextBuilder = this._resolver.Resolve<ISamlLogoutContextResolver<IOwinRequest>>();
                 var logoutContext = logoutContextBuilder.ResolveLogoutContext(Request);
-                var requestContext = new OwinLogoutRequestContext(Context, signInUrl, base.Request.Uri, federationContext, logoutContext);
+                var requestContext = new OwinLogoutRequestContext(Context, signoutUrl, base.Request.Uri, federationContext, logoutContext);
                 var relayStateAppenders = this._resolver.ResolveAll<IRelayStateAppender>();
                 foreach (var appender in relayStateAppenders)
                 {
