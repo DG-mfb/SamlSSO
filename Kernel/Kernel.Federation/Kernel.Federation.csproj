@@ -85,6 +85,7 @@
     <Compile Include="Protocols\AuthnContext.cs" />
     <Compile Include="Protocols\Bindings\IBindingDecoder.cs" />
     <Compile Include="Protocols\Bindings\IBindingDecode%271r.cs" />
+    <Compile Include="Protocols\ISamlLogoutContextResolver.cs" />
     <Compile Include="Protocols\SamlInboundMessage.cs" />
     <Compile Include="Protocols\IMessageTypeResolver.cs" />
     <Compile Include="Protocols\Request\LogoutRequestContext.cs" />
