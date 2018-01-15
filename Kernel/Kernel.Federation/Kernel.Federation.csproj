@@ -85,6 +85,7 @@
     <Compile Include="Protocols\AuthnContext.cs" />
     <Compile Include="Protocols\Bindings\IBindingDecoder.cs" />
     <Compile Include="Protocols\Bindings\IBindingDecode%271r.cs" />
+    <Compile Include="Protocols\ISamlLogoutContextResolver.cs" />
     <Compile Include="Protocols\SamlInboundMessage.cs" />
     <Compile Include="Protocols\IMessageTypeResolver.cs" />
     <Compile Include="Protocols\Request\LogoutRequestContext.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Protocols\Request\IRequestValidator.cs" />
     <Compile Include="Protocols\IMessageParser.cs" />
     <Compile Include="Protocols\Response\IResponseValidator.cs" />
+    <Compile Include="Protocols\SamlLogoutContext.cs" />
     <Compile Include="Protocols\SamlOutboundContext%271.cs" />
     <Compile Include="Tokens\HandleTokenContext.cs" />
     <Compile Include="Tokens\IssuingAuthority.cs" />

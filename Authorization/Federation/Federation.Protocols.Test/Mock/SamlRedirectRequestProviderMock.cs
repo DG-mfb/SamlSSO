@@ -36,7 +36,8 @@ namespace Federation.Protocols.Test.Mock
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
+            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)));
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, logoutContext);
             var bindingContext = await SamlRedirectRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return bindingContext.GetDestinationUrl();
         }
@@ -50,7 +51,7 @@ namespace Federation.Protocols.Test.Mock
         {
             string url = String.Empty;
             var builders = new List<IRedirectClauseBuilder>();
-            
+
             requestContext.RelyingState.Add("relayState", "Test state");
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();

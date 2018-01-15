@@ -48,7 +48,8 @@ namespace Federation.Protocols.Test.Mock
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
+            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)));
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, logoutContext);
             var request = await SamlPostRequestProviderMock.BuildRequest(authnRequestContext);
             return request;
         }
@@ -59,7 +60,8 @@ namespace Federation.Protocols.Test.Mock
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
+            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)));
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, logoutContext);
             var form = await SamlPostRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return form;
         }
@@ -73,7 +75,7 @@ namespace Federation.Protocols.Test.Mock
         {
             string url = String.Empty;
             var builders = new List<IPostClauseBuilder>();
-            
+
             requestContext.RelyingState.Add("relayState", "Test state");
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
@@ -84,7 +86,7 @@ namespace Federation.Protocols.Test.Mock
             RequestHelper.GetAuthnRequestBuilders = AuthnRequestBuildersFactoryMock.GetAuthnRequestBuildersFactory();
             var authnBuilder = new SamlRequestBuilder(serialiser);
             builders.Add(authnBuilder);
-            
+
             //relay state builder
             var jsonSerialiser = new NSJsonSerializer(new DefaultSettingsProvider());
             var relayStateSerialiser = new RelaystateSerialiser(jsonSerialiser, encoder, logger) as IRelayStateSerialiser;
@@ -105,7 +107,7 @@ namespace Federation.Protocols.Test.Mock
             var base64Encoded = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(request));
 
             var relyingStateSerialised = bindingContext.RequestParts[HttpRedirectBindingConstants.RelayState];
-            
+
             form.ActionURL = bindingContext.DestinationUri.AbsoluteUri;
             form.SetRequest(base64Encoded);
             form.SetRelatState(relyingStateSerialised);
@@ -146,7 +148,7 @@ namespace Federation.Protocols.Test.Mock
             }
             var form = new SAMLForm();
             var request = bindingContext.RequestParts[HttpRedirectBindingConstants.SamlRequest];
-            
+
             return request;
         }
     }

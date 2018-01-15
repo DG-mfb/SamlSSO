@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
-using Federation.Protocols.Tokens;
 using Kernel.Extensions;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
-using Kernel.Federation.Protocols.Response;
 using Kernel.Federation.Tokens;
 using Kernel.Logging;
 using Shared.Federtion.Response;

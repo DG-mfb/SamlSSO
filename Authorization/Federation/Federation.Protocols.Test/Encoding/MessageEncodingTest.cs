@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DeflateCompression;
 using Federation.Protocols.Encodiing;
 using NUnit.Framework;
@@ -15,7 +16,8 @@ namespace Federation.Protocols.Test.Encoding
             var source = "Text to encode";
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
-            var expected = await Helper.DeflateEncode(source.ToString(), compressor);
+            var encodedExpected = await Helper.DeflateCompress(System.Text.Encoding.UTF8.GetBytes(source), compressor);
+            var expected = Convert.ToBase64String(encodedExpected);
             //ACT
             var encoded = await encoder.EncodeMessage(source);
             
@@ -30,9 +32,10 @@ namespace Federation.Protocols.Test.Encoding
             var source = "Text to encode";
             var compressor = new DeflateCompressor();
             var encoder = new MessageEncoding(compressor);
-            var encoded = await Helper.DeflateEncode(source.ToString(), compressor);
+            var encoded = await Helper.DeflateCompress(System.Text.Encoding.UTF8.GetBytes(source), compressor);
+            var toString64 = Convert.ToBase64String(encoded);
             //ACT
-            var decoded = await encoder.DecodeMessage(encoded);
+            var decoded = await encoder.DecodeMessage(toString64);
 
             //ASSERT
             Assert.AreEqual(decoded, source);

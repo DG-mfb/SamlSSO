@@ -18,7 +18,7 @@ namespace Federation.Protocols.Test.Request
     internal class RequestTypeResolverTests
     {
         [Test]
-        public  void AuthnRequestType_test()
+        public void AuthnRequestType_test()
         {
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
@@ -40,18 +40,19 @@ namespace Federation.Protocols.Test.Request
             var type = typeResolver.ResolveMessageType(serialised, types);
 
             //ASSERT
-            
+
             Assert.AreEqual(typeof(AuthnRequest), type);
         }
 
         [Test]
-        public  void LogoutRequestType_test_test()
+        public void LogoutRequestType_test_test()
         {
             //ARRANGE
             var requestUri = new Uri("http://localhost:59611/");
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
-            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, new Uri(Reasons.User));
+            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)));
+            var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, logoutContext);
             var types = ReflectionHelper.GetAllTypes(t => !t.IsAbstract && !t.IsInterface && typeof(RequestAbstract).IsAssignableFrom(t));
             var xmlSerialiser = new XMLSerialiser();
             var compressor = new DeflateCompressor();
