@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
-var AuthenticationService = (function () {
+var AuthenticationService = /** @class */ (function () {
     function AuthenticationService(http) {
         this.http = http;
     }
@@ -34,11 +34,12 @@ var AuthenticationService = (function () {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
     };
+    AuthenticationService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [typeof (_a = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _a || Object])
+    ], AuthenticationService);
     return AuthenticationService;
+    var _a;
 }());
-AuthenticationService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], AuthenticationService);
 exports.AuthenticationService = AuthenticationService;
 //# sourceMappingURL=AuthenticationService.js.map
