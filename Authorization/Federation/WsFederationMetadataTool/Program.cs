@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Kernel.Federation.MetaData;
+﻿using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
 using Kernel.Logging;
 using ServerInitialisation;
+using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using UnityResolver;
 
 namespace WsFederationMetadataTool

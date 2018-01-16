@@ -60,6 +60,10 @@
       <Project>{681BB5E0-8DB0-44FA-8950-EEF3ADC42745}</Project>
       <Name>UnityResolver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Kernel\Kernel.Configuration\Kernel.Configuration.csproj">
+      <Project>{B78BEABA-813A-4C65-BA17-2207E5F37B66}</Project>
+      <Name>Kernel.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Kernel\Kernel.Federation\Kernel.Federation.csproj">
       <Project>{47FE8E9F-CCF6-46B7-BA75-CBA1D1F56D7A}</Project>
       <Name>Kernel.Federation</Name>
@@ -75,6 +79,10 @@
     <ProjectReference Include="..\..\..\Server\ServerInitialisation\ServerInitialisation.csproj">
       <Project>{9670D9D3-7652-42AC-80A7-B9B5D07A0B4C}</Project>
       <Name>ServerInitialisation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ORMMetadataContextBuilder\ORMMetadataContextProvider.csproj">
+      <Project>{3a8df840-5a87-4cd3-915e-07abf10b065a}</Project>
+      <Name>ORMMetadataContextProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

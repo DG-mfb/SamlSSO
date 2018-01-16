@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Kernel.Configuration;
 using Kernel.Initialisation;
 using Kernel.Logging;
 
@@ -16,8 +18,14 @@ namespace WsFederationMetadataTool
             {
                 var container = ApplicationConfiguration.Instance.DependencyResolver;
                 var initialiser = ApplicationConfiguration.Instance.ServerInitialiserFactory();
-                var task = initialiser.Initialise(container);
-                await task;
+                var dataSource = AppSettingsConfigurationManager.GetSetting("dataInitialiser", String.Empty);
+                if (!String.IsNullOrWhiteSpace(dataSource))
+                    initialiser.InitialiserTypes.Add(dataSource);
+                var task = initialiser.Initialise(container)
+                      .ContinueWith(t =>
+                      {
+                          throw t.Exception;
+                      }, TaskContinuationOptions.OnlyOnFaulted);
             }
         }
     }
