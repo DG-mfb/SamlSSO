@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 //import { User } from '../_models/index';
 //import { UserService } from '../_services/index';
-var HomeComponent = /** @class */ (function () {
+var HomeComponent = (function () {
     //currentUser: User;
     //users: User[] = [];
     function HomeComponent() {
@@ -23,14 +23,14 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.loadAllUsers = function () {
         //this.userService.getAll().subscribe(users => { this.users = users; });
     };
-    HomeComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            templateUrl: 'home.component.html'
-        }),
-        __metadata("design:paramtypes", [])
-    ], HomeComponent);
     return HomeComponent;
 }());
+HomeComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        templateUrl: 'home.component.html'
+    }),
+    __metadata("design:paramtypes", [])
+], HomeComponent);
 exports.HomeComponent = HomeComponent;
 //# sourceMappingURL=HomeComponent.js.map
