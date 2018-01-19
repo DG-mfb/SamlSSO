@@ -1,12 +1,11 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Linq;
-using Microsoft.Owin.Security.DataHandler;
-using Microsoft.Owin.Security.DataProtection;
-using System.Web;
+﻿using Kernel.Initialisation;
 using Microsoft.Owin.Security;
 using System;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Web.Http;
+using WebApi.Results;
 
 namespace WebApi.Controllers
 {
@@ -17,14 +16,28 @@ namespace WebApi.Controllers
         [Route("SSOLogon")]
         public async Task<IHttpActionResult> SSOLogon()
         {
-            throw new NotImplementedException();
+            var resolver = ApplicationConfiguration.Instance.DependencyResolver;
+            var protector = resolver.Resolve<ISecureDataFormat<AuthenticationTicket>>();
+            
+            var identity = (ClaimsIdentity)User.Identity;
+            var ticket = new AuthenticationTicket(identity, new AuthenticationProperties());
+            var token = protector.Protect(ticket);
+            var redirectUrl = String.Format("http://localhost:49974/Logout.aspx?Bearer={0}", token);
+            //return Redirect(String.Format("http://localhost:49974/Logout.aspx?Bearer={0}", token));
+            return new CookieRedirectResult(new Uri(redirectUrl), new HttpRequestMessage(Request.Method, Request.RequestUri.AbsoluteUri), (ClaimsIdentity)User.Identity);
+            
+            //FormsAuthentication.SetAuthCookie("testUser", false);
+            //HttpContext.Current.Response.Headers.Add("Authorization", "Bearer " + token);
+            //HttpContext.Current.Response.Cookies.Add(new HttpCookie("Bearer", token));
+            //return Redirect(new Uri("http://localhost:49974/Logout.aspx"));
+            //throw new NotImplementedException();
             //return Ok();
             //var context = System.Web.HttpContextExtensions.GetOwinContext(HttpContext.Current.Request);
             //var samlAuthType = await context.Authentication.AuthenticateAsync("Saml2SSO");
 
             //var protector = new DpapiDataProtectionProvider("SSO server").Create("token");
             //var dataFormat = new TicketDataFormat(protector);
-           
+
             //var identity = (ClaimsIdentity)base.RequestContext.Principal.Identity;
             //var ticket = new AuthenticationTicket(identity, samlAuthType.Properties);
             //var serialisedTicket = dataFormat.Protect(ticket);
@@ -39,14 +52,12 @@ namespace WebApi.Controllers
             //return Ok(identity.Claims);
         }
 
-        [Route("Logout")]
-        [HttpGet]
+        [Route("SSOLogout")]
+        [HttpPost]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> Logout()
+        public async Task<IHttpActionResult> SSOLogout()
         {
-            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
-            authenticationManager.SignOut(new AuthenticationProperties(), "Saml2SLO");
-            return Ok();
+            return Ok("Logged out.");
         }
     }
 }
