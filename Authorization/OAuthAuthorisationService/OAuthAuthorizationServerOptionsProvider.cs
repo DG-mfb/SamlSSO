@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Kernel.Authorisation;
 using Kernel.Initialisation;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.OAuth;
 
 namespace OAuthAuthorisationService
@@ -15,15 +13,10 @@ namespace OAuthAuthorisationService
             return new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),
-                Provider = new UserOAuthProvider(ApplicationConfiguration.Instance.DependencyResolver),//new ApplicationOAuthProvider(PublicClientId),
+                Provider = new UserOAuthProvider(ApplicationConfiguration.Instance.DependencyResolver),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                AccessTokenProvider = new AuthenticationTokenProvider { OnReceiveAsync = c =>
-                {
-                    return Task.CompletedTask;
-                }},
-                
-                // In production mode set AllowInsecureHttp = false
+                AccessTokenProvider = new OAuthTokenProvider(ApplicationConfiguration.Instance.DependencyResolver),
                 AllowInsecureHttp = true
             };
         }

@@ -11,7 +11,7 @@ namespace WebApi.Token
     {
         public Task GrantToken(OAuthGrantClientCredentialsContext context)
         {
-            var identity = new ClaimsIdentity(new GenericIdentity(context.ClientId));
+            var identity = new ClaimsIdentity(new GenericIdentity(context.ClientId, "Bearer"));
             context.Validated(identity);
             return Task.CompletedTask;
         }
