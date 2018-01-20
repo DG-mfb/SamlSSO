@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Kernel.Authentication;
     using Kernel.Authentication.Services;
+    using Kernel.Authorisation;
     using Kernel.DependancyResolver;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;
@@ -83,18 +84,41 @@
 		 /// </returns>
 		public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
 		 {
-			 // Resource owner password credentials does not provide a client ID.
-			 if (context.ClientId == null)
-			 {
-				 context.Validated();
-			 }
-
-			 return Task.FromResult<object>(null);
+            var contextValidators = this.dependencyResolver.ResolveAll<IContextValidator<OAuthValidateClientAuthenticationContext>>();
+            foreach(var v in contextValidators)
+            {
+                v.ValidateContext(context);
+                if (context.IsValidated)
+                    break;
+            }
+            
+			return Task.FromResult<object>(null);
 		 }
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
             return base.ValidateClientRedirectUri(context);
+        }
+
+        public override Task ValidateTokenRequest(OAuthValidateTokenRequestContext context)
+        {
+            return base.ValidateTokenRequest(context);
+        }
+
+        public override async Task GrantClientCredentials(OAuthGrantClientCredentialsContext context)
+        {
+            var tokenGrant = this.dependencyResolver.Resolve<ITokenGrantService<OAuthGrantClientCredentialsContext>>();
+            await tokenGrant.GrantToken(context); ;
+        }
+
+        public override Task AuthorizeEndpoint(OAuthAuthorizeEndpointContext context)
+        {
+            return base.AuthorizeEndpoint(context);
+        }
+
+        public override Task AuthorizationEndpointResponse(OAuthAuthorizationEndpointResponseContext context)
+        {
+            return base.AuthorizationEndpointResponse(context);
         }
 
         private  AuthenticationProperties CreateProperties(string userName)

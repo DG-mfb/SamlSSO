@@ -45,6 +45,8 @@
     <Compile Include="Contexts\ITokenEndpointResponseContext.cs" />
     <Compile Include="IAuthorizationServerOptionsProvider.cs" />
     <Compile Include="IAuthorizationServerProvider.cs" />
+    <Compile Include="IContextValidator.cs" />
+    <Compile Include="ITokenGrantService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

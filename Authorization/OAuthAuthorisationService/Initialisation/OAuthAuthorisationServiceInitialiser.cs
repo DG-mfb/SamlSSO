@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Kernel.DependancyResolver;
+using OAuthAuthorisationService.ContextValidators;
 using Shared.Initialisation;
 
 namespace OAuthAuthorisationService.Initialisation
@@ -15,7 +16,7 @@ namespace OAuthAuthorisationService.Initialisation
         {
             dependencyResolver.RegisterType<OAuthAuthorizationServerOptionsProvider>(Lifetime.Transient);
             dependencyResolver.RegisterType<UserOAuthProvider>(Lifetime.Transient);
-            
+            dependencyResolver.RegisterType<ResourceOwnerClientContextValidator>(Lifetime.Transient);
             return Task.CompletedTask;
         }
     }

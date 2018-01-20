@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContextValidators\ResourceOwnerClientContextValidator.cs" />
     <Compile Include="Initialisation\OAuthAuthorisationServiceInitialiser.cs" />
     <Compile Include="OAuthAuthorizationServerOptionsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
