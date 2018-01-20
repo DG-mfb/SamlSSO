@@ -14,9 +14,6 @@ namespace OAuthAuthorisationService
 
         public override Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-
-            //context.DeserializeTicket(context.Token);
-            //context.SetTicket(ticket);
             return Task.CompletedTask;
         }
     }
