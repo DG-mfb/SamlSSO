@@ -17,7 +17,12 @@ namespace OAuthAuthorisationService
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 AccessTokenProvider = new OAuthTokenProvider(ApplicationConfiguration.Instance.DependencyResolver),
+#if (DEBUG)
                 AllowInsecureHttp = true
+
+#else
+                AllowInsecureHttp = false;
+#endif
             };
         }
     }
