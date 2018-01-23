@@ -48,7 +48,7 @@ namespace Federation.Protocols.Test.Mock
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)));
+            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)), "local");
             var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, logoutContext);
             var request = await SamlPostRequestProviderMock.BuildRequest(authnRequestContext);
             return request;
@@ -60,7 +60,7 @@ namespace Federation.Protocols.Test.Mock
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var federationContex = federationPartyContextBuilder.BuildContext("local");
             var supportedNameIdentifierFormats = new List<Uri> { new Uri(NameIdentifierFormats.Transient) };
-            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)));
+            var logoutContext = new SamlLogoutContext(new Uri(Reasons.User), new System.IdentityModel.Tokens.Saml2NameIdentifier("testUser", new Uri(NameIdentifierFormats.Persistent)), "local");
             var authnRequestContext = new LogoutRequestContext(requestUri, new Uri("http://localhost"), federationContex, logoutContext);
             var form = await SamlPostRequestProviderMock.BuildRequestBindingContext(authnRequestContext);
             return form;

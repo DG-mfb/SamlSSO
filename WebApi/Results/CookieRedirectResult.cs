@@ -1,6 +1,8 @@
-﻿using Kernel.Initialisation;
+﻿using Kernel.Federation.Constants;
+using Kernel.Initialisation;
 using Microsoft.Owin.Security;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -54,8 +56,9 @@ namespace WebApi.Results
             {
                 var resolver = ApplicationConfiguration.Instance.DependencyResolver;
                 var protector = resolver.Resolve<ISecureDataFormat<AuthenticationTicket>>();
-
-                var ticket = new AuthenticationTicket(this._identity, new AuthenticationProperties());
+                var dic = new Dictionary<string, string> { { RelayStateContstants.FederationPartyId, "atlasCopco" } };
+               
+                var ticket = new AuthenticationTicket(this._identity, new AuthenticationProperties(dic));
                 var token = protector.Protect(ticket);
                 var cookie = new CookieHeaderValue("Bearer", token);
                 cookie.Expires = DateTimeOffset.Now.AddDays(1);

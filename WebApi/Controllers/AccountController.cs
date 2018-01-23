@@ -1,6 +1,7 @@
 ﻿using Kernel.Initialisation;
 using Microsoft.Owin.Security;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,12 +18,14 @@ namespace WebApi.Controllers
         public async Task<IHttpActionResult> SSOLogon()
         {
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
-            var protector = resolver.Resolve<ISecureDataFormat<AuthenticationTicket>>();
+            //var protector = resolver.Resolve<ISecureDataFormat<AuthenticationTicket>>();
             
             var identity = (ClaimsIdentity)User.Identity;
-            var ticket = new AuthenticationTicket(identity, new AuthenticationProperties());
-            var token = protector.Protect(ticket);
-            var redirectUrl = String.Format("http://localhost:49974/Logout.aspx?Bearer={0}", token);
+            //var dic = new Dictionary<string, string> { { "federationParnerId", "atlasCopco" } };
+            //var ticket = new AuthenticationTicket(identity, new AuthenticationProperties(dic));
+            //var token = protector.Protect(ticket);
+            var redirectUrl = String.Format("http://localhost:49974/Logout.aspx");
+            //var redirectUrl = String.Format("http://localhost:49974/Logout.aspx?Bearer={0}", token);
             //return Redirect(String.Format("http://localhost:49974/Logout.aspx?Bearer={0}", token));
             return new CookieRedirectResult(new Uri(redirectUrl), new HttpRequestMessage(Request.Method, Request.RequestUri.AbsoluteUri), (ClaimsIdentity)User.Identity);
             
