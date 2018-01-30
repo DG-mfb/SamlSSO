@@ -1,13 +1,6 @@
-﻿using System;
-using System.IdentityModel.Metadata;
-using System.IdentityModel.Tokens;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Federation.Protocols.Bindings.HttpPost;
+﻿using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.DependancyResolver;
-using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
@@ -20,6 +13,11 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using Shared.Federtion.Factories;
 using Shared.Federtion.Forms;
+using System;
+using System.IdentityModel.Metadata;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SLOOwinMiddleware.Handlers
 {
@@ -52,8 +50,10 @@ namespace SLOOwinMiddleware.Handlers
             try
             {
                 this._logger.WriteInformation(String.Format("Applying response grand for authenticationType: {0}, authenticationMode: {1}. Path: {2}", this.Options.AuthenticationType, this.Options.AuthenticationMode, this.Request.Path));
-                var discoveryService = this._resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
-                var federationPartyId = discoveryService.ResolveParnerId(Request.Context);
+                var logoutContextBuilder = this._resolver.Resolve<ISamlLogoutContextResolver<IOwinRequest>>();
+                var logoutContext = logoutContextBuilder.ResolveLogoutContext(Request);
+
+                var federationPartyId = logoutContext.FederationPartyId;
 
                 var configurationManager = this._resolver.Resolve<IConfigurationManager<MetadataBase>>();
                 var configuration = await configurationManager.GetConfigurationAsync(federationPartyId, new CancellationToken());
@@ -72,8 +72,7 @@ namespace SLOOwinMiddleware.Handlers
                 var federationContext = federationPartyContextBuilder.BuildContext(federationPartyId);
 
                 var signoutUrl = handler.GetIdentityProviderSingleLogoutService(idp, federationContext.OutboundBinding);
-                var logoutContextBuilder = this._resolver.Resolve<ISamlLogoutContextResolver<IOwinRequest>>();
-                var logoutContext = logoutContextBuilder.ResolveLogoutContext(Request);
+
                 var requestContext = new OwinLogoutRequestContext(Context, signoutUrl, base.Request.Uri, federationContext, logoutContext);
                 var relayStateAppenders = this._resolver.ResolveAll<IRelayStateAppender>();
                 foreach (var appender in relayStateAppenders)
