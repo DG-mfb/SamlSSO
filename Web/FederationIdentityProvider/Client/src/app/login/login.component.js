@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var AuthenticationService_1 = require("../services/AuthenticationService");
-var LoginComponent = (function () {
+var LoginComponent = /** @class */ (function () {
     function LoginComponent(route, router, authenticationService) {
         this.route = route;
         this.router = router;
@@ -55,19 +55,19 @@ var LoginComponent = (function () {
         this.showWarningMessage = false;
         this.showErrorMessage = false;
     };
+    LoginComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'login',
+            templateUrl: 'login.component.html',
+            providers: [AuthenticationService_1.AuthenticationService],
+            styleUrls: ['login.component.css']
+        }),
+        __metadata("design:paramtypes", [router_1.ActivatedRoute,
+            router_1.Router,
+            AuthenticationService_1.AuthenticationService])
+    ], LoginComponent);
     return LoginComponent;
 }());
-LoginComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'login',
-        templateUrl: 'login.component.html',
-        providers: [AuthenticationService_1.AuthenticationService],
-        styleUrls: ['login.component.css']
-    }),
-    __metadata("design:paramtypes", [router_1.ActivatedRoute,
-        router_1.Router,
-        AuthenticationService_1.AuthenticationService])
-], LoginComponent);
 exports.LoginComponent = LoginComponent;
 //# sourceMappingURL=login.component.js.map
