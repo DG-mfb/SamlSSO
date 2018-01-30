@@ -63,7 +63,7 @@ namespace FederationIdentityProvider.Owin
                     var queryStringRaw = c.Request.QueryString.Value;
 
                     var resolver = Kernel.Initialisation.ApplicationConfiguration.Instance.DependencyResolver;
-                    var parser = resolver.Resolve<IMessageParser<SamlInboundContext, SamlInboundRequestContext>>();
+                    //var parser = resolver.Resolve<IMessageParser<SamlInboundContext, SamlInboundRequestContext>>();
                     var decoder = resolver.Resolve<IBindingDecoder<Uri>>();
                     var message = await decoder.Decode(c.Request.Uri);
                     var form = elements.ToDictionary(k => k.Key, v => v.Value.First());
@@ -90,7 +90,7 @@ namespace FederationIdentityProvider.Owin
                             .Roles.Single();
                         }
                     };
-                    await parser.Parse(context);
+                    //await parser.Parse(context);
                     var protocolFactory = resolver.Resolve<Func<string, IProtocolHandler>>();
                     var protocolHanlder = protocolFactory(Bindings.Http_Redirect);
                     await protocolHanlder.HandleInbound(new SamlProtocolContext { ResponseContext = context });

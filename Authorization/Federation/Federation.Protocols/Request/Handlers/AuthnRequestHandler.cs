@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.IdentityModel.Metadata;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using Kernel.Federation.Constants;
-using Kernel.Federation.FederationPartner;
-using Kernel.Federation.MetaData;
+﻿using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
-using Kernel.Security.CertificateManagement;
 using Shared.Federtion.Models;
+using Shared.Federtion.Request;
+using System;
+using System.Collections.Concurrent;
+using System.IO;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace Federation.Protocols.Request.Handlers
 {
@@ -26,26 +20,17 @@ namespace Federation.Protocols.Request.Handlers
             AuthnRequestHandler._relyingParties.TryAdd("https://www.eca-international-local.com", new Uri("http://localhost:60879/sp/metadata"));
         }
 
-        private readonly IRelayStateHandler _relayStateHandler;
-        private readonly ICertificateManager _certificateManager;
-        private readonly IRequestSerialiser _authnRequestSerialiser;
-        private readonly IConfigurationRetriever<MetadataBase> _configurationRetriever;
-        private readonly IMetadataHandler<EntityDescriptor> _metadataHandler;
-        public AuthnRequestHandler(IRelayStateHandler relayStateHandler, 
-            ICertificateManager certificateManager,
-            IRequestSerialiser authnRequestSerialiser,
-            IConfigurationRetriever<MetadataBase> configurationRetriever,
-            IMetadataHandler<EntityDescriptor> metadataHandler)
+        private readonly IMessageParser<SamlInboundContext, SamlInboundRequestContext> _messageParser;
+        public AuthnRequestHandler(IMessageParser<SamlInboundContext, SamlInboundRequestContext> messageParser)
         {
-            this._metadataHandler = metadataHandler;
-            this._configurationRetriever = configurationRetriever;
-            this._authnRequestSerialiser = authnRequestSerialiser;
-            this._relayStateHandler = relayStateHandler;
-            this._certificateManager = certificateManager;
+            this._messageParser = messageParser;
         }
         public async Task Handle(HttpRedirectInboundContext context)
         {
-            throw new NotImplementedException();
+            var requestContext = await this._messageParser.Parse(context);
+            if (requestContext.IsValidated)
+                context.HanlerAction();
+            //throw new NotImplementedException();
             //var requestEncoded = context.Form["SAMLRequest"];
             //var relayState = await this._relayStateHandler.GetRelayStateFromFormData(context.Form);
             //var decompressed = await this._authnRequestSerialiser.Decompress(requestEncoded);
@@ -80,33 +65,6 @@ namespace Federation.Protocols.Request.Handlers
                     return typeof(AuthnRequest);
                 throw new NotSupportedException();
             }
-        }
-        private async Task<ServiceProviderSingleSignOnDescriptor> GetSPDescriptor(AuthnRequest request)
-        {
-            var issuer = request.Issuer.Value;
-            if (!AuthnRequestHandler._relyingParties.ContainsKey(issuer))
-                throw new InvalidOperationException(String.Format("Unregistered relying party id: {0}", issuer));
-            var issuerMetadataLocation = AuthnRequestHandler._relyingParties[issuer];
-            
-            var spMetadata = await this._configurationRetriever.GetAsync(new FederationPartyConfiguration("local", issuerMetadataLocation.AbsoluteUri), CancellationToken.None);
-            var metadataType = spMetadata.GetType();
-            var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
-            //var handler = resolver.Resolve(handlerType) as IMetadataHandler<EntityDescriptor>;
-            //if (handler == null)
-            //    throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
-            var spDescriptor = this._metadataHandler.GetRoleDescriptors<ServiceProviderSingleSignOnDescriptor>((EntityDescriptor)spMetadata)
-                .Single().Roles.Single();
-            return spDescriptor;
-        }
-        private bool VerifySignature(string request, X509Certificate2 certificate, ICertificateManager certificateManager)
-        {
-            var i = request.IndexOf("Signature");
-            var data = request.Substring(0, i - 1);
-            var sgn = Uri.UnescapeDataString(request.Substring(i + 10));
-
-
-            var validated = certificateManager.VerifySignatureFromBase64(data, sgn, certificate);
-            return validated;
         }
     }
 }
