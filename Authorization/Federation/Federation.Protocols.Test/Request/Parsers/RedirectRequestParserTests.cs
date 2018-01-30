@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.Threading.Tasks;
@@ -46,7 +47,11 @@ namespace Federation.Protocols.Test.Request.Parsers
                 configurationManger, logger, requestValidator);
             var redirectBindingDecoder = new RedirectBindingDecoder(logger, encoder);
             var message = await redirectBindingDecoder.Decode(authnRequestUrl);
-            var context = new SamlInboundContext { Message = message };
+            var context = new SamlInboundContext
+            {
+                Message = message,
+                DescriptorResolver = m => metadataHandlerFactory(typeof(object)).GetIdentityProviderSingleSignOnDescriptor(m).Single().Roles.Single()
+            };
             //ACT
             var result = await requestParser.Parse(context);
             //ASSERT
@@ -75,7 +80,11 @@ namespace Federation.Protocols.Test.Request.Parsers
                 configurationManger, logger, requestValidator);
             var redirectBindingDecoder = new RedirectBindingDecoder(logger, encoder);
             var message = await redirectBindingDecoder.Decode(logoutRequestUrl);
-            var context = new SamlInboundContext { Message = message };
+            var context = new SamlInboundContext
+            {
+                Message = message,
+                DescriptorResolver = m => metadataHandlerFactory(typeof(object)).GetIdentityProviderSingleSignOnDescriptor(m).Single().Roles.Single()
+            };
             //ACT
             var result = await requestParser.Parse(context);
             //ASSERT

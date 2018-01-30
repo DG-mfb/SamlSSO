@@ -1,4 +1,6 @@
 ﻿using Kernel.Federation.Constants;
+using System;
+using System.IdentityModel.Metadata;
 
 namespace Kernel.Federation.Protocols
 {
@@ -14,5 +16,6 @@ namespace Kernel.Federation.Protocols
             }
         }
         public SamlInboundMessage Message { get; set; }
+        public Func<MetadataBase, RoleDescriptor> DescriptorResolver { get; set; }
     }
 }

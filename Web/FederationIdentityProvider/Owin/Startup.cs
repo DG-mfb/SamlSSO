@@ -11,6 +11,7 @@ using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Microsoft.Owin;
 using Owin;
+using Shared.Federtion.Factories;
 using Shared.Federtion.Forms;
 using Shared.Federtion.Request;
 
@@ -75,6 +76,18 @@ namespace FederationIdentityProvider.Owin
                             var id = Guid.NewGuid();
                             var urlBase = c.Request.Uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
                             c.Response.Redirect(String.Format("https://localhost:44342/client?returnUrl={0}{1}&state={2}", urlBase, "/api/sso/signon", id));
+                        },
+                        DescriptorResolver = m =>
+                        {
+                            var factory = resolver.Resolve<Func<Type, IMetadataHandler>>();
+                            var metadataType = m.GetType();
+                            var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
+                            var handler = factory(handlerType);
+                            if (handler == null)
+                                throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+                            return handler.GetServiceProviderSingleSignOnDescriptor(m)
+                            .Single()
+                            .Roles.Single();
                         }
                     };
                     await parser.Parse(context);
