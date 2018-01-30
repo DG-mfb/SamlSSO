@@ -27,6 +27,13 @@ namespace Federation.Metadata.FederationPartner.Handlers
             return descriptors;
         }
 
+        public IEnumerable<EntityRoleDescriptor<ServiceProviderSingleSignOnDescriptor>> GetServiceProviderSingleSignOnDescriptor(MetadataBase metadata)
+        {
+            var descriptors = this.GetRoleDescriptors<ServiceProviderSingleSignOnDescriptor>(metadata);
+
+            return descriptors;
+        }
+
         public Uri GetIdentityProviderSingleSignOnServices(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding)
         {
             if (descriptor == null)
@@ -37,7 +44,7 @@ namespace Federation.Metadata.FederationPartner.Handlers
                 throw new InvalidOperationException(String.Format("No endpoint found for binding: {0}.", binding));
             return endPoint.Location;
         }
-
+        
         protected abstract IEnumerable<EntityRoleDescriptor<TRole>> GetRoleDescriptors<TRole>(MetadataBase metadata);
     }
 }

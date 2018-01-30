@@ -99,7 +99,19 @@ namespace SSOOwinMiddleware.Handlers
                         {
                             RequestUri = Request.Uri,
                             AuthenticationMethod = base.Options.AuthenticationType,
-                            Message = formDecoded
+                            Message = formDecoded,
+                            DescriptorResolver = m =>
+                            {
+                                var factory = this._resolver.Resolve<Func<Type, IMetadataHandler>>();
+                                var metadataType = m.GetType();
+                                var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
+                                var handler = factory(handlerType);
+                                if (handler == null)
+                                    throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
+                                return handler.GetIdentityProviderSingleSignOnDescriptor(m)
+                                .Single()
+                                .Roles.Single();
+                            }
                         }
                     };
                     this._logger.WriteInformation(String.Format("Handle response entering."));

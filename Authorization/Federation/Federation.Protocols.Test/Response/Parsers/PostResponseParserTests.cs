@@ -69,7 +69,11 @@ namespace Federation.Protocols.Test.Response.Parsers
                 configurationManger, relayStateHandler, logger, validator);
             var postBindingDecoder = new PostBindingDecoder(logger);
             var message = await postBindingDecoder.Decode(form.HiddenControls.ToDictionary(k => k.Key, v => v.Value));
-            var context = new SamlInboundContext { Message = message };
+            var context = new SamlInboundContext
+            {
+                Message = message,
+                DescriptorResolver = m => metadataHandlerFactory(typeof(object)).GetIdentityProviderSingleSignOnDescriptor(m).Single().Roles.Single()
+            };
             //ACT
             var result = await responseParser.Parse(context);
             //ASSERT
@@ -115,7 +119,11 @@ namespace Federation.Protocols.Test.Response.Parsers
                 configurationManger, relayStateHandler, logger, validator);
             var postBindingDecoder = new PostBindingDecoder(logger);
             var message = await postBindingDecoder.Decode(form.HiddenControls.ToDictionary(k => k.Key, v => v.Value));
-            var context = new SamlInboundContext { Message = message };
+            var context = new SamlInboundContext
+            {
+                Message = message,
+                DescriptorResolver = m => metadataHandlerFactory(typeof(object)).GetIdentityProviderSingleSignOnDescriptor(m).Single().Roles.Single()
+            };
             //ACT
             var result = await responseParser.Parse(context);
             //ASSERT
@@ -162,7 +170,11 @@ namespace Federation.Protocols.Test.Response.Parsers
                 configurationManger, relayStateHandler, logger, validator);
             var postBindingDecoder = new PostBindingDecoder(logger);
             var message = await postBindingDecoder.Decode(form.HiddenControls.ToDictionary(k => k.Key, v => v.Value));
-            var context = new SamlInboundContext { Message = message };
+            var context = new SamlInboundContext
+            {
+                Message = message,
+                DescriptorResolver = m => metadataHandlerFactory(typeof(object)).GetIdentityProviderSingleSignOnDescriptor(m).Single().Roles.Single()
+            };
             //ACT
             var result = await responseParser.Parse(context);
             //ASSERT

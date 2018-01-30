@@ -8,6 +8,7 @@ namespace Shared.Federtion.Factories
     public interface IMetadataHandler
     {
         IEnumerable<EntityRoleDescriptor<IdentityProviderSingleSignOnDescriptor>> GetIdentityProviderSingleSignOnDescriptor(MetadataBase metadata);
+        IEnumerable<EntityRoleDescriptor<ServiceProviderSingleSignOnDescriptor>> GetServiceProviderSingleSignOnDescriptor(MetadataBase metadata);
         Uri GetIdentityProviderSingleSignOnServices(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding);
         Uri GetIdentityProviderSingleLogoutService(IdentityProviderSingleSignOnDescriptor descriptor, Uri binding);
     }

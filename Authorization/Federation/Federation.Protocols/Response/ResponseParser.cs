@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Metadata;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Federation.Protocols.Response.Validation;
+﻿using Federation.Protocols.Response.Validation;
 using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
-using Kernel.Federation.MetaData;
 using Kernel.Federation.Protocols;
 using Kernel.Logging;
 using Kernel.Reflection;
 using Shared.Federtion.Factories;
 using Shared.Federtion.Response;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Metadata;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Federation.Protocols.Response
 {
@@ -45,7 +44,7 @@ namespace Federation.Protocols.Response
             
             var relayState = await this.ResolveRelayState(message, !String.IsNullOrEmpty(statusResponse.InResponseTo));
             var responseContext = new SamlInboundResponseContext { StatusResponse = statusResponse, SamlInboundMessage = message };
-            await this.ResolveIssuerKeys(responseContext);
+            await this.ResolveIssuerKeys(responseContext, context.DescriptorResolver);
             await this._responseValidator.ValidateResponse(responseContext);
             return responseContext;
         }
@@ -56,17 +55,13 @@ namespace Federation.Protocols.Response
             return types;
         }
 
-        private async Task ResolveIssuerKeys(SamlInboundResponseContext context)
+        private async Task ResolveIssuerKeys(SamlInboundResponseContext context, Func<MetadataBase, RoleDescriptor> resolver)
         {
+            if (resolver == null)
+                throw new ArgumentNullException("roleDescriptor resolver");
             var configuration = await this._configurationManager.GetConfigurationAsync(context.FederationPartyId, CancellationToken.None);
-            var metadataType = configuration.GetType();
-            var handlerType = typeof(IMetadataHandler<>).MakeGenericType(metadataType);
-            var handler = this._metadataHandlerFactory(handlerType);
-            if (handler == null)
-                throw new InvalidOperationException(String.Format("Handler must implement: {0}", typeof(IMetadataHandler).Name));
-            var idp = handler.GetIdentityProviderSingleSignOnDescriptor(configuration)
-                .Single().Roles.Single();
-            var keys = idp.Keys.Where(x => x.Use == KeyType.Signing);
+            var descriptor = resolver(configuration);
+            var keys = descriptor.Keys.Where(x => x.Use == KeyType.Signing);
             keys.Aggregate(context.Keys, (t, next) => { t.Add(next); return t; });
         }
 
