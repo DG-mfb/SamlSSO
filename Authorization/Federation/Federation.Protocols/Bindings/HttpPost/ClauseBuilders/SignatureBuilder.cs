@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Federation.Protocols.Tokens;
 using Kernel.Cryptography.Signing.Xml;
 using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
@@ -44,7 +45,7 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
                 var document = new XmlDocument();
                 document.LoadXml(request);
                 this._xmlSignatureManager.WriteSignature(document, requestContext.RequestId, cert.PrivateKey, "", "");
-                var signature = document.GetElementsByTagName("Signature")[0];
+                var signature = TokenHelper.GetElement("Signature", "http://www.w3.org/2000/09/xmldsig#", document.DocumentElement);
                 signature.ParentNode.RemoveChild(signature);
                 var issuer = document.GetElementsByTagName("saml:Issuer")[0];
                 issuer.ParentNode.InsertAfter(signature, issuer);
