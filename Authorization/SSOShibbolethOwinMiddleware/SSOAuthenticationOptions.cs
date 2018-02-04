@@ -19,7 +19,7 @@ namespace SSOOwinMiddleware
         }
         
         public PathString SSOPath { get; set; }
-
+        public bool Signin { get; set; }
         public ICollection<PathString> AssertionEndpoinds { get; }
         public SSOAuthenticationOptions()
             : base("Saml2SSO")
@@ -28,6 +28,7 @@ namespace SSOOwinMiddleware
             base.AuthenticationMode = AuthenticationMode.Active;
             this.SSOPath = new PathString("/account/sso");
             this.AssertionEndpoinds = new List<PathString>();
+            this.Signin = true;
         }
     }
 }

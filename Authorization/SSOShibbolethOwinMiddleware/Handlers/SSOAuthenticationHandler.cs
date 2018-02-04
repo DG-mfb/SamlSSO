@@ -55,6 +55,8 @@ namespace SSOOwinMiddleware.Handlers
 
                         return complete;
                     }
+                    if (this.Options.Signin)
+                        this.Request.Context.Authentication.SignIn(ticket.Properties, ticket.Identity);
                 }
                 return await base.InvokeAsync();
             }
