@@ -44,6 +44,11 @@ namespace Federation.Protocols.Response
                     if (!response.IsValid)
                         throw new Exception(EnumerableExtensions.Aggregate(response.ValidationResults.Select(x => x.ErrorMessage)));
                     context.Identity = response.Identity;
+                    if (response.Token != null)
+                    {
+                        context.Properties.Add("ValidFrom", response.Token.ValidFrom);
+                        context.Properties.Add("ValidTo", response.Token.ValidTo);
+                    }
                 }
             }
             catch (Exception ex)

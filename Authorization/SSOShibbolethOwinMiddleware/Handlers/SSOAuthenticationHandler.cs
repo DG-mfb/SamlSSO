@@ -122,6 +122,12 @@ namespace SSOOwinMiddleware.Handlers
                     {
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
                         var properties = new AuthenticationProperties();
+                        object validFrom;
+                        if (responseContext.Properties.TryGetValue("ValidTo", out validFrom) && validFrom is DateTime)
+                            properties.IssuedUtc = new DateTimeOffset((DateTime)validFrom);
+                        object validTo;
+                        if (responseContext.Properties.TryGetValue("ValidTo", out validTo) && validTo is DateTime)
+                            properties.ExpiresUtc = new DateTimeOffset((DateTime)validTo);
                         properties.Dictionary.Add(RelayStateContstants.FederationPartyId, ((IDictionary<string, object>)responseContext.RelayState)[RelayStateContstants.FederationPartyId].ToString());
                         var ticket = new AuthenticationTicket(identity, properties);
                         return ticket;
