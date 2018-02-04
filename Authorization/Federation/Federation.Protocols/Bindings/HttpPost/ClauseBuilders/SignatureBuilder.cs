@@ -47,7 +47,8 @@ namespace Federation.Protocols.Bindings.HttpPost.ClauseBuilders
                 this._xmlSignatureManager.WriteSignature(document, requestContext.RequestId, cert.PrivateKey, "", "");
                 var signature = TokenHelper.GetElement("Signature", "http://www.w3.org/2000/09/xmldsig#", document.DocumentElement);
                 signature.ParentNode.RemoveChild(signature);
-                var issuer = document.GetElementsByTagName("saml:Issuer")[0];
+                var issuer = TokenHelper.GetElement("Issuer", Saml20Constants.Assertion, document.DocumentElement);
+                
                 issuer.ParentNode.InsertAfter(signature, issuer);
                 this._logProvider.LogMessage(String.Format("Authentication request signed./r/n{0}", document.OuterXml));
                 context.RequestParts[HttpRedirectBindingConstants.SamlRequest] = document.OuterXml;
