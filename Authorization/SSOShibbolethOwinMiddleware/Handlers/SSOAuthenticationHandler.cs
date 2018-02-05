@@ -59,6 +59,11 @@ namespace SSOOwinMiddleware.Handlers
                     {
                         this.Request.Context.Authentication.SignIn(ticket.Properties, ticket.Identity);
                     }
+                    if (!String.IsNullOrWhiteSpace(ticket.Properties.RedirectUri))
+                    {
+                        Response.Redirect(ticket.Properties.RedirectUri);
+                        return true;
+                    }
                 }
                 return await base.InvokeAsync();
             }
@@ -132,6 +137,10 @@ namespace SSOOwinMiddleware.Handlers
                         object validTo;
                         if (responseContext.Properties.TryGetValue("ValidTo", out validTo) && validTo is DateTime)
                             properties.ExpiresUtc = new DateTimeOffset((DateTime)validTo);
+                        var state = (IDictionary<string, object>)responseContext.RelayState;
+                        object redirectUri;
+                        if (state.TryGetValue(RelayStateContstants.RedirectUrl, out redirectUri))
+                            properties.RedirectUri = redirectUri.ToString();
                         properties.Dictionary.Add(RelayStateContstants.FederationPartyId, ((IDictionary<string, object>)responseContext.RelayState)[RelayStateContstants.FederationPartyId].ToString());
                         var ticket = new AuthenticationTicket(identity, properties);
                         return ticket;
