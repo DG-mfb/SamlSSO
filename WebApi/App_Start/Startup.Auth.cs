@@ -1,12 +1,12 @@
 ﻿using Kernel.Authorisation;
 using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using SLOOwinMiddleware.Extensions;
 using SSOOwinMiddleware.Extensions;
+using System.Threading.Tasks;
 
 namespace WebApi
 {
@@ -16,8 +16,39 @@ namespace WebApi
         
         public void ConfigureAuth(IAppBuilder app)
         {
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            var cookieOption = new CookieAuthenticationOptions
+            {
+                AuthenticationType = "Federation",
+                Provider = new CookieAuthenticationProvider
+                {
+                    OnApplyRedirect = c =>
+                    {
+
+                    },
+                    OnException = e =>
+                    {
+
+                    },
+                    OnResponseSignedIn = c =>
+                    {
+
+                    },
+                    OnResponseSignIn = c =>
+                    {
+
+                    },
+                    OnResponseSignOut = c =>
+                    {
+
+                    },
+                    OnValidateIdentity = c =>
+                    {
+                        return Task.CompletedTask;
+                    }
+                },
+            };
+            app.UseCookieAuthentication(cookieOption);
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             //OAuth2 bearer token middleware
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
