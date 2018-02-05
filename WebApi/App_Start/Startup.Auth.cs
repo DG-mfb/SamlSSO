@@ -1,9 +1,6 @@
 ﻿using Kernel.Authorisation;
 using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin;
-using Microsoft.Owin.Infrastructure;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
@@ -49,7 +46,6 @@ namespace WebApi
                         return Task.CompletedTask;
                     }
                 },
-                //CookieManager = new CookieManagerCustom()
             };
             app.UseCookieAuthentication(cookieOption);
             //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
@@ -70,25 +66,6 @@ namespace WebApi
 
            SLOAuthenticationExtensions.UseSaml2SLOAuthentication(app);
            //SLOAuthenticationExtensions.RegisterLogger(app,resolver);
-        }
-    }
-
-    internal class CookieManagerCustom : ICookieManager
-    {
-        public void AppendResponseCookie(IOwinContext context, string key, string value, CookieOptions options)
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        public void DeleteCookie(IOwinContext context, string key, CookieOptions options)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public string GetRequestCookie(IOwinContext context, string key)
-        {
-            return "Federaion";
-            //throw new System.NotImplementedException();
         }
     }
 }
