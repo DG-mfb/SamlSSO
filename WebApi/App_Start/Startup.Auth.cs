@@ -2,11 +2,14 @@
 using Kernel.Federation.MetaData;
 using Kernel.Initialisation;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
+using Microsoft.Owin.Infrastructure;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using SLOOwinMiddleware.Extensions;
 using SSOOwinMiddleware.Extensions;
+using System.Threading.Tasks;
 
 namespace WebApi
 {
@@ -16,8 +19,40 @@ namespace WebApi
         
         public void ConfigureAuth(IAppBuilder app)
         {
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            var cookieOption = new CookieAuthenticationOptions
+            {
+                AuthenticationType = "Federation",
+                Provider = new CookieAuthenticationProvider
+                {
+                    OnApplyRedirect = c =>
+                    {
+
+                    },
+                    OnException = e =>
+                    {
+
+                    },
+                    OnResponseSignedIn = c =>
+                    {
+
+                    },
+                    OnResponseSignIn = c =>
+                    {
+
+                    },
+                    OnResponseSignOut = c =>
+                    {
+
+                    },
+                    OnValidateIdentity = c =>
+                    {
+                        return Task.CompletedTask;
+                    }
+                },
+                //CookieManager = new CookieManagerCustom()
+            };
+            app.UseCookieAuthentication(cookieOption);
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             //OAuth2 bearer token middleware
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
@@ -35,6 +70,25 @@ namespace WebApi
 
            SLOAuthenticationExtensions.UseSaml2SLOAuthentication(app);
            //SLOAuthenticationExtensions.RegisterLogger(app,resolver);
+        }
+    }
+
+    internal class CookieManagerCustom : ICookieManager
+    {
+        public void AppendResponseCookie(IOwinContext context, string key, string value, CookieOptions options)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        public void DeleteCookie(IOwinContext context, string key, CookieOptions options)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string GetRequestCookie(IOwinContext context, string key)
+        {
+            return "Federaion";
+            //throw new System.NotImplementedException();
         }
     }
 }

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Metadata;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Federation.Protocols.Bindings.HttpPost;
+﻿using Federation.Protocols.Bindings.HttpPost;
 using Federation.Protocols.Bindings.HttpRedirect;
 using Kernel.Authorisation;
 using Kernel.DependancyResolver;
@@ -25,6 +18,13 @@ using Microsoft.Owin.Security.Infrastructure;
 using Shared.Federtion.Factories;
 using Shared.Federtion.Forms;
 using SSOOwinMiddleware.Contexts;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Metadata;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SSOOwinMiddleware.Handlers
 {
@@ -56,7 +56,9 @@ namespace SSOOwinMiddleware.Handlers
                         return complete;
                     }
                     if (this.Options.Signin)
+                    {
                         this.Request.Context.Authentication.SignIn(ticket.Properties, ticket.Identity);
+                    }
                 }
                 return await base.InvokeAsync();
             }
@@ -125,7 +127,7 @@ namespace SSOOwinMiddleware.Handlers
                         this._logger.WriteInformation(String.Format("Authenticated. Authentication ticket issued."));
                         var properties = new AuthenticationProperties();
                         object validFrom;
-                        if (responseContext.Properties.TryGetValue("ValidTo", out validFrom) && validFrom is DateTime)
+                        if (responseContext.Properties.TryGetValue("ValidFrom", out validFrom) && validFrom is DateTime)
                             properties.IssuedUtc = new DateTimeOffset((DateTime)validFrom);
                         object validTo;
                         if (responseContext.Properties.TryGetValue("ValidTo", out validTo) && validTo is DateTime)
