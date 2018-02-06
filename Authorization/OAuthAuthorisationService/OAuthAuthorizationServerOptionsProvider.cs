@@ -2,12 +2,14 @@
 using Kernel.Authorisation;
 using Kernel.Initialisation;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 
 namespace OAuthAuthorisationService
 {
     class OAuthAuthorizationServerOptionsProvider : IAuthorizationServerOptionsProvider<OAuthAuthorizationServerOptions>
     {
+        public ISecureDataFormat<AuthenticationTicket> SecureDataFormat { private get; set; }
         OAuthAuthorizationServerOptions IAuthorizationServerOptionsProvider<OAuthAuthorizationServerOptions>.GetOptions()
         {
             return new OAuthAuthorizationServerOptions
@@ -17,7 +19,8 @@ namespace OAuthAuthorisationService
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 AccessTokenProvider = new OAuthTokenProvider(ApplicationConfiguration.Instance.DependencyResolver),
-#if (DEBUG)
+                AccessTokenFormat = this.SecureDataFormat != null ? this.SecureDataFormat : null,
+#if(DEBUG)
                 AllowInsecureHttp = true
 
 #else
