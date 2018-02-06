@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Kernel.Federation.Constants;
 using Kernel.Federation.Protocols;
 using Kernel.Federation.Protocols.Request;
 using SSOOwinMiddleware;
@@ -14,9 +15,9 @@ namespace WebApi.CustomCofiguration
             if (owinRequest != null)
             {
                 var query = owinRequest.Context.Request.Query;
-                var returnUri = query.Get("returnUrl");
+                var returnUri = query.Get(RelayStateContstants.RedirectUrl);
                 if (!String.IsNullOrWhiteSpace(returnUri))
-                    owinRequest.RelyingState.Add("returnUrl", returnUri);
+                    owinRequest.RelyingState.Add(RelayStateContstants.RedirectUrl, returnUri);
             }
             return Task.CompletedTask;
         }
