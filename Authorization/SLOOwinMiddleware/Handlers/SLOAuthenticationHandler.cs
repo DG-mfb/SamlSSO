@@ -87,6 +87,7 @@ namespace SLOOwinMiddleware.Handlers
                         BindingContext = new RequestBindingContext(requestContext),
                         DespatchDelegate = redirectUri =>
                         {
+                            this._logger.WriteInformation(String.Format("Redirecting to:\r\n{0}", redirectUri.AbsoluteUri));
                             this.Response.Redirect(redirectUri.AbsoluteUri);
                             return Task.CompletedTask;
                         }
@@ -99,6 +100,7 @@ namespace SLOOwinMiddleware.Handlers
                         BindingContext = new RequestPostBindingContext(requestContext),
                         DespatchDelegate = (form) =>
                         {
+                            this._logger.WriteInformation(String.Format("Writing saml form to the response."));
                             Response.Write(form.ToString());
                             return Task.CompletedTask;
                         },
