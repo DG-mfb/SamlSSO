@@ -8,5 +8,6 @@ namespace Kernel.Data.ORM
         ICollection<ISeeder> Seeders { get; }
         Func<IEnumerable<Type>> ModelsFactory { get; }
         string Schema { get; }
+        string ModelKey { get; }
     }
 }

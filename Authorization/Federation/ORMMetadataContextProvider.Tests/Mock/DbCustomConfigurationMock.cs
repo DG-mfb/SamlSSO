@@ -15,5 +15,6 @@ namespace ORMMetadataContextProvider.Tests.Mock
 
         public Func<IEnumerable<Type>> ModelsFactory { get; set; }
         public string Schema { get; }
+        public string ModelKey { get { return String.Format("test_{0}", Guid.NewGuid()); } }
     }
 }
