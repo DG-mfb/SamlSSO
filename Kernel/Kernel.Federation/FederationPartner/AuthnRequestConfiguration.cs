@@ -7,6 +7,7 @@ namespace Kernel.Federation.FederationPartner
 {
     public class AuthnRequestConfiguration : RequestConfiguration
     {
+        private readonly FederationPartyAuthnRequestConfiguration _federationPartyAuthnRequestConfiguration;
         public AuthnRequestConfiguration(string requestId, EntityDesriptorConfiguration entityDesriptorConfiguration, FederationPartyAuthnRequestConfiguration federationPartyAuthnRequestConfiguration)
             :base(requestId, federationPartyAuthnRequestConfiguration.Version, entityDesriptorConfiguration)
         {
@@ -15,9 +16,7 @@ namespace Kernel.Federation.FederationPartner
            
             if (federationPartyAuthnRequestConfiguration == null)
                 throw new ArgumentNullException("federationPartyAuthnRequestConfiguration");
-            
-            this.AssertionConsumerServiceIndex = (ushort)entityDesriptorConfiguration.SPSSODescriptors.SelectMany(x => x.AssertionConsumerServices)
-                .Single(x => x.IsDefault.GetValueOrDefault()).Index;
+            this._federationPartyAuthnRequestConfiguration = federationPartyAuthnRequestConfiguration;
             this.AudienceRestriction = new List<string> { entityDesriptorConfiguration.EntityId };
             this.ForceAuthn = federationPartyAuthnRequestConfiguration.ForceAuthn;
             this.IsPassive = federationPartyAuthnRequestConfiguration.IsPassive;
@@ -35,10 +34,25 @@ namespace Kernel.Federation.FederationPartner
         public Uri DefaultNameIdFormat { get; }
         public bool EncryptNameId { get; }
         public bool AllowCreateNameIdPolicy { get; }
-        public ushort AssertionConsumerServiceIndex { get; }
-        
+        public ushort AssertionConsumerServiceIndex
+        {
+            get
+            {
+                var defaultAssertionIndexEndpoint = (ushort)base.SPSSODescriptors.SelectMany(x => x.AssertionConsumerServices)
+               .Single(x => x.IsDefault.GetValueOrDefault()).Index;
+                return defaultAssertionIndexEndpoint != this._federationPartyAuthnRequestConfiguration.AssertionIndexEndpoint ? this._federationPartyAuthnRequestConfiguration.AssertionIndexEndpoint : defaultAssertionIndexEndpoint;
+            }
+        }
+
         public ICollection<Uri> SupportedNameIdentifierFormats { get; }
         public RequestedAuthnContextConfiguration RequestedAuthnContextConfiguration { get; }
         public ScopingConfiguration ScopingConfiguration { get; }
+        public FederationPartyAuthnRequestConfiguration FederationPartyAuthnRequestConfiguration
+        {
+            get
+            {
+                return this._federationPartyAuthnRequestConfiguration;
+            }
+        }
     }
 }

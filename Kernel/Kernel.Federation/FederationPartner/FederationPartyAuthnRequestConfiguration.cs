@@ -10,11 +10,13 @@
             this.Version = "2.0";
             this.IsPassive = false;
             this.ForceAuthn = false;
+            this.AssertionIndexEndpoint = 0;
         }
 
         public bool IsPassive { get; set; }
         public bool ForceAuthn { get; set; }
         public string Version { get; set; }
+        public ushort AssertionIndexEndpoint { get; set; }
         public RequestedAuthnContextConfiguration RequestedAuthnContextConfiguration { get; }
         public DefaultNameId DefaultNameId { get; }
         public ScopingConfiguration ScopingConfiguration { get; }

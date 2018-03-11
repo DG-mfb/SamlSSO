@@ -1,4 +1,6 @@
-﻿using Kernel.Federation.MetaData.Configuration.EntityDescriptors;
+﻿using System.Collections.Generic;
+using Kernel.Federation.MetaData.Configuration.EntityDescriptors;
+using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 
 namespace Kernel.Federation.FederationPartner
 {
@@ -16,5 +18,13 @@ namespace Kernel.Federation.FederationPartner
        
         public string Version { get; }
         public string EntityId { get { return this._entityDesriptorConfiguration.EntityId; } }
+
+        public ICollection<SPSSODescriptorConfiguration> SPSSODescriptors
+        {
+            get
+            {
+                return this._entityDesriptorConfiguration.SPSSODescriptors;
+            }
+        }
     }
 }
