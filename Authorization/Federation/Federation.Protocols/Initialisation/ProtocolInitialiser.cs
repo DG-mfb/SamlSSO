@@ -71,7 +71,7 @@ namespace Federation.Protocols.Initialisation
             RequestHelper.GetAuthnRequestBuilders = () => dependencyResolver.ResolveAll<ISamlRequestClauseBuilder<AuthnRequest, AuthnRequestConfiguration>>();
 
             dependencyResolver.RegisterFactory<Func<Type, IMetadataHandler>>(() => t => dependencyResolver.Resolve(t) as IMetadataHandler, Lifetime.Singleton);
-            this.GetBuilders().Aggregate(dependencyResolver, (r, next) => {r.RegisterType(next, Lifetime.Transient); return r; });
+            this.GetBuilders().Aggregate(dependencyResolver, (r, next) => { r.RegisterType(next, Lifetime.Transient); return r; });
 
             dependencyResolver.RegisterFactory<Func<Type, SamlResponseParser>>(() => t =>
             {
