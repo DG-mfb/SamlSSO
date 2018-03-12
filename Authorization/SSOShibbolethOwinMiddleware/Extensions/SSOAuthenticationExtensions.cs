@@ -98,7 +98,7 @@ namespace SSOOwinMiddleware.Extensions
         public static IAppBuilder RegisterDiscoveryService(this IAppBuilder app, IDependencyResolver resolver, Type discoveryService)
         {
             if (!TypeExtensions.IsAssignableToGenericType(discoveryService, typeof(IDiscoveryService<IOwinContext, string>)))
-                throw new InvalidOperationException(String.Format("Discovery service must impelemnt interface: IDiscoveryService<TContext, TResult>"));
+                throw new InvalidOperationException(String.Format("Discovery service must implement interface: IDiscoveryService<TContext, TResult>"));
             
             resolver.RegisterType(discoveryService, Lifetime.Singleton);
             return app;
