@@ -21,7 +21,7 @@ namespace WebApi.App_Start
             resolver.RegisterType<ClientTokenGrantService>(Lifetime.Transient);
             resolver.RegisterFactory<ISecureDataFormat<AuthenticationTicket>>(() =>
             {
-                //var protector = new MachineKeyDataProtector("Auth service", "Microsoft.Owin.Security.IDataProtector", new[] { "Saml2" });// new DpapiDataProtectionProvider("SSO server").Create("token");
+                //var protector = new MachineKeyDataProtector("Auth service", "Microsoft.Owin.Security.IDataProtector", new[] { "Saml2" });
                 var protector = new DpapiDataProtectionProvider("SSO server").Create("token");
 
                 var dataFormat = new TicketDataFormat(protector);
