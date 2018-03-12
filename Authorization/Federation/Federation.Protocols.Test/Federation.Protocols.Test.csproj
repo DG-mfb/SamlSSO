@@ -74,6 +74,7 @@
     <Compile Include="RelayState\RelayStateBuilderTest.cs" />
     <Compile Include="RelayState\RelayStateHandlerTest.cs" />
     <Compile Include="RelayState\RelayStateSerialiserTest.cs" />
+    <Compile Include="Request\AuthnRequestAssertionIndexPointTests.cs" />
     <Compile Include="Request\AuthnRequestRequestedContextTests.cs" />
     <Compile Include="Request\AuthnRequestScopingTests.cs" />
     <Compile Include="Request\Parsers\PostRequestParserTests.cs" />

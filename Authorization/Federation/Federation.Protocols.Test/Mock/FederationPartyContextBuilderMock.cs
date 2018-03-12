@@ -15,32 +15,37 @@ namespace Federation.Protocols.Test.Mock
             return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified);
         }
 
+        public FederationPartyConfiguration BuildContext(string federationPartyId, ushort assertionIndexEndpoint)
+        {
+            return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, new ScopingConfiguration(), assertionIndexEndpoint);
+        }
+
         public FederationPartyConfiguration BuildContext(string federationPartyId, ScopingConfiguration scopingConfiguration)
         {
-            return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, scopingConfiguration);
+            return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, scopingConfiguration, 0);
         }
 
         public FederationPartyConfiguration BuildContext(string federationPartyId, RequestedAuthnContextConfiguration requestedAuthnContextConfiguration)
         {
-            return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, new ScopingConfiguration(), requestedAuthnContextConfiguration);
+            return this.BuildContext(federationPartyId, NameIdentifierFormats.Unspecified, new ScopingConfiguration(), requestedAuthnContextConfiguration, 0);
         }
 
         public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat)
         {
-            return this.BuildContext(federationPartyId, defaultNameIdFormat, new ScopingConfiguration());
+            return this.BuildContext(federationPartyId, defaultNameIdFormat, new ScopingConfiguration(), 0);
         }
 
-        public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat, ScopingConfiguration scopingConfiguration)
+        public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat, ScopingConfiguration scopingConfiguration, ushort assertionIndexEndpoint)
         {
             var requestedAuthnContextConfiguration = this.BuildRequestedAuthnContextConfiguration();
-            return this.BuildContext(federationPartyId, defaultNameIdFormat, scopingConfiguration, requestedAuthnContextConfiguration);
+            return this.BuildContext(federationPartyId, defaultNameIdFormat, scopingConfiguration, requestedAuthnContextConfiguration, assertionIndexEndpoint);
         }
 
-        public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat, ScopingConfiguration scopingConfiguration, RequestedAuthnContextConfiguration requestedAuthnContextConfiguration)
+        public FederationPartyConfiguration BuildContext(string federationPartyId, string defaultNameIdFormat, ScopingConfiguration scopingConfiguration, RequestedAuthnContextConfiguration requestedAuthnContextConfiguration, ushort assertionIndexEndpoint)
         {
             var nameIdconfiguration = new DefaultNameId(new Uri(defaultNameIdFormat));
             var federationPartyAuthnRequestConfiguration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, nameIdconfiguration, scopingConfiguration);
-
+            federationPartyAuthnRequestConfiguration.AssertionIndexEndpoint = assertionIndexEndpoint;
             return new FederationPartyConfiguration("local", "https://dg-mfb/idp/shibboleth")
             {
                 MetadataContext = this._inlineMetadataContextBuilder.BuildContext(new MetadataGenerateRequest(MetadataType.SP, "local")),
