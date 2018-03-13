@@ -2,6 +2,7 @@
 {
     using System;
     using System.Security;
+    using Kernel.Cryptography;
     using Kernel.Extensions;
     using Kernel.Reflection;
 
