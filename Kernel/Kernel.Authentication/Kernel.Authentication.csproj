@@ -53,6 +53,7 @@
     <Compile Include="Services\AuthenticationResult.cs" />
     <Compile Include="Services\IIdentityProviderService.cs" />
     <Compile Include="Services\ITokenProviderService.cs" />
+    <Compile Include="Services\UserInfoResult.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
