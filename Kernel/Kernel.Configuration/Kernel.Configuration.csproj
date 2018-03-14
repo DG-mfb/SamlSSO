@@ -63,6 +63,10 @@
     <Compile Include="SettingsProviderBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kernel.Cryptography\Kernel.Cryptography.csproj">
+      <Project>{857217F2-B265-4154-883F-568285643238}</Project>
+      <Name>Kernel.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kernel.Reflection\Kernel.Reflection.csproj">
       <Project>{2a6ba5fb-dbaa-457a-9cb3-9ba74a96551b}</Project>
       <Name>Kernel.Reflection</Name>

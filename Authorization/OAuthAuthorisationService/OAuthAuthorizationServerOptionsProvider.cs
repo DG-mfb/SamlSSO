@@ -21,10 +21,10 @@ namespace OAuthAuthorisationService
                 AccessTokenProvider = new OAuthTokenProvider(ApplicationConfiguration.Instance.DependencyResolver),
                 AccessTokenFormat = this.SecureDataFormat != null ? this.SecureDataFormat : null,
 #if(DEBUG)
-                AllowInsecureHttp = true
+                AllowInsecureHttp = true,
 
 #else
-                AllowInsecureHttp = false;
+                AllowInsecureHttp = false,
 #endif
             };
         }
