@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Kernel.DependancyResolver;
 using Kernel.Extensions;
 using Kernel.Federation.FederationPartner;
@@ -53,10 +55,20 @@ namespace SSOOwinMiddleware.Extensions
                     return metadataGenerator.CreateMetadata(metadataRequest);
                 });
             });
+            app.Map(new PathString("/metadata/requestRefresh"), a =>
+            {
+                a.Run(c =>
+                {
+                    var discoveryService = resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
+                    var federationParty = discoveryService.ResolveParnerId(c);
+                    var configurationManager = (IConfigurationManager<FederationPartyConfiguration>)resolver.Resolve<IAssertionPartyContextBuilder>();
+                    configurationManager.RequestRefresh(federationParty);
+                    return Task.CompletedTask;
+                });
+            });
             return app;
         }
-
-
+        
         public static IAppBuilder UseSaml2SSOAuthentication(this IAppBuilder app, params string[] assertionEndpoints)
         {
             return SSOAuthenticationExtensions.UseSaml2SSOAuthentication(app, "/account/sso", assertionEndpoints);
