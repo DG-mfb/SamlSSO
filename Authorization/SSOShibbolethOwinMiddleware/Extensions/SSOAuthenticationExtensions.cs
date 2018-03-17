@@ -39,6 +39,7 @@ namespace SSOOwinMiddleware.Extensions
                     var federationParty = discoveryService.ResolveParnerId(c);
                     var configurationManager = (IConfigurationManager<FederationPartyConfiguration>)resolver.Resolve<IAssertionPartyContextBuilder>();
                     configurationManager.RequestRefresh(federationParty);
+                    c.Response.WriteAsync("Success");
                     return Task.CompletedTask;
                 });
             });
