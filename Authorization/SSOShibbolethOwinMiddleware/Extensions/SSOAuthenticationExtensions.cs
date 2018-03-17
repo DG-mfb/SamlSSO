@@ -31,6 +31,18 @@ namespace SSOOwinMiddleware.Extensions
 
         public static IAppBuilder UseMetadataMiddleware(this IAppBuilder app, string metadataPath, MetadataType metadataType, IDependencyResolver resolver)
         {
+            app.Map(new PathString(String.Format("{0}/{1}", metadataPath, "requestRefresh")), a =>
+            {
+                a.Run(c =>
+                {
+                    var discoveryService = resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
+                    var federationParty = discoveryService.ResolveParnerId(c);
+                    var configurationManager = (IConfigurationManager<FederationPartyConfiguration>)resolver.Resolve<IAssertionPartyContextBuilder>();
+                    configurationManager.RequestRefresh(federationParty);
+                    return Task.CompletedTask;
+                });
+            });
+
             app.Map(new PathString(metadataPath), a =>
             {
                 a.Run(c =>
@@ -55,17 +67,7 @@ namespace SSOOwinMiddleware.Extensions
                     return metadataGenerator.CreateMetadata(metadataRequest);
                 });
             });
-            app.Map(new PathString("/metadata/requestRefresh"), a =>
-            {
-                a.Run(c =>
-                {
-                    var discoveryService = resolver.Resolve<IDiscoveryService<IOwinContext, string>>();
-                    var federationParty = discoveryService.ResolveParnerId(c);
-                    var configurationManager = (IConfigurationManager<FederationPartyConfiguration>)resolver.Resolve<IAssertionPartyContextBuilder>();
-                    configurationManager.RequestRefresh(federationParty);
-                    return Task.CompletedTask;
-                });
-            });
+
             return app;
         }
         
