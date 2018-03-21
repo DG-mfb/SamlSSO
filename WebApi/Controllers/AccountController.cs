@@ -18,6 +18,7 @@ namespace WebApi.Controllers
         [Route("SSOLogon")]
         public async Task<IHttpActionResult> SSOLogon()
         {
+            return Ok("OK");
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
             var protector = resolver.Resolve<ISecureDataFormat<AuthenticationTicket>>();
             
