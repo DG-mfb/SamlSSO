@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using WebApi.Results;
 
@@ -18,6 +19,7 @@ namespace WebApi.Controllers
         [Route("SSOLogon")]
         public async Task<IHttpActionResult> SSOLogon()
         {
+            var auth = await this.AuthenticationManager().AuthenticateAsync("Saml2SSO");
             return Ok("OK");
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
             var protector = resolver.Resolve<ISecureDataFormat<AuthenticationTicket>>();
@@ -63,6 +65,11 @@ namespace WebApi.Controllers
         public async Task<IHttpActionResult> SSOLogout()
         {
             return Ok("Logged out.");
+        }
+
+        private IAuthenticationManager AuthenticationManager()
+        {
+            return OwinHttpRequestMessageExtensions.GetOwinContext(Request).Authentication;
         }
     }
 }
