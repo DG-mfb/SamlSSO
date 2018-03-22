@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Metadata;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -100,6 +102,42 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             Assert.IsTrue(isValid);
         }
 
+        [Test]
+        [Ignore("File source")]
+        public async Task VerifySugnature1()
+        {
+            var metadataPath = @"D:\Dan\Software\Apira\Temp\sso.flowz.co.uk007.xml";
+            var path = @"D:\Dan\Software\Apira\Temp\XmlRequest.txt";
+            var logger = new LogProviderMock();
+            var xmlReader = XmlReader.Create(metadataPath);
+            var certificateManager = new CertificateManager(logger);
+            var read = new MetadataSerializer
+            {
+                CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.None
+            };
+
+            var meta = read.ReadMetadata(xmlReader);
+            var descr = ((EntityDescriptor)meta).RoleDescriptors.First();
+            var k = descr.Keys.Single(x => x.Use == KeyType.Signing);
+
+
+            var kinfo = k.KeyInfo.First();
+
+            var bi = kinfo as BinaryKeyIdentifierClause;
+            var xr = kinfo as X509RawDataKeyIdentifierClause;
+            var cert = new X509Certificate2(xr.GetX509RawData());
+            var raw = bi.GetBuffer();
+            var cert1 = new X509Certificate2(raw);
+            //var key = kinfo.CreateKey() as X509AsymmetricSecurityKey;
+            //var ak = key.GetAsymmetricAlgorithm(SignedXml.XmlDsigRSASHA1Url, false);
+            var request = File.ReadAllText(path);
+            
+            var isValid = this.VerifySignature(request, cert);
+            var isValid1 = this.VerifySignature(request, cert1);
+            Assert.IsTrue(isValid);
+            Assert.IsTrue(isValid1);
+        }
+
         private bool VerifySignature(string request, X509Certificate2 certificate)
         {
             var unescaped = Uri.UnescapeDataString(request);
@@ -115,7 +153,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
                     var signedXml = new SignedXml(xmlDocument);
                     XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
                     signedXml.LoadXml((XmlElement)nodeList[0]);
-                    var validated = signedXml.CheckSignature(certificate.PrivateKey);
+                    var validated = signedXml.CheckSignature(certificate.PublicKey.Key);
                     return validated;
                 }
             }

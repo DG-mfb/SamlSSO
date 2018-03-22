@@ -73,7 +73,7 @@
     <Compile Include="Request\Parsers\AuthnRequestParser.cs" />
     <Compile Include="Request\Parsers\RequestParser.cs" />
     <Compile Include="Request\RequestHelper.cs" />
-    <Compile Include="Request\ClauseBuilders\CommomAttributesBuilder.cs" />
+    <Compile Include="Request\ClauseBuilders\CommonAttributesBuilder.cs" />
     <Compile Include="Request\RequestSerialiser.cs" />
     <Compile Include="Request\ClauseBuilders\ScopingBuilder.cs" />
     <Compile Include="Request\ClauseBuilders\RequestedAuthContextBuilder.cs" />

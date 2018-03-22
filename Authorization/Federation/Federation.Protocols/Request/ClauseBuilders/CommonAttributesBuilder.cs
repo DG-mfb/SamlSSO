@@ -5,9 +5,9 @@ using Shared.Federtion.Models;
 
 namespace Federation.Protocols.Request.ClauseBuilders
 {
-    internal class CommomAttributesBuilder : AutnRequestClauseBuilder
+    internal class CommonAttributesBuilder : AutnRequestClauseBuilder
     {
-        public CommomAttributesBuilder(IDependencyResolver dependencyResolver) : base(dependencyResolver)
+        public CommonAttributesBuilder(IDependencyResolver dependencyResolver) : base(dependencyResolver)
         {
         }
 

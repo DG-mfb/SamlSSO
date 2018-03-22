@@ -12,6 +12,7 @@ using Kernel.Federation.Constants;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Selectors;
 using SecurityManagement.Tests.Mock;
+using System.IdentityModel.Metadata;
 
 namespace SecurityManagement.Tests.Signing
 {
@@ -116,6 +117,61 @@ namespace SecurityManagement.Tests.Signing
             var isValid = signatureManager.VerifySignature(document, signEl, dcert2.PublicKey.Key);
             //ASSERT
             Assert.True(isValid);
+        }
+
+        [Test]
+        [Ignore("File source")]
+        public async Task VerifySugnature1()
+        {
+            var metadataPath = @"D:\Dan\Software\Apira\Temp\sso.flowz.co.uk007.xml";
+            var path = @"D:\Dan\Software\Apira\Temp\XmlRequest.txt";
+            var logger = new LogProviderMock();
+            var xmlReader = XmlReader.Create(metadataPath);
+            var certificateManager = new CertificateManager(logger);
+            var read = new MetadataSerializer
+            {
+                CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.None
+            };
+
+            var meta = read.ReadMetadata(xmlReader);
+            var descr = ((EntityDescriptor)meta).RoleDescriptors.First();
+            var k = descr.Keys.Single(x => x.Use == KeyType.Signing);
+
+
+            var kinfo = k.KeyInfo.First();
+
+            var bi = kinfo as BinaryKeyIdentifierClause;
+            var xr = kinfo as X509RawDataKeyIdentifierClause;
+            var cert = new X509Certificate2(xr.GetX509RawData());
+            var raw = bi.GetBuffer();
+            var cert1 = new X509Certificate2(raw);
+            //var key = kinfo.CreateKey() as X509AsymmetricSecurityKey;
+            //var ak = key.GetAsymmetricAlgorithm(SignedXml.XmlDsigRSASHA1Url, false);
+            var request = File.ReadAllText(path);
+
+            var isValid = this.VerifySignature(request, cert);
+            var isValid1 = this.VerifySignature(request, cert1);
+            Assert.IsTrue(isValid);
+            Assert.IsTrue(isValid1);
+        }
+
+        private bool VerifySignature(string request, X509Certificate2 certificate)
+        {
+            var unescaped = Uri.UnescapeDataString(request);
+            var decoded = Convert.FromBase64String(unescaped);
+            using (var ms = new MemoryStream(decoded))
+            {
+                ms.Position = 0;
+                using (var streamReader = new StreamReader(ms))
+                {
+                    var xmlRequest = streamReader.ReadToEnd();
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(xmlRequest);
+                    var signatureManager = new XmlSignatureManager();
+                    var validated = signatureManager.VerifySignature(xmlDocument, certificate.PublicKey.Key);
+                    return validated;
+                }
+            }
         }
 
         [Test]
