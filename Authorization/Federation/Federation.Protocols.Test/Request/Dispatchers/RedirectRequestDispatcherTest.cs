@@ -110,7 +110,7 @@ namespace Federation.Protocols.Test.Request.Dispatchers
             var certificateManager = new CertificateManager(logger);
             var read = new MetadataSerializer
             {
-                CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.None
+                CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.ChainTrust
             };
 
             var meta = read.ReadMetadata(xmlReader);
