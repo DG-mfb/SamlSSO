@@ -55,7 +55,7 @@ namespace Kernel.Cryptography.DataProtection
             return encrypted;
         }
 
-        public string Dencrypt(string password, byte[] salt, byte[] encrypted)
+        public string Decrypt(string password, byte[] salt, byte[] encrypted)
         {
             string plainText = null;
             var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, salt, this._iterations);
@@ -66,16 +66,17 @@ namespace Kernel.Cryptography.DataProtection
             return plainText;
         }
 
-        private byte[] EncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
+        private byte[] EncryptStringToBytes(string plainText, byte[] key, byte[] iv)
         {
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
-            if (Key == null || Key.Length <= 0)
+            if (key == null || key.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
+            if (iv == null || iv.Length <= 0)
                 throw new ArgumentNullException("IV");
             byte[] encrypted;
-
+            this._algoritm.Key = key;
+            this._algoritm.IV = iv;
             var encryptor = this._algoritm.CreateEncryptor(this._algoritm.Key, this._algoritm.IV);
             
             using (MemoryStream msEncrypt = new MemoryStream())
@@ -93,19 +94,19 @@ namespace Kernel.Cryptography.DataProtection
             return encrypted;
         }
 
-        private string DecryptStringFromBytes(byte[] cipherText, byte[] Key, byte[] IV)
+        private string DecryptStringFromBytes(byte[] cipherText, byte[] key, byte[] iv)
         {
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
-            if (Key == null || Key.Length <= 0)
+            if (key == null || key.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
+            if (iv == null || iv.Length <= 0)
                 throw new ArgumentNullException("IV");
 
             string plaintext = null;
             
-            this._algoritm.Key = Key;
-            this._algoritm.IV = IV;
+            this._algoritm.Key = key;
+            this._algoritm.IV = iv;
             
             var decryptor = this._algoritm.CreateDecryptor(this._algoritm.Key, this._algoritm.IV);
             
