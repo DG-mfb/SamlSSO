@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens;
 using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -8,6 +9,7 @@ using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
 using SecurityManagement.CerificateContext;
+using SecurityManagement.TokenResolvers;
 
 namespace SecurityManagement
 {
@@ -192,6 +194,11 @@ namespace SecurityManagement
             if (certificate == null)
                 throw new ArgumentNullException("certificate");
             return Utility.GetSubjectKeyIdentifier(certificate);
+        }
+
+        public X509CertificateStoreTokenResolver GetX509CertificateStoreTokenResolver(X509CertificateContext x509CertificateContext)
+        {
+            return new X509CertificateStoreTokenResolverCustom(x509CertificateContext, this);
         }
     }
 }

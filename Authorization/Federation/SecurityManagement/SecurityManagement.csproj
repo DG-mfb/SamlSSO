@@ -59,6 +59,7 @@
     <Compile Include="Initialisation\SecurityInitialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Signing\XmlSignatureManager.cs" />
+    <Compile Include="TokenResolvers\X509CertificateStoreTokenResolverCustom.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructure\Shared\Shared.csproj">

@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using Kernel.Security.CertificateManagement;
 using NUnit.Framework;
 using SecurityManagement.Tests.Mock;
+using SecurityManagement.TokenResolvers;
 
 namespace SecurityManagement.Tests.Manager
 {
@@ -59,6 +60,19 @@ namespace SecurityManagement.Tests.Manager
             var verified = manager.VerifySignatureFromBase64(data, signedBytes, certContext);
             //ASSERT
             Assert.IsTrue(verified);
+        }
+
+        [Test]
+        public void GetX509CertificateStoreTokenResolverTest()
+        {
+            //ARRANGE
+            var logger = new LogProviderMock();
+            var certContext = new X509CertificateContext { StoreName = "TestCertStore", StoreLocation = StoreLocation.CurrentUser };
+            var manager = new CertificateManager(logger);
+            //ACT
+            var resolver = manager.GetX509CertificateStoreTokenResolver(certContext);
+            //ASSERT
+            Assert.IsInstanceOf<X509CertificateStoreTokenResolverCustom>(resolver);
         }
     }
 }

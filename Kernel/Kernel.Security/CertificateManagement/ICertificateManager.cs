@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using System.IdentityModel.Tokens;
+using System.Security;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Kernel.Security.CertificateManagement
@@ -10,6 +11,7 @@ namespace Kernel.Security.CertificateManagement
         bool TryExtractSpkiBlob(X509Certificate2 certificate, out string spkiEncoded);
         string GetSubjectKeyIdentifier(X509Certificate2 certificate);
         string GetCertificateThumbprint(X509Certificate2 certificate);
+        X509CertificateStoreTokenResolver GetX509CertificateStoreTokenResolver(X509CertificateContext x509CertificateContext);
         ICertificateStore GetStoreFromContext(CertificateContext certContext);
         X509Certificate2 GetCertificateFromContext(CertificateContext certContext);
         string SignToBase64(string dataToSign, CertificateContext certContext);
