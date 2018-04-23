@@ -54,6 +54,7 @@
     <Compile Include="CertificateValidationRules\ExpirationDateRule.cs" />
     <Compile Include="CertificateValidationRules\CertificateValidationRule.cs" />
     <Compile Include="BackchannelCertificateValidator.cs" />
+    <Compile Include="DefaultCertificateValidator.cs" />
     <Compile Include="Exceptions\SamlSignatureException.cs" />
     <Compile Include="CertificateValidator.cs" />
     <Compile Include="Initialisation\SecurityInitialiser.cs" />

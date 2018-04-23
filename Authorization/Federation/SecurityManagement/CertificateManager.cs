@@ -8,6 +8,7 @@ using Kernel.Cryptography.DataProtection;
 using Kernel.Federation.MetaData.Configuration.Cryptography;
 using Kernel.Logging;
 using Kernel.Security.CertificateManagement;
+using Kernel.Security.Validation;
 using SecurityManagement.CerificateContext;
 using SecurityManagement.TokenResolvers;
 
@@ -15,7 +16,22 @@ namespace SecurityManagement
 {
     public class CertificateManager : ICertificateManager
     {
+        internal static Func<ICertificateValidator> CertificateValidatorFactory { private get; set; } = () => new DefaultCertificateValidator();
+
         private readonly ILogProvider _logProvider;
+        private ICertificateValidator _certificateValidator;
+        public ICertificateValidator CertificateValidator
+        {
+            get
+            {
+                return this._certificateValidator ?? CertificateManager.CertificateValidatorFactory();
+            }
+            set
+            {
+                this._certificateValidator = value;
+            }
+        }
+
         public CertificateManager(ILogProvider logProvider)
         {
             this._logProvider = logProvider;

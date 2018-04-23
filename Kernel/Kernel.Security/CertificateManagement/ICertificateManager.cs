@@ -1,11 +1,13 @@
 ﻿using System.IdentityModel.Tokens;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
+using Kernel.Security.Validation;
 
 namespace Kernel.Security.CertificateManagement
 {
     public interface ICertificateManager
     {
+        ICertificateValidator CertificateValidator { get; }
         X509Certificate2 GetCertificate(string path, SecureString password);
         X509Certificate2 GetCertificate(ICertificateStore store);
         bool TryExtractSpkiBlob(X509Certificate2 certificate, out string spkiEncoded);

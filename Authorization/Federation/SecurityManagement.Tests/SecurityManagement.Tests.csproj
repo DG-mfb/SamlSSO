@@ -66,6 +66,7 @@
     <Compile Include="Mock\CertificateValidationRuleMock.cs" />
     <Compile Include="Mock\FederationPartyContextBuilderMock.cs" />
     <Compile Include="Mock\LogProviderMock.cs" />
+    <Compile Include="Mock\MockX509CertificateValidator.cs" />
     <Compile Include="Mock\ResponseFactoryMock.cs" />
     <Compile Include="Mock\SamlPostRequestProviderMock.cs" />
     <Compile Include="Mock\ValidationRuleInstanceCreatorMock.cs" />

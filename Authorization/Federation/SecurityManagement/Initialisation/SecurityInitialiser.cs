@@ -21,6 +21,7 @@ namespace SecurityManagement.Initialisation
             dependencyResolver.RegisterType<CertificateManager>(Lifetime.Transient);
             dependencyResolver.RegisterType<CertificateValidator>(Lifetime.Transient);
             dependencyResolver.RegisterType<BackchannelCertificateValidator>(Lifetime.Transient);
+            CertificateManager.CertificateValidatorFactory = () => dependencyResolver.Resolve<ICertificateValidator>();
             CertificateValidationRulesFactory.InstanceCreator = t => (ICertificateValidationRule)dependencyResolver.Resolve(t);
             BackchannelCertificateValidationRulesFactory.InstanceCreator = t => (IBackchannelCertificateValidationRule)dependencyResolver.Resolve(t);
             BackchannelCertificateValidationRulesFactory.CertificateValidatorResolverFactory = t => (ICertificateValidatorResolver)dependencyResolver.Resolve(t);

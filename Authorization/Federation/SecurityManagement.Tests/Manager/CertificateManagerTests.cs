@@ -74,5 +74,46 @@ namespace SecurityManagement.Tests.Manager
             //ASSERT
             Assert.IsInstanceOf<X509CertificateStoreTokenResolverCustom>(resolver);
         }
+
+        [Test]
+        public void DefaultX509CertificateValidatorTest()
+        {
+            //ARRANGE
+            var logger = new LogProviderMock();
+            
+            var manager = new CertificateManager(logger);
+            //ACT
+            var validator = manager.CertificateValidator;
+            //ASSERT
+            Assert.IsInstanceOf<DefaultCertificateValidator>(validator);
+        }
+
+        [Test]
+        public void X509CertificateValidator_setterTest()
+        {
+            //ARRANGE
+            var logger = new LogProviderMock();
+
+            var manager = new CertificateManager(logger);
+            manager.CertificateValidator = new MockX509CertificateValidator();
+            //ACT
+            var validator = manager.CertificateValidator;
+            //ASSERT
+            Assert.IsInstanceOf<MockX509CertificateValidator>(validator);
+        }
+
+        [Test]
+        public void X509CertificateValidatorFactory_setterTest()
+        {
+            //ARRANGE
+            var logger = new LogProviderMock();
+
+            var manager = new CertificateManager(logger);
+            CertificateManager.CertificateValidatorFactory  = () => new MockX509CertificateValidator();
+            //ACT
+            var validator = manager.CertificateValidator;
+            //ASSERT
+            Assert.IsInstanceOf<MockX509CertificateValidator>(validator);
+        }
     }
 }
