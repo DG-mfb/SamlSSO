@@ -6,6 +6,7 @@ using Federation.Protocols.Test.Mock.Tokens;
 using Federation.Protocols.Tokens;
 using Kernel.Federation.Constants;
 using NUnit.Framework;
+using SecurityManagement;
 
 namespace Federation.Protocols.Test.Tokens
 {
@@ -18,10 +19,13 @@ namespace Federation.Protocols.Test.Tokens
             //ARRANGE
             var path = FileHelper.GetEncryptedAssertionFilePath();
             var certValidator = new CertificateValidatorMock();
+            var logger = new LogProviderMock();
+            var certManager = new CertificateManager(logger);
+            certManager.CertificateValidator = certValidator;
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var xmlReader = XmlReader.Create(path);
             var reader = XmlReader.Create(xmlReader, xmlReader.Settings);
-            var tokenHandlerConfigurationProvider = new TokenHandlerConfigurationProvider(federationPartyContextBuilder, certValidator);
+            var tokenHandlerConfigurationProvider = new TokenHandlerConfigurationProvider(federationPartyContextBuilder, certManager);
             
             var tokenSerialiser = new TokenSerialiser(tokenHandlerConfigurationProvider);
             
@@ -39,10 +43,13 @@ namespace Federation.Protocols.Test.Tokens
             
             var path = FileHelper.GetSignedAssertion();
             var certValidator = new CertificateValidatorMock();
+            var logger = new LogProviderMock();
+            var certManager = new CertificateManager(logger);
+            certManager.CertificateValidator = certValidator;
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var xmlReader = XmlReader.Create(path);
             var reader = XmlReader.Create(xmlReader, xmlReader.Settings);
-            var tokenHandlerConfigurationProvider = new TokenHandlerConfigurationProvider(federationPartyContextBuilder, certValidator);
+            var tokenHandlerConfigurationProvider = new TokenHandlerConfigurationProvider(federationPartyContextBuilder, certManager);
 
             var tokenSerialiser = new TokenSerialiser(tokenHandlerConfigurationProvider);
            
@@ -60,11 +67,14 @@ namespace Federation.Protocols.Test.Tokens
             
             var path = FileHelper.GetSignedAssertion();
             var certValidator = new CertificateValidatorMock();
+            var logger = new LogProviderMock();
+            var certManager = new CertificateManager(logger);
+            certManager.CertificateValidator = certValidator;
             var federationPartyContextBuilder = new FederationPartyContextBuilderMock();
             var xmlReader = XmlReader.Create(path);
             var reader = XmlReader.Create(xmlReader, xmlReader.Settings);
             
-            var tokenHandlerConfigurationProvider = new TokenHandlerConfigurationProvider(federationPartyContextBuilder, certValidator);
+            var tokenHandlerConfigurationProvider = new TokenHandlerConfigurationProvider(federationPartyContextBuilder, certManager);
             var configuration = tokenHandlerConfigurationProvider.GetConfiguration("testshib");
             var saml2SecurityTokenHandler = new SecurityTokenHandlerMock();
             saml2SecurityTokenHandler.SetConfiguration(configuration);

@@ -14,10 +14,12 @@ namespace Federation.Protocols.Tokens
     {
         private readonly IAssertionPartyContextBuilder _federationPartyContextBuilder;
         private readonly ICertificateValidator _certificateValidator;
-        public TokenHandlerConfigurationProvider(IAssertionPartyContextBuilder federationPartyContextBuilder, ICertificateValidator certificateValidator)
+        private readonly ICertificateManager certificateManager;
+        public TokenHandlerConfigurationProvider(IAssertionPartyContextBuilder federationPartyContextBuilder, ICertificateManager certificateManager)
         {
             this._federationPartyContextBuilder = federationPartyContextBuilder;
-            this._certificateValidator = certificateValidator;
+            this._certificateValidator = certificateManager.CertificateValidator;
+            this.certificateManager = certificateManager;
         }
         
         public SecurityTokenHandlerConfiguration GetConfiguration(string partnerId)
@@ -34,7 +36,7 @@ namespace Federation.Protocols.Tokens
             if (x509CertificateContext == null)
                 throw new InvalidOperationException(String.Format("Expected certificate context of type: {0} but it was:{1}", typeof(X509CertificateContext).Name, cert.CertificateContext.GetType()));
 
-            var inner = new X509CertificateStoreTokenResolver(x509CertificateContext.StoreName, x509CertificateContext.StoreLocation);
+            var inner = this.certificateManager.GetX509CertificateStoreTokenResolver(x509CertificateContext);
             var tokenResolver = new IssuerTokenResolver(inner);
             var issuerNameRegistry = IdentityConfigurationHelper.IssuerNameRegistry;
             var configuration = new SecurityTokenHandlerConfiguration
