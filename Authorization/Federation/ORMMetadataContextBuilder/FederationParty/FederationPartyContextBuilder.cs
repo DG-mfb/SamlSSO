@@ -91,7 +91,7 @@ namespace ORMMetadataContextProvider.FederationParty
                 AllowCreate = autnRequestSettings.NameIdConfiguration.AllowCreate,
                 EncryptNameId = autnRequestSettings.NameIdConfiguration.EncryptNameId
             };
-            var scopingConfiguration = autnRequestSettings.Scoping == null ? new ScopingConfiguration()
+            var scopingConfiguration = autnRequestSettings.Scoping == null ? (ScopingConfiguration)null
                     : new ScopingConfiguration(entityId) { PoxyCount = autnRequestSettings.Scoping.MaxProxyCount };
 
             var configuration = new FederationPartyAuthnRequestConfiguration(requestedAuthnContextConfiguration, defaultNameId, scopingConfiguration)
