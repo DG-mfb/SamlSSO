@@ -116,9 +116,9 @@ namespace ORMMetadataContextProvider
                         return t1;
                     });
 
-                    next.Emails.Aggregate(contact.PhoneNumbers, (t2, next2) =>
+                    next.Phones.Aggregate(contact.PhoneNumbers, (t2, next2) =>
                     {
-                        contact.PhoneNumbers.Add(next2.Name);
+                        contact.PhoneNumbers.Add(next2.Number);
                         return t2;
                     });
                     
