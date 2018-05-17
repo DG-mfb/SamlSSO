@@ -37,6 +37,13 @@ namespace FederationIdentityProvider.Owin
             {
                 a.Run(async c =>
                 {
+                    var ticket = await c.Authentication.AuthenticateAsync("Bearer");
+                    if (ticket == null || !ticket.Identity.IsAuthenticated)
+                    {
+                        c.Response.StatusCode = 403;
+                        return;
+                    }
+                    var state = c.Request.Query.Get("state");
                     var outboudContext = new HttpPostResponseOutboundContext(new SAMLForm()) { BindingContext = new BindingContext(new Dictionary<string, object>(), new Uri("http://localhost:60879/api/Account/SSOLogon")) };
                     outboudContext.DespatchDelegate = async form =>
                     {

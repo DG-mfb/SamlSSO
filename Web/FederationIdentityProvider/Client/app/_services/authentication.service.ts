@@ -24,7 +24,10 @@ export class AuthenticationService {
 	}
 
 	ssologin(token: string, url: string, state: string) {
-		return this.http.post(url + "?state=" + state + "&token=" + token, {})//JSON.stringify({ username: username }))
+		const headers = new Headers();
+		headers.append('Authorization', 'Bearer '+ token);
+		let options = new RequestOptions({ headers: headers });
+		return this.http.post(url + "?state=" + state, {}, options)
 			.map((response: Response) => {
 
 			});
