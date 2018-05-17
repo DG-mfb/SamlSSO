@@ -23,8 +23,8 @@ export class AuthenticationService {
 			});
 	}
 
-	ssologin(username: string, url: string, state: string) {
-		return this.http.post(url + "?state=" + state, {})//JSON.stringify({ username: username }))
+	ssologin(token: string, url: string, state: string) {
+		return this.http.post(url + "?state=" + state + "&token=" + token, {})//JSON.stringify({ username: username }))
 			.map((response: Response) => {
 
 			});

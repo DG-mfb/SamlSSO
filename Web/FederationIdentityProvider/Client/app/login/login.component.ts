@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 		this.authenticationService.login(this.model.username, this.model.password)
 			.subscribe(
 			data => {
-				this.authenticationService.ssologin(this.model.username, this.returnUrl, this.state)
+				this.authenticationService.ssologin(data.access_token, this.returnUrl, this.state)
 					.subscribe(
 					d => {
 						//this.document.location.href = 'http://localhost:60879/api/Account/SSOLogon';
