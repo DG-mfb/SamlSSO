@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
@@ -7,19 +7,21 @@ import 'rxjs/add/operator/map'
 export class AuthenticationService {
     constructor(private http: Http) { }
 
-    login(username: string, password: string) {
-        return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
+	login(username: string, password: string) {
+		const headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+		var content = "grant_type=" + "password" + "&username=" + username + "&password=" + password;
+		return this.http.post('/token', content, options)
+			.map((response: Response) => {
+				let user = response.json();
+				if (user && user.access_token) {
+					localStorage.setItem('currentUser', JSON.stringify(user));
+				}
 
-                return user;
-            });
-    }
+				return user;
+			});
+	}
 
 	ssologin(username: string, url: string, state: string) {
 		return this.http.post(url + "?state=" + state, {})//JSON.stringify({ username: username }))

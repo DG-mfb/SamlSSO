@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kernel.Authorisation;
 using Kernel.Federation.Constants;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
@@ -10,6 +11,7 @@ using Kernel.Federation.Protocols.Bindings.HttpPostBinding;
 using Kernel.Federation.Protocols.Bindings.HttpRedirectBinding;
 using Kernel.Initialisation;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Shared.Federtion.Factories;
 using Shared.Federtion.Forms;
@@ -26,7 +28,11 @@ namespace FederationIdentityProvider.Owin
             var resolver = ApplicationConfiguration.Instance.DependencyResolver;
             SSOAuthenticationExtensions.UseMetadataMiddleware(app, "/idp/metadata", MetadataType.Idp, resolver);
             SSOAuthenticationExtensions.RegisterDiscoveryService(app, resolver);
-           
+            var optionProvider = resolver.Resolve<IAuthorizationServerOptionsProvider<OAuthAuthorizationServerOptions>>();
+            var OAuthOptions = optionProvider.GetOptions();
+
+            // Enable the application to use bearer tokens to authenticate users
+            app.UseOAuthBearerTokens(OAuthOptions);
             app.Map(new PathString("/api/sso/signon"), a =>
             {
                 a.Run(async c =>
