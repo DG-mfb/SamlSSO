@@ -163,6 +163,10 @@
       <Project>{3a8df840-5a87-4cd3-915e-07abf10b065a}</Project>
       <Name>ORMMetadataContextProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Authorization\SSOShibbolethOwinMiddleware\SSOOwinMiddleware.csproj">
+      <Project>{11CD60DA-6FBB-4A76-96B3-841DC2E67EFA}</Project>
+      <Name>SSOOwinMiddleware</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DependancyResolvers\UnityResolver\UnityResolver.csproj">
       <Project>{681BB5E0-8DB0-44FA-8950-EEF3ADC42745}</Project>
       <Name>UnityResolver</Name>

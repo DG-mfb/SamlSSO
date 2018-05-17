@@ -21,8 +21,8 @@ export class AuthenticationService {
             });
     }
 
-	ssologin(username: string, url: string) {
-		return this.http.post('https://localhost:44342/api/sso/signon', {})//JSON.stringify({ username: username }))
+	ssologin(username: string, url: string, state: string) {
+		return this.http.post(url + "?state=" + state, {})//JSON.stringify({ username: username }))
 			.map((response: Response) => {
 
 			});
