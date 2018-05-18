@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.Linq;
+using Kernel.Federation.MetaData.Configuration.Organisation;
 using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 
 namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
@@ -30,20 +32,47 @@ namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
                 return o;
             });
         }
-        internal static void BuildContacts(RoleDescriptor roleDescriptor, RoleDescriptorConfiguration roleDescriptorConfiguration)
+
+        internal static bool TryBuildOrganisation(OrganisationConfiguration organisationConfiguration, out Organization organisation)
         {
-            if (roleDescriptor == null)
-                throw new ArgumentNullException("roleDescriptor");
-            if (roleDescriptorConfiguration == null)
-                throw new ArgumentNullException("roleDescriptorConfiguration");
-            
-            var contacts = roleDescriptorConfiguration.Organisation.OrganisationContacts.PersonContact;
-            contacts.Aggregate(roleDescriptor.Contacts, (c, next) =>
+            organisation = new Organization();
+            if (organisationConfiguration == null)
+                return false;
+            try
             {
-                ContactType contactType;
-                if (!Enum.TryParse<ContactType>(next.ContactType.ToString(), out contactType))
+                organisationConfiguration.Names.Aggregate(organisation, (o, next) =>
+                {
+                    o.Names.Add(new LocalizedName(next.Name, next.Language));
+                    o.DisplayNames.Add(new LocalizedName(next.DisplayName, next.Language));
+                    return o;
+                });
+                organisationConfiguration.Urls.Aggregate(organisation, (o, next) =>
+                {
+                    o.Urls.Add(new LocalizedUri(next.Url, next.Language));
+                    return o;
+                });
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
+        internal static void BuildContacts(ICollection<System.IdentityModel.Metadata.ContactPerson> contacts, OrganisationConfiguration organisationConfiguration)
+        {
+            if (contacts == null)
+                throw new ArgumentNullException("contacts");
+            if (organisationConfiguration == null || organisationConfiguration.OrganisationContacts == null || organisationConfiguration.OrganisationContacts.PersonContact == null)
+                return;
+
+            organisationConfiguration.OrganisationContacts.PersonContact.Aggregate(contacts, (c, next) =>
+            {
+                System.IdentityModel.Metadata.ContactType contactType;
+                if (!Enum.TryParse<System.IdentityModel.Metadata.ContactType>(next.ContactType.ToString(), out contactType))
                     throw new InvalidCastException(String.Format("No corespondenting value for Contact type: {0}.", next.ContactType));
-                var cp = new ContactPerson(contactType)
+                var cp = new System.IdentityModel.Metadata.ContactPerson(contactType)
                 {
                     Surname = next.SurName,
                     GivenName = next.ForeName,

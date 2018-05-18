@@ -10,7 +10,7 @@ namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders.SSODescriptor
             if (configuration.Organisation == null)
                 return;
 
-            SSODescriptorBuilderHelper.BuildContacts(descriptor, configuration);
+            SSODescriptorBuilderHelper.BuildContacts(descriptor.Contacts, configuration.Organisation);
         }
     }
 }

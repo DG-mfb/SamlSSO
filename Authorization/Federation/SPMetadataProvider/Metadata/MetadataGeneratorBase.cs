@@ -102,7 +102,10 @@ namespace WsFederationMetadataProvider.Metadata
                 EntityId = new EntityId(configuration.EntityId),
                 FederationId = configuration.Id
             };
-
+            Organization organisation;
+            if (SSODescriptorBuilderHelper.TryBuildOrganisation(configuration.Organisation, out organisation))
+                entityDescriptor.Organization = organisation;
+            SSODescriptorBuilderHelper.BuildContacts(entityDescriptor.Contacts, configuration.Organisation);
             descriptors.Aggregate(entityDescriptor, (ed, next) =>
             {
                 Assignment()(entityDescriptor, next);
