@@ -9,7 +9,7 @@ namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders.SSODescriptor
         {
             if (configuration.Organisation == null)
                 return;
-            SSODescriptorBuilderHelper.BuildOrganisation(descriptor, configuration);
+            SSODescriptorBuilderHelper.BuildOrganisation(descriptor, configuration.Organisation);
         }
     }
 }

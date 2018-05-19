@@ -3,34 +3,21 @@ using System.Collections.Generic;
 using System.IdentityModel.Metadata;
 using System.Linq;
 using Kernel.Federation.MetaData.Configuration.Organisation;
-using Kernel.Federation.MetaData.Configuration.RoleDescriptors;
 
 namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
 {
     internal class SSODescriptorBuilderHelper
     {
-        internal static void BuildOrganisation(RoleDescriptor roleDescriptor, RoleDescriptorConfiguration roleDescriptorConfiguration)
+        internal static void BuildOrganisation(RoleDescriptor roleDescriptor, OrganisationConfiguration organisationConfiguration)
         {
             if (roleDescriptor == null)
                 throw new ArgumentNullException("roleDescriptor");
-            if (roleDescriptorConfiguration == null)
-                throw new ArgumentNullException("roleDescriptorConfiguration");
-
-            var organisationConfigration = roleDescriptorConfiguration.Organisation;
-            if (organisationConfigration == null)
+            
+            if (organisationConfiguration == null)
                 return;
-            roleDescriptor.Organization = new Organization();
-            organisationConfigration.Names.Aggregate(roleDescriptor.Organization, (o, next) =>
-            {
-                o.Names.Add(new LocalizedName(next.Name, next.Language));
-                o.DisplayNames.Add(new LocalizedName(next.DisplayName, next.Language));
-                return o;
-            });
-            organisationConfigration.Urls.Aggregate(roleDescriptor.Organization, (o, next) =>
-            {
-                o.Urls.Add(new LocalizedUri(next.Url, next.Language));
-                return o;
-            });
+            Organization organisation;
+            if(SSODescriptorBuilderHelper.TryBuildOrganisation(organisationConfiguration, out organisation))
+                roleDescriptor.Organization = organisation;
         }
 
         internal static bool TryBuildOrganisation(OrganisationConfiguration organisationConfiguration, out Organization organisation)
