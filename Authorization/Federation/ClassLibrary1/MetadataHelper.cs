@@ -17,7 +17,7 @@ namespace InlineMetadataContextProvider
     {
         public static EntityDesriptorConfiguration BuildEntityDesriptorConfiguration(bool includeOrganisation = false)
         {
-            var federationId = String.Format("{0}_{1}", "ECA", Guid.NewGuid());
+            var federationId = String.Format("{0}_{1}", "IdpFederation", Guid.NewGuid());
             var entityDescriptorConfiguration = new EntityDesriptorConfiguration
             {
                 CacheDuration = TimeSpan.FromDays(100),

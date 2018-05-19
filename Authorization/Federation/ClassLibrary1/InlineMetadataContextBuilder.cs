@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens;
+﻿using System;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using Kernel.Federation.MetaData;
 using Kernel.Federation.MetaData.Configuration;
@@ -9,9 +10,22 @@ namespace InlineMetadataContextProvider
 {
     internal class InlineMetadataContextBuilder : IInlineMetadataContextBuilder
     {
+        private Func<MetadataGenerateRequest, bool> _includeOrganisationPredicate = _ => true;
+        public Func<MetadataGenerateRequest, bool> IncludeOrganisationPredicate
+        {
+            private get
+            {
+                return this._includeOrganisationPredicate;
+            }
+            set
+            {
+                this._includeOrganisationPredicate = value;
+            }
+        }
+
         public MetadataContext BuildContext(MetadataGenerateRequest metadataGenerateContext)
         {
-            var entityDescriptorConfiguration = MetadataHelper.BuildEntityDesriptorConfiguration();
+            var entityDescriptorConfiguration = MetadataHelper.BuildEntityDesriptorConfiguration(this._includeOrganisationPredicate(metadataGenerateContext));
 
             var keyDescriptorConfiguration = MetadataHelper.BuildKeyDescriptorConfiguration();
 
