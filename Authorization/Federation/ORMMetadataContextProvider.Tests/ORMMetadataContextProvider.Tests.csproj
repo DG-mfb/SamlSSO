@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateAndSeed.cs" />
+    <Compile Include="FederationPartyContextBuilderTests.cs" />
     <Compile Include="Mock\CacheProviderMock.cs" />
+    <Compile Include="Mock\DbContextMock.cs" />
     <Compile Include="Mock\DbCustomConfigurationMock.cs" />
     <Compile Include="Mock\FederationMetadataDispatcherMock.cs" />
     <Compile Include="Mock\GlobalConnectionStringProviderMock.cs" />
