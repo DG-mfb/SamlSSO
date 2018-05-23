@@ -8,18 +8,6 @@ namespace WsFederationMetadataProvider.Metadata.DescriptorBuilders
 {
     internal class SSODescriptorBuilderHelper
     {
-        internal static void BuildOrganisation(RoleDescriptor roleDescriptor, OrganisationConfiguration organisationConfiguration)
-        {
-            if (roleDescriptor == null)
-                throw new ArgumentNullException("roleDescriptor");
-            
-            if (organisationConfiguration == null)
-                return;
-            Organization organisation;
-            if(SSODescriptorBuilderHelper.TryBuildOrganisation(organisationConfiguration, out organisation))
-                roleDescriptor.Organization = organisation;
-        }
-
         internal static bool TryBuildOrganisation(OrganisationConfiguration organisationConfiguration, out Organization organisation)
         {
             organisation = new Organization();
