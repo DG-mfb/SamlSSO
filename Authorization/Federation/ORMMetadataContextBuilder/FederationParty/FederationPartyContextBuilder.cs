@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Kernel.Cache;
 using Kernel.Data.ORM;
+using Kernel.Federation.Constants;
 using Kernel.Federation.FederationPartner;
 using Kernel.Federation.MetaData.Configuration;
 using MemoryCacheProvider;
@@ -85,8 +86,8 @@ namespace ORMMetadataContextProvider.FederationParty
             }
             if (autnRequestSettings.NameIdConfiguration == null)
                 throw new ArgumentNullException("nameIdConfiguration");
-
-            var defaultNameId = new DefaultNameId(new Uri(autnRequestSettings.NameIdConfiguration.DefaultNameIdFormat.Uri))
+            var defaultNameUri = autnRequestSettings.NameIdConfiguration.DefaultNameIdFormat != null ? autnRequestSettings.NameIdConfiguration.DefaultNameIdFormat.Uri : NameIdentifierFormats.Unspecified;
+            var defaultNameId = new DefaultNameId(new Uri(defaultNameUri))
             {
                 AllowCreate = autnRequestSettings.NameIdConfiguration.AllowCreate,
                 EncryptNameId = autnRequestSettings.NameIdConfiguration.EncryptNameId
