@@ -27,6 +27,10 @@ namespace Federation.Metadata.FederationPartner.Configuration
         /// <param name="metadataSerialiser"></param>
         public WsFederationConfigurationRetriever(Func<string, IDocumentRetriever> retriever, IMetadataSerialiser<MetadataBase> metadataSerialiser)
         {
+            if (retriever == null)
+                throw new ArgumentNullException(nameof(retriever));
+            if (metadataSerialiser == null)
+                throw new ArgumentNullException(nameof(metadataSerialiser));
             this._metadataSerialiser = metadataSerialiser;
             this._retriever = retriever;
         }
@@ -44,6 +48,8 @@ namespace Federation.Metadata.FederationPartner.Configuration
         /// <returns></returns>
         public Task<MetadataBase> GetAsync(FederationPartyConfiguration context, CancellationToken cancel)
         {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
             return this.GetAsync(context, this._retriever(context.MetadataAddress), cancel);
         }
 
@@ -57,7 +63,9 @@ namespace Federation.Metadata.FederationPartner.Configuration
             var str = await retriever.GetDocumentAsync(context.MetadataAddress, cancel);
             var document = str;
             str = null;
-            
+            if (String.IsNullOrWhiteSpace(document))
+                throw new ArgumentNullException(nameof(document));
+
             using (XmlReader reader = XmlReader.Create(new StringReader(document), this._safeSettings))
             {
                 var federationConfiguration =this._metadataSerialiser.Deserialise(reader);

@@ -78,7 +78,11 @@ namespace Federation.Metadata.HttpRetriever
                            .ConfigureAwait(true);
                         var response = httpResponseMessage;
                         httpResponseMessage = null;
+                        if (response == null)
+                            throw new ArgumentNullException(nameof(response));
                         response.EnsureSuccessStatusCode();
+                        if (response.Content == null)
+                            throw new ArgumentNullException(nameof(response.Content));
                         var str = await response.Content.ReadAsStringAsync()
                             .ConfigureAwait(true);
                         str1 = str;
