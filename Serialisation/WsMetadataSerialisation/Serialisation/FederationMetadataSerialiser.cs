@@ -16,9 +16,9 @@ namespace WsMetadataSerialisation.Serialisation
         public FederationMetadataSerialiser(ICertificateValidator certificateValidator, ILogProvider logProvider)
         {
             if (certificateValidator == null)
-                throw new Exception(nameof(certificateValidator));
+                throw new ArgumentNullException(nameof(certificateValidator));
             if (logProvider == null)
-                throw new Exception(nameof(logProvider));
+                throw new ArgumentNullException(nameof(logProvider));
             this._certificateValidator = certificateValidator;
             base.CertificateValidator = (X509CertificateValidator)certificateValidator;
             this._logProvider = logProvider;
