@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Metadata;
+﻿using System;
+using System.IdentityModel.Metadata;
 using System.IdentityModel.Selectors;
 using System.IO;
 using System.Xml;
@@ -14,11 +15,15 @@ namespace WsMetadataSerialisation.Serialisation
         private readonly ILogProvider _logProvider;
         public FederationMetadataSerialiser(ICertificateValidator certificateValidator, ILogProvider logProvider)
         {
+            if (certificateValidator == null)
+                throw new ArgumentNullException(nameof(certificateValidator));
+            if (logProvider == null)
+                throw new ArgumentNullException(nameof(logProvider));
             this._certificateValidator = certificateValidator;
             base.CertificateValidator = (X509CertificateValidator)certificateValidator;
             this._logProvider = logProvider;
         }
-        public ICertificateValidator Validator { get { return base.CertificateValidator as ICertificateValidator; } }
+        public ICertificateValidator Validator { get { return this._certificateValidator; } }
         public void Serialise(XmlWriter writer, MetadataBase metadata)
         {
             base.WriteMetadata(writer, metadata);

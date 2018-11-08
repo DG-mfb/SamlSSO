@@ -54,6 +54,9 @@ namespace Shared.Federtion
 
         private async Task<T> GetConfiguration(FederationPartyConfiguration context, CancellationToken cancel)
         {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+
             var now = DateTimeOffset.UtcNow;
 
             T currentConfiguration;
